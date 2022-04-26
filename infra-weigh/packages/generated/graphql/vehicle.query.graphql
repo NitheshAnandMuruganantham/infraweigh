@@ -1,0 +1,6 @@
+query getVehiclesDropDownList {
+  vehicle {
+    value: id
+    label: name
+  }
+}

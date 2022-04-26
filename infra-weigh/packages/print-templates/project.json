@@ -1,0 +1,23 @@
+{
+  "root": "packages/print-templates",
+  "sourceRoot": "packages/print-templates/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/print-templates/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/print-templates"],
+      "options": {
+        "jestConfig": "packages/print-templates/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "root": "packages/tenent-admin",
+  "sourceRoot": "packages/tenent-admin/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/packages/tenent-admin",
+        "index": "packages/tenent-admin/src/index.html",
+        "baseHref": "/",
+        "main": "packages/tenent-admin/src/main.tsx",
+        "polyfills": "packages/tenent-admin/src/polyfills.ts",
+        "tsConfig": "packages/tenent-admin/tsconfig.app.json",
+        "assets": [
+          "packages/tenent-admin/src/favicon.ico",
+          "packages/tenent-admin/src/assets"
+        ],
+        "styles": ["packages/tenent-admin/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "packages/tenent-admin/src/environments/environment.ts",
+              "with": "packages/tenent-admin/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "tenent-admin:build",
+        "hmr": true
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "tenent-admin:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/tenent-admin/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/tenent-admin"],
+      "options": {
+        "jestConfig": "packages/tenent-admin/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

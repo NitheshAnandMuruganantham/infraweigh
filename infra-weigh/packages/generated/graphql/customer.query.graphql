@@ -1,0 +1,86 @@
+query getCustomerDropdownOptions($where: customer_bool_exp) {
+  customer(where: $where) {
+    value: id
+    label: company_name
+  }
+}
+
+mutation newCustomerRequest($object: requests_customer_insert_input!) {
+  insert_requests_customer_one(object: $object) {
+    id
+  }
+}
+
+subscription getCustomers($where: customer_bool_exp) {
+  customer(where: $where) {
+    company_name
+    id
+    company_address
+    name
+    email
+    phone
+    created_at
+    credit
+    credit_limit
+    blocked
+  }
+}
+
+subscription getRequestCustomers($where: requests_customer_bool_exp) {
+  requests_customer(where: $where) {
+    company_name
+    id
+    company_address
+    name
+    email
+    phone
+    created_at
+    credit
+    credit_limit
+    blocked
+  }
+}
+
+mutation deleteCustomer($deleteCustomerByPkId: uuid!) {
+  delete_customer_by_pk(id: $deleteCustomerByPkId) {
+    id
+  }
+}
+
+mutation createCustomer($object: customer_insert_input!) {
+  insert_customer_one(object: $object) {
+    id
+  }
+}
+
+query getCustomer($customerByPkId: uuid!) {
+  customer_by_pk(id: $customerByPkId) {
+    company_name
+    id
+    company_address
+    name
+    email
+    phone
+    created_at
+    credit
+    credit_limit
+    gst_in
+  }
+}
+
+mutation updateClient(
+  $pkColumns: customer_pk_columns_input!
+  $set: customer_set_input
+) {
+  update_customer_by_pk(pk_columns: $pkColumns, _set: $set) {
+    id
+  }
+}
+
+mutation updateRequestClient($where: requests_customer_bool_exp!) {
+  update_requests_customer(where: $where) {
+    returning {
+      id
+    }
+  }
+}

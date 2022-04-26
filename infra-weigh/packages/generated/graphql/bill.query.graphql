@@ -1,0 +1,176 @@
+mutation addBill($object: bill_insert_input!) {
+  insert_bill_one(object: $object) {
+    id
+    vehicle_number
+    created_at
+    charges
+    scale_weight
+    photos
+    second_weight
+    tare_weight
+    reference_bill_id
+    vehicle {
+      name
+      id
+    }
+    customer {
+      id
+      name
+    }
+    material {
+      name
+      id
+    }
+    paid_by
+    weighbridge {
+      display_name
+      id
+      address
+      pin_code
+      phone
+      logo
+    }
+  }
+}
+
+query getTareWeightBills(
+  $where: bill_bool_exp
+  $limit: Int
+  $orderBy: [bill_order_by!]
+) {
+  bill(where: $where, limit: $limit, order_by: $orderBy) {
+    id
+    scale_weight
+    created_at
+  }
+}
+
+query getTotalCollection($where: bill_bool_exp) {
+  bill_aggregate(where: $where) {
+    aggregate {
+      sum {
+        charges
+      }
+    }
+  }
+}
+
+subscription getTotalBills(
+  $where: bill_bool_exp
+  $limit: Int
+  $offset: Int
+  $orderBy: [bill_order_by!]
+  $distinctOn: [bill_select_column!]
+) {
+  bill_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+
+subscription getAllBills(
+  $where: bill_bool_exp
+  $limit: Int
+  $offset: Int
+  $orderBy: [bill_order_by!]
+  $distinctOn: [bill_select_column!]
+) {
+  bill(
+    where: $where
+    limit: $limit
+    offset: $offset
+    order_by: $orderBy
+    distinct_on: $distinctOn
+  ) {
+    id
+    weighbridge {
+      name
+      id
+    }
+    vehicle_number
+    charges
+    customer_id
+    customer_2_id
+    customer_3_id
+    created_at
+    material {
+      name
+    }
+    paid_by
+    second_weight
+    scale_weight
+    tare_weight
+  }
+}
+
+query getBillForRecept($billByPkId: uuid!) {
+  bill_by_pk(id: $billByPkId) {
+    id
+    vehicle_number
+    created_at
+    charges
+    scale_weight
+    photos
+    second_weight
+    tare_weight
+    reference_bill_id
+    vehicle {
+      name
+      id
+    }
+    customer {
+      id
+      name
+    }
+    material {
+      name
+      id
+    }
+    paid_by
+    weighbridge {
+      display_name
+      id
+      address
+      pin_code
+      phone
+      logo
+    }
+  }
+}
+
+query getVehicleByCollections($where: bill_bool_exp) {
+  vehicle_aggregate {
+    nodes {
+      id
+      name
+    }
+    nodes {
+      bills_aggregate(where: $where) {
+        aggregate {
+          sum {
+            charges
+          }
+        }
+      }
+    }
+  }
+}
+
+query billsByCustomer($where: bill_bool_exp) {
+  customer_aggregate {
+    nodes {
+      id
+      name
+    }
+    nodes {
+      bills_id_aggregate(where: $where) {
+        aggregate {
+          sum {
+            charges
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+query getUser($where: user_bool_exp) {
+  user(where: $where) {
+    email
+    password
+    id
+    profile
+    weighbridge_id
+    weighbridge {
+      name
+      address
+    }
+    updated_at
+    roles
+  }
+}
+
+subscription getAllUsers($where: user_bool_exp) {
+  user(where: $where) {
+    id
+    email
+    synced
+    created_at
+    weighbridge {
+      name
+    }
+  }
+}
+
+mutation addUser($object: user_insert_input!) {
+  insert_user_one(object: $object) {
+    id
+  }
+}
+
+mutation deleteUser($deleteUserByPkId: uuid!) {
+  delete_user_by_pk(id: $deleteUserByPkId) {
+    id
+  }
+}
+
+mutation updateUser($where: user_bool_exp!, $set: user_set_input) {
+  update_user(where: $where, _set: $set) {
+    returning {
+      id
+    }
+  }
+}

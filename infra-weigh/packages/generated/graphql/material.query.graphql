@@ -1,0 +1,6 @@
+query getMaterialDropDownList {
+  material {
+    value: id
+    label: name
+  }
+}

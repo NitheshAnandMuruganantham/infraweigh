@@ -1,0 +1,23 @@
+{
+  "root": "packages/generated",
+  "sourceRoot": "packages/generated/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/generated/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/generated"],
+      "options": {
+        "jestConfig": "packages/generated/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

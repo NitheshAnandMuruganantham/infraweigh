@@ -1,0 +1,23 @@
+{
+  "root": "packages/loading",
+  "sourceRoot": "packages/loading/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/loading/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/loading"],
+      "options": {
+        "jestConfig": "packages/loading/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

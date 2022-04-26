@@ -1,0 +1,34 @@
+mutation addTenent($object: tenents_insert_input!) {
+    insert_tenents_one(object: $object) {
+        id
+    }
+}
+
+subscription getAllTenents{
+    tenents {
+        email
+        name
+        activate
+        id
+        phone
+        metadata
+        payment_pending
+    }
+}
+mutation editTenent($pkColumns: tenents_pk_columns_input!, $set: tenents_set_input){
+    update_tenents_by_pk(pk_columns: $pkColumns,_set: $set) {
+        id
+    }
+}
+
+query getTenet($tenentsByPkId: uuid!) {
+    tenents_by_pk(id: $tenentsByPkId) {
+        email
+        id
+        activate
+        name
+        metadata
+        phone
+        payment_pending
+    }
+}

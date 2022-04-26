@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "projects": {
+    "admin": "packages/admin",
+    "admin-e2e": "packages/admin-e2e",
+    "auth": "packages/auth",
+    "client": "packages/client",
+    "firebase": "packages/firebase",
+    "generated": "packages/generated",
+    "loading": "packages/loading",
+    "print-templates": "packages/print-templates",
+    "tenent-admin": "packages/tenent-admin",
+    "tenent-admin-e2e": "packages/tenent-admin-e2e",
+    "terminal": "packages/terminal",
+    "terminal-e2e": "packages/terminal-e2e"
+  }
+}

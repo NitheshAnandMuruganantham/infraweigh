@@ -1,0 +1,79 @@
+{
+  "root": "packages/terminal",
+  "sourceRoot": "packages/terminal/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/packages/terminal",
+        "index": "packages/terminal/src/index.html",
+        "baseHref": "/",
+        "main": "packages/terminal/src/main.tsx",
+        "polyfills": "packages/terminal/src/polyfills.ts",
+        "tsConfig": "packages/terminal/tsconfig.app.json",
+        "assets": [
+          "packages/terminal/src/favicon.ico",
+          "packages/terminal/src/assets"
+        ],
+        "styles": ["packages/terminal/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "packages/terminal/src/environments/environment.ts",
+              "with": "packages/terminal/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "terminal:build",
+        "hmr": true
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "terminal:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/terminal/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/terminal"],
+      "options": {
+        "jestConfig": "packages/terminal/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "firebase": {
+      "executor": "@nxtend/firebase:firebase",
+      "options": {
+        "cmd": "--help"
+      }
+    }
+  },
+  "tags": []
+}
