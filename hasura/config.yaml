@@ -1,0 +1,7 @@
+version: 3
+endpoint: https://infra-weigh-dev.herokuapp.com
+admin_secret: MhkFsJZvLCjCTsFicfR6itE0EY7OOC2kkQRBc41EyMgosT8P6qHLq4125hToRdus
+metadata_directory: metadata
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: http://localhost:3000
