@@ -12,7 +12,7 @@ function getHeaders() {
 }
 
 const httpLink = new HttpLink({
-  uri: 'https://infra-weigh.herokuapp.com/v1/graphql',
+  uri: `${process.env['NX_BASE_URL']}/v1/graphql`,
   fetch: (uri: RequestInfo, options: RequestInit) => {
     options.headers = getHeaders();
     return fetch(uri, options);
@@ -20,7 +20,7 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://infra-weigh.herokuapp.com/v1/graphql',
+  uri: `${process.env['NX_BASE_WS_URL']}/v1/graphql`,
   options: {
     reconnect: true,
     lazy: true,

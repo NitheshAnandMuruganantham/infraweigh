@@ -5,29 +5,8 @@ query getCustomerDropdownOptions($where: customer_bool_exp) {
   }
 }
 
-mutation newCustomerRequest($object: requests_customer_insert_input!) {
-  insert_requests_customer_one(object: $object) {
-    id
-  }
-}
-
 subscription getCustomers($where: customer_bool_exp) {
   customer(where: $where) {
-    company_name
-    id
-    company_address
-    name
-    email
-    phone
-    created_at
-    credit
-    credit_limit
-    blocked
-  }
-}
-
-subscription getRequestCustomers($where: requests_customer_bool_exp) {
-  requests_customer(where: $where) {
     company_name
     id
     company_address
@@ -74,13 +53,5 @@ mutation updateClient(
 ) {
   update_customer_by_pk(pk_columns: $pkColumns, _set: $set) {
     id
-  }
-}
-
-mutation updateRequestClient($where: requests_customer_bool_exp!) {
-  update_requests_customer(where: $where) {
-    returning {
-      id
-    }
   }
 }

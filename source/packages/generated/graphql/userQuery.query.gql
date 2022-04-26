@@ -10,7 +10,7 @@ query getUser($where: user_bool_exp) {
       address
     }
     updated_at
-    roles
+    role
   }
 }
 

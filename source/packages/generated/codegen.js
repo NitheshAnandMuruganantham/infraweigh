@@ -3,9 +3,10 @@ config();
 module.exports = {
   schema: [
     {
-      'https://infra-weigh.hasura.app/v1/graphql': {
+      'https://infra-weigh.herokuapp.com/v1/graphql': {
         headers: {
-          'x-hasura-admin-secret': process.env.AUTH_TOKEN,
+          'x-hasura-admin-secret':
+            'MhkFsJZvLCjCTsFicfR6itE0EY7OOC2kkQRBc41EyMgosT8P6qHLq4125hToRdus',
         },
       },
     },
@@ -26,7 +27,7 @@ module.exports = {
         withComponent: false,
       },
     },
-    './graphql.schema.json': {
+    './packages/generated/graphql.schema.json': {
       plugins: ['introspection'],
     },
   },

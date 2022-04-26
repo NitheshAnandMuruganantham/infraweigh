@@ -831,176 +831,6 @@ export type Bill_Variance_Order_By = {
   tare_weight?: InputMaybe<Order_By>;
 };
 
-/** columns and relationships of "config" */
-export type Config = {
-  __typename?: 'config';
-  id: Scalars['uuid'];
-  key?: Maybe<Scalars['String']>;
-  /** An object relationship */
-  tenent?: Maybe<Tenents>;
-  tenent_id?: Maybe<Scalars['uuid']>;
-  value?: Maybe<Scalars['String']>;
-};
-
-/** aggregated selection of "config" */
-export type Config_Aggregate = {
-  __typename?: 'config_aggregate';
-  aggregate?: Maybe<Config_Aggregate_Fields>;
-  nodes: Array<Config>;
-};
-
-/** aggregate fields of "config" */
-export type Config_Aggregate_Fields = {
-  __typename?: 'config_aggregate_fields';
-  count: Scalars['Int'];
-  max?: Maybe<Config_Max_Fields>;
-  min?: Maybe<Config_Min_Fields>;
-};
-
-
-/** aggregate fields of "config" */
-export type Config_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Config_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "config" */
-export type Config_Aggregate_Order_By = {
-  count?: InputMaybe<Order_By>;
-  max?: InputMaybe<Config_Max_Order_By>;
-  min?: InputMaybe<Config_Min_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "config" */
-export type Config_Arr_Rel_Insert_Input = {
-  data: Array<Config_Insert_Input>;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Config_On_Conflict>;
-};
-
-/** Boolean expression to filter rows from the table "config". All fields are combined with a logical 'AND'. */
-export type Config_Bool_Exp = {
-  _and?: InputMaybe<Array<Config_Bool_Exp>>;
-  _not?: InputMaybe<Config_Bool_Exp>;
-  _or?: InputMaybe<Array<Config_Bool_Exp>>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  key?: InputMaybe<String_Comparison_Exp>;
-  tenent?: InputMaybe<Tenents_Bool_Exp>;
-  tenent_id?: InputMaybe<Uuid_Comparison_Exp>;
-  value?: InputMaybe<String_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "config" */
-export enum Config_Constraint {
-  /** unique or primary key constraint */
-  ConfigPkey = 'config_pkey'
-}
-
-/** input type for inserting data into table "config" */
-export type Config_Insert_Input = {
-  id?: InputMaybe<Scalars['uuid']>;
-  key?: InputMaybe<Scalars['String']>;
-  tenent?: InputMaybe<Tenents_Obj_Rel_Insert_Input>;
-  tenent_id?: InputMaybe<Scalars['uuid']>;
-  value?: InputMaybe<Scalars['String']>;
-};
-
-/** aggregate max on columns */
-export type Config_Max_Fields = {
-  __typename?: 'config_max_fields';
-  id?: Maybe<Scalars['uuid']>;
-  key?: Maybe<Scalars['String']>;
-  tenent_id?: Maybe<Scalars['uuid']>;
-  value?: Maybe<Scalars['String']>;
-};
-
-/** order by max() on columns of table "config" */
-export type Config_Max_Order_By = {
-  id?: InputMaybe<Order_By>;
-  key?: InputMaybe<Order_By>;
-  tenent_id?: InputMaybe<Order_By>;
-  value?: InputMaybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Config_Min_Fields = {
-  __typename?: 'config_min_fields';
-  id?: Maybe<Scalars['uuid']>;
-  key?: Maybe<Scalars['String']>;
-  tenent_id?: Maybe<Scalars['uuid']>;
-  value?: Maybe<Scalars['String']>;
-};
-
-/** order by min() on columns of table "config" */
-export type Config_Min_Order_By = {
-  id?: InputMaybe<Order_By>;
-  key?: InputMaybe<Order_By>;
-  tenent_id?: InputMaybe<Order_By>;
-  value?: InputMaybe<Order_By>;
-};
-
-/** response of any mutation on the table "config" */
-export type Config_Mutation_Response = {
-  __typename?: 'config_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Config>;
-};
-
-/** on_conflict condition type for table "config" */
-export type Config_On_Conflict = {
-  constraint: Config_Constraint;
-  update_columns?: Array<Config_Update_Column>;
-  where?: InputMaybe<Config_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "config". */
-export type Config_Order_By = {
-  id?: InputMaybe<Order_By>;
-  key?: InputMaybe<Order_By>;
-  tenent?: InputMaybe<Tenents_Order_By>;
-  tenent_id?: InputMaybe<Order_By>;
-  value?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: config */
-export type Config_Pk_Columns_Input = {
-  id: Scalars['uuid'];
-};
-
-/** select columns of table "config" */
-export enum Config_Select_Column {
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Key = 'key',
-  /** column name */
-  TenentId = 'tenent_id',
-  /** column name */
-  Value = 'value'
-}
-
-/** input type for updating data in table "config" */
-export type Config_Set_Input = {
-  id?: InputMaybe<Scalars['uuid']>;
-  key?: InputMaybe<Scalars['String']>;
-  tenent_id?: InputMaybe<Scalars['uuid']>;
-  value?: InputMaybe<Scalars['String']>;
-};
-
-/** update columns of table "config" */
-export enum Config_Update_Column {
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Key = 'key',
-  /** column name */
-  TenentId = 'tenent_id',
-  /** column name */
-  Value = 'value'
-}
-
 /** columns and relationships of "customer" */
 export type Customer = {
   __typename?: 'customer';
@@ -1711,10 +1541,6 @@ export type Mutation_Root = {
   delete_bill?: Maybe<Bill_Mutation_Response>;
   /** delete single row from the table: "bill" */
   delete_bill_by_pk?: Maybe<Bill>;
-  /** delete data from the table: "config" */
-  delete_config?: Maybe<Config_Mutation_Response>;
-  /** delete single row from the table: "config" */
-  delete_config_by_pk?: Maybe<Config>;
   /** delete data from the table: "customer" */
   delete_customer?: Maybe<Customer_Mutation_Response>;
   /** delete single row from the table: "customer" */
@@ -1723,8 +1549,6 @@ export type Mutation_Root = {
   delete_material?: Maybe<Material_Mutation_Response>;
   /** delete single row from the table: "material" */
   delete_material_by_pk?: Maybe<Material>;
-  /** delete data from the table: "requests.customer" */
-  delete_requests_customer?: Maybe<Requests_Customer_Mutation_Response>;
   /** delete data from the table: "tenents" */
   delete_tenents?: Maybe<Tenents_Mutation_Response>;
   /** delete single row from the table: "tenents" */
@@ -1749,10 +1573,6 @@ export type Mutation_Root = {
   insert_bill?: Maybe<Bill_Mutation_Response>;
   /** insert a single row into the table: "bill" */
   insert_bill_one?: Maybe<Bill>;
-  /** insert data into the table: "config" */
-  insert_config?: Maybe<Config_Mutation_Response>;
-  /** insert a single row into the table: "config" */
-  insert_config_one?: Maybe<Config>;
   /** insert data into the table: "customer" */
   insert_customer?: Maybe<Customer_Mutation_Response>;
   /** insert a single row into the table: "customer" */
@@ -1761,10 +1581,6 @@ export type Mutation_Root = {
   insert_material?: Maybe<Material_Mutation_Response>;
   /** insert a single row into the table: "material" */
   insert_material_one?: Maybe<Material>;
-  /** insert data into the table: "requests.customer" */
-  insert_requests_customer?: Maybe<Requests_Customer_Mutation_Response>;
-  /** insert a single row into the table: "requests.customer" */
-  insert_requests_customer_one?: Maybe<Requests_Customer>;
   /** insert data into the table: "tenents" */
   insert_tenents?: Maybe<Tenents_Mutation_Response>;
   /** insert a single row into the table: "tenents" */
@@ -1789,10 +1605,6 @@ export type Mutation_Root = {
   update_bill?: Maybe<Bill_Mutation_Response>;
   /** update single row of the table: "bill" */
   update_bill_by_pk?: Maybe<Bill>;
-  /** update data of the table: "config" */
-  update_config?: Maybe<Config_Mutation_Response>;
-  /** update single row of the table: "config" */
-  update_config_by_pk?: Maybe<Config>;
   /** update data of the table: "customer" */
   update_customer?: Maybe<Customer_Mutation_Response>;
   /** update single row of the table: "customer" */
@@ -1801,8 +1613,6 @@ export type Mutation_Root = {
   update_material?: Maybe<Material_Mutation_Response>;
   /** update single row of the table: "material" */
   update_material_by_pk?: Maybe<Material>;
-  /** update data of the table: "requests.customer" */
-  update_requests_customer?: Maybe<Requests_Customer_Mutation_Response>;
   /** update data of the table: "tenents" */
   update_tenents?: Maybe<Tenents_Mutation_Response>;
   /** update single row of the table: "tenents" */
@@ -1849,18 +1659,6 @@ export type Mutation_RootDelete_Bill_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_ConfigArgs = {
-  where: Config_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Config_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
-
-/** mutation root */
 export type Mutation_RootDelete_CustomerArgs = {
   where: Customer_Bool_Exp;
 };
@@ -1881,12 +1679,6 @@ export type Mutation_RootDelete_MaterialArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Material_By_PkArgs = {
   id: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Requests_CustomerArgs = {
-  where: Requests_Customer_Bool_Exp;
 };
 
 
@@ -1967,20 +1759,6 @@ export type Mutation_RootInsert_Bill_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_ConfigArgs = {
-  objects: Array<Config_Insert_Input>;
-  on_conflict?: InputMaybe<Config_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Config_OneArgs = {
-  object: Config_Insert_Input;
-  on_conflict?: InputMaybe<Config_On_Conflict>;
-};
-
-
-/** mutation root */
 export type Mutation_RootInsert_CustomerArgs = {
   objects: Array<Customer_Insert_Input>;
   on_conflict?: InputMaybe<Customer_On_Conflict>;
@@ -2005,18 +1783,6 @@ export type Mutation_RootInsert_MaterialArgs = {
 export type Mutation_RootInsert_Material_OneArgs = {
   object: Material_Insert_Input;
   on_conflict?: InputMaybe<Material_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Requests_CustomerArgs = {
-  objects: Array<Requests_Customer_Insert_Input>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Requests_Customer_OneArgs = {
-  object: Requests_Customer_Insert_Input;
 };
 
 
@@ -2107,20 +1873,6 @@ export type Mutation_RootUpdate_Bill_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_ConfigArgs = {
-  _set?: InputMaybe<Config_Set_Input>;
-  where: Config_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Config_By_PkArgs = {
-  _set?: InputMaybe<Config_Set_Input>;
-  pk_columns: Config_Pk_Columns_Input;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdate_CustomerArgs = {
   _inc?: InputMaybe<Customer_Inc_Input>;
   _set?: InputMaybe<Customer_Set_Input>;
@@ -2147,14 +1899,6 @@ export type Mutation_RootUpdate_MaterialArgs = {
 export type Mutation_RootUpdate_Material_By_PkArgs = {
   _set?: InputMaybe<Material_Set_Input>;
   pk_columns: Material_Pk_Columns_Input;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Requests_CustomerArgs = {
-  _inc?: InputMaybe<Requests_Customer_Inc_Input>;
-  _set?: InputMaybe<Requests_Customer_Set_Input>;
-  where: Requests_Customer_Bool_Exp;
 };
 
 
@@ -2245,12 +1989,6 @@ export type Query_Root = {
   bill_aggregate: Bill_Aggregate;
   /** fetch data from the table: "bill" using primary key columns */
   bill_by_pk?: Maybe<Bill>;
-  /** fetch data from the table: "config" */
-  config: Array<Config>;
-  /** fetch aggregated fields from the table: "config" */
-  config_aggregate: Config_Aggregate;
-  /** fetch data from the table: "config" using primary key columns */
-  config_by_pk?: Maybe<Config>;
   /** fetch data from the table: "customer" */
   customer: Array<Customer>;
   /** fetch aggregated fields from the table: "customer" */
@@ -2263,10 +2001,6 @@ export type Query_Root = {
   material_aggregate: Material_Aggregate;
   /** fetch data from the table: "material" using primary key columns */
   material_by_pk?: Maybe<Material>;
-  /** fetch data from the table: "requests.customer" */
-  requests_customer: Array<Requests_Customer>;
-  /** fetch aggregated fields from the table: "requests.customer" */
-  requests_customer_aggregate: Requests_Customer_Aggregate;
   /** fetch data from the table: "tenents" */
   tenents: Array<Tenents>;
   /** fetch aggregated fields from the table: "tenents" */
@@ -2342,29 +2076,6 @@ export type Query_RootBill_By_PkArgs = {
 };
 
 
-export type Query_RootConfigArgs = {
-  distinct_on?: InputMaybe<Array<Config_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Config_Order_By>>;
-  where?: InputMaybe<Config_Bool_Exp>;
-};
-
-
-export type Query_RootConfig_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Config_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Config_Order_By>>;
-  where?: InputMaybe<Config_Bool_Exp>;
-};
-
-
-export type Query_RootConfig_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
-
 export type Query_RootCustomerArgs = {
   distinct_on?: InputMaybe<Array<Customer_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2408,24 +2119,6 @@ export type Query_RootMaterial_AggregateArgs = {
 
 export type Query_RootMaterial_By_PkArgs = {
   id: Scalars['uuid'];
-};
-
-
-export type Query_RootRequests_CustomerArgs = {
-  distinct_on?: InputMaybe<Array<Requests_Customer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Requests_Customer_Order_By>>;
-  where?: InputMaybe<Requests_Customer_Bool_Exp>;
-};
-
-
-export type Query_RootRequests_Customer_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Requests_Customer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Requests_Customer_Order_By>>;
-  where?: InputMaybe<Requests_Customer_Bool_Exp>;
 };
 
 
@@ -2520,276 +2213,6 @@ export type Query_RootWeighbridge_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
-/** columns and relationships of "requests.customer" */
-export type Requests_Customer = {
-  __typename?: 'requests_customer';
-  approved: Scalars['Boolean'];
-  blocked: Scalars['Boolean'];
-  company_address: Scalars['String'];
-  company_name: Scalars['String'];
-  created_at: Scalars['timestamptz'];
-  credit?: Maybe<Scalars['Boolean']>;
-  credit_limit?: Maybe<Scalars['money']>;
-  edit_request?: Maybe<Scalars['Boolean']>;
-  email: Scalars['String'];
-  gst_in?: Maybe<Scalars['String']>;
-  id: Scalars['uuid'];
-  metadata?: Maybe<Scalars['json']>;
-  name: Scalars['String'];
-  phone: Scalars['String'];
-  tenent_id: Scalars['uuid'];
-  updated_at: Scalars['timestamptz'];
-};
-
-
-/** columns and relationships of "requests.customer" */
-export type Requests_CustomerMetadataArgs = {
-  path?: InputMaybe<Scalars['String']>;
-};
-
-/** aggregated selection of "requests.customer" */
-export type Requests_Customer_Aggregate = {
-  __typename?: 'requests_customer_aggregate';
-  aggregate?: Maybe<Requests_Customer_Aggregate_Fields>;
-  nodes: Array<Requests_Customer>;
-};
-
-/** aggregate fields of "requests.customer" */
-export type Requests_Customer_Aggregate_Fields = {
-  __typename?: 'requests_customer_aggregate_fields';
-  avg?: Maybe<Requests_Customer_Avg_Fields>;
-  count: Scalars['Int'];
-  max?: Maybe<Requests_Customer_Max_Fields>;
-  min?: Maybe<Requests_Customer_Min_Fields>;
-  stddev?: Maybe<Requests_Customer_Stddev_Fields>;
-  stddev_pop?: Maybe<Requests_Customer_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Requests_Customer_Stddev_Samp_Fields>;
-  sum?: Maybe<Requests_Customer_Sum_Fields>;
-  var_pop?: Maybe<Requests_Customer_Var_Pop_Fields>;
-  var_samp?: Maybe<Requests_Customer_Var_Samp_Fields>;
-  variance?: Maybe<Requests_Customer_Variance_Fields>;
-};
-
-
-/** aggregate fields of "requests.customer" */
-export type Requests_Customer_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Requests_Customer_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
-};
-
-/** aggregate avg on columns */
-export type Requests_Customer_Avg_Fields = {
-  __typename?: 'requests_customer_avg_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** Boolean expression to filter rows from the table "requests.customer". All fields are combined with a logical 'AND'. */
-export type Requests_Customer_Bool_Exp = {
-  _and?: InputMaybe<Array<Requests_Customer_Bool_Exp>>;
-  _not?: InputMaybe<Requests_Customer_Bool_Exp>;
-  _or?: InputMaybe<Array<Requests_Customer_Bool_Exp>>;
-  approved?: InputMaybe<Boolean_Comparison_Exp>;
-  blocked?: InputMaybe<Boolean_Comparison_Exp>;
-  company_address?: InputMaybe<String_Comparison_Exp>;
-  company_name?: InputMaybe<String_Comparison_Exp>;
-  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  credit?: InputMaybe<Boolean_Comparison_Exp>;
-  credit_limit?: InputMaybe<Money_Comparison_Exp>;
-  edit_request?: InputMaybe<Boolean_Comparison_Exp>;
-  email?: InputMaybe<String_Comparison_Exp>;
-  gst_in?: InputMaybe<String_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  metadata?: InputMaybe<Json_Comparison_Exp>;
-  name?: InputMaybe<String_Comparison_Exp>;
-  phone?: InputMaybe<String_Comparison_Exp>;
-  tenent_id?: InputMaybe<Uuid_Comparison_Exp>;
-  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-};
-
-/** input type for incrementing numeric columns in table "requests.customer" */
-export type Requests_Customer_Inc_Input = {
-  credit_limit?: InputMaybe<Scalars['money']>;
-};
-
-/** input type for inserting data into table "requests.customer" */
-export type Requests_Customer_Insert_Input = {
-  approved?: InputMaybe<Scalars['Boolean']>;
-  blocked?: InputMaybe<Scalars['Boolean']>;
-  company_address?: InputMaybe<Scalars['String']>;
-  company_name?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  credit?: InputMaybe<Scalars['Boolean']>;
-  credit_limit?: InputMaybe<Scalars['money']>;
-  edit_request?: InputMaybe<Scalars['Boolean']>;
-  email?: InputMaybe<Scalars['String']>;
-  gst_in?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  metadata?: InputMaybe<Scalars['json']>;
-  name?: InputMaybe<Scalars['String']>;
-  phone?: InputMaybe<Scalars['String']>;
-  tenent_id?: InputMaybe<Scalars['uuid']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
-};
-
-/** aggregate max on columns */
-export type Requests_Customer_Max_Fields = {
-  __typename?: 'requests_customer_max_fields';
-  company_address?: Maybe<Scalars['String']>;
-  company_name?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  credit_limit?: Maybe<Scalars['money']>;
-  email?: Maybe<Scalars['String']>;
-  gst_in?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
-  tenent_id?: Maybe<Scalars['uuid']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-/** aggregate min on columns */
-export type Requests_Customer_Min_Fields = {
-  __typename?: 'requests_customer_min_fields';
-  company_address?: Maybe<Scalars['String']>;
-  company_name?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  credit_limit?: Maybe<Scalars['money']>;
-  email?: Maybe<Scalars['String']>;
-  gst_in?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
-  tenent_id?: Maybe<Scalars['uuid']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-/** response of any mutation on the table "requests.customer" */
-export type Requests_Customer_Mutation_Response = {
-  __typename?: 'requests_customer_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Requests_Customer>;
-};
-
-/** Ordering options when selecting data from "requests.customer". */
-export type Requests_Customer_Order_By = {
-  approved?: InputMaybe<Order_By>;
-  blocked?: InputMaybe<Order_By>;
-  company_address?: InputMaybe<Order_By>;
-  company_name?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  credit?: InputMaybe<Order_By>;
-  credit_limit?: InputMaybe<Order_By>;
-  edit_request?: InputMaybe<Order_By>;
-  email?: InputMaybe<Order_By>;
-  gst_in?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  metadata?: InputMaybe<Order_By>;
-  name?: InputMaybe<Order_By>;
-  phone?: InputMaybe<Order_By>;
-  tenent_id?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
-};
-
-/** select columns of table "requests.customer" */
-export enum Requests_Customer_Select_Column {
-  /** column name */
-  Approved = 'approved',
-  /** column name */
-  Blocked = 'blocked',
-  /** column name */
-  CompanyAddress = 'company_address',
-  /** column name */
-  CompanyName = 'company_name',
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  Credit = 'credit',
-  /** column name */
-  CreditLimit = 'credit_limit',
-  /** column name */
-  EditRequest = 'edit_request',
-  /** column name */
-  Email = 'email',
-  /** column name */
-  GstIn = 'gst_in',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Metadata = 'metadata',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  Phone = 'phone',
-  /** column name */
-  TenentId = 'tenent_id',
-  /** column name */
-  UpdatedAt = 'updated_at'
-}
-
-/** input type for updating data in table "requests.customer" */
-export type Requests_Customer_Set_Input = {
-  approved?: InputMaybe<Scalars['Boolean']>;
-  blocked?: InputMaybe<Scalars['Boolean']>;
-  company_address?: InputMaybe<Scalars['String']>;
-  company_name?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  credit?: InputMaybe<Scalars['Boolean']>;
-  credit_limit?: InputMaybe<Scalars['money']>;
-  edit_request?: InputMaybe<Scalars['Boolean']>;
-  email?: InputMaybe<Scalars['String']>;
-  gst_in?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  metadata?: InputMaybe<Scalars['json']>;
-  name?: InputMaybe<Scalars['String']>;
-  phone?: InputMaybe<Scalars['String']>;
-  tenent_id?: InputMaybe<Scalars['uuid']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
-};
-
-/** aggregate stddev on columns */
-export type Requests_Customer_Stddev_Fields = {
-  __typename?: 'requests_customer_stddev_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Requests_Customer_Stddev_Pop_Fields = {
-  __typename?: 'requests_customer_stddev_pop_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Requests_Customer_Stddev_Samp_Fields = {
-  __typename?: 'requests_customer_stddev_samp_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate sum on columns */
-export type Requests_Customer_Sum_Fields = {
-  __typename?: 'requests_customer_sum_fields';
-  credit_limit?: Maybe<Scalars['money']>;
-};
-
-/** aggregate var_pop on columns */
-export type Requests_Customer_Var_Pop_Fields = {
-  __typename?: 'requests_customer_var_pop_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type Requests_Customer_Var_Samp_Fields = {
-  __typename?: 'requests_customer_var_samp_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type Requests_Customer_Variance_Fields = {
-  __typename?: 'requests_customer_variance_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
 export type Subscription_Root = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "admin" */
@@ -2804,12 +2227,6 @@ export type Subscription_Root = {
   bill_aggregate: Bill_Aggregate;
   /** fetch data from the table: "bill" using primary key columns */
   bill_by_pk?: Maybe<Bill>;
-  /** fetch data from the table: "config" */
-  config: Array<Config>;
-  /** fetch aggregated fields from the table: "config" */
-  config_aggregate: Config_Aggregate;
-  /** fetch data from the table: "config" using primary key columns */
-  config_by_pk?: Maybe<Config>;
   /** fetch data from the table: "customer" */
   customer: Array<Customer>;
   /** fetch aggregated fields from the table: "customer" */
@@ -2822,10 +2239,6 @@ export type Subscription_Root = {
   material_aggregate: Material_Aggregate;
   /** fetch data from the table: "material" using primary key columns */
   material_by_pk?: Maybe<Material>;
-  /** fetch data from the table: "requests.customer" */
-  requests_customer: Array<Requests_Customer>;
-  /** fetch aggregated fields from the table: "requests.customer" */
-  requests_customer_aggregate: Requests_Customer_Aggregate;
   /** fetch data from the table: "tenents" */
   tenents: Array<Tenents>;
   /** fetch aggregated fields from the table: "tenents" */
@@ -2901,29 +2314,6 @@ export type Subscription_RootBill_By_PkArgs = {
 };
 
 
-export type Subscription_RootConfigArgs = {
-  distinct_on?: InputMaybe<Array<Config_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Config_Order_By>>;
-  where?: InputMaybe<Config_Bool_Exp>;
-};
-
-
-export type Subscription_RootConfig_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Config_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Config_Order_By>>;
-  where?: InputMaybe<Config_Bool_Exp>;
-};
-
-
-export type Subscription_RootConfig_By_PkArgs = {
-  id: Scalars['uuid'];
-};
-
-
 export type Subscription_RootCustomerArgs = {
   distinct_on?: InputMaybe<Array<Customer_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2967,24 +2357,6 @@ export type Subscription_RootMaterial_AggregateArgs = {
 
 export type Subscription_RootMaterial_By_PkArgs = {
   id: Scalars['uuid'];
-};
-
-
-export type Subscription_RootRequests_CustomerArgs = {
-  distinct_on?: InputMaybe<Array<Requests_Customer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Requests_Customer_Order_By>>;
-  where?: InputMaybe<Requests_Customer_Bool_Exp>;
-};
-
-
-export type Subscription_RootRequests_Customer_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Requests_Customer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Requests_Customer_Order_By>>;
-  where?: InputMaybe<Requests_Customer_Bool_Exp>;
 };
 
 
@@ -3088,10 +2460,6 @@ export type Tenents = {
   /** An aggregate relationship */
   bills_aggregate: Bill_Aggregate;
   /** An array relationship */
-  configs: Array<Config>;
-  /** An aggregate relationship */
-  configs_aggregate: Config_Aggregate;
-  /** An array relationship */
   customers: Array<Customer>;
   /** An aggregate relationship */
   customers_aggregate: Customer_Aggregate;
@@ -3129,26 +2497,6 @@ export type TenentsBills_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Bill_Order_By>>;
   where?: InputMaybe<Bill_Bool_Exp>;
-};
-
-
-/** columns and relationships of "tenents" */
-export type TenentsConfigsArgs = {
-  distinct_on?: InputMaybe<Array<Config_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Config_Order_By>>;
-  where?: InputMaybe<Config_Bool_Exp>;
-};
-
-
-/** columns and relationships of "tenents" */
-export type TenentsConfigs_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Config_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Config_Order_By>>;
-  where?: InputMaybe<Config_Bool_Exp>;
 };
 
 
@@ -3246,7 +2594,6 @@ export type Tenents_Bool_Exp = {
   _or?: InputMaybe<Array<Tenents_Bool_Exp>>;
   activate?: InputMaybe<Boolean_Comparison_Exp>;
   bills?: InputMaybe<Bill_Bool_Exp>;
-  configs?: InputMaybe<Config_Bool_Exp>;
   customers?: InputMaybe<Customer_Bool_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -3270,7 +2617,6 @@ export enum Tenents_Constraint {
 export type Tenents_Insert_Input = {
   activate?: InputMaybe<Scalars['Boolean']>;
   bills?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
-  configs?: InputMaybe<Config_Arr_Rel_Insert_Input>;
   customers?: InputMaybe<Customer_Arr_Rel_Insert_Input>;
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
@@ -3327,7 +2673,6 @@ export type Tenents_On_Conflict = {
 export type Tenents_Order_By = {
   activate?: InputMaybe<Order_By>;
   bills_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
-  configs_aggregate?: InputMaybe<Config_Aggregate_Order_By>;
   customers_aggregate?: InputMaybe<Customer_Aggregate_Order_By>;
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -3413,7 +2758,7 @@ export type User = {
   meta_data?: Maybe<Scalars['json']>;
   password: Scalars['String'];
   profile?: Maybe<Scalars['json']>;
-  roles: Scalars['json'];
+  role?: Maybe<Scalars['String']>;
   synced?: Maybe<Scalars['Boolean']>;
   /** An object relationship */
   tenent: Tenents;
@@ -3433,12 +2778,6 @@ export type UserMeta_DataArgs = {
 
 /** columns and relationships of "user" */
 export type UserProfileArgs = {
-  path?: InputMaybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "user" */
-export type UserRolesArgs = {
   path?: InputMaybe<Scalars['String']>;
 };
 
@@ -3489,7 +2828,7 @@ export type User_Bool_Exp = {
   meta_data?: InputMaybe<Json_Comparison_Exp>;
   password?: InputMaybe<String_Comparison_Exp>;
   profile?: InputMaybe<Json_Comparison_Exp>;
-  roles?: InputMaybe<Json_Comparison_Exp>;
+  role?: InputMaybe<String_Comparison_Exp>;
   synced?: InputMaybe<Boolean_Comparison_Exp>;
   tenent?: InputMaybe<Tenents_Bool_Exp>;
   tenent_id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -3514,7 +2853,7 @@ export type User_Insert_Input = {
   meta_data?: InputMaybe<Scalars['json']>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<Scalars['json']>;
-  roles?: InputMaybe<Scalars['json']>;
+  role?: InputMaybe<Scalars['String']>;
   synced?: InputMaybe<Scalars['Boolean']>;
   tenent?: InputMaybe<Tenents_Obj_Rel_Insert_Input>;
   tenent_id?: InputMaybe<Scalars['uuid']>;
@@ -3530,6 +2869,7 @@ export type User_Max_Fields = {
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   password?: Maybe<Scalars['String']>;
+  role?: Maybe<Scalars['String']>;
   tenent_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   weighbridge_id?: Maybe<Scalars['uuid']>;
@@ -3541,6 +2881,7 @@ export type User_Max_Order_By = {
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   password?: InputMaybe<Order_By>;
+  role?: InputMaybe<Order_By>;
   tenent_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   weighbridge_id?: InputMaybe<Order_By>;
@@ -3553,6 +2894,7 @@ export type User_Min_Fields = {
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   password?: Maybe<Scalars['String']>;
+  role?: Maybe<Scalars['String']>;
   tenent_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   weighbridge_id?: Maybe<Scalars['uuid']>;
@@ -3564,6 +2906,7 @@ export type User_Min_Order_By = {
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   password?: InputMaybe<Order_By>;
+  role?: InputMaybe<Order_By>;
   tenent_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   weighbridge_id?: InputMaybe<Order_By>;
@@ -3593,7 +2936,7 @@ export type User_Order_By = {
   meta_data?: InputMaybe<Order_By>;
   password?: InputMaybe<Order_By>;
   profile?: InputMaybe<Order_By>;
-  roles?: InputMaybe<Order_By>;
+  role?: InputMaybe<Order_By>;
   synced?: InputMaybe<Order_By>;
   tenent?: InputMaybe<Tenents_Order_By>;
   tenent_id?: InputMaybe<Order_By>;
@@ -3622,7 +2965,7 @@ export enum User_Select_Column {
   /** column name */
   Profile = 'profile',
   /** column name */
-  Roles = 'roles',
+  Role = 'role',
   /** column name */
   Synced = 'synced',
   /** column name */
@@ -3641,7 +2984,7 @@ export type User_Set_Input = {
   meta_data?: InputMaybe<Scalars['json']>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<Scalars['json']>;
-  roles?: InputMaybe<Scalars['json']>;
+  role?: InputMaybe<Scalars['String']>;
   synced?: InputMaybe<Scalars['Boolean']>;
   tenent_id?: InputMaybe<Scalars['uuid']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
@@ -3663,7 +3006,7 @@ export enum User_Update_Column {
   /** column name */
   Profile = 'profile',
   /** column name */
-  Roles = 'roles',
+  Role = 'role',
   /** column name */
   Synced = 'synced',
   /** column name */
@@ -4476,26 +3819,12 @@ export type GetCustomerDropdownOptionsQueryVariables = Exact<{
 
 export type GetCustomerDropdownOptionsQuery = { __typename?: 'query_root', customer: Array<{ __typename?: 'customer', value: any, label: string }> };
 
-export type NewCustomerRequestMutationVariables = Exact<{
-  object: Requests_Customer_Insert_Input;
-}>;
-
-
-export type NewCustomerRequestMutation = { __typename?: 'mutation_root', insert_requests_customer_one?: { __typename?: 'requests_customer', id: any } | null };
-
 export type GetCustomersSubscriptionVariables = Exact<{
   where?: InputMaybe<Customer_Bool_Exp>;
 }>;
 
 
 export type GetCustomersSubscription = { __typename?: 'subscription_root', customer: Array<{ __typename?: 'customer', company_name: string, id: any, company_address: string, name: string, email: string, phone: string, created_at: any, credit?: boolean | null, credit_limit?: any | null, blocked: boolean }> };
-
-export type GetRequestCustomersSubscriptionVariables = Exact<{
-  where?: InputMaybe<Requests_Customer_Bool_Exp>;
-}>;
-
-
-export type GetRequestCustomersSubscription = { __typename?: 'subscription_root', requests_customer: Array<{ __typename?: 'requests_customer', company_name: string, id: any, company_address: string, name: string, email: string, phone: string, created_at: any, credit?: boolean | null, credit_limit?: any | null, blocked: boolean }> };
 
 export type DeleteCustomerMutationVariables = Exact<{
   deleteCustomerByPkId: Scalars['uuid'];
@@ -4526,13 +3855,6 @@ export type UpdateClientMutationVariables = Exact<{
 
 export type UpdateClientMutation = { __typename?: 'mutation_root', update_customer_by_pk?: { __typename?: 'customer', id: any } | null };
 
-export type UpdateRequestClientMutationVariables = Exact<{
-  where: Requests_Customer_Bool_Exp;
-}>;
-
-
-export type UpdateRequestClientMutation = { __typename?: 'mutation_root', update_requests_customer?: { __typename?: 'requests_customer_mutation_response', returning: Array<{ __typename?: 'requests_customer', id: any }> } | null };
-
 export type GetMaterialDropDownListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -4543,14 +3865,14 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, password: string, id: any, profile?: any | null, weighbridge_id: any, updated_at: any, roles: any, weighbridge: { __typename?: 'weighbridge', name: string, address: string } }> };
+export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, password: string, id: any, profile?: any | null, weighbridge_id: any, updated_at: any, role?: string | null, weighbridge: { __typename?: 'weighbridge', name: string, address: string } }> };
 
 export type GetAllUsersSubscriptionVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
 }>;
 
 
-export type GetAllUsersSubscription = { __typename?: 'subscription_root', user: Array<{ __typename?: 'user', id: any, email: string, roles: any, synced?: boolean | null, created_at: any, weighbridge: { __typename?: 'weighbridge', name: string } }> };
+export type GetAllUsersSubscription = { __typename?: 'subscription_root', user: Array<{ __typename?: 'user', id: any, email: string, synced?: boolean | null, created_at: any, weighbridge: { __typename?: 'weighbridge', name: string } }> };
 
 export type AddUserMutationVariables = Exact<{
   object: User_Insert_Input;
@@ -5208,39 +4530,6 @@ export function useGetCustomerDropdownOptionsLazyQuery(baseOptions?: Apollo.Lazy
 export type GetCustomerDropdownOptionsQueryHookResult = ReturnType<typeof useGetCustomerDropdownOptionsQuery>;
 export type GetCustomerDropdownOptionsLazyQueryHookResult = ReturnType<typeof useGetCustomerDropdownOptionsLazyQuery>;
 export type GetCustomerDropdownOptionsQueryResult = Apollo.QueryResult<GetCustomerDropdownOptionsQuery, GetCustomerDropdownOptionsQueryVariables>;
-export const NewCustomerRequestDocument = gql`
-    mutation newCustomerRequest($object: requests_customer_insert_input!) {
-  insert_requests_customer_one(object: $object) {
-    id
-  }
-}
-    `;
-export type NewCustomerRequestMutationFn = Apollo.MutationFunction<NewCustomerRequestMutation, NewCustomerRequestMutationVariables>;
-
-/**
- * __useNewCustomerRequestMutation__
- *
- * To run a mutation, you first call `useNewCustomerRequestMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useNewCustomerRequestMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [newCustomerRequestMutation, { data, loading, error }] = useNewCustomerRequestMutation({
- *   variables: {
- *      object: // value for 'object'
- *   },
- * });
- */
-export function useNewCustomerRequestMutation(baseOptions?: Apollo.MutationHookOptions<NewCustomerRequestMutation, NewCustomerRequestMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<NewCustomerRequestMutation, NewCustomerRequestMutationVariables>(NewCustomerRequestDocument, options);
-      }
-export type NewCustomerRequestMutationHookResult = ReturnType<typeof useNewCustomerRequestMutation>;
-export type NewCustomerRequestMutationResult = Apollo.MutationResult<NewCustomerRequestMutation>;
-export type NewCustomerRequestMutationOptions = Apollo.BaseMutationOptions<NewCustomerRequestMutation, NewCustomerRequestMutationVariables>;
 export const GetCustomersDocument = gql`
     subscription getCustomers($where: customer_bool_exp) {
   customer(where: $where) {
@@ -5280,45 +4569,6 @@ export function useGetCustomersSubscription(baseOptions?: Apollo.SubscriptionHoo
       }
 export type GetCustomersSubscriptionHookResult = ReturnType<typeof useGetCustomersSubscription>;
 export type GetCustomersSubscriptionResult = Apollo.SubscriptionResult<GetCustomersSubscription>;
-export const GetRequestCustomersDocument = gql`
-    subscription getRequestCustomers($where: requests_customer_bool_exp) {
-  requests_customer(where: $where) {
-    company_name
-    id
-    company_address
-    name
-    email
-    phone
-    created_at
-    credit
-    credit_limit
-    blocked
-  }
-}
-    `;
-
-/**
- * __useGetRequestCustomersSubscription__
- *
- * To run a query within a React component, call `useGetRequestCustomersSubscription` and pass it any options that fit your needs.
- * When your component renders, `useGetRequestCustomersSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetRequestCustomersSubscription({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
-export function useGetRequestCustomersSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetRequestCustomersSubscription, GetRequestCustomersSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<GetRequestCustomersSubscription, GetRequestCustomersSubscriptionVariables>(GetRequestCustomersDocument, options);
-      }
-export type GetRequestCustomersSubscriptionHookResult = ReturnType<typeof useGetRequestCustomersSubscription>;
-export type GetRequestCustomersSubscriptionResult = Apollo.SubscriptionResult<GetRequestCustomersSubscription>;
 export const DeleteCustomerDocument = gql`
     mutation deleteCustomer($deleteCustomerByPkId: uuid!) {
   delete_customer_by_pk(id: $deleteCustomerByPkId) {
@@ -5463,41 +4713,6 @@ export function useUpdateClientMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdateClientMutationHookResult = ReturnType<typeof useUpdateClientMutation>;
 export type UpdateClientMutationResult = Apollo.MutationResult<UpdateClientMutation>;
 export type UpdateClientMutationOptions = Apollo.BaseMutationOptions<UpdateClientMutation, UpdateClientMutationVariables>;
-export const UpdateRequestClientDocument = gql`
-    mutation updateRequestClient($where: requests_customer_bool_exp!) {
-  update_requests_customer(where: $where) {
-    returning {
-      id
-    }
-  }
-}
-    `;
-export type UpdateRequestClientMutationFn = Apollo.MutationFunction<UpdateRequestClientMutation, UpdateRequestClientMutationVariables>;
-
-/**
- * __useUpdateRequestClientMutation__
- *
- * To run a mutation, you first call `useUpdateRequestClientMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateRequestClientMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateRequestClientMutation, { data, loading, error }] = useUpdateRequestClientMutation({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
-export function useUpdateRequestClientMutation(baseOptions?: Apollo.MutationHookOptions<UpdateRequestClientMutation, UpdateRequestClientMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateRequestClientMutation, UpdateRequestClientMutationVariables>(UpdateRequestClientDocument, options);
-      }
-export type UpdateRequestClientMutationHookResult = ReturnType<typeof useUpdateRequestClientMutation>;
-export type UpdateRequestClientMutationResult = Apollo.MutationResult<UpdateRequestClientMutation>;
-export type UpdateRequestClientMutationOptions = Apollo.BaseMutationOptions<UpdateRequestClientMutation, UpdateRequestClientMutationVariables>;
 export const GetMaterialDropDownListDocument = gql`
     query getMaterialDropDownList {
   material {
@@ -5546,7 +4761,7 @@ export const GetUserDocument = gql`
       address
     }
     updated_at
-    roles
+    role
   }
 }
     `;
@@ -5583,7 +4798,6 @@ export const GetAllUsersDocument = gql`
   user(where: $where) {
     id
     email
-    roles
     synced
     created_at
     weighbridge {

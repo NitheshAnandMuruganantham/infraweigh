@@ -1,10 +1,8 @@
-// @flow
 import * as React from 'react';
-
-const Home = () => {
+const Home: React.FunctionComponent = () => {
   return (
     <div>
-      <h1>HELLO</h1>
+      <h1>{process.env['NX_BASE_URL']}</h1>
     </div>
   );
 };
