@@ -19,148 +19,150 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TextField } from 'formik-mui';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
+import Loading from '@infra-weigh/loading';
 
 const theme = createTheme();
 
 const App: FunctionComponent<{
   children: React.ReactNode;
-  role: 'admin' | 'terminal' | 'tenantAdmin' | 'user';
 }> = (props): React.ReactElement => {
-  const [isSignedIn, setIsSignedIn] = useState<any>(false);
+  const [isSignedIn, setIsSignedIn] = useState<any | undefined>(undefined);
 
   useEffect(() => {
     const unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
       await user?.getIdToken().then(async (token) => {
         localStorage.setItem('x-firebase-token', token);
         const idTokenResult = await user?.getIdTokenResult();
-        // eslint-disable-next-line prefer-const
-        let clm: any = idTokenResult.claims['https://hasura.io/jwt/claims'];
-        console.log(clm);
-        if (clm['x-hasura-default-role'] !== props.role) {
-          alert('You are not authorized to access this page');
-          await auth.signOut();
-          window.location.reload();
+        const clm: any = idTokenResult.claims['https://hasura.io/jwt/claims'];
+        if (clm['x-hasura-default-role'] === 'admin') {
+          console.log('we are admin');
+          setIsSignedIn(user);
         } else {
           localStorage.setItem('x-tenent-id', clm['x-hasura-tenent-id']);
+          console.log(`we are ${clm['x-hasura-default-role']}`);
           setIsSignedIn(user);
         }
       });
     });
     return () => unregisterAuthObserver();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (!isSignedIn) {
-    return (
-      <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <Formik
-              onSubmit={async (
-                values,
-                { setSubmitting, setErrors, resetForm }
-              ) => {
-                console.log(values);
-                setSubmitting(true);
-                await signInWithEmailAndPassword(
-                  auth,
-                  values.email,
-                  values.password
-                ).catch((error) => {
-                  setErrors({
-                    email: error.message,
-                  });
-                  resetForm();
-                });
-                setSubmitting(false);
+  if (typeof isSignedIn === 'undefined') {
+    return <Loading open={true} setOpen={() => null} />;
+  } else {
+    if (!isSignedIn) {
+      return (
+        <ThemeProvider theme={theme}>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
               }}
-              initialValues={{ email: '', password: '' }}
-              validationSchema={Yup.object().shape({
-                email: Yup.string().email('Invalid email').required('Required'),
-                password: Yup.string().required('No password provided.'),
-              })}
             >
-              {({ submitForm }) => {
-                return (
-                  <Box
-                    component="form"
-                    onSubmit={(e: any) => {
-                      e.preventDefault();
-                      submitForm();
-                    }}
-                    sx={{ mt: 1 }}
-                  >
-                    <Field
-                      component={TextField}
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="email"
-                      label="Email Address"
-                      name="email"
-                      autoComplete="email"
-                      autoFocus
-                    />
-                    <Field
-                      component={TextField}
-                      margin="normal"
-                      required
-                      fullWidth
-                      name="password"
-                      label="Password"
-                      type="password"
-                      id="password"
-                      autoComplete="current-password"
-                    />
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                    >
-                      Sign In
-                    </Button>
-                    <Button
-                      fullWidth
-                      onClick={() => {
-                        signInWithPopup(auth, new GoogleAuthProvider());
+              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <Formik
+                onSubmit={async (
+                  values,
+                  { setSubmitting, setErrors, resetForm }
+                ) => {
+                  console.log(values);
+                  setSubmitting(true);
+                  await signInWithEmailAndPassword(
+                    auth,
+                    values.email,
+                    values.password
+                  ).catch((error) => {
+                    setErrors({
+                      email: error.message,
+                    });
+                    resetForm();
+                  });
+                  setSubmitting(false);
+                }}
+                initialValues={{ email: '', password: '' }}
+                validationSchema={Yup.object().shape({
+                  email: Yup.string()
+                    .email('Invalid email')
+                    .required('Required'),
+                  password: Yup.string().required('No password provided.'),
+                })}
+              >
+                {({ submitForm }) => {
+                  return (
+                    <Box
+                      component="form"
+                      onSubmit={(e: any) => {
+                        e.preventDefault();
+                        submitForm();
                       }}
-                      variant="contained"
-                      color="secondary"
-                      sx={{ mt: 3, mb: 2 }}
+                      sx={{ mt: 1 }}
                     >
-                      Sign In with Google
-                    </Button>
-                    <Grid container>
-                      <Grid item xs>
-                        <Link href="#" variant="body2">
-                          Forgot password?
-                        </Link>
+                      <Field
+                        component={TextField}
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                      />
+                      <Field
+                        component={TextField}
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                      />
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                      >
+                        Sign In
+                      </Button>
+                      <Button
+                        fullWidth
+                        onClick={() => {
+                          signInWithPopup(auth, new GoogleAuthProvider());
+                        }}
+                        variant="contained"
+                        color="secondary"
+                        sx={{ mt: 3, mb: 2 }}
+                      >
+                        Sign In with Google
+                      </Button>
+                      <Grid container>
+                        <Grid item xs>
+                          <Link href="#" variant="body2">
+                            Forgot password?
+                          </Link>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </Box>
-                );
-              }}
-            </Formik>
-          </Box>
-        </Container>
-      </ThemeProvider>
-    );
-  } else return <>{props.children};</>;
+                    </Box>
+                  );
+                }}
+              </Formik>
+            </Box>
+          </Container>
+        </ThemeProvider>
+      );
+    } else return <>{props.children};</>;
+  }
 };
 
 export default App;

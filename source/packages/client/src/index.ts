@@ -1,4 +1,5 @@
 import Client from './lib/client';
-import apollo from './lib/ApolloClient';
-export default Client;
+import Provider from './lib/index';
+const apollo = Client;
+export default Provider;
 export { apollo };

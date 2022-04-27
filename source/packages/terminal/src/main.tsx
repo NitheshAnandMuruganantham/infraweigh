@@ -1,22 +1,17 @@
-import Client from '@infra-weigh/client';
-import { StrictMode } from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import Client from '@infra-weigh/client';
+import Routes from './app/routes';
 import Auth from '@infra-weigh/auth';
-
-import App from './app/App';
-
 const root = ReactDOMClient.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <StrictMode>
-    <Auth role="terminal">
+  <BrowserRouter>
+    <Auth>
       <Client>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <Routes />
       </Client>
     </Auth>
-  </StrictMode>
+  </BrowserRouter>
 );

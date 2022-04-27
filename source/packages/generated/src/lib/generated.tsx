@@ -3929,12 +3929,19 @@ export type SubscribeWeighbridgeAdminSubscriptionVariables = Exact<{
 
 export type SubscribeWeighbridgeAdminSubscription = { __typename?: 'subscription_root', weighbridge: Array<{ __typename?: 'weighbridge', display_name: string, id: any, address: string, created_at: any, name: string, metadata: any, phone: string, pin_code: string, mail: string, logo?: string | null, tenent: { __typename?: 'tenents', id: any, name: string } }> };
 
-export type SubscribeWeighbridgeSubscriptionVariables = Exact<{
+export type GetAllWeighbridgeQueryVariables = Exact<{
   where?: InputMaybe<Weighbridge_Bool_Exp>;
 }>;
 
 
-export type SubscribeWeighbridgeSubscription = { __typename?: 'subscription_root', weighbridge: Array<{ __typename?: 'weighbridge', display_name: string, id: any, address: string, created_at: any, name: string, metadata: any, phone: string, pin_code: string, mail: string, logo?: string | null }> };
+export type GetAllWeighbridgeQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', display_name: string, id: any, address: string, created_at: any, name: string, metadata: any, phone: string, pin_code: string, mail: string, logo?: string | null }> };
+
+export type GetAllWeighbridgeRealtimeSubscriptionVariables = Exact<{
+  where?: InputMaybe<Weighbridge_Bool_Exp>;
+}>;
+
+
+export type GetAllWeighbridgeRealtimeSubscription = { __typename?: 'subscription_root', weighbridge: Array<{ __typename?: 'weighbridge', display_name: string, id: any, address: string, created_at: any, name: string, metadata: any, phone: string, pin_code: string, mail: string, logo?: string | null }> };
 
 export type AddNewWeighbridgeMutationVariables = Exact<{
   object: Weighbridge_Insert_Input;
@@ -5125,8 +5132,8 @@ export function useSubscribeWeighbridgeAdminSubscription(baseOptions?: Apollo.Su
       }
 export type SubscribeWeighbridgeAdminSubscriptionHookResult = ReturnType<typeof useSubscribeWeighbridgeAdminSubscription>;
 export type SubscribeWeighbridgeAdminSubscriptionResult = Apollo.SubscriptionResult<SubscribeWeighbridgeAdminSubscription>;
-export const SubscribeWeighbridgeDocument = gql`
-    subscription subscribeWeighbridge($where: weighbridge_bool_exp) {
+export const GetAllWeighbridgeDocument = gql`
+    query getAllWeighbridge($where: weighbridge_bool_exp) {
   weighbridge(where: $where) {
     display_name
     id
@@ -5143,27 +5150,71 @@ export const SubscribeWeighbridgeDocument = gql`
     `;
 
 /**
- * __useSubscribeWeighbridgeSubscription__
+ * __useGetAllWeighbridgeQuery__
  *
- * To run a query within a React component, call `useSubscribeWeighbridgeSubscription` and pass it any options that fit your needs.
- * When your component renders, `useSubscribeWeighbridgeSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllWeighbridgeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllWeighbridgeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useSubscribeWeighbridgeSubscription({
+ * const { data, loading, error } = useGetAllWeighbridgeQuery({
  *   variables: {
  *      where: // value for 'where'
  *   },
  * });
  */
-export function useSubscribeWeighbridgeSubscription(baseOptions?: Apollo.SubscriptionHookOptions<SubscribeWeighbridgeSubscription, SubscribeWeighbridgeSubscriptionVariables>) {
+export function useGetAllWeighbridgeQuery(baseOptions?: Apollo.QueryHookOptions<GetAllWeighbridgeQuery, GetAllWeighbridgeQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<SubscribeWeighbridgeSubscription, SubscribeWeighbridgeSubscriptionVariables>(SubscribeWeighbridgeDocument, options);
+        return Apollo.useQuery<GetAllWeighbridgeQuery, GetAllWeighbridgeQueryVariables>(GetAllWeighbridgeDocument, options);
       }
-export type SubscribeWeighbridgeSubscriptionHookResult = ReturnType<typeof useSubscribeWeighbridgeSubscription>;
-export type SubscribeWeighbridgeSubscriptionResult = Apollo.SubscriptionResult<SubscribeWeighbridgeSubscription>;
+export function useGetAllWeighbridgeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllWeighbridgeQuery, GetAllWeighbridgeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllWeighbridgeQuery, GetAllWeighbridgeQueryVariables>(GetAllWeighbridgeDocument, options);
+        }
+export type GetAllWeighbridgeQueryHookResult = ReturnType<typeof useGetAllWeighbridgeQuery>;
+export type GetAllWeighbridgeLazyQueryHookResult = ReturnType<typeof useGetAllWeighbridgeLazyQuery>;
+export type GetAllWeighbridgeQueryResult = Apollo.QueryResult<GetAllWeighbridgeQuery, GetAllWeighbridgeQueryVariables>;
+export const GetAllWeighbridgeRealtimeDocument = gql`
+    subscription getAllWeighbridgeRealtime($where: weighbridge_bool_exp) {
+  weighbridge(where: $where) {
+    display_name
+    id
+    address
+    created_at
+    name
+    metadata
+    phone
+    pin_code
+    mail
+    logo
+  }
+}
+    `;
+
+/**
+ * __useGetAllWeighbridgeRealtimeSubscription__
+ *
+ * To run a query within a React component, call `useGetAllWeighbridgeRealtimeSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllWeighbridgeRealtimeSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllWeighbridgeRealtimeSubscription({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetAllWeighbridgeRealtimeSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetAllWeighbridgeRealtimeSubscription, GetAllWeighbridgeRealtimeSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetAllWeighbridgeRealtimeSubscription, GetAllWeighbridgeRealtimeSubscriptionVariables>(GetAllWeighbridgeRealtimeDocument, options);
+      }
+export type GetAllWeighbridgeRealtimeSubscriptionHookResult = ReturnType<typeof useGetAllWeighbridgeRealtimeSubscription>;
+export type GetAllWeighbridgeRealtimeSubscriptionResult = Apollo.SubscriptionResult<GetAllWeighbridgeRealtimeSubscription>;
 export const AddNewWeighbridgeDocument = gql`
     mutation addNewWeighbridge($object: weighbridge_insert_input!) {
   insert_weighbridge_one(object: $object) {

@@ -48,7 +48,22 @@ subscription subscribeWeighbridgeAdmin($where: weighbridge_bool_exp) {
   }
 }
 
-subscription subscribeWeighbridge($where: weighbridge_bool_exp) {
+query getAllWeighbridge($where: weighbridge_bool_exp) {
+  weighbridge(where: $where) {
+    display_name
+    id
+    address
+    created_at
+    name
+    metadata
+    phone
+    pin_code
+    mail
+    logo
+  }
+}
+
+subscription getAllWeighbridgeRealtime($where: weighbridge_bool_exp) {
   weighbridge(where: $where) {
     display_name
     id
