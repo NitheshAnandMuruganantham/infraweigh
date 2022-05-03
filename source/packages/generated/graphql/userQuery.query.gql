@@ -14,10 +14,18 @@ query getUser($where: user_bool_exp) {
   }
 }
 
-subscription getAllUsers($where: user_bool_exp) {
-  user(where: $where) {
+subscription getAllUsers(
+  $where: user_bool_exp
+  $limit: Int
+  $offset: Int
+  $orderBy: [user_order_by!]
+) {
+  user(where: $where, limit: $limit, offset: $offset, order_by: $orderBy) {
     id
     email
+    tenent {
+      name
+    }
     synced
     created_at
     weighbridge {
@@ -26,9 +34,17 @@ subscription getAllUsers($where: user_bool_exp) {
   }
 }
 
-mutation addUser($object: user_insert_input!) {
-  insert_user_one(object: $object) {
-    id
+subscription getAllUsersCount($where: user_bool_exp) {
+  user_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+
+mutation addUsers($objects: [user_insert_input!]!) {
+  insert_user(objects: $objects) {
+    affected_rows
   }
 }
 

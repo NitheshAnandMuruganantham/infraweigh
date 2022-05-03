@@ -3731,6 +3731,11 @@ export type GetAllTenentsSubscriptionVariables = Exact<{ [key: string]: never; }
 
 export type GetAllTenentsSubscription = { __typename?: 'subscription_root', tenents: Array<{ __typename?: 'tenents', email: string, name: string, activate: boolean, id: any, phone: string, metadata: any, payment_pending: boolean }> };
 
+export type GetAllTenentsDropDownSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllTenentsDropDownSubscription = { __typename?: 'subscription_root', tenents: Array<{ __typename?: 'tenents', label: string, value: any }> };
+
 export type EditTenentMutationVariables = Exact<{
   pkColumns: Tenents_Pk_Columns_Input;
   set?: InputMaybe<Tenents_Set_Input>;
@@ -3789,7 +3794,7 @@ export type GetAllBillsSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, customer_id?: any | null, customer_2_id?: any | null, customer_3_id?: any | null, created_at: any, paid_by: string, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, material: { __typename?: 'material', name: string } }> };
+export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: string, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, customer?: { __typename?: 'customer', id: any, name: string } | null, customer_3?: { __typename?: 'customer', id: any, name: string } | null, cutomer_2?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string } }> };
 
 export type GetBillForReceptQueryVariables = Exact<{
   billByPkId: Scalars['uuid'];
@@ -3869,17 +3874,27 @@ export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename
 
 export type GetAllUsersSubscriptionVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<User_Order_By> | User_Order_By>;
 }>;
 
 
-export type GetAllUsersSubscription = { __typename?: 'subscription_root', user: Array<{ __typename?: 'user', id: any, email: string, synced?: boolean | null, created_at: any, weighbridge: { __typename?: 'weighbridge', name: string } }> };
+export type GetAllUsersSubscription = { __typename?: 'subscription_root', user: Array<{ __typename?: 'user', id: any, email: string, synced?: boolean | null, created_at: any, tenent: { __typename?: 'tenents', name: string }, weighbridge: { __typename?: 'weighbridge', name: string } }> };
 
-export type AddUserMutationVariables = Exact<{
-  object: User_Insert_Input;
+export type GetAllUsersCountSubscriptionVariables = Exact<{
+  where?: InputMaybe<User_Bool_Exp>;
 }>;
 
 
-export type AddUserMutation = { __typename?: 'mutation_root', insert_user_one?: { __typename?: 'user', id: any } | null };
+export type GetAllUsersCountSubscription = { __typename?: 'subscription_root', user_aggregate: { __typename?: 'user_aggregate', aggregate?: { __typename?: 'user_aggregate_fields', count: number } | null } };
+
+export type AddUsersMutationVariables = Exact<{
+  objects: Array<User_Insert_Input> | User_Insert_Input;
+}>;
+
+
+export type AddUsersMutation = { __typename?: 'mutation_root', insert_user?: { __typename?: 'user_mutation_response', affected_rows: number } | null };
 
 export type DeleteUserMutationVariables = Exact<{
   deleteUserByPkId: Scalars['uuid'];
@@ -4035,6 +4050,36 @@ export function useGetAllTenentsSubscription(baseOptions?: Apollo.SubscriptionHo
       }
 export type GetAllTenentsSubscriptionHookResult = ReturnType<typeof useGetAllTenentsSubscription>;
 export type GetAllTenentsSubscriptionResult = Apollo.SubscriptionResult<GetAllTenentsSubscription>;
+export const GetAllTenentsDropDownDocument = gql`
+    subscription getAllTenentsDropDown {
+  tenents {
+    label: name
+    value: id
+  }
+}
+    `;
+
+/**
+ * __useGetAllTenentsDropDownSubscription__
+ *
+ * To run a query within a React component, call `useGetAllTenentsDropDownSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllTenentsDropDownSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllTenentsDropDownSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllTenentsDropDownSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetAllTenentsDropDownSubscription, GetAllTenentsDropDownSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetAllTenentsDropDownSubscription, GetAllTenentsDropDownSubscriptionVariables>(GetAllTenentsDropDownDocument, options);
+      }
+export type GetAllTenentsDropDownSubscriptionHookResult = ReturnType<typeof useGetAllTenentsDropDownSubscription>;
+export type GetAllTenentsDropDownSubscriptionResult = Apollo.SubscriptionResult<GetAllTenentsDropDownSubscription>;
 export const EditTenentDocument = gql`
     mutation editTenent($pkColumns: tenents_pk_columns_input!, $set: tenents_set_input) {
   update_tenents_by_pk(pk_columns: $pkColumns, _set: $set) {
@@ -4301,10 +4346,22 @@ export const GetAllBillsDocument = gql`
       id
     }
     vehicle_number
+    vehicle {
+      name
+    }
     charges
-    customer_id
-    customer_2_id
-    customer_3_id
+    customer {
+      id
+      name
+    }
+    customer_3 {
+      id
+      name
+    }
+    cutomer_2 {
+      id
+      name
+    }
     created_at
     material {
       name
@@ -4801,10 +4858,13 @@ export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
 export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
 export const GetAllUsersDocument = gql`
-    subscription getAllUsers($where: user_bool_exp) {
-  user(where: $where) {
+    subscription getAllUsers($where: user_bool_exp, $limit: Int, $offset: Int, $orderBy: [user_order_by!]) {
+  user(where: $where, limit: $limit, offset: $offset, order_by: $orderBy) {
     id
     email
+    tenent {
+      name
+    }
     synced
     created_at
     weighbridge {
@@ -4827,6 +4887,9 @@ export const GetAllUsersDocument = gql`
  * const { data, loading, error } = useGetAllUsersSubscription({
  *   variables: {
  *      where: // value for 'where'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */
@@ -4836,39 +4899,71 @@ export function useGetAllUsersSubscription(baseOptions?: Apollo.SubscriptionHook
       }
 export type GetAllUsersSubscriptionHookResult = ReturnType<typeof useGetAllUsersSubscription>;
 export type GetAllUsersSubscriptionResult = Apollo.SubscriptionResult<GetAllUsersSubscription>;
-export const AddUserDocument = gql`
-    mutation addUser($object: user_insert_input!) {
-  insert_user_one(object: $object) {
-    id
+export const GetAllUsersCountDocument = gql`
+    subscription getAllUsersCount($where: user_bool_exp) {
+  user_aggregate(where: $where) {
+    aggregate {
+      count
+    }
   }
 }
     `;
-export type AddUserMutationFn = Apollo.MutationFunction<AddUserMutation, AddUserMutationVariables>;
 
 /**
- * __useAddUserMutation__
+ * __useGetAllUsersCountSubscription__
  *
- * To run a mutation, you first call `useAddUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddUserMutation` returns a tuple that includes:
+ * To run a query within a React component, call `useGetAllUsersCountSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUsersCountSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllUsersCountSubscription({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetAllUsersCountSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetAllUsersCountSubscription, GetAllUsersCountSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetAllUsersCountSubscription, GetAllUsersCountSubscriptionVariables>(GetAllUsersCountDocument, options);
+      }
+export type GetAllUsersCountSubscriptionHookResult = ReturnType<typeof useGetAllUsersCountSubscription>;
+export type GetAllUsersCountSubscriptionResult = Apollo.SubscriptionResult<GetAllUsersCountSubscription>;
+export const AddUsersDocument = gql`
+    mutation addUsers($objects: [user_insert_input!]!) {
+  insert_user(objects: $objects) {
+    affected_rows
+  }
+}
+    `;
+export type AddUsersMutationFn = Apollo.MutationFunction<AddUsersMutation, AddUsersMutationVariables>;
+
+/**
+ * __useAddUsersMutation__
+ *
+ * To run a mutation, you first call `useAddUsersMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddUsersMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [addUserMutation, { data, loading, error }] = useAddUserMutation({
+ * const [addUsersMutation, { data, loading, error }] = useAddUsersMutation({
  *   variables: {
- *      object: // value for 'object'
+ *      objects: // value for 'objects'
  *   },
  * });
  */
-export function useAddUserMutation(baseOptions?: Apollo.MutationHookOptions<AddUserMutation, AddUserMutationVariables>) {
+export function useAddUsersMutation(baseOptions?: Apollo.MutationHookOptions<AddUsersMutation, AddUsersMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddUserMutation, AddUserMutationVariables>(AddUserDocument, options);
+        return Apollo.useMutation<AddUsersMutation, AddUsersMutationVariables>(AddUsersDocument, options);
       }
-export type AddUserMutationHookResult = ReturnType<typeof useAddUserMutation>;
-export type AddUserMutationResult = Apollo.MutationResult<AddUserMutation>;
-export type AddUserMutationOptions = Apollo.BaseMutationOptions<AddUserMutation, AddUserMutationVariables>;
+export type AddUsersMutationHookResult = ReturnType<typeof useAddUsersMutation>;
+export type AddUsersMutationResult = Apollo.MutationResult<AddUsersMutation>;
+export type AddUsersMutationOptions = Apollo.BaseMutationOptions<AddUsersMutation, AddUsersMutationVariables>;
 export const DeleteUserDocument = gql`
     mutation deleteUser($deleteUserByPkId: uuid!) {
   delete_user_by_pk(id: $deleteUserByPkId) {

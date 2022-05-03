@@ -44,11 +44,10 @@ const Home: FunctionComponent = () => {
   const [BillRefId, SetBillRefId] = useState<string>();
   const [open, SetOpen] = useState<boolean>(false);
   const [data, SetData] = useState<any>(null);
-
-  const [photo1, setPhoto1] = useState<any>();
-  const [photo2, setPhoto2] = useState<any>();
-  const [photo3, setPhoto3] = useState<any>();
-  const [photo4, setPhoto4] = useState<any>();
+  const [photo1, setPhoto1] = useState<any>(null);
+  const [photo2, setPhoto2] = useState<any>(null);
+  const [photo3, setPhoto3] = useState<any>(null);
+  const [photo4, setPhoto4] = useState<any>(null);
   const [load, setLoad] = useState(true);
   useEffect(() => {
     if (materialData && customerData && vehicleData) {
@@ -84,7 +83,10 @@ const Home: FunctionComponent = () => {
             label: '',
             value: null,
           },
-          trader: null,
+          trader: {
+            label: '',
+            value: null,
+          },
           secondWeight: false,
           charges: 0,
           scaleWeight: 0,
@@ -121,6 +123,7 @@ const Home: FunctionComponent = () => {
               value: Yup.string().required('Required'),
               label: Yup.string().required('Required'),
             }),
+
             trader: Yup.object().shape({
               value: Yup.string().required('Required'),
               label: Yup.string().required('Required'),
@@ -203,6 +206,7 @@ const Home: FunctionComponent = () => {
             setLoad(false);
           } catch (error) {
             setLoad(false);
+            setSubmitting(false);
             console.log(error);
           }
         }}
@@ -255,6 +259,48 @@ const Home: FunctionComponent = () => {
                 setData3={setPhoto3}
                 setData4={setPhoto4}
               />
+              <Box flex={1} flexDirection="column">
+                {photo1 && (
+                  <img
+                    style={{
+                      margin: '10px',
+                      width: '100px',
+                    }}
+                    src={photo1}
+                    alt="photo1"
+                  />
+                )}
+                {photo2 && (
+                  <img
+                    style={{
+                      margin: '10px',
+                      width: '100px',
+                    }}
+                    src={photo2}
+                    alt="photo1"
+                  />
+                )}
+                {photo3 && (
+                  <img
+                    style={{
+                      margin: '10px',
+                      width: '100px',
+                    }}
+                    src={photo3}
+                    alt="photo1"
+                  />
+                )}
+                {photo4 && (
+                  <img
+                    style={{
+                      margin: '10px',
+                      width: '100px',
+                    }}
+                    src={photo4}
+                    alt="photo1"
+                  />
+                )}
+              </Box>
               <Field
                 component={Autocomplete}
                 name="material"
@@ -417,7 +463,7 @@ const Home: FunctionComponent = () => {
                   display: 'flex',
                 }}
               >
-                {isValid && (
+                {isValid && photo1 && photo2 && photo3 && photo3 && (
                   <Button
                     sx={{ marginRight: 2 }}
                     onClick={() => submitForm()}

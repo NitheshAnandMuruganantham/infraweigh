@@ -19,13 +19,13 @@ import ListItemText from '@mui/material/ListItemText';
 import { Avatar, Menu, MenuItem, Tooltip } from '@mui/material';
 import { auth, functions } from '@infra-weigh/firebase';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import userIcon from '@mui/icons-material/VerifiedUser';
 import Home from '@mui/icons-material/Home';
 import { httpsCallable } from 'firebase/functions';
 import { useMatch, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import AssessmentIcon from '@mui/icons-material/Assessment';
+import DnsIcon from '@mui/icons-material/Dns';
 import { FunctionComponent } from 'react';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const drawerWidth = 240;
 
@@ -140,12 +140,6 @@ const NavBar: FunctionComponent<{
       active: useMatch('/'),
     },
     {
-      name: 'report',
-      path: '/report',
-      icon: AssessmentIcon,
-      active: useMatch('/report'),
-    },
-    {
       name: 'clients',
       path: '/clients',
       icon: PersonOutlineIcon,
@@ -158,10 +152,16 @@ const NavBar: FunctionComponent<{
       active: useMatch('/weighbridges'),
     },
     {
-      name: 'collection',
-      path: '/collection',
-      icon: AccountBalanceWalletIcon,
-      active: useMatch('/collections'),
+      name: 'maintainance api access',
+      path: '/requestacesscode',
+      icon: userIcon,
+      active: useMatch('/requestacesscode'),
+    },
+    {
+      name: 'users',
+      path: '/users',
+      icon: DnsIcon,
+      active: useMatch('/users'),
     },
   ];
 

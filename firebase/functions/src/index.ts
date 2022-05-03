@@ -312,15 +312,6 @@ export const genBill = functions.https.onRequest((req, res) =>
       .firestore()
       .doc(`bills/${req.body.event.data.new.id}`)
       .set(billData.data.bill_by_pk);
-    // if (polishedBillData.customer_2) {
-    //    await firestore
-    //      .doc(`messages/${req.body.event.data.new.id}`)
-    //      .set({
-    //        message: `Hi ${polishedBillData.customer_2.name}, Your bill is generated. Please pay the bill.`,
-    //        to: polishedBillData.customer_2.email,
-
-    //      });
-    // }
     res.json({
       status: "success",
       id: req.body.event.data.new.id,

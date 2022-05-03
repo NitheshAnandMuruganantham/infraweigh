@@ -13,7 +13,7 @@ import * as Yup from 'yup';
 import Loader from '@infra-weigh/loading';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import {
-  useAddUserMutation,
+  useAddUsersMutation,
   useGetWeighbridgesDropDownQuery,
 } from '@infra-weigh/generated';
 
@@ -37,7 +37,7 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const [addUser, { loading }] = useAddUserMutation();
+  const [addUser, { loading }] = useAddUsersMutation();
   return (
     <div>
       <Loader open={loading || dataToLoad1} setOpen={() => null} />
@@ -55,9 +55,9 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
             phone: '',
             branch: {
               label: '',
-              value: '',
+              value: null,
             },
-            role: ['user'],
+            role: 'terminal',
           }}
           validationSchema={() => {
             return Yup.object().shape({
@@ -78,20 +78,27 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
             setSubmitting(true);
             addUser({
               variables: {
-                object: {
-                  email: values.email,
-                  password: values.password,
-                  weighbridge_id: values.branch.value,
-                  profile: {
-                    name: values.name,
-                    phone: values.phone,
-                    address: values.address,
+                objects: [
+                  {
+                    email: values.email,
+                    password: values.password,
+                    weighbridge_id: values.branch.value,
+                    profile: {
+                      name: values.name,
+                      phone: values.phone,
+                      address: values.address,
+                    },
+                    role: 'terminal',
                   },
-                },
+                ],
               },
-            }).catch(() => alert('user already exist'));
+            })
+              .then(() => setSubmitting(false))
+              .catch(() => {
+                alert('user already exist');
+                setSubmitting(false);
+              });
 
-            setSubmitting(false);
             handleClose();
           }}
         >
