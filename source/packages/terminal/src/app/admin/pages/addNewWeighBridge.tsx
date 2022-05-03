@@ -9,7 +9,7 @@ import { Autocomplete, TextField } from 'formik-mui';
 import { LinearProgress } from '@mui/material';
 import { Box } from '@mui/system';
 import * as Yup from 'yup';
-import TF from '@mui/material/textField';
+import { TextField as TF } from '@mui/material';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import {
   useAddNewWeighbridgeMutation,
