@@ -12,6 +12,7 @@ import * as Yup from 'yup';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import { useCreateCustomerMutation } from '@infra-weigh/generated';
 import Loading from '@infra-weigh/loading';
+import { toast } from 'react-toastify';
 
 const AddNewClient: React.FunctionComponent = () => {
   const [open, setOpen] = React.useState(false);
@@ -34,12 +35,12 @@ const AddNewClient: React.FunctionComponent = () => {
         <DialogTitle>New Client</DialogTitle>
         <Formik
           initialValues={{
-            name: null,
-            address: null,
-            email: null,
-            phone: null,
-            gst_in: null,
-            company_name: null,
+            name: '',
+            address: '',
+            email: '',
+            phone: '',
+            gst_in: '',
+            company_name: '',
             credit: false,
             credit_limit: 0,
             branch: {
@@ -73,11 +74,15 @@ const AddNewClient: React.FunctionComponent = () => {
                   credit_limit: values.credit_limit,
                 },
               },
-            }).catch(() => {
-              alert('can not create new client');
-            });
-            setSubmitting(false);
-            handleClose();
+            })
+              .catch(() => {
+                toast.error('can not create new client');
+              })
+              .then(() => {
+                setSubmitting(false);
+                toast.done('can not create new client');
+                handleClose();
+              });
           }}
         >
           {({ submitForm, isSubmitting, setFieldValue }) => (

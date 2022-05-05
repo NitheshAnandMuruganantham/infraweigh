@@ -12,6 +12,7 @@ import * as Yup from 'yup';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import { useCreateCustomerMutation } from '@infra-weigh/generated';
 import Loading from '@infra-weigh/loading';
+import { toast } from 'react-toastify';
 
 const AddNewClient: React.FunctionComponent = () => {
   const [open, setOpen] = React.useState(false);
@@ -73,9 +74,13 @@ const AddNewClient: React.FunctionComponent = () => {
                   credit_limit: values.credit_limit,
                 },
               },
-            }).catch(() => {
-              alert('can not create new client');
-            });
+            })
+              .catch(() => {
+                toast.error('can not create new client');
+              })
+              .then(() => {
+                toast.success('client created successfully');
+              });
             setSubmitting(false);
             handleClose();
           }}

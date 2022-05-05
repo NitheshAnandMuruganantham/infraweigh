@@ -16,6 +16,7 @@ import {
   useAddUsersMutation,
   useGetWeighbridgesDropDownQuery,
 } from '@infra-weigh/generated';
+import { toast } from 'react-toastify';
 
 const AddNewWeighBridge: React.FunctionComponent = () => {
   const [open, setOpen] = React.useState(false);
@@ -93,13 +94,16 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                 ],
               },
             })
-              .then(() => setSubmitting(false))
+              .then(() => {
+                handleClose();
+                toast.done('user created successfully exist');
+                setSubmitting(false);
+              })
               .catch(() => {
-                alert('user already exist');
+                handleClose();
+                toast.error('user already exist');
                 setSubmitting(false);
               });
-
-            handleClose();
           }}
         >
           {({ submitForm, isSubmitting, setFieldValue, values }) => (

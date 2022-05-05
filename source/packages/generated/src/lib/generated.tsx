@@ -3826,10 +3826,23 @@ export type GetCustomerDropdownOptionsQuery = { __typename?: 'query_root', custo
 
 export type GetCustomersSubscriptionVariables = Exact<{
   where?: InputMaybe<Customer_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<Customer_Order_By> | Customer_Order_By>;
 }>;
 
 
 export type GetCustomersSubscription = { __typename?: 'subscription_root', customer: Array<{ __typename?: 'customer', company_name: string, id: any, company_address: string, name: string, email: string, phone: string, created_at: any, credit?: boolean | null, credit_limit?: any | null, blocked: boolean }> };
+
+export type GetCustomersCountSubscriptionVariables = Exact<{
+  where?: InputMaybe<Customer_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<Customer_Order_By> | Customer_Order_By>;
+}>;
+
+
+export type GetCustomersCountSubscription = { __typename?: 'subscription_root', customer_aggregate: { __typename?: 'customer_aggregate', aggregate?: { __typename?: 'customer_aggregate_fields', count: number } | null } };
 
 export type DeleteCustomerMutationVariables = Exact<{
   deleteCustomerByPkId: Scalars['uuid'];
@@ -3939,10 +3952,20 @@ export type DeleteWeighbridgeMutation = { __typename?: 'mutation_root', delete_w
 
 export type SubscribeWeighbridgeAdminSubscriptionVariables = Exact<{
   where?: InputMaybe<Weighbridge_Bool_Exp>;
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<Weighbridge_Order_By> | Weighbridge_Order_By>;
 }>;
 
 
 export type SubscribeWeighbridgeAdminSubscription = { __typename?: 'subscription_root', weighbridge: Array<{ __typename?: 'weighbridge', display_name: string, id: any, address: string, created_at: any, name: string, metadata: any, phone: string, pin_code: string, mail: string, logo?: string | null, tenent: { __typename?: 'tenents', id: any, name: string } }> };
+
+export type WeighbridgesCountSubscriptionVariables = Exact<{
+  where?: InputMaybe<Weighbridge_Bool_Exp>;
+}>;
+
+
+export type WeighbridgesCountSubscription = { __typename?: 'subscription_root', weighbridge_aggregate: { __typename?: 'weighbridge_aggregate', aggregate?: { __typename?: 'weighbridge_aggregate_fields', count: number } | null } };
 
 export type GetAllWeighbridgeQueryVariables = Exact<{
   where?: InputMaybe<Weighbridge_Bool_Exp>;
@@ -4595,8 +4618,8 @@ export type GetCustomerDropdownOptionsQueryHookResult = ReturnType<typeof useGet
 export type GetCustomerDropdownOptionsLazyQueryHookResult = ReturnType<typeof useGetCustomerDropdownOptionsLazyQuery>;
 export type GetCustomerDropdownOptionsQueryResult = Apollo.QueryResult<GetCustomerDropdownOptionsQuery, GetCustomerDropdownOptionsQueryVariables>;
 export const GetCustomersDocument = gql`
-    subscription getCustomers($where: customer_bool_exp) {
-  customer(where: $where) {
+    subscription getCustomers($where: customer_bool_exp, $limit: Int, $offset: Int, $orderBy: [customer_order_by!]) {
+  customer(where: $where, limit: $limit, offset: $offset, order_by: $orderBy) {
     company_name
     id
     company_address
@@ -4624,6 +4647,9 @@ export const GetCustomersDocument = gql`
  * const { data, loading, error } = useGetCustomersSubscription({
  *   variables: {
  *      where: // value for 'where'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */
@@ -4633,6 +4659,46 @@ export function useGetCustomersSubscription(baseOptions?: Apollo.SubscriptionHoo
       }
 export type GetCustomersSubscriptionHookResult = ReturnType<typeof useGetCustomersSubscription>;
 export type GetCustomersSubscriptionResult = Apollo.SubscriptionResult<GetCustomersSubscription>;
+export const GetCustomersCountDocument = gql`
+    subscription getCustomersCount($where: customer_bool_exp, $limit: Int, $offset: Int, $orderBy: [customer_order_by!]) {
+  customer_aggregate(
+    where: $where
+    limit: $limit
+    offset: $offset
+    order_by: $orderBy
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCustomersCountSubscription__
+ *
+ * To run a query within a React component, call `useGetCustomersCountSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetCustomersCountSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCustomersCountSubscription({
+ *   variables: {
+ *      where: // value for 'where'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      orderBy: // value for 'orderBy'
+ *   },
+ * });
+ */
+export function useGetCustomersCountSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetCustomersCountSubscription, GetCustomersCountSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetCustomersCountSubscription, GetCustomersCountSubscriptionVariables>(GetCustomersCountDocument, options);
+      }
+export type GetCustomersCountSubscriptionHookResult = ReturnType<typeof useGetCustomersCountSubscription>;
+export type GetCustomersCountSubscriptionResult = Apollo.SubscriptionResult<GetCustomersCountSubscription>;
 export const DeleteCustomerDocument = gql`
     mutation deleteCustomer($deleteCustomerByPkId: uuid!) {
   delete_customer_by_pk(id: $deleteCustomerByPkId) {
@@ -5185,8 +5251,8 @@ export type DeleteWeighbridgeMutationHookResult = ReturnType<typeof useDeleteWei
 export type DeleteWeighbridgeMutationResult = Apollo.MutationResult<DeleteWeighbridgeMutation>;
 export type DeleteWeighbridgeMutationOptions = Apollo.BaseMutationOptions<DeleteWeighbridgeMutation, DeleteWeighbridgeMutationVariables>;
 export const SubscribeWeighbridgeAdminDocument = gql`
-    subscription subscribeWeighbridgeAdmin($where: weighbridge_bool_exp) {
-  weighbridge(where: $where) {
+    subscription subscribeWeighbridgeAdmin($where: weighbridge_bool_exp, $offset: Int, $limit: Int, $orderBy: [weighbridge_order_by!]) {
+  weighbridge(where: $where, offset: $offset, limit: $limit, order_by: $orderBy) {
     display_name
     id
     address
@@ -5218,6 +5284,9 @@ export const SubscribeWeighbridgeAdminDocument = gql`
  * const { data, loading, error } = useSubscribeWeighbridgeAdminSubscription({
  *   variables: {
  *      where: // value for 'where'
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */
@@ -5227,6 +5296,38 @@ export function useSubscribeWeighbridgeAdminSubscription(baseOptions?: Apollo.Su
       }
 export type SubscribeWeighbridgeAdminSubscriptionHookResult = ReturnType<typeof useSubscribeWeighbridgeAdminSubscription>;
 export type SubscribeWeighbridgeAdminSubscriptionResult = Apollo.SubscriptionResult<SubscribeWeighbridgeAdminSubscription>;
+export const WeighbridgesCountDocument = gql`
+    subscription weighbridgesCount($where: weighbridge_bool_exp) {
+  weighbridge_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useWeighbridgesCountSubscription__
+ *
+ * To run a query within a React component, call `useWeighbridgesCountSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useWeighbridgesCountSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useWeighbridgesCountSubscription({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useWeighbridgesCountSubscription(baseOptions?: Apollo.SubscriptionHookOptions<WeighbridgesCountSubscription, WeighbridgesCountSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<WeighbridgesCountSubscription, WeighbridgesCountSubscriptionVariables>(WeighbridgesCountDocument, options);
+      }
+export type WeighbridgesCountSubscriptionHookResult = ReturnType<typeof useWeighbridgesCountSubscription>;
+export type WeighbridgesCountSubscriptionResult = Apollo.SubscriptionResult<WeighbridgesCountSubscription>;
 export const GetAllWeighbridgeDocument = gql`
     query getAllWeighbridge($where: weighbridge_bool_exp) {
   weighbridge(where: $where) {

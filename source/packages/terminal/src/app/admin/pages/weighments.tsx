@@ -1,14 +1,15 @@
+import * as React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
-import { Button } from '@mui/material';
+import { Button, LinearProgress, TextField } from '@mui/material';
 import AddNewWeighBridge from './addNewWeighBridge';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import EditWeighBridge from './editWeighbridge';
 import {
   DeleteWeighbridgeDocument,
-  // useGetAllWeighbridgeQuery,
-  useGetAllWeighbridgeRealtimeSubscription,
+  useSubscribeWeighbridgeAdminSubscription,
+  useWeighbridgesCountSubscription,
 } from '@infra-weigh/generated';
 import { apollo as gqlClient } from '@infra-weigh/client';
 
@@ -120,20 +121,85 @@ const columns: GridColDef[] = [
   },
 ];
 const WeighMentData = () => {
-  const { data, loading } = useGetAllWeighbridgeRealtimeSubscription();
+  const [search, setSearch] = React.useState('');
+  const [page, setPage] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(10);
+  const { data, loading } = useSubscribeWeighbridgeAdminSubscription({
+    variables: {
+      where: {
+        _or: [
+          {
+            display_name: {
+              _ilike: `%${search}%`,
+            },
+          },
+          {
+            name: {
+              _ilike: `%${search}%`,
+            },
+          },
+        ],
+      },
+      offset: (page - 1) * pageSize < 0 ? 0 : (page - 1) * pageSize,
+      limit: pageSize,
+    },
+  });
+
+  const { data: Count, loading: CountLoading } =
+    useWeighbridgesCountSubscription({
+      variables: {
+        where: {
+          _or: [
+            {
+              display_name: {
+                _ilike: `%${search}%`,
+              },
+            },
+            {
+              name: {
+                _ilike: `%${search}%`,
+              },
+            },
+          ],
+        },
+      },
+    });
 
   return (
     <Box>
       <AddNewWeighBridge />
+      <TextField
+        fullWidth
+        onChange={(e) => {
+          setSearch(e.target.value);
+        }}
+        sx={{
+          width: '90%',
+          my: 2,
+        }}
+        name="search"
+        label="Search"
+      />
+      <LinearProgress
+        sx={{
+          visibility: CountLoading || loading ? 'visible' : 'hidden',
+        }}
+      />
       <Box height={500} width={'100%'} textAlign="center">
-        <DataGrid
-          loading={loading}
-          rows={data?.weighbridge || []}
-          columns={columns}
-          autoPageSize
-          checkboxSelection
-          disableSelectionOnClick
-        />
+        {!CountLoading && (
+          <DataGrid
+            loading={loading}
+            rows={data?.weighbridge || []}
+            paginationMode="server"
+            columns={columns}
+            onPageChange={(page) => setPage(page)}
+            onPageSizeChange={(pageSize) => setPageSize(pageSize)}
+            autoPageSize
+            rowCount={Count?.weighbridge_aggregate.aggregate?.count}
+            checkboxSelection
+            disableSelectionOnClick
+          />
+        )}
       </Box>
     </Box>
   );

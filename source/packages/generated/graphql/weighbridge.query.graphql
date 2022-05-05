@@ -29,8 +29,18 @@ mutation deleteWeighbridge($where: weighbridge_bool_exp!) {
   }
 }
 
-subscription subscribeWeighbridgeAdmin($where: weighbridge_bool_exp) {
-  weighbridge(where: $where) {
+subscription subscribeWeighbridgeAdmin(
+  $where: weighbridge_bool_exp
+  $offset: Int
+  $limit: Int
+  $orderBy: [weighbridge_order_by!]
+) {
+  weighbridge(
+    where: $where
+    offset: $offset
+    limit: $limit
+    order_by: $orderBy
+  ) {
     display_name
     id
     address
@@ -45,6 +55,14 @@ subscription subscribeWeighbridgeAdmin($where: weighbridge_bool_exp) {
     pin_code
     mail
     logo
+  }
+}
+
+subscription weighbridgesCount($where: weighbridge_bool_exp) {
+  weighbridge_aggregate(where: $where) {
+    aggregate {
+      count
+    }
   }
 }
 

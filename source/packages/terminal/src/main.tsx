@@ -3,11 +3,14 @@ import { BrowserRouter } from 'react-router-dom';
 import Client from '@infra-weigh/client';
 import Routes from './app/routes';
 import Auth from '@infra-weigh/auth';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const root = ReactDOMClient.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <BrowserRouter>
+    <ToastContainer />
     <Auth>
       <Client>
         <Routes />

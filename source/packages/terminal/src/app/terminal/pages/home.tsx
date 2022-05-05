@@ -24,7 +24,8 @@ import {
 } from '@infra-weigh/generated';
 import { auth, storage } from '@infra-weigh/firebase';
 import Capture from '../components/capture';
-import { ref, uploadString } from 'firebase/storage';
+import { toast } from 'react-toastify';
+import { ref, uploadString, deleteObject } from 'firebase/storage';
 const Home: FunctionComponent = () => {
   const { data: customerData, loading: customerLoading } =
     useGetCustomerDropdownOptionsQuery({
@@ -119,15 +120,6 @@ const Home: FunctionComponent = () => {
               value: Yup.string().required('Required'),
               label: Yup.string().required('Required'),
             }),
-            seller: Yup.object().shape({
-              value: Yup.string().required('Required'),
-              label: Yup.string().required('Required'),
-            }),
-
-            trader: Yup.object().shape({
-              value: Yup.string().required('Required'),
-              label: Yup.string().required('Required'),
-            }),
           });
         }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
@@ -169,7 +161,7 @@ const Home: FunctionComponent = () => {
               'data_url'
             );
 
-            const dat = await addBill({
+            await addBill({
               variables: {
                 object: {
                   id,
@@ -184,6 +176,8 @@ const Home: FunctionComponent = () => {
                   material_id: values.material.value,
                   vehicle_number: values.vehicleNumber,
                   customer_id: values.buyer.value,
+                  customer_2_id: values.seller.value,
+                  customer_3_id: values.trader.value,
                   scale_weight: values.scaleWeight,
                   tare_weight: values.secondWeight ? values.tareWeight : 0,
                   second_weight: values.secondWeight,
@@ -191,19 +185,28 @@ const Home: FunctionComponent = () => {
                   paid_by: values.paidBy,
                 },
               },
-            });
-            // eslint-disable-next-line prefer-const
-            let dt: any = dat.data?.insert_bill_one;
-            dt.photos = [photo1, photo2, photo3, photo4];
-            SetData(dt);
-            SetOpen(true);
-            setPhoto1(null);
-            setPhoto2(null);
-            setPhoto3(null);
-            setPhoto4(null);
-            setSubmitting(false);
-            resetForm();
-            setLoad(false);
+            })
+              .catch(() => {
+                deleteObject(up1.ref);
+                deleteObject(up2.ref);
+                deleteObject(up3.ref);
+                deleteObject(up4.ref);
+              })
+              .then((dat) => {
+                // eslint-disable-next-line prefer-const
+                let dt: any = dat?.data?.insert_bill_one;
+                dt.photos = [photo1, photo2, photo3, photo4];
+                SetData(dt);
+                SetOpen(true);
+                setPhoto1(null);
+                setPhoto2(null);
+                setPhoto3(null);
+                setPhoto4(null);
+                setSubmitting(false);
+                toast.success('Bill Added Successfully');
+                resetForm();
+                setLoad(false);
+              });
           } catch (error) {
             setLoad(false);
             setSubmitting(false);
@@ -316,7 +319,17 @@ const Home: FunctionComponent = () => {
               />
               <Field
                 component={Autocomplete}
+                filterOptions={(options: any, state: any) => {
+                  const filtered = options.filter((option: any) => {
+                    return (
+                      option.value !== values.trader.value &&
+                      option.value !== values.seller.value
+                    );
+                  });
+                  return filtered;
+                }}
                 name="buyer"
+                filter
                 options={customerData?.customer || []}
                 renderInput={(params: any) => <TF {...params} label="buyer" />}
                 sx={{
@@ -327,6 +340,15 @@ const Home: FunctionComponent = () => {
 
               <Field
                 name="seller"
+                filterOptions={(options: any, state: any) => {
+                  const filtered = options.filter((option: any) => {
+                    return (
+                      option.value !== values.trader.value &&
+                      option.value !== values.buyer.value
+                    );
+                  });
+                  return filtered;
+                }}
                 component={Autocomplete}
                 options={customerData?.customer || []}
                 renderInput={(params: any) => <TF {...params} label="seller" />}
@@ -339,6 +361,15 @@ const Home: FunctionComponent = () => {
 
               <Field
                 name="trader"
+                filterOptions={(options: any, state: any) => {
+                  const filtered = options.filter((option: any) => {
+                    return (
+                      option.value !== values.buyer.value &&
+                      option.value !== values.seller.value
+                    );
+                  });
+                  return filtered;
+                }}
                 component={Autocomplete}
                 options={customerData?.customer || []}
                 renderInput={(params: any) => (
