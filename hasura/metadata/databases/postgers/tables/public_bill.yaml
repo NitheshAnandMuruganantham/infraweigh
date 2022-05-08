@@ -1,0 +1,189 @@
+table:
+  schema: public
+  name: bill
+object_relationships:
+  - name: bill
+    using:
+      foreign_key_constraint_on: customer_2_id
+  - name: billByReferenceBillId
+    using:
+      foreign_key_constraint_on: reference_bill_id
+  - name: customer
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: customer
+        insertion_order: null
+        column_mapping:
+          customer_id: id
+  - name: customerByCustomerId
+    using:
+      foreign_key_constraint_on: customer_id
+  - name: customer_3
+    using:
+      foreign_key_constraint_on: customer_3_id
+  - name: cutomer_2
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: customer
+        insertion_order: null
+        column_mapping:
+          customer_2_id: id
+  - name: material
+    using:
+      foreign_key_constraint_on: material_id
+  - name: tenent
+    using:
+      foreign_key_constraint_on: tenent_id
+  - name: vehicle
+    using:
+      foreign_key_constraint_on: vehicle_id
+  - name: weighbridge
+    using:
+      foreign_key_constraint_on: weighbridge_id
+array_relationships:
+  - name: bills
+    using:
+      foreign_key_constraint_on:
+        column: customer_2_id
+        table:
+          schema: public
+          name: bill
+  - name: billsByReferenceBillId
+    using:
+      foreign_key_constraint_on:
+        column: reference_bill_id
+        table:
+          schema: public
+          name: bill
+insert_permissions:
+  - role: tenantAdmin
+    permission:
+      check:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      set:
+        tenent_id: x-hasura-tenent-id
+        weighbridge_id: x-hasura-weighbridge-id
+      columns:
+        - charges
+        - created_at
+        - customer_2_id
+        - customer_3_id
+        - customer_id
+        - id
+        - image
+        - material_id
+        - paid_by
+        - photos
+        - reference_bill_id
+        - scale_weight
+        - second_weight
+        - tare_weight
+        - updated_at
+        - vehicle_id
+        - vehicle_number
+        - weighbridge_id
+      backend_only: false
+  - role: terminal
+    permission:
+      check:
+        _and:
+          - tenent_id:
+              _eq: X-Hasura-tenent-Id
+          - weighbridge_id:
+              _eq: X-Hasura-Weighbridge-Id
+      set:
+        tenent_id: x-hasura-tenent-id
+        weighbridge_id: x-hasura-weighbridge-id
+      columns:
+        - charges
+        - customer_2_id
+        - customer_3_id
+        - customer_id
+        - id
+        - image
+        - material_id
+        - paid_by
+        - photos
+        - reference_bill_id
+        - scale_weight
+        - second_weight
+        - tare_weight
+        - vehicle_id
+        - vehicle_number
+        - weighbridge_id
+      backend_only: false
+select_permissions:
+  - role: tenantAdmin
+    permission:
+      columns:
+        - charges
+        - created_at
+        - customer_2_id
+        - customer_3_id
+        - customer_id
+        - id
+        - image
+        - material_id
+        - paid_by
+        - photos
+        - reference_bill_id
+        - scale_weight
+        - second_weight
+        - tare_weight
+        - tenent_id
+        - updated_at
+        - vehicle_id
+        - vehicle_number
+        - weighbridge_id
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      allow_aggregations: true
+  - role: terminal
+    permission:
+      columns:
+        - second_weight
+        - scale_weight
+        - tare_weight
+        - photos
+        - charges
+        - image
+        - paid_by
+        - vehicle_number
+        - created_at
+        - updated_at
+        - customer_2_id
+        - customer_3_id
+        - customer_id
+        - id
+        - material_id
+        - reference_bill_id
+        - tenent_id
+        - vehicle_id
+        - weighbridge_id
+      filter:
+        _and:
+          - tenent_id:
+              _eq: X-Hasura-tenent-Id
+          - weighbridge_id:
+              _eq: X-Hasura-Weighbridge-Id
+      allow_aggregations: true
+event_triggers:
+  - name: new_bill
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: GEN_BILL
+    headers:
+      - name: authorization
+        value_from_env: API_KEY

@@ -1,0 +1,43 @@
+table:
+  schema: public
+  name: vehicle
+array_relationships:
+  - name: bills
+    using:
+      foreign_key_constraint_on:
+        column: vehicle_id
+        table:
+          schema: public
+          name: bill
+select_permissions:
+  - role: tenantAdmin
+    permission:
+      columns:
+        - charges
+        - special_price_1
+        - special_price_2
+        - special_price_3
+        - special_price_4
+        - special_price_5
+        - manufacturer
+        - name
+        - created_at
+        - updated_at
+        - id
+      filter: {}
+      allow_aggregations: true
+  - role: terminal
+    permission:
+      columns:
+        - charges
+        - special_price_1
+        - special_price_2
+        - special_price_3
+        - special_price_4
+        - special_price_5
+        - manufacturer
+        - name
+        - created_at
+        - updated_at
+        - id
+      filter: {}

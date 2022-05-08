@@ -1,0 +1,106 @@
+table:
+  schema: public
+  name: weighbridge
+object_relationships:
+  - name: tenent
+    using:
+      foreign_key_constraint_on: tenent_id
+array_relationships:
+  - name: bills
+    using:
+      foreign_key_constraint_on:
+        column: weighbridge_id
+        table:
+          schema: public
+          name: bill
+  - name: users
+    using:
+      foreign_key_constraint_on:
+        column: weighbridge_id
+        table:
+          schema: public
+          name: user
+insert_permissions:
+  - role: tenantAdmin
+    permission:
+      check:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      set:
+        tenent_id: x-hasura-tenent-id
+      columns:
+        - address
+        - created_at
+        - display_name
+        - id
+        - logo
+        - mail
+        - metadata
+        - name
+        - phone
+        - pin_code
+        - updated_at
+      backend_only: false
+select_permissions:
+  - role: tenantAdmin
+    permission:
+      columns:
+        - metadata
+        - address
+        - display_name
+        - logo
+        - mail
+        - name
+        - phone
+        - pin_code
+        - created_at
+        - updated_at
+        - id
+        - tenent_id
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+  - role: terminal
+    permission:
+      columns:
+        - name
+        - address
+        - pin_code
+        - logo
+        - display_name
+        - id
+        - created_at
+        - updated_at
+        - metadata
+        - mail
+        - phone
+        - tenent_id
+      filter:
+        _and:
+          - tenent_id:
+              _eq: X-Hasura-tenent-Id
+          - id:
+              _eq: X-Hasura-Weighbridge-Id
+update_permissions:
+  - role: tenantAdmin
+    permission:
+      columns:
+        - address
+        - display_name
+        - logo
+        - mail
+        - metadata
+        - name
+        - phone
+        - pin_code
+        - tenent_id
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      check: null
+delete_permissions:
+  - role: tenantAdmin
+    permission:
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id

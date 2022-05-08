@@ -5,7 +5,7 @@ module.exports = {
     {
       'https://infra-weigh.hasura.app/v1/graphql': {
         headers: {
-          'x-hasura-admin-secret': process.env.ADMIN_AUTH_TOKEN,
+          'x-hasura-admin-secret': process.env.HASURA_ADMIN_TOKEN,
         },
       },
     },

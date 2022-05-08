@@ -1,0 +1,30 @@
+table:
+  schema: public
+  name: material
+array_relationships:
+  - name: bills
+    using:
+      foreign_key_constraint_on:
+        column: material_id
+        table:
+          schema: public
+          name: bill
+select_permissions:
+  - role: tenantAdmin
+    permission:
+      columns:
+        - hsn
+        - name
+        - created_at
+        - updated_at
+        - id
+      filter: {}
+  - role: terminal
+    permission:
+      columns:
+        - hsn
+        - name
+        - created_at
+        - updated_at
+        - id
+      filter: {}

@@ -1,0 +1,149 @@
+table:
+  schema: public
+  name: customer
+object_relationships:
+  - name: tenent
+    using:
+      foreign_key_constraint_on: tenent_id
+array_relationships:
+  - name: bills_2
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: bill
+        insertion_order: null
+        column_mapping:
+          id: customer_2_id
+  - name: bills_3
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: bill
+        insertion_order: null
+        column_mapping:
+          id: customer_3_id
+  - name: bills_id
+    using:
+      foreign_key_constraint_on:
+        column: customer_id
+        table:
+          schema: public
+          name: bill
+insert_permissions:
+  - role: tenantAdmin
+    permission:
+      check:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      set:
+        tenent_id: x-hasura-tenent-id
+      columns:
+        - blocked
+        - company_address
+        - company_name
+        - created_at
+        - credit
+        - credit_limit
+        - email
+        - gst_in
+        - id
+        - metadata
+        - name
+        - phone
+        - updated_at
+      backend_only: false
+  - role: terminal
+    permission:
+      check:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      set:
+        tenent_id: x-hasura-tenent-id
+      columns:
+        - blocked
+        - company_address
+        - company_name
+        - created_at
+        - credit
+        - credit_limit
+        - email
+        - gst_in
+        - id
+        - metadata
+        - name
+        - phone
+        - updated_at
+      backend_only: false
+select_permissions:
+  - role: tenantAdmin
+    permission:
+      columns:
+        - blocked
+        - credit
+        - metadata
+        - credit_limit
+        - company_address
+        - company_name
+        - email
+        - gst_in
+        - name
+        - phone
+        - created_at
+        - updated_at
+        - id
+        - tenent_id
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      allow_aggregations: true
+  - role: terminal
+    permission:
+      columns:
+        - blocked
+        - credit
+        - metadata
+        - credit_limit
+        - company_address
+        - company_name
+        - email
+        - gst_in
+        - name
+        - phone
+        - created_at
+        - updated_at
+        - id
+        - tenent_id
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      allow_aggregations: true
+update_permissions:
+  - role: tenantAdmin
+    permission:
+      columns:
+        - blocked
+        - credit
+        - metadata
+        - credit_limit
+        - company_address
+        - company_name
+        - email
+        - gst_in
+        - name
+        - phone
+        - created_at
+        - updated_at
+        - id
+        - tenent_id
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      check: null
+delete_permissions:
+  - role: tenantAdmin
+    permission:
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
