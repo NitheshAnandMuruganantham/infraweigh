@@ -4,11 +4,20 @@ import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
 
+// condition for signing the token
+const isLocalEnvironment = () => {
+  return window.location.hostname === 'localhost';
+};
+
 function getHeaders() {
   // eslint-disable-next-line prefer-const
   let headers: any = {};
-  const token = window.localStorage.getItem('x-firebase-token');
-  headers['Authorization'] = `Bearer ${token}`;
+  headers['Authorization'] = `Bearer ${
+    isLocalEnvironment()
+      ? window.localStorage.getItem('x-firebase-dev-token')
+      : window.localStorage.getItem('x-firebase-token')
+  }`;
+
   return headers;
 }
 

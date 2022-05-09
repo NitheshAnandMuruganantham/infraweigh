@@ -2,9 +2,6 @@ table:
   schema: public
   name: bill
 object_relationships:
-  - name: bill
-    using:
-      foreign_key_constraint_on: customer_2_id
   - name: billByReferenceBillId
     using:
       foreign_key_constraint_on: reference_bill_id
@@ -20,18 +17,12 @@ object_relationships:
   - name: customerByCustomerId
     using:
       foreign_key_constraint_on: customer_id
+  - name: customer_2
+    using:
+      foreign_key_constraint_on: customer_2_id
   - name: customer_3
     using:
       foreign_key_constraint_on: customer_3_id
-  - name: cutomer_2
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: customer
-        insertion_order: null
-        column_mapping:
-          customer_2_id: id
   - name: material
     using:
       foreign_key_constraint_on: material_id
@@ -45,13 +36,6 @@ object_relationships:
     using:
       foreign_key_constraint_on: weighbridge_id
 array_relationships:
-  - name: bills
-    using:
-      foreign_key_constraint_on:
-        column: customer_2_id
-        table:
-          schema: public
-          name: bill
   - name: billsByReferenceBillId
     using:
       foreign_key_constraint_on:

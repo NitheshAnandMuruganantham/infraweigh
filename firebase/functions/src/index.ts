@@ -5,11 +5,12 @@ import * as Admin from "firebase-admin";
 import { hashSync } from "bcrypt";
 import { Request } from "firebase-functions";
 import { warn } from "firebase-functions/logger";
+import { sendBillRecept } from "./sms";
 
 const admin = Admin.initializeApp();
 
 let headers: any = [];
-headers["x-hasura-admin-secret"] = `${process.env.API_KEY}`;
+headers["x-hasura-admin-secret"] = `${process.env.ADMIN_SECRET}`;
 headers["Content-Type"] = "application/json";
 
 const client = new ApolloClient({
@@ -312,6 +313,10 @@ export const genBill = functions.https.onRequest((req, res) =>
       .firestore()
       .doc(`bills/${req.body.event.data.new.id}`)
       .set(billData.data.bill_by_pk);
+    sendBillRecept({
+      name: "infra weigh co",
+      phone: [parseInt(billData.data.bill_by_pk.customer.phone)],
+    });
     res.json({
       status: "success",
       id: req.body.event.data.new.id,

@@ -3941,7 +3941,7 @@ export type GetWeighbridgesDropDownQueryVariables = Exact<{
 }>;
 
 
-export type GetWeighbridgesDropDownQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', label: string, value: any }> };
+export type GetWeighbridgesDropDownQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', tenent_id: any, label: string, value: any }> };
 
 export type DeleteWeighbridgeMutationVariables = Exact<{
   where: Weighbridge_Bool_Exp;
@@ -4585,7 +4585,7 @@ export const GetCustomerDropdownOptionsDocument = gql`
     query getCustomerDropdownOptions($where: customer_bool_exp) {
   customer(where: $where) {
     value: id
-    label: company_name
+    label: name
   }
 }
     `;
@@ -5184,6 +5184,7 @@ export const GetWeighbridgesDropDownDocument = gql`
   weighbridge(where: $where) {
     label: name
     value: id
+    tenent_id
   }
 }
     `;

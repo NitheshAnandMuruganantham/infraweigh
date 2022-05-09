@@ -11,7 +11,6 @@ import { Box } from '@mui/system';
 import * as Yup from 'yup';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import { useCreateCustomerMutation } from '@infra-weigh/generated';
-import Loading from '@infra-weigh/loading';
 import { toast } from 'react-toastify';
 
 const AddNewClient: React.FunctionComponent = () => {
@@ -27,20 +26,20 @@ const AddNewClient: React.FunctionComponent = () => {
   const [addNewClient, { loading }] = useCreateCustomerMutation();
   return (
     <div>
-      <Loading open={loading} setOpen={() => null} />
       <Button variant="outlined" sx={{ m: 1 }} onClick={handleClickOpen}>
         new client
       </Button>
       <Dialog fullWidth open={open} onClose={handleClose}>
+        {loading && <LinearProgress />}
         <DialogTitle>New Client</DialogTitle>
         <Formik
           initialValues={{
-            name: null,
-            address: null,
-            email: null,
-            phone: null,
-            gst_in: null,
-            company_name: null,
+            name: '',
+            address: '',
+            email: '',
+            phone: '',
+            gst_in: '',
+            company_name: '',
             credit: false,
             credit_limit: 0,
             branch: {
@@ -79,10 +78,10 @@ const AddNewClient: React.FunctionComponent = () => {
                 toast.error('can not create new client');
               })
               .then(() => {
+                handleClose();
                 toast.success('client created successfully');
               });
             setSubmitting(false);
-            handleClose();
           }}
         >
           {({ submitForm, isSubmitting, setFieldValue }) => (

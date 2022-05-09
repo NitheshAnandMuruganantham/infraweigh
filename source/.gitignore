@@ -16,6 +16,7 @@ node_modules
 *.launch
 .settings/
 *.sublime-workspace
+.env.local
 
 # IDE - VSCode
 .vscode/*
@@ -41,4 +42,4 @@ Thumbs.db
 # Remix files
 apps/**/build
 apps/**/.cache
-  
+

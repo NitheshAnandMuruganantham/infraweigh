@@ -16,7 +16,7 @@ const firestore = getFirestore(app);
 const storage = getStorage(app);
 const functions = getFunctions(app);
 
-if (process.env['NX_ENV'] === 'development') {
+if (window.location.hostname === 'localhost') {
   connectAuthEmulator(auth, 'http://localhost:9099');
   connectFunctionsEmulator(functions, 'localhost', 5001);
   connectStorageEmulator(storage, 'localhost', 9199);

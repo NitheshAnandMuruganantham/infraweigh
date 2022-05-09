@@ -3,9 +3,9 @@ config();
 module.exports = {
   schema: [
     {
-      'https://infra-weigh.hasura.app/v1/graphql': {
+      'http://localhost:8080/v1/graphql': {
         headers: {
-          'x-hasura-admin-secret': process.env.HASURA_ADMIN_TOKEN,
+          'x-hasura-admin-secret': 'myadminsecretkey',
         },
       },
     },

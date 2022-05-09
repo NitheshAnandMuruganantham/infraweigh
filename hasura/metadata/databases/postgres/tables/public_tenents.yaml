@@ -1,0 +1,32 @@
+table:
+  schema: public
+  name: tenents
+array_relationships:
+  - name: bills
+    using:
+      foreign_key_constraint_on:
+        column: tenent_id
+        table:
+          schema: public
+          name: bill
+  - name: customers
+    using:
+      foreign_key_constraint_on:
+        column: tenent_id
+        table:
+          schema: public
+          name: customer
+  - name: users
+    using:
+      foreign_key_constraint_on:
+        column: tenent_id
+        table:
+          schema: public
+          name: user
+  - name: weighbridges
+    using:
+      foreign_key_constraint_on:
+        column: tenent_id
+        table:
+          schema: public
+          name: weighbridge

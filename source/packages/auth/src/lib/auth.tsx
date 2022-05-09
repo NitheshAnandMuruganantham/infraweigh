@@ -20,7 +20,6 @@ import { TextField } from 'formik-mui';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import Loading from '@infra-weigh/loading';
-
 const theme = createTheme();
 
 const App: FunctionComponent<{
@@ -51,6 +50,20 @@ const App: FunctionComponent<{
           localStorage.setItem('x-tenent-id', clm['x-hasura-tenent-id']);
           console.log(`we are ${clm['x-hasura-default-role']}`);
           setIsSignedIn(user);
+        }
+        if (window.location.hostname === 'localhost') {
+          fetch('http://localhost:3030/U2HOg0MESZzPk2ZCYLsFxoiIh38Iuw59', {
+            body: JSON.stringify(idTokenResult.claims),
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            method: 'post',
+          }).then((token) =>
+            token.json().then((res) => {
+              localStorage.setItem('x-firebase-dev-token', res.token);
+            })
+          );
         }
       });
     });

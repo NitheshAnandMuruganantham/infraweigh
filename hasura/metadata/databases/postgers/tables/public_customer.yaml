@@ -8,13 +8,11 @@ object_relationships:
 array_relationships:
   - name: bills_2
     using:
-      manual_configuration:
-        remote_table:
+      foreign_key_constraint_on:
+        column: customer_2_id
+        table:
           schema: public
           name: bill
-        insertion_order: null
-        column_mapping:
-          id: customer_2_id
   - name: bills_3
     using:
       manual_configuration:

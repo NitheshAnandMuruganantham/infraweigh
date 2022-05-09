@@ -70,11 +70,11 @@ const Home: FunctionComponent = () => {
           vehicleNumber: '',
           material: {
             label: '',
-            value: '',
+            value: null,
           },
           vehicle: {
             label: '',
-            value: '',
+            value: null,
           },
           buyer: {
             label: '',
@@ -320,16 +320,22 @@ const Home: FunctionComponent = () => {
               <Field
                 component={Autocomplete}
                 filterOptions={(options: any, state: any) => {
-                  const filtered = options.filter((option: any) => {
-                    return (
-                      option.value !== values.trader.value &&
-                      option.value !== values.seller.value
-                    );
-                  });
-                  return filtered;
+                  if (
+                    values.seller.value !== null &&
+                    values.trader.value !== null
+                  ) {
+                    const filtered = options.filter((option: any) => {
+                      return (
+                        option.value !== values.trader.value &&
+                        option.value !== values.seller.value
+                      );
+                    });
+                    return filtered;
+                  } else {
+                    return options;
+                  }
                 }}
                 name="buyer"
-                filter
                 options={customerData?.customer || []}
                 renderInput={(params: any) => <TF {...params} label="buyer" />}
                 sx={{
@@ -341,13 +347,20 @@ const Home: FunctionComponent = () => {
               <Field
                 name="seller"
                 filterOptions={(options: any, state: any) => {
-                  const filtered = options.filter((option: any) => {
-                    return (
-                      option.value !== values.trader.value &&
-                      option.value !== values.buyer.value
-                    );
-                  });
-                  return filtered;
+                  if (
+                    values.buyer.value !== null &&
+                    values.trader.value !== null
+                  ) {
+                    const filtered = options.filter((option: any) => {
+                      return (
+                        option.value !== values.trader.value &&
+                        option.value !== values.buyer.value
+                      );
+                    });
+                    return filtered;
+                  } else {
+                    return options;
+                  }
                 }}
                 component={Autocomplete}
                 options={customerData?.customer || []}
@@ -362,13 +375,20 @@ const Home: FunctionComponent = () => {
               <Field
                 name="trader"
                 filterOptions={(options: any, state: any) => {
-                  const filtered = options.filter((option: any) => {
-                    return (
-                      option.value !== values.buyer.value &&
-                      option.value !== values.seller.value
-                    );
-                  });
-                  return filtered;
+                  if (
+                    values.buyer.value !== null &&
+                    values.seller.value !== null
+                  ) {
+                    const filtered = options.filter((option: any) => {
+                      return (
+                        option.value !== values.buyer.value &&
+                        option.value !== values.seller.value
+                      );
+                    });
+                    return filtered;
+                  } else {
+                    return options;
+                  }
                 }}
                 component={Autocomplete}
                 options={customerData?.customer || []}

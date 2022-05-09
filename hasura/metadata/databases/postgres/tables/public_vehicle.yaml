@@ -1,0 +1,11 @@
+table:
+  schema: public
+  name: vehicle
+array_relationships:
+  - name: bills
+    using:
+      foreign_key_constraint_on:
+        column: vehicle_id
+        table:
+          schema: public
+          name: bill

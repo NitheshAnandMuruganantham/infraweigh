@@ -2,17 +2,13 @@ import * as React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
-import { Button, LinearProgress, TextField } from '@mui/material';
+import { LinearProgress, TextField } from '@mui/material';
 import AddNewClient from './addNewClient';
-import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import EditClient from './editClient';
 import {
-  DeleteCustomerDocument,
   useGetCustomersCountSubscription,
   useGetCustomersSubscription,
 } from '@infra-weigh/generated';
-import { apollo as gqlClient } from '@infra-weigh/client';
 
 const columns: GridColDef[] = [
   {
@@ -27,7 +23,14 @@ const columns: GridColDef[] = [
     field: 'company_address',
     headerName: 'Address',
     sortable: false,
-    width: 400,
+    width: 300,
+  },
+
+  {
+    field: 'company_name',
+    headerName: 'company',
+    sortable: false,
+    width: 200,
   },
 
   {
@@ -40,56 +43,7 @@ const columns: GridColDef[] = [
     field: 'email',
     headerName: 'e-mail id',
     sortable: false,
-    width: 150,
-  },
-  {
-    field: 'edit',
-    headerName: 'Edit',
-    width: 75,
-    sortable: false,
-    filterable: false,
-    renderCell: (params) => <EditClient id={params.row.id} />,
-  },
-  {
-    field: 'delete',
-    headerName: 'Delete',
-    width: 75,
-    sortable: false,
-    filterable: false,
-    renderCell: (params) => {
-      return (
-        <Button
-          variant="contained"
-          color="error"
-          size="small"
-          onClick={() => {
-            confirmAlert({
-              title: 'Confirm to Delete',
-              message: 'Are you sure want to delete this.',
-              buttons: [
-                {
-                  label: 'Yes',
-                  onClick: () => {
-                    gqlClient.mutate({
-                      mutation: DeleteCustomerDocument,
-                      variables: {
-                        deleteCustomerByPkId: params.row.id,
-                      },
-                    });
-                  },
-                },
-                {
-                  label: 'No',
-                  onClick: () => null,
-                },
-              ],
-            });
-          }}
-        >
-          Delete
-        </Button>
-      );
-    },
+    width: 250,
   },
 ];
 const Clients = () => {
@@ -101,9 +55,18 @@ const Clients = () => {
       where: {
         _and: [
           {
-            name: {
-              _like: `%${search}%`,
-            },
+            _or: [
+              {
+                name: {
+                  _like: `%${search}%`,
+                },
+              },
+              {
+                company_name: {
+                  _like: `%${search}%`,
+                },
+              },
+            ],
           },
           {
             tenent_id: {

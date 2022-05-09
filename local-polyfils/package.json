@@ -1,0 +1,14 @@
+{
+  "name": "local-polyfils",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "experss": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1"
+  }
+}

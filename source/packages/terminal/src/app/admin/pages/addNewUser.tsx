@@ -14,6 +14,7 @@ import Loader from '@infra-weigh/loading';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import {
   useAddUsersMutation,
+  useGetAllTenentsDropDownSubscription,
   useGetWeighbridgesDropDownQuery,
 } from '@infra-weigh/generated';
 
@@ -75,12 +76,15 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                     email: values.email,
                     password: values.password,
                     weighbridge_id: values.branch.value,
+                    tenent_id: weighbridge?.weighbridge.filter(
+                      (d) => d.value === values.branch.value
+                    )[0].tenent_id,
                     profile: {
                       name: values.name,
                       phone: values.phone,
                       address: values.address,
                     },
-                    role: 'terminal',
+                    role: 'tenantAdmin',
                   },
                 ],
               },

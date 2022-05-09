@@ -1,7 +1,7 @@
 query getCustomerDropdownOptions($where: customer_bool_exp) {
   customer(where: $where) {
     value: id
-    label: company_name
+    label: name
   }
 }
 

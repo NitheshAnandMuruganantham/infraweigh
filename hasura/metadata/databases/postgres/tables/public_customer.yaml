@@ -1,0 +1,29 @@
+table:
+  schema: public
+  name: customer
+object_relationships:
+  - name: tenent
+    using:
+      foreign_key_constraint_on: tenent_id
+array_relationships:
+  - name: bills
+    using:
+      foreign_key_constraint_on:
+        column: customer_2_id
+        table:
+          schema: public
+          name: bill
+  - name: billsByCustomer3Id
+    using:
+      foreign_key_constraint_on:
+        column: customer_3_id
+        table:
+          schema: public
+          name: bill
+  - name: billsByCustomerId
+    using:
+      foreign_key_constraint_on:
+        column: customer_id
+        table:
+          schema: public
+          name: bill
