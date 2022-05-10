@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 import MuiPhoneNumber from 'material-ui-phone-number';
 
 import { useAddNewWeighbridgeMutation } from '@infra-weigh/generated';
-import Loader from '@infra-weigh/loading';
+import { toast } from 'react-toastify';
 
 export default function AddNewWeighBridge() {
   const [open, setOpen] = React.useState(false);
@@ -27,7 +27,6 @@ export default function AddNewWeighBridge() {
 
   return (
     <div>
-      <Loader open={loading} setOpen={() => null} />
       <Button variant="outlined" sx={{ m: 1 }} onClick={handleClickOpen}>
         new WeighBridge
       </Button>
@@ -65,7 +64,13 @@ export default function AddNewWeighBridge() {
                   mail: values.mail,
                 },
               },
-            });
+            })
+              .catch((e) => {
+                toast.error('can not add new WeighBridge');
+              })
+              .then(
+                (d) => d && toast.success('WeighBridge added successfully')
+              );
             setSubmitting(true);
             handleClose();
           }}
@@ -134,7 +139,7 @@ export default function AddNewWeighBridge() {
                       defaultCountry={'in'}
                       onChange={(e) => setFieldValue('phone', e.toString())}
                     />
-                    {isSubmitting && <LinearProgress />}
+                    {(isSubmitting || loading) && <LinearProgress />}
                   </Box>
                 </Form>
               </DialogContent>

@@ -16,7 +16,7 @@ import {
   useGetWeighbridgeQuery,
   useUpdateUserMutation,
 } from '@infra-weigh/generated';
-import Loader from '@infra-weigh/loading';
+import { toast } from 'react-toastify';
 
 const EditUser: React.FunctionComponent<{
   id: string;
@@ -44,7 +44,6 @@ const EditUser: React.FunctionComponent<{
 
   return (
     <>
-      <Loader open={l2 || l1} setOpen={() => null} />
       <Button
         variant="contained"
         color="secondary"
@@ -100,8 +99,9 @@ const EditUser: React.FunctionComponent<{
                   },
                 },
               },
-            }).catch(() => alert('user already exist'));
-
+            })
+              .catch(() => toast.error('user already exist'))
+              .then((dat) => dat && toast.success('user updated successfully'));
             setSubmitting(true);
             handleClose();
           }}
@@ -186,7 +186,7 @@ const EditUser: React.FunctionComponent<{
                       )}
                     />
 
-                    {isSubmitting && <LinearProgress />}
+                    {(isSubmitting || l2 || l1) && <LinearProgress />}
                   </Box>
                 </Form>
               </DialogContent>

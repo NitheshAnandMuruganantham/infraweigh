@@ -14,6 +14,7 @@ import {
 } from '@infra-weigh/generated';
 import { apollo as gqlClient } from '@infra-weigh/client';
 import { auth } from '@infra-weigh/firebase';
+import { toast } from 'react-toastify';
 
 const columns: GridColDef[] = [
   {
@@ -65,10 +66,13 @@ const columns: GridColDef[] = [
                         },
                       })
                       .catch((e) =>
-                        alert(
+                        toast.error(
                           'relations exists remove the related resources to delete this resource'
                         )
-                      );
+                      )
+                      .then((d) => {
+                        d && toast.success('user deleted successfully');
+                      });
                   },
                 },
                 {

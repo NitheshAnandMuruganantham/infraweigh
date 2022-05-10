@@ -76,6 +76,8 @@ const AddNewClient: React.FunctionComponent = () => {
             })
               .catch(() => {
                 toast.error('can not create new client');
+                setSubmitting(false);
+                return;
               })
               .then(() => {
                 handleClose();

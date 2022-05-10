@@ -223,30 +223,24 @@ export enum Admin_Update_Column {
 export type Bill = {
   __typename?: 'bill';
   /** An object relationship */
-  bill?: Maybe<Bill>;
-  /** An object relationship */
   billByReferenceBillId?: Maybe<Bill>;
-  /** An array relationship */
-  bills: Array<Bill>;
   /** An array relationship */
   billsByReferenceBillId: Array<Bill>;
   /** An aggregate relationship */
   billsByReferenceBillId_aggregate: Bill_Aggregate;
-  /** An aggregate relationship */
-  bills_aggregate: Bill_Aggregate;
   charges: Scalars['money'];
   created_at: Scalars['timestamptz'];
   /** An object relationship */
   customer?: Maybe<Customer>;
   /** An object relationship */
   customerByCustomerId?: Maybe<Customer>;
+  /** An object relationship */
+  customer_2?: Maybe<Customer>;
   customer_2_id?: Maybe<Scalars['uuid']>;
   /** An object relationship */
   customer_3?: Maybe<Customer>;
   customer_3_id?: Maybe<Scalars['uuid']>;
   customer_id?: Maybe<Scalars['uuid']>;
-  /** An object relationship */
-  cutomer_2?: Maybe<Customer>;
   id: Scalars['uuid'];
   image?: Maybe<Scalars['String']>;
   /** An object relationship */
@@ -273,16 +267,6 @@ export type Bill = {
 
 
 /** columns and relationships of "bill" */
-export type BillBillsArgs = {
-  distinct_on?: InputMaybe<Array<Bill_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Bill_Order_By>>;
-  where?: InputMaybe<Bill_Bool_Exp>;
-};
-
-
-/** columns and relationships of "bill" */
 export type BillBillsByReferenceBillIdArgs = {
   distinct_on?: InputMaybe<Array<Bill_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -294,16 +278,6 @@ export type BillBillsByReferenceBillIdArgs = {
 
 /** columns and relationships of "bill" */
 export type BillBillsByReferenceBillId_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Bill_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Bill_Order_By>>;
-  where?: InputMaybe<Bill_Bool_Exp>;
-};
-
-
-/** columns and relationships of "bill" */
-export type BillBills_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Bill_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -389,19 +363,17 @@ export type Bill_Bool_Exp = {
   _and?: InputMaybe<Array<Bill_Bool_Exp>>;
   _not?: InputMaybe<Bill_Bool_Exp>;
   _or?: InputMaybe<Array<Bill_Bool_Exp>>;
-  bill?: InputMaybe<Bill_Bool_Exp>;
   billByReferenceBillId?: InputMaybe<Bill_Bool_Exp>;
-  bills?: InputMaybe<Bill_Bool_Exp>;
   billsByReferenceBillId?: InputMaybe<Bill_Bool_Exp>;
   charges?: InputMaybe<Money_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   customer?: InputMaybe<Customer_Bool_Exp>;
   customerByCustomerId?: InputMaybe<Customer_Bool_Exp>;
+  customer_2?: InputMaybe<Customer_Bool_Exp>;
   customer_2_id?: InputMaybe<Uuid_Comparison_Exp>;
   customer_3?: InputMaybe<Customer_Bool_Exp>;
   customer_3_id?: InputMaybe<Uuid_Comparison_Exp>;
   customer_id?: InputMaybe<Uuid_Comparison_Exp>;
-  cutomer_2?: InputMaybe<Customer_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   image?: InputMaybe<String_Comparison_Exp>;
   material?: InputMaybe<Material_Bool_Exp>;
@@ -437,19 +409,17 @@ export type Bill_Inc_Input = {
 
 /** input type for inserting data into table "bill" */
 export type Bill_Insert_Input = {
-  bill?: InputMaybe<Bill_Obj_Rel_Insert_Input>;
   billByReferenceBillId?: InputMaybe<Bill_Obj_Rel_Insert_Input>;
-  bills?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
   billsByReferenceBillId?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
   charges?: InputMaybe<Scalars['money']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   customer?: InputMaybe<Customer_Obj_Rel_Insert_Input>;
   customerByCustomerId?: InputMaybe<Customer_Obj_Rel_Insert_Input>;
+  customer_2?: InputMaybe<Customer_Obj_Rel_Insert_Input>;
   customer_2_id?: InputMaybe<Scalars['uuid']>;
   customer_3?: InputMaybe<Customer_Obj_Rel_Insert_Input>;
   customer_3_id?: InputMaybe<Scalars['uuid']>;
   customer_id?: InputMaybe<Scalars['uuid']>;
-  cutomer_2?: InputMaybe<Customer_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
   image?: InputMaybe<Scalars['String']>;
   material?: InputMaybe<Material_Obj_Rel_Insert_Input>;
@@ -581,19 +551,17 @@ export type Bill_On_Conflict = {
 
 /** Ordering options when selecting data from "bill". */
 export type Bill_Order_By = {
-  bill?: InputMaybe<Bill_Order_By>;
   billByReferenceBillId?: InputMaybe<Bill_Order_By>;
   billsByReferenceBillId_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
-  bills_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
   charges?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   customer?: InputMaybe<Customer_Order_By>;
   customerByCustomerId?: InputMaybe<Customer_Order_By>;
+  customer_2?: InputMaybe<Customer_Order_By>;
   customer_2_id?: InputMaybe<Order_By>;
   customer_3?: InputMaybe<Customer_Order_By>;
   customer_3_id?: InputMaybe<Order_By>;
   customer_id?: InputMaybe<Order_By>;
-  cutomer_2?: InputMaybe<Customer_Order_By>;
   id?: InputMaybe<Order_By>;
   image?: InputMaybe<Order_By>;
   material?: InputMaybe<Material_Order_By>;
@@ -3794,7 +3762,7 @@ export type GetAllBillsSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: string, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, customer?: { __typename?: 'customer', id: any, name: string } | null, customer_3?: { __typename?: 'customer', id: any, name: string } | null, cutomer_2?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string } }> };
+export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: string, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, customer?: { __typename?: 'customer', id: any, name: string } | null, customer_3?: { __typename?: 'customer', id: any, name: string } | null, customer_2?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string } }> };
 
 export type GetBillForReceptQueryVariables = Exact<{
   billByPkId: Scalars['uuid'];
@@ -3819,6 +3787,7 @@ export type BillsByCustomerQuery = { __typename?: 'query_root', customer_aggrega
 
 export type GetCustomerDropdownOptionsQueryVariables = Exact<{
   where?: InputMaybe<Customer_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -3873,7 +3842,11 @@ export type UpdateClientMutationVariables = Exact<{
 
 export type UpdateClientMutation = { __typename?: 'mutation_root', update_customer_by_pk?: { __typename?: 'customer', id: any } | null };
 
-export type GetMaterialDropDownListQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetMaterialDropDownListQueryVariables = Exact<{
+  where?: InputMaybe<Material_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
 
 
 export type GetMaterialDropDownListQuery = { __typename?: 'query_root', material: Array<{ __typename?: 'material', value: any, label: string }> };
@@ -3924,7 +3897,9 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = { __typename?: 'mutation_root', update_user?: { __typename?: 'user_mutation_response', returning: Array<{ __typename?: 'user', id: any }> } | null };
 
-export type GetVehiclesDropDownListQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetVehiclesDropDownListQueryVariables = Exact<{
+  where?: InputMaybe<Vehicle_Bool_Exp>;
+}>;
 
 
 export type GetVehiclesDropDownListQuery = { __typename?: 'query_root', vehicle: Array<{ __typename?: 'vehicle', value: any, label: string }> };
@@ -4381,7 +4356,7 @@ export const GetAllBillsDocument = gql`
       id
       name
     }
-    cutomer_2 {
+    customer_2 {
       id
       name
     }
@@ -4582,8 +4557,8 @@ export type BillsByCustomerQueryHookResult = ReturnType<typeof useBillsByCustome
 export type BillsByCustomerLazyQueryHookResult = ReturnType<typeof useBillsByCustomerLazyQuery>;
 export type BillsByCustomerQueryResult = Apollo.QueryResult<BillsByCustomerQuery, BillsByCustomerQueryVariables>;
 export const GetCustomerDropdownOptionsDocument = gql`
-    query getCustomerDropdownOptions($where: customer_bool_exp) {
-  customer(where: $where) {
+    query getCustomerDropdownOptions($where: customer_bool_exp, $limit: Int) {
+  customer(where: $where, limit: $limit) {
     value: id
     label: name
   }
@@ -4603,6 +4578,7 @@ export const GetCustomerDropdownOptionsDocument = gql`
  * const { data, loading, error } = useGetCustomerDropdownOptionsQuery({
  *   variables: {
  *      where: // value for 'where'
+ *      limit: // value for 'limit'
  *   },
  * });
  */
@@ -4844,8 +4820,8 @@ export type UpdateClientMutationHookResult = ReturnType<typeof useUpdateClientMu
 export type UpdateClientMutationResult = Apollo.MutationResult<UpdateClientMutation>;
 export type UpdateClientMutationOptions = Apollo.BaseMutationOptions<UpdateClientMutation, UpdateClientMutationVariables>;
 export const GetMaterialDropDownListDocument = gql`
-    query getMaterialDropDownList {
-  material {
+    query getMaterialDropDownList($where: material_bool_exp, $limit: Int, $offset: Int) {
+  material(where: $where, limit: $limit, offset: $offset) {
     value: id
     label: name
   }
@@ -4864,6 +4840,9 @@ export const GetMaterialDropDownListDocument = gql`
  * @example
  * const { data, loading, error } = useGetMaterialDropDownListQuery({
  *   variables: {
+ *      where: // value for 'where'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -5100,8 +5079,8 @@ export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutati
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const GetVehiclesDropDownListDocument = gql`
-    query getVehiclesDropDownList {
-  vehicle {
+    query getVehiclesDropDownList($where: vehicle_bool_exp) {
+  vehicle(where: $where) {
     value: id
     label: name
   }
@@ -5120,6 +5099,7 @@ export const GetVehiclesDropDownListDocument = gql`
  * @example
  * const { data, loading, error } = useGetVehiclesDropDownListQuery({
  *   variables: {
+ *      where: // value for 'where'
  *   },
  * });
  */

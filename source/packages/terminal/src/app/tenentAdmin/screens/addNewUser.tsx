@@ -10,7 +10,6 @@ import TextF from '@mui/material/TextField';
 import { LinearProgress } from '@mui/material';
 import { Box } from '@mui/system';
 import * as Yup from 'yup';
-import Loader from '@infra-weigh/loading';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import {
   useAddUsersMutation,
@@ -41,7 +40,6 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
   const [addUser, { loading }] = useAddUsersMutation();
   return (
     <div>
-      <Loader open={loading || dataToLoad1} setOpen={() => null} />
       <Button variant="outlined" sx={{ m: 1 }} onClick={handleClickOpen}>
         NEW STAFF
       </Button>
@@ -95,13 +93,13 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
               },
             })
               .then(() => {
-                handleClose();
-                toast.done('user created successfully exist');
+                toast.success('user created successfully exist');
                 setSubmitting(false);
+                handleClose();
               })
               .catch(() => {
-                handleClose();
                 toast.error('user already exist');
+                handleClose();
                 setSubmitting(false);
               });
           }}
@@ -175,7 +173,9 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                         <TextF {...params} label="Branch" />
                       )}
                     />
-                    {isSubmitting && <LinearProgress />}
+                    {(isSubmitting || loading || dataToLoad1) && (
+                      <LinearProgress />
+                    )}
                   </Box>
                 </Form>
               </DialogContent>

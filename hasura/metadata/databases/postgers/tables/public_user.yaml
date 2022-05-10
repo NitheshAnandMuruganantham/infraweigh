@@ -55,6 +55,22 @@ select_permissions:
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id
+update_permissions:
+  - role: tenantAdmin
+    permission:
+      columns:
+        - created_at
+        - email
+        - id
+        - meta_data
+        - profile
+        - role
+        - updated_at
+        - weighbridge_id
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      check: null
 delete_permissions:
   - role: tenantAdmin
     permission:
@@ -92,7 +108,16 @@ event_triggers:
     definition:
       enable_manual: false
       update:
-        columns: '*'
+        columns:
+          - meta_data
+          - profile
+          - email
+          - role
+          - created_at
+          - updated_at
+          - id
+          - tenent_id
+          - weighbridge_id
     retry_conf:
       num_retries: 0
       interval_sec: 10

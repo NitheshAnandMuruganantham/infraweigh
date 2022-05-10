@@ -102,7 +102,7 @@ subscription getAllBills(
       id
       name
     }
-    cutomer_2 {
+    customer_2 {
       id
       name
     }

@@ -3,6 +3,7 @@ import {
   Button,
   FormControlLabel,
   FormLabel,
+  Autocomplete as AC,
   InputAdornment,
   Radio,
   TextField as TF,
@@ -14,33 +15,36 @@ import { Formik, Field } from 'formik';
 import { TextField, Autocomplete, RadioGroup, Switch } from 'formik-mui';
 import SelectWeight from '../components/selectWeight';
 import { v4 as uuid } from 'uuid';
-import Loader from '@infra-weigh/loading';
 
 import {
-  useGetMaterialDropDownListQuery,
-  useGetVehiclesDropDownListQuery,
   useAddBillMutation,
-  useGetCustomerDropdownOptionsQuery,
+  useGetCustomerDropdownOptionsLazyQuery,
+  useGetMaterialDropDownListLazyQuery,
+  useGetVehiclesDropDownListLazyQuery,
 } from '@infra-weigh/generated';
 import { auth, storage } from '@infra-weigh/firebase';
 import Capture from '../components/capture';
 import { toast } from 'react-toastify';
 import { ref, uploadString, deleteObject } from 'firebase/storage';
 const Home: FunctionComponent = () => {
-  const { data: customerData, loading: customerLoading } =
-    useGetCustomerDropdownOptionsQuery({
+  const [loadCustomers, { data: customerData, loading: customerLoading }] =
+    useGetCustomerDropdownOptionsLazyQuery({
       variables: {
         where: {
           tenent_id: {
             _eq: localStorage.getItem('x-tenent-id'),
           },
         },
+        limit: 3000,
       },
     });
-  const { data: materialData, loading: materialLoading } =
-    useGetMaterialDropDownListQuery();
-  const { data: vehicleData, loading: vehicleLoading } =
-    useGetVehiclesDropDownListQuery();
+  const [materials, setMaterials] = useState<any[]>([]);
+  const [customer, setCustomer] = useState<any[]>([]);
+  const [vehicle, setVehicle] = useState<any[]>([]);
+  const [loadMaterialData, { data: materialData, loading: materialLoading }] =
+    useGetMaterialDropDownListLazyQuery();
+  const [loadVehicleData, { data: vehicleData, loading: vehicleLoading }] =
+    useGetVehiclesDropDownListLazyQuery();
   const [addBill] = useAddBillMutation();
   const [BillRefId, SetBillRefId] = useState<string>();
   const [open, SetOpen] = useState<boolean>(false);
@@ -49,45 +53,33 @@ const Home: FunctionComponent = () => {
   const [photo2, setPhoto2] = useState<any>(null);
   const [photo3, setPhoto3] = useState<any>(null);
   const [photo4, setPhoto4] = useState<any>(null);
-  const [load, setLoad] = useState(true);
+
   useEffect(() => {
-    if (materialData && customerData && vehicleData) {
-      setLoad(false);
+    if (materialData) {
+      setMaterials(materialData.material);
     }
-  }, [
-    materialLoading,
-    customerLoading,
-    vehicleLoading,
-    materialData,
-    customerData,
-    vehicleData,
-  ]);
+  }, [materialData]);
+  useEffect(() => {
+    if (customerData) {
+      setCustomer(customerData.customer);
+    }
+  }, [customerData]);
+  useEffect(() => {
+    if (vehicleData) {
+      setVehicle(vehicleData.vehicle);
+    }
+  }, [vehicleData]);
+
   return (
     <>
-      <Loader open={load} setOpen={setLoad} />
       <Formik
         initialValues={{
           vehicleNumber: '',
-          material: {
-            label: '',
-            value: null,
-          },
-          vehicle: {
-            label: '',
-            value: null,
-          },
-          buyer: {
-            label: '',
-            value: null,
-          },
-          seller: {
-            label: '',
-            value: null,
-          },
-          trader: {
-            label: '',
-            value: null,
-          },
+          material: null,
+          vehicle: null,
+          buyer: null,
+          seller: null,
+          trader: null,
           secondWeight: false,
           charges: 0,
           scaleWeight: 0,
@@ -110,11 +102,11 @@ const Home: FunctionComponent = () => {
               })
               .required(),
             charges: Yup.number().required(),
-            scaleWeight: Yup.string().required('Required'),
+            scaleWeight: Yup.number().required('Required'),
             tareWeight: Yup.lazy((val) =>
               val.secondWeight
                 ? Yup.string().required('Required')
-                : Yup.string()
+                : Yup.number()
             ),
             buyer: Yup.object().shape({
               value: Yup.string().required('Required'),
@@ -124,7 +116,6 @@ const Home: FunctionComponent = () => {
         }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
-          setLoad(true);
           try {
             const id = uuid();
             // eslint-disable-next-line prefer-const
@@ -145,22 +136,26 @@ const Home: FunctionComponent = () => {
               photo1,
               'data_url'
             );
+
             const up2 = await uploadString(
               ref(storage, n2),
               photo2,
               'data_url'
             );
+
             const up3 = await uploadString(
               ref(storage, n3),
               photo3,
               'data_url'
             );
+
             const up4 = await uploadString(
               ref(storage, n4),
               photo4,
               'data_url'
             );
 
+            const customerData: any = values;
             await addBill({
               variables: {
                 object: {
@@ -172,12 +167,12 @@ const Home: FunctionComponent = () => {
                     up4.ref.fullPath,
                   ],
                   charges: values.charges,
-                  vehicle_id: values.vehicle.value,
-                  material_id: values.material.value,
+                  vehicle_id: customerData.vehicle.value,
+                  material_id: customerData.material.value,
                   vehicle_number: values.vehicleNumber,
-                  customer_id: values.buyer.value,
-                  customer_2_id: values.seller.value,
-                  customer_3_id: values.trader.value,
+                  customer_id: customerData.buyer.value,
+                  customer_2_id: customerData.seller.value,
+                  customer_3_id: customerData.trader.value,
                   scale_weight: values.scaleWeight,
                   tare_weight: values.secondWeight ? values.tareWeight : 0,
                   second_weight: values.secondWeight,
@@ -205,12 +200,9 @@ const Home: FunctionComponent = () => {
                 setSubmitting(false);
                 toast.success('Bill Added Successfully');
                 resetForm();
-                setLoad(false);
               });
           } catch (error) {
-            setLoad(false);
             setSubmitting(false);
-            console.log(error);
           }
         }}
       >
@@ -307,11 +299,27 @@ const Home: FunctionComponent = () => {
               <Field
                 component={Autocomplete}
                 name="material"
-                options={materialData?.material || []}
+                loading={materialLoading}
+                disableClearable
+                isOptionEqualToValue={(option: any, value: any) =>
+                  option.value === value.value
+                }
+                onOpen={() => loadMaterialData()}
+                onInputChange={(_: any, v: any) => {
+                  loadMaterialData({
+                    variables: {
+                      where: {
+                        name: {
+                          _like: `%${v}%`,
+                        },
+                      },
+                    },
+                  });
+                }}
+                options={materials}
                 renderInput={(params: any) => (
                   <TF {...params} label="Material" />
                 )}
-                id="outlined-required"
                 sx={{
                   margin: 2,
                   width: '90%',
@@ -319,24 +327,49 @@ const Home: FunctionComponent = () => {
               />
               <Field
                 component={Autocomplete}
-                filterOptions={(options: any, state: any) => {
-                  if (
-                    values.seller.value !== null &&
-                    values.trader.value !== null
-                  ) {
-                    const filtered = options.filter((option: any) => {
-                      return (
-                        option.value !== values.trader.value &&
-                        option.value !== values.seller.value
-                      );
-                    });
-                    return filtered;
-                  } else {
-                    return options;
-                  }
-                }}
                 name="buyer"
-                options={customerData?.customer || []}
+                filterOptions={(options: any, state: any) => {
+                  const filtered = options.filter((option: any) => {
+                    return (
+                      option.value !== values.trader &&
+                      option.value !== values.seller
+                    );
+                  });
+                  return filtered;
+                }}
+                loading={customerLoading}
+                onOpen={() =>
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        tenent_id: {
+                          _eq: localStorage.getItem('x-tenent-id'),
+                        },
+                      },
+                    },
+                  })
+                }
+                onInputChange={(_: any, v: any) => {
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        _and: [
+                          {
+                            tenent_id: {
+                              _eq: localStorage.getItem('x-tenent-id'),
+                            },
+                          },
+                          {
+                            name: {
+                              _like: `%${v}%`,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  });
+                }}
+                options={customer}
                 renderInput={(params: any) => <TF {...params} label="buyer" />}
                 sx={{
                   margin: 2,
@@ -345,27 +378,51 @@ const Home: FunctionComponent = () => {
               />
 
               <Field
+                component={Autocomplete}
                 name="seller"
                 filterOptions={(options: any, state: any) => {
-                  if (
-                    values.buyer.value !== null &&
-                    values.trader.value !== null
-                  ) {
-                    const filtered = options.filter((option: any) => {
-                      return (
-                        option.value !== values.trader.value &&
-                        option.value !== values.buyer.value
-                      );
-                    });
-                    return filtered;
-                  } else {
-                    return options;
-                  }
+                  const filtered = options.filter((option: any) => {
+                    return (
+                      option.value !== values.trader &&
+                      option.value !== values.buyer
+                    );
+                  });
+                  return filtered;
                 }}
-                component={Autocomplete}
-                options={customerData?.customer || []}
+                loading={customerLoading}
+                onOpen={() =>
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        tenent_id: {
+                          _eq: localStorage.getItem('x-tenent-id'),
+                        },
+                      },
+                    },
+                  })
+                }
+                onInputChange={(_: any, v: any) => {
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        _and: [
+                          {
+                            tenent_id: {
+                              _eq: localStorage.getItem('x-tenent-id'),
+                            },
+                          },
+                          {
+                            name: {
+                              _like: `%${v}%`,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  });
+                }}
+                options={customer}
                 renderInput={(params: any) => <TF {...params} label="seller" />}
-                id="outlined-required"
                 sx={{
                   margin: 2,
                   width: '90%',
@@ -375,23 +432,48 @@ const Home: FunctionComponent = () => {
               <Field
                 name="trader"
                 filterOptions={(options: any, state: any) => {
-                  if (
-                    values.buyer.value !== null &&
-                    values.seller.value !== null
-                  ) {
-                    const filtered = options.filter((option: any) => {
-                      return (
-                        option.value !== values.buyer.value &&
-                        option.value !== values.seller.value
-                      );
-                    });
-                    return filtered;
-                  } else {
-                    return options;
-                  }
+                  const filtered = options.filter((option: any) => {
+                    return (
+                      option.value !== values.buyer &&
+                      option.value !== values.seller
+                    );
+                  });
+                  return filtered;
                 }}
                 component={Autocomplete}
-                options={customerData?.customer || []}
+                loading={customerLoading}
+                onOpen={() =>
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        tenent_id: {
+                          _eq: localStorage.getItem('x-tenent-id'),
+                        },
+                      },
+                    },
+                  })
+                }
+                onInputChange={(_: any, v: any) => {
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        _and: [
+                          {
+                            tenent_id: {
+                              _eq: localStorage.getItem('x-tenent-id'),
+                            },
+                          },
+                          {
+                            name: {
+                              _like: `%${v}%`,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  });
+                }}
+                options={customer}
                 renderInput={(params: any) => (
                   <TF {...params} label="trader or mediator" />
                 )}
@@ -413,21 +495,27 @@ const Home: FunctionComponent = () => {
               >
                 <FormLabel>paid by</FormLabel>
                 <Field component={RadioGroup} row name="paidBy">
-                  <FormControlLabel
-                    value="buyer"
-                    control={<Radio />}
-                    label="buyer"
-                  />
-                  <FormControlLabel
-                    value="trader"
-                    control={<Radio />}
-                    label="trader"
-                  />
-                  <FormControlLabel
-                    value="seller"
-                    control={<Radio />}
-                    label="seller"
-                  />
+                  {values.buyer && values.buyer && (
+                    <FormControlLabel
+                      value="buyer"
+                      control={<Radio />}
+                      label="buyer"
+                    />
+                  )}
+                  {values.trader && values.trader && (
+                    <FormControlLabel
+                      value="trader"
+                      control={<Radio />}
+                      label="trader"
+                    />
+                  )}
+                  {values.seller && values.seller && (
+                    <FormControlLabel
+                      value="seller"
+                      control={<Radio />}
+                      label="seller"
+                    />
+                  )}
                   <FormControlLabel
                     value="driver"
                     control={<Radio />}
@@ -487,11 +575,27 @@ const Home: FunctionComponent = () => {
               <Field
                 component={Autocomplete}
                 name="vehicle"
-                options={vehicleData?.vehicle || []}
+                loading={vehicleLoading}
+                disableClearable
+                isOptionEqualToValue={(option: any, value: any) =>
+                  option.value === value.value
+                }
+                onOpen={() => loadVehicleData()}
+                onInputChange={(_: any, v: any) => {
+                  loadVehicleData({
+                    variables: {
+                      where: {
+                        name: {
+                          _like: `%${v}%`,
+                        },
+                      },
+                    },
+                  });
+                }}
+                options={vehicle}
                 renderInput={(params: any) => (
                   <TF {...params} label="Vehicle" />
                 )}
-                id="outlined-required"
                 sx={{
                   margin: 2,
                   width: '90%',

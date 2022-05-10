@@ -12,6 +12,7 @@ import {
 } from '@infra-weigh/generated';
 import { apollo as gqlClient } from '@infra-weigh/client';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const columns: GridColDef[] = [
   {
@@ -79,9 +80,12 @@ const columns: GridColDef[] = [
                         },
                       })
                       .catch(() => {
-                        alert(
+                        toast.error(
                           'relation exists so remove the related resources to delete this resource !'
                         );
+                      })
+                      .then((d) => {
+                        d && toast.success('weighbridge deleted successfully');
                       });
                   },
                 },
@@ -94,27 +98,6 @@ const columns: GridColDef[] = [
           }}
         >
           Delete
-        </Button>
-      );
-    },
-  },
-  {
-    field: 'info',
-    headerName: 'Info',
-    width: 75,
-    sortable: false,
-    filterable: false,
-    renderCell: (params) => {
-      return (
-        <Button
-          variant="contained"
-          color="info"
-          size="small"
-          onClick={() => {
-            alert(`Edit ${params.row.id}`);
-          }}
-        >
-          Info
         </Button>
       );
     },

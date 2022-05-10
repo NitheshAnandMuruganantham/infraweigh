@@ -11,7 +11,6 @@ import { Box } from '@mui/system';
 import * as Yup from 'yup';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import { useCreateCustomerMutation } from '@infra-weigh/generated';
-import Loading from '@infra-weigh/loading';
 import { toast } from 'react-toastify';
 
 const AddNewClient: React.FunctionComponent = () => {
@@ -27,7 +26,6 @@ const AddNewClient: React.FunctionComponent = () => {
   const [addNewClient, { loading }] = useCreateCustomerMutation();
   return (
     <div>
-      <Loading open={loading} setOpen={() => null} />
       <Button variant="outlined" sx={{ m: 1 }} onClick={handleClickOpen}>
         new client
       </Button>
@@ -168,7 +166,7 @@ const AddNewClient: React.FunctionComponent = () => {
                       onChange={(e) => setFieldValue('phone', e.toString())}
                     />
 
-                    {isSubmitting && <LinearProgress />}
+                    {(isSubmitting || loading) && <LinearProgress />}
                   </Box>
                 </Form>
               </DialogContent>

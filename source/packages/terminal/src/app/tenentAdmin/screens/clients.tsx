@@ -13,6 +13,7 @@ import {
   useGetCustomersSubscription,
 } from '@infra-weigh/generated';
 import { apollo as gqlClient } from '@infra-weigh/client';
+import { toast } from 'react-toastify';
 
 const columns: GridColDef[] = [
   {
@@ -70,12 +71,21 @@ const columns: GridColDef[] = [
                 {
                   label: 'Yes',
                   onClick: () => {
-                    gqlClient.mutate({
-                      mutation: DeleteCustomerDocument,
-                      variables: {
-                        deleteCustomerByPkId: params.row.id,
-                      },
-                    });
+                    gqlClient
+                      .mutate({
+                        mutation: DeleteCustomerDocument,
+                        variables: {
+                          deleteCustomerByPkId: params.row.id,
+                        },
+                      })
+                      .catch(() => {
+                        toast.error('bills are linked to this client');
+                      })
+                      .then((dat) => {
+                        if (dat) {
+                          toast.success('client deleted successfully');
+                        }
+                      });
                   },
                 },
                 {
@@ -101,9 +111,16 @@ const Clients = () => {
       where: {
         _and: [
           {
-            name: {
-              _like: `%${search}%`,
-            },
+            _or: [
+              {
+                name: {
+                  _like: `%${search}%`,
+                },
+                company_name: {
+                  _like: `%${search}%`,
+                },
+              },
+            ],
           },
           {
             tenent_id: {
@@ -122,9 +139,16 @@ const Clients = () => {
         where: {
           _and: [
             {
-              name: {
-                _like: `%${search}%`,
-              },
+              _or: [
+                {
+                  name: {
+                    _like: `%${search}%`,
+                  },
+                  company_name: {
+                    _like: `%${search}%`,
+                  },
+                },
+              ],
             },
             {
               tenent_id: {
