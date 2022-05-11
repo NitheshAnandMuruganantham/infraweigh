@@ -64,7 +64,7 @@ const App: FunctionComponent<{
         <StyledFirebaseAuth
           uiConfig={{
             signInFlow: 'popup',
-            signInSuccessUrl: '/signedIn',
+            signInSuccessUrl: '/',
             siteName: 'Infraweigh.co WeighBridge automation',
             privacyPolicyUrl: 'https://infraweigh.co/privacy-policy',
             signInOptions: [
