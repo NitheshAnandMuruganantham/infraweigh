@@ -7,6 +7,7 @@ import {
   InputAdornment,
   Radio,
   TextField as TF,
+  LinearProgress,
 } from '@mui/material';
 import BillInfo from '../printBill';
 import { FunctionComponent, useEffect, useState } from 'react';
@@ -53,6 +54,7 @@ const Home: FunctionComponent = () => {
   const [photo2, setPhoto2] = useState<any>(null);
   const [photo3, setPhoto3] = useState<any>(null);
   const [photo4, setPhoto4] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (materialData) {
@@ -72,6 +74,13 @@ const Home: FunctionComponent = () => {
 
   return (
     <>
+      {loading && (
+        <LinearProgress
+          sx={{
+            mx: '10px',
+          }}
+        />
+      )}
       <Formik
         initialValues={{
           vehicleNumber: '',
@@ -304,7 +313,13 @@ const Home: FunctionComponent = () => {
                 isOptionEqualToValue={(option: any, value: any) =>
                   option.value === value.value
                 }
-                onOpen={() => loadMaterialData()}
+                onOpen={() =>
+                  loadMaterialData({
+                    variables: {
+                      limit: 3000,
+                    },
+                  })
+                }
                 onInputChange={(_: any, v: any) => {
                   loadMaterialData({
                     variables: {
@@ -313,6 +328,7 @@ const Home: FunctionComponent = () => {
                           _like: `%${v}%`,
                         },
                       },
+                      limit: 3000,
                     },
                   });
                 }}
@@ -328,16 +344,11 @@ const Home: FunctionComponent = () => {
               <Field
                 component={Autocomplete}
                 name="buyer"
-                filterOptions={(options: any, state: any) => {
-                  const filtered = options.filter((option: any) => {
-                    return (
-                      option.value !== values.trader &&
-                      option.value !== values.seller
-                    );
-                  });
-                  return filtered;
-                }}
                 loading={customerLoading}
+                disableClearable
+                isOptionEqualToValue={(option: any, value: any) =>
+                  option.value === value.value
+                }
                 onOpen={() =>
                   loadCustomers({
                     variables: {
@@ -346,6 +357,7 @@ const Home: FunctionComponent = () => {
                           _eq: localStorage.getItem('x-tenent-id'),
                         },
                       },
+                      limit: 3000,
                     },
                   })
                 }
@@ -355,17 +367,18 @@ const Home: FunctionComponent = () => {
                       where: {
                         _and: [
                           {
-                            tenent_id: {
-                              _eq: localStorage.getItem('x-tenent-id'),
-                            },
-                          },
-                          {
                             name: {
                               _like: `%${v}%`,
                             },
                           },
+                          {
+                            tenent_id: {
+                              _eq: localStorage.getItem('x-tenent-id'),
+                            },
+                          },
                         ],
                       },
+                      limit: 3000,
                     },
                   });
                 }}
@@ -376,20 +389,14 @@ const Home: FunctionComponent = () => {
                   width: '90%',
                 }}
               />
-
               <Field
                 component={Autocomplete}
                 name="seller"
-                filterOptions={(options: any, state: any) => {
-                  const filtered = options.filter((option: any) => {
-                    return (
-                      option.value !== values.trader &&
-                      option.value !== values.buyer
-                    );
-                  });
-                  return filtered;
-                }}
                 loading={customerLoading}
+                disableClearable
+                isOptionEqualToValue={(option: any, value: any) =>
+                  option.value === value.value
+                }
                 onOpen={() =>
                   loadCustomers({
                     variables: {
@@ -398,6 +405,7 @@ const Home: FunctionComponent = () => {
                           _eq: localStorage.getItem('x-tenent-id'),
                         },
                       },
+                      limit: 3000,
                     },
                   })
                 }
@@ -407,17 +415,18 @@ const Home: FunctionComponent = () => {
                       where: {
                         _and: [
                           {
-                            tenent_id: {
-                              _eq: localStorage.getItem('x-tenent-id'),
-                            },
-                          },
-                          {
                             name: {
                               _like: `%${v}%`,
                             },
                           },
+                          {
+                            tenent_id: {
+                              _eq: localStorage.getItem('x-tenent-id'),
+                            },
+                          },
                         ],
                       },
+                      limit: 3000,
                     },
                   });
                 }}
@@ -428,20 +437,14 @@ const Home: FunctionComponent = () => {
                   width: '90%',
                 }}
               />
-
               <Field
-                name="trader"
-                filterOptions={(options: any, state: any) => {
-                  const filtered = options.filter((option: any) => {
-                    return (
-                      option.value !== values.buyer &&
-                      option.value !== values.seller
-                    );
-                  });
-                  return filtered;
-                }}
                 component={Autocomplete}
+                name="trader"
                 loading={customerLoading}
+                disableClearable
+                isOptionEqualToValue={(option: any, value: any) =>
+                  option.value === value.value
+                }
                 onOpen={() =>
                   loadCustomers({
                     variables: {
@@ -450,6 +453,7 @@ const Home: FunctionComponent = () => {
                           _eq: localStorage.getItem('x-tenent-id'),
                         },
                       },
+                      limit: 3000,
                     },
                   })
                 }
@@ -459,24 +463,23 @@ const Home: FunctionComponent = () => {
                       where: {
                         _and: [
                           {
-                            tenent_id: {
-                              _eq: localStorage.getItem('x-tenent-id'),
-                            },
-                          },
-                          {
                             name: {
                               _like: `%${v}%`,
                             },
                           },
+                          {
+                            tenent_id: {
+                              _eq: localStorage.getItem('x-tenent-id'),
+                            },
+                          },
                         ],
                       },
+                      limit: 3000,
                     },
                   });
                 }}
                 options={customer}
-                renderInput={(params: any) => (
-                  <TF {...params} label="trader or mediator" />
-                )}
+                renderInput={(params: any) => <TF {...params} label="trader" />}
                 sx={{
                   margin: 2,
                   width: '90%',
@@ -495,21 +498,21 @@ const Home: FunctionComponent = () => {
               >
                 <FormLabel>paid by</FormLabel>
                 <Field component={RadioGroup} row name="paidBy">
-                  {values.buyer && values.buyer && (
+                  {values.buyer && (
                     <FormControlLabel
                       value="buyer"
                       control={<Radio />}
                       label="buyer"
                     />
                   )}
-                  {values.trader && values.trader && (
+                  {values.trader && (
                     <FormControlLabel
                       value="trader"
                       control={<Radio />}
                       label="trader"
                     />
                   )}
-                  {values.seller && values.seller && (
+                  {values.seller && (
                     <FormControlLabel
                       value="seller"
                       control={<Radio />}
@@ -551,6 +554,7 @@ const Home: FunctionComponent = () => {
               {values.secondWeight && (
                 <Box sx={{ m: 1, width: '90%', display: 'flex' }}>
                   <SelectWeight
+                    setLoading={(loading: boolean) => setLoading(loading)}
                     setWeight={(val) => {
                       setFieldValue('tareWeight', val);
                     }}
@@ -577,10 +581,22 @@ const Home: FunctionComponent = () => {
                 name="vehicle"
                 loading={vehicleLoading}
                 disableClearable
+                onChange={(_: any, v: any) => {
+                  setFieldValue('vehicle', {
+                    value: v.value,
+                    label: v.label,
+                  });
+                }}
                 isOptionEqualToValue={(option: any, value: any) =>
                   option.value === value.value
                 }
-                onOpen={() => loadVehicleData()}
+                onOpen={() =>
+                  loadVehicleData({
+                    variables: {
+                      limit: 3000,
+                    },
+                  })
+                }
                 onInputChange={(_: any, v: any) => {
                   loadVehicleData({
                     variables: {
@@ -589,6 +605,7 @@ const Home: FunctionComponent = () => {
                           _like: `%${v}%`,
                         },
                       },
+                      limit: 3000,
                     },
                   });
                 }}

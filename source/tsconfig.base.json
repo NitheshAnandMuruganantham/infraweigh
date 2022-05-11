@@ -3,43 +3,27 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
+    "noImplicitAny": false,
     "declaration": false,
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@infra-weigh/auth": [
-        "packages/auth/src/index.ts"
-      ],
-      "@infra-weigh/client": [
-        "packages/client/src/index.ts"
-      ],
-      "@infra-weigh/firebase": [
-        "packages/firebase/src/index.ts"
-      ],
-      "@infra-weigh/generated": [
-        "packages/generated/src/index.ts"
-      ],
-      "@infra-weigh/loading": [
-        "packages/loading/src/index.ts"
-      ],
-      "@infra-weigh/print-templates": [
-        "packages/print-templates/src/index.ts"
-      ]
+      "@infra-weigh/auth": ["packages/auth/src/index.ts"],
+      "@infra-weigh/client": ["packages/client/src/index.ts"],
+      "@infra-weigh/firebase": ["packages/firebase/src/index.ts"],
+      "@infra-weigh/generated": ["packages/generated/src/index.ts"],
+      "@infra-weigh/loading": ["packages/loading/src/index.ts"],
+      "@infra-weigh/print-templates": ["packages/print-templates/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

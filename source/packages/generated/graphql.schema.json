@@ -2754,6 +2754,22 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paid_by",
             "description": null,
             "args": [],
@@ -3423,6 +3439,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "scale_weight",
             "description": null,
             "args": [],
@@ -3460,6 +3488,18 @@
         "inputFields": [
           {
             "name": "charges",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nano_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -3738,6 +3778,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Int_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paid_by",
             "description": null,
             "type": {
@@ -3919,6 +3971,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "bill_nano_id_key",
+            "description": "unique or primary key constraint",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "bill_pkey",
             "description": "unique or primary key constraint",
             "isDeprecated": false,
@@ -3939,6 +3997,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "money",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nano_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -4154,6 +4224,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nano_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -4435,6 +4517,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paid_by",
             "description": null,
             "args": [],
@@ -4640,6 +4734,18 @@
           },
           {
             "name": "material_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nano_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -4865,6 +4971,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paid_by",
             "description": null,
             "args": [],
@@ -5070,6 +5188,18 @@
           },
           {
             "name": "material_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nano_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -5533,6 +5663,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paid_by",
             "description": null,
             "type": {
@@ -5789,6 +5931,12 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paid_by",
             "description": "column name",
             "isDeprecated": false,
@@ -5960,6 +6108,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paid_by",
             "description": null,
             "type": {
@@ -6114,6 +6274,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "scale_weight",
             "description": null,
             "args": [],
@@ -6162,6 +6334,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "scale_weight",
             "description": null,
             "type": {
@@ -6197,6 +6381,18 @@
         "fields": [
           {
             "name": "charges",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nano_id",
             "description": null,
             "args": [],
             "type": {
@@ -6256,6 +6452,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "scale_weight",
             "description": null,
             "type": {
@@ -6291,6 +6499,18 @@
         "fields": [
           {
             "name": "charges",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nano_id",
             "description": null,
             "args": [],
             "type": {
@@ -6350,6 +6570,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "scale_weight",
             "description": null,
             "type": {
@@ -6396,6 +6628,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "scale_weight",
             "description": null,
             "args": [],
@@ -6433,6 +6677,18 @@
         "inputFields": [
           {
             "name": "charges",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nano_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -6529,6 +6785,12 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "paid_by",
             "description": "column name",
             "isDeprecated": false,
@@ -6615,6 +6877,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "scale_weight",
             "description": null,
             "args": [],
@@ -6663,6 +6937,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "scale_weight",
             "description": null,
             "type": {
@@ -6698,6 +6984,18 @@
         "fields": [
           {
             "name": "charges",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nano_id",
             "description": null,
             "args": [],
             "type": {
@@ -6757,6 +7055,18 @@
             "deprecationReason": null
           },
           {
+            "name": "nano_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "scale_weight",
             "description": null,
             "type": {
@@ -6792,6 +7102,18 @@
         "fields": [
           {
             "name": "charges",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nano_id",
             "description": null,
             "args": [],
             "type": {
@@ -6840,6 +7162,18 @@
         "inputFields": [
           {
             "name": "charges",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nano_id",
             "description": null,
             "type": {
               "kind": "ENUM",

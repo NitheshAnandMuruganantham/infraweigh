@@ -113,6 +113,7 @@ select_permissions:
         - id
         - image
         - material_id
+        - nano_id
         - paid_by
         - photos
         - reference_bill_id
@@ -131,24 +132,25 @@ select_permissions:
   - role: terminal
     permission:
       columns:
-        - second_weight
-        - scale_weight
-        - tare_weight
-        - photos
         - charges
-        - image
-        - paid_by
-        - vehicle_number
         - created_at
-        - updated_at
         - customer_2_id
         - customer_3_id
         - customer_id
         - id
+        - image
         - material_id
+        - nano_id
+        - paid_by
+        - photos
         - reference_bill_id
+        - scale_weight
+        - second_weight
+        - tare_weight
         - tenent_id
+        - updated_at
         - vehicle_id
+        - vehicle_number
         - weighbridge_id
       filter:
         _and:

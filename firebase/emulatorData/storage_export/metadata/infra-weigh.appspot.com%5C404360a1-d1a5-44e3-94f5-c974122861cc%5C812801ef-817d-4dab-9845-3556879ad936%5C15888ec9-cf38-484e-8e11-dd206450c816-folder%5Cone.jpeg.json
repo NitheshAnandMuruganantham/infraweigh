@@ -1,0 +1,20 @@
+{
+  "name": "404360a1-d1a5-44e3-94f5-c974122861cc/812801ef-817d-4dab-9845-3556879ad936/15888ec9-cf38-484e-8e11-dd206450c816-folder/one.jpeg",
+  "bucket": "infra-weigh.appspot.com",
+  "contentType": "image/jpeg",
+  "metageneration": 1,
+  "generation": 1652197335183,
+  "storageClass": "STANDARD",
+  "contentDisposition": "inline",
+  "cacheControl": "public, max-age=3600",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "1030e714-d8ff-4ba5-8d42-856227ea8890"
+  ],
+  "etag": "QteejdyG4yN+mOt2s3bL624byZU",
+  "timeCreated": "2022-05-10T15:42:15.182Z",
+  "updated": "2022-05-10T15:42:15.182Z",
+  "size": 11289,
+  "md5Hash": "+NTM7uk2e2OQNPwT0IrF4A==",
+  "crc32c": "2992865106"
+}

@@ -125,6 +125,7 @@ query getBillForRecept($billByPkId: uuid!) {
     charges
     scale_weight
     photos
+    nano_id
     second_weight
     tare_weight
     reference_bill_id

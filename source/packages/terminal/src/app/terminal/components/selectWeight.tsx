@@ -9,9 +9,10 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useGetTareWeightBillsLazyQuery } from '@infra-weigh/generated';
 const AddNewClient: React.FunctionComponent<{
   vehicleNumber: string;
+  setLoading: (loading: boolean) => void;
   setWeight(weight: number): void;
   setBillRefId(id: string): void;
-}> = ({ vehicleNumber, setWeight, setBillRefId }) => {
+}> = ({ vehicleNumber, setWeight, setBillRefId, setLoading }) => {
   const [data, SetData] = React.useState<any>([]);
   const [open, setOpen] = React.useState(false);
   const [getData] = useGetTareWeightBillsLazyQuery();
@@ -68,8 +69,10 @@ const AddNewClient: React.FunctionComponent<{
       renderCell: (val) => (
         <Button
           onClick={() => {
+            setLoading(true);
             setWeight(val.row.scale_weight || 0);
             setBillRefId(val.row.id);
+            setLoading(false);
             handleClose();
           }}
           variant="outlined"
@@ -86,7 +89,9 @@ const AddNewClient: React.FunctionComponent<{
       <Button
         variant="outlined"
         sx={{ m: 1, width: '60%' }}
-        onClick={handleClickOpen}
+        onClick={() => {
+          handleClickOpen();
+        }}
       >
         select weight
       </Button>
@@ -94,11 +99,7 @@ const AddNewClient: React.FunctionComponent<{
         <DialogTitle>select weight</DialogTitle>
         <DialogContent>
           <Box height={'500px'}>
-            <DataGrid
-              // loading={loading}
-              rows={data}
-              columns={columns}
-            />
+            <DataGrid rows={data} columns={columns} />
           </Box>
         </DialogContent>
         <DialogActions>

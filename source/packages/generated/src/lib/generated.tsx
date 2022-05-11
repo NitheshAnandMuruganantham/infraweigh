@@ -246,6 +246,7 @@ export type Bill = {
   /** An object relationship */
   material: Material;
   material_id: Scalars['uuid'];
+  nano_id: Scalars['Int'];
   paid_by: Scalars['String'];
   photos?: Maybe<Scalars['json']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
@@ -347,6 +348,7 @@ export type Bill_Arr_Rel_Insert_Input = {
 export type Bill_Avg_Fields = {
   __typename?: 'bill_avg_fields';
   charges?: Maybe<Scalars['Float']>;
+  nano_id?: Maybe<Scalars['Float']>;
   scale_weight?: Maybe<Scalars['Float']>;
   tare_weight?: Maybe<Scalars['Float']>;
 };
@@ -354,6 +356,7 @@ export type Bill_Avg_Fields = {
 /** order by avg() on columns of table "bill" */
 export type Bill_Avg_Order_By = {
   charges?: InputMaybe<Order_By>;
+  nano_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
 };
@@ -378,6 +381,7 @@ export type Bill_Bool_Exp = {
   image?: InputMaybe<String_Comparison_Exp>;
   material?: InputMaybe<Material_Bool_Exp>;
   material_id?: InputMaybe<Uuid_Comparison_Exp>;
+  nano_id?: InputMaybe<Int_Comparison_Exp>;
   paid_by?: InputMaybe<String_Comparison_Exp>;
   photos?: InputMaybe<Json_Comparison_Exp>;
   reference_bill_id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -397,12 +401,15 @@ export type Bill_Bool_Exp = {
 /** unique or primary key constraints on table "bill" */
 export enum Bill_Constraint {
   /** unique or primary key constraint */
+  BillNanoIdKey = 'bill_nano_id_key',
+  /** unique or primary key constraint */
   BillPkey = 'bill_pkey'
 }
 
 /** input type for incrementing numeric columns in table "bill" */
 export type Bill_Inc_Input = {
   charges?: InputMaybe<Scalars['money']>;
+  nano_id?: InputMaybe<Scalars['Int']>;
   scale_weight?: InputMaybe<Scalars['Int']>;
   tare_weight?: InputMaybe<Scalars['Int']>;
 };
@@ -424,6 +431,7 @@ export type Bill_Insert_Input = {
   image?: InputMaybe<Scalars['String']>;
   material?: InputMaybe<Material_Obj_Rel_Insert_Input>;
   material_id?: InputMaybe<Scalars['uuid']>;
+  nano_id?: InputMaybe<Scalars['Int']>;
   paid_by?: InputMaybe<Scalars['String']>;
   photos?: InputMaybe<Scalars['json']>;
   reference_bill_id?: InputMaybe<Scalars['uuid']>;
@@ -451,6 +459,7 @@ export type Bill_Max_Fields = {
   id?: Maybe<Scalars['uuid']>;
   image?: Maybe<Scalars['String']>;
   material_id?: Maybe<Scalars['uuid']>;
+  nano_id?: Maybe<Scalars['Int']>;
   paid_by?: Maybe<Scalars['String']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
   scale_weight?: Maybe<Scalars['Int']>;
@@ -472,6 +481,7 @@ export type Bill_Max_Order_By = {
   id?: InputMaybe<Order_By>;
   image?: InputMaybe<Order_By>;
   material_id?: InputMaybe<Order_By>;
+  nano_id?: InputMaybe<Order_By>;
   paid_by?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
@@ -494,6 +504,7 @@ export type Bill_Min_Fields = {
   id?: Maybe<Scalars['uuid']>;
   image?: Maybe<Scalars['String']>;
   material_id?: Maybe<Scalars['uuid']>;
+  nano_id?: Maybe<Scalars['Int']>;
   paid_by?: Maybe<Scalars['String']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
   scale_weight?: Maybe<Scalars['Int']>;
@@ -515,6 +526,7 @@ export type Bill_Min_Order_By = {
   id?: InputMaybe<Order_By>;
   image?: InputMaybe<Order_By>;
   material_id?: InputMaybe<Order_By>;
+  nano_id?: InputMaybe<Order_By>;
   paid_by?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
@@ -566,6 +578,7 @@ export type Bill_Order_By = {
   image?: InputMaybe<Order_By>;
   material?: InputMaybe<Material_Order_By>;
   material_id?: InputMaybe<Order_By>;
+  nano_id?: InputMaybe<Order_By>;
   paid_by?: InputMaybe<Order_By>;
   photos?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
@@ -606,6 +619,8 @@ export enum Bill_Select_Column {
   /** column name */
   MaterialId = 'material_id',
   /** column name */
+  NanoId = 'nano_id',
+  /** column name */
   PaidBy = 'paid_by',
   /** column name */
   Photos = 'photos',
@@ -639,6 +654,7 @@ export type Bill_Set_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   image?: InputMaybe<Scalars['String']>;
   material_id?: InputMaybe<Scalars['uuid']>;
+  nano_id?: InputMaybe<Scalars['Int']>;
   paid_by?: InputMaybe<Scalars['String']>;
   photos?: InputMaybe<Scalars['json']>;
   reference_bill_id?: InputMaybe<Scalars['uuid']>;
@@ -656,6 +672,7 @@ export type Bill_Set_Input = {
 export type Bill_Stddev_Fields = {
   __typename?: 'bill_stddev_fields';
   charges?: Maybe<Scalars['Float']>;
+  nano_id?: Maybe<Scalars['Float']>;
   scale_weight?: Maybe<Scalars['Float']>;
   tare_weight?: Maybe<Scalars['Float']>;
 };
@@ -663,6 +680,7 @@ export type Bill_Stddev_Fields = {
 /** order by stddev() on columns of table "bill" */
 export type Bill_Stddev_Order_By = {
   charges?: InputMaybe<Order_By>;
+  nano_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
 };
@@ -671,6 +689,7 @@ export type Bill_Stddev_Order_By = {
 export type Bill_Stddev_Pop_Fields = {
   __typename?: 'bill_stddev_pop_fields';
   charges?: Maybe<Scalars['Float']>;
+  nano_id?: Maybe<Scalars['Float']>;
   scale_weight?: Maybe<Scalars['Float']>;
   tare_weight?: Maybe<Scalars['Float']>;
 };
@@ -678,6 +697,7 @@ export type Bill_Stddev_Pop_Fields = {
 /** order by stddev_pop() on columns of table "bill" */
 export type Bill_Stddev_Pop_Order_By = {
   charges?: InputMaybe<Order_By>;
+  nano_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
 };
@@ -686,6 +706,7 @@ export type Bill_Stddev_Pop_Order_By = {
 export type Bill_Stddev_Samp_Fields = {
   __typename?: 'bill_stddev_samp_fields';
   charges?: Maybe<Scalars['Float']>;
+  nano_id?: Maybe<Scalars['Float']>;
   scale_weight?: Maybe<Scalars['Float']>;
   tare_weight?: Maybe<Scalars['Float']>;
 };
@@ -693,6 +714,7 @@ export type Bill_Stddev_Samp_Fields = {
 /** order by stddev_samp() on columns of table "bill" */
 export type Bill_Stddev_Samp_Order_By = {
   charges?: InputMaybe<Order_By>;
+  nano_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
 };
@@ -701,6 +723,7 @@ export type Bill_Stddev_Samp_Order_By = {
 export type Bill_Sum_Fields = {
   __typename?: 'bill_sum_fields';
   charges?: Maybe<Scalars['money']>;
+  nano_id?: Maybe<Scalars['Int']>;
   scale_weight?: Maybe<Scalars['Int']>;
   tare_weight?: Maybe<Scalars['Int']>;
 };
@@ -708,6 +731,7 @@ export type Bill_Sum_Fields = {
 /** order by sum() on columns of table "bill" */
 export type Bill_Sum_Order_By = {
   charges?: InputMaybe<Order_By>;
+  nano_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
 };
@@ -730,6 +754,8 @@ export enum Bill_Update_Column {
   Image = 'image',
   /** column name */
   MaterialId = 'material_id',
+  /** column name */
+  NanoId = 'nano_id',
   /** column name */
   PaidBy = 'paid_by',
   /** column name */
@@ -758,6 +784,7 @@ export enum Bill_Update_Column {
 export type Bill_Var_Pop_Fields = {
   __typename?: 'bill_var_pop_fields';
   charges?: Maybe<Scalars['Float']>;
+  nano_id?: Maybe<Scalars['Float']>;
   scale_weight?: Maybe<Scalars['Float']>;
   tare_weight?: Maybe<Scalars['Float']>;
 };
@@ -765,6 +792,7 @@ export type Bill_Var_Pop_Fields = {
 /** order by var_pop() on columns of table "bill" */
 export type Bill_Var_Pop_Order_By = {
   charges?: InputMaybe<Order_By>;
+  nano_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
 };
@@ -773,6 +801,7 @@ export type Bill_Var_Pop_Order_By = {
 export type Bill_Var_Samp_Fields = {
   __typename?: 'bill_var_samp_fields';
   charges?: Maybe<Scalars['Float']>;
+  nano_id?: Maybe<Scalars['Float']>;
   scale_weight?: Maybe<Scalars['Float']>;
   tare_weight?: Maybe<Scalars['Float']>;
 };
@@ -780,6 +809,7 @@ export type Bill_Var_Samp_Fields = {
 /** order by var_samp() on columns of table "bill" */
 export type Bill_Var_Samp_Order_By = {
   charges?: InputMaybe<Order_By>;
+  nano_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
 };
@@ -788,6 +818,7 @@ export type Bill_Var_Samp_Order_By = {
 export type Bill_Variance_Fields = {
   __typename?: 'bill_variance_fields';
   charges?: Maybe<Scalars['Float']>;
+  nano_id?: Maybe<Scalars['Float']>;
   scale_weight?: Maybe<Scalars['Float']>;
   tare_weight?: Maybe<Scalars['Float']>;
 };
@@ -795,6 +826,7 @@ export type Bill_Variance_Fields = {
 /** order by variance() on columns of table "bill" */
 export type Bill_Variance_Order_By = {
   charges?: InputMaybe<Order_By>;
+  nano_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
 };
@@ -3769,7 +3801,7 @@ export type GetBillForReceptQueryVariables = Exact<{
 }>;
 
 
-export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: string, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
+export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, nano_id: number, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: string, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
 
 export type GetVehicleByCollectionsQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
@@ -3899,6 +3931,7 @@ export type UpdateUserMutation = { __typename?: 'mutation_root', update_user?: {
 
 export type GetVehiclesDropDownListQueryVariables = Exact<{
   where?: InputMaybe<Vehicle_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -4407,6 +4440,7 @@ export const GetBillForReceptDocument = gql`
     charges
     scale_weight
     photos
+    nano_id
     second_weight
     tare_weight
     reference_bill_id
@@ -5079,8 +5113,8 @@ export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutati
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const GetVehiclesDropDownListDocument = gql`
-    query getVehiclesDropDownList($where: vehicle_bool_exp) {
-  vehicle(where: $where) {
+    query getVehiclesDropDownList($where: vehicle_bool_exp, $limit: Int) {
+  vehicle(where: $where, limit: $limit) {
     value: id
     label: name
   }
@@ -5100,6 +5134,7 @@ export const GetVehiclesDropDownListDocument = gql`
  * const { data, loading, error } = useGetVehiclesDropDownListQuery({
  *   variables: {
  *      where: // value for 'where'
+ *      limit: // value for 'limit'
  *   },
  * });
  */

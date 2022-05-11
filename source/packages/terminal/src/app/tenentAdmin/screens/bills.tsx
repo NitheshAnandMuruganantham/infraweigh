@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridValueGetterParams } from '@mui/x-data-grid';
 import {
   Box,
   Button,
@@ -10,10 +10,10 @@ import {
 } from '@mui/material';
 import {
   useGetAllBillsSubscription,
-  useGetCustomerDropdownOptionsQuery,
-  useGetMaterialDropDownListQuery,
+  useGetCustomerDropdownOptionsLazyQuery,
+  useGetMaterialDropDownListLazyQuery,
   useGetTotalBillsSubscription,
-  useGetVehiclesDropDownListQuery,
+  useGetVehiclesDropDownListLazyQuery,
 } from '@infra-weigh/generated';
 import BillInfo from './billInfo';
 import { Formik, Field, FormikProps } from 'formik';
@@ -22,119 +22,17 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-const columns: GridColDef[] = [
-  {
-    field: 'vehicle_number',
-    headerName: 'vehicle number',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'material',
-    headerName: 'material',
-    width: 100,
-    valueGetter: (params: GridValueGetterParams) => params.value.name,
-  },
-  {
-    field: 'weighbridge',
-    headerName: 'weighbridge',
-    width: 100,
-    valueGetter: (params: GridValueGetterParams) => params.value.name,
-  },
-  {
-    field: 'customer',
-    headerName: 'customer',
-    width: 150,
-    valueGetter: (params: GridValueGetterParams) =>
-      params.value && params.value.name ? params.value.name : 'null',
-  },
-  {
-    field: 'customer_2',
-    headerName: 'customer 2',
-    width: 150,
-    valueGetter: (params: GridValueGetterParams) =>
-      params.value && params.value.name ? params.value.name : 'null',
-  },
-  {
-    field: 'customer_3',
-    headerName: 'customer 3',
-    width: 150,
-    valueGetter: (params: GridValueGetterParams) =>
-      params.value && params.value.name ? params.value.name : 'null',
-  },
-  {
-    field: 'vehicle',
-    headerName: 'vehicle',
-    sortable: true,
-    width: 150,
-    valueGetter: (params: GridValueGetterParams) => params.value.name,
-  },
-  {
-    field: 'created_at',
-    headerName: 'created At',
-    sortable: true,
-    width: 250,
-    valueGetter: (params: GridValueGetterParams) =>
-      (params.value &&
-        new Date(params.value).toLocaleString('en-US', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          hour12: true,
-          hour: 'numeric',
-          minute: 'numeric',
-          second: 'numeric',
-          day: 'numeric',
-        })) ||
-      '',
-  },
-
-  {
-    field: 'second_weight',
-    headerName: 'second weight',
-    sortable: true,
-    width: 110,
-    valueGetter: (params: GridValueGetterParams) =>
-      params.value ? 'scale weight' : 'tare weight',
-  },
-  {
-    field: 'scale_weight',
-    headerName: 'scaleWeight',
-    sortable: true,
-    width: 120,
-  },
-  {
-    field: 'tare_weight',
-    headerName: 'tareWeight',
-    sortable: true,
-    width: 120,
-  },
-  {
-    field: 'netWeight',
-    headerName: 'netWeight',
-    sortable: true,
-    width: 120,
-    valueGetter: (params) =>
-      Math.abs(
-        parseInt(params.row.scale_weight, 10) -
-          parseInt(params.row.tare_weight || '0', 10) || 0
-      ),
-  },
-  {
-    field: 'info',
-    headerName: 'info',
-    sortable: false,
-    width: 120,
-    renderCell: (params) => <BillInfo name="info" id={params.row.id} />,
-  },
-];
 const Bills = () => {
   const [pageSize, setPageSize] = React.useState(10);
   const [page, setPage] = React.useState(1);
   const [filter, setFilter] = React.useState<any>([]);
   const [sort, setSort] = React.useState<any>({});
+  const [materials, setMaterials] = React.useState<any[]>([]);
+  const [customer, setCustomer] = React.useState<any[]>([]);
+  const [vehicle, setVehicle] = React.useState<any[]>([]);
   const [filterByDateTime, setFilterByDateTime] =
     React.useState<boolean>(false);
+  const [showLoading, setShowLoading] = React.useState<boolean>(false);
   const { data, loading } = useGetAllBillsSubscription({
     variables: {
       orderBy: sort,
@@ -145,6 +43,7 @@ const Bills = () => {
               _eq: localStorage.getItem('x-tenent-id'),
             },
           },
+
           ...filter,
         ],
       },
@@ -167,31 +66,50 @@ const Bills = () => {
         },
       },
     });
-  const { data: customerData, loading: customerLoading } =
-    useGetCustomerDropdownOptionsQuery({
+  const [loadCustomers, { data: customerData, loading: customerLoading }] =
+    useGetCustomerDropdownOptionsLazyQuery({
       variables: {
         where: {
-          _and: [
-            {
-              tenent_id: {
-                _eq: localStorage.getItem('x-tenent-id'),
-              },
-            },
-          ],
+          tenent_id: {
+            _eq: localStorage.getItem('x-tenent-id'),
+          },
         },
+        limit: 3000,
       },
     });
-  const { data: materialData, loading: materialLoading } =
-    useGetMaterialDropDownListQuery();
-  const { data: vehicleData, loading: vehicleLoading } =
-    useGetVehiclesDropDownListQuery();
+
+  const [loadMaterialData, { data: materialData, loading: materialLoading }] =
+    useGetMaterialDropDownListLazyQuery();
+  const [loadVehicleData, { data: vehicleData, loading: vehicleLoading }] =
+    useGetVehiclesDropDownListLazyQuery();
+
+  React.useEffect(() => {
+    if (materialData) {
+      setMaterials(materialData.material);
+    }
+  }, [materialData]);
+
+  React.useEffect(() => {
+    if (customerData) {
+      setCustomer(customerData.customer);
+    }
+  }, [customerData]);
+
+  React.useEffect(() => {
+    if (vehicleData) {
+      setVehicle(vehicleData.vehicle);
+    }
+  }, [vehicleData]);
+
   const FormikRef = React.useRef<FormikProps<any>>(null);
+
   React.useEffect(() => {
     if (!filterByDateTime) {
       FormikRef.current?.setFieldValue('from', '', false);
       FormikRef.current?.setFieldValue('to', '', false);
     }
   }, [filterByDateTime]);
+
   return (
     <Box>
       <Box height={600} width={'100%'} textAlign="center">
@@ -199,17 +117,24 @@ const Bills = () => {
           sx={{
             visibility:
               totalRowsLoading ||
-              customerLoading ||
-              vehicleLoading ||
-              materialLoading ||
               loading ||
-              totalRowsLoading
+              showLoading ||
+              totalRowsLoading ||
+              materialLoading ||
+              customerLoading ||
+              vehicleLoading
                 ? 'visible'
                 : 'hidden',
           }}
         />
         <Formik
           innerRef={FormikRef}
+          onReset={() => {
+            setFilter([]);
+            setFilterByDateTime(false);
+            setSort({});
+            setPage(1);
+          }}
           onSubmit={(values, { setSubmitting }) => {
             let dat: any = [];
             if (values.vehicle_number && values.vehicle_number.length > 0) {
@@ -222,7 +147,11 @@ const Bills = () => {
                 },
               ];
             }
-            if (values.vehicle.value && values.vehicle.value.length > 0) {
+            if (
+              values.vehicle &&
+              values.vehicle.value &&
+              values.vehicle.value.length > 0
+            ) {
               dat = [
                 ...dat,
                 {
@@ -232,7 +161,11 @@ const Bills = () => {
                 },
               ];
             }
-            if (values.customer.value && values.customer.value.length > 0) {
+            if (
+              values.customer &&
+              values.customer.value &&
+              values.customer.value.length > 0
+            ) {
               dat = [
                 ...dat,
                 {
@@ -272,7 +205,11 @@ const Bills = () => {
                 },
               ];
             }
-            if (values.material.value && values.material.value.length > 0) {
+            if (
+              values.material &&
+              values.material.value &&
+              values.material.value.length > 0
+            ) {
               dat = [
                 ...dat,
                 {
@@ -282,29 +219,20 @@ const Bills = () => {
                 },
               ];
             }
-            setFilter(dat);
             setSubmitting(false);
+            setFilter(dat);
           }}
           initialValues={{
             vehicle_number: '',
-            material: {
-              label: '',
-              value: '',
-            },
-            vehicle: {
-              label: '',
-              value: '',
-            },
-            customer: {
-              label: '',
-              value: '',
-            },
+            material: null,
+            vehicle: null,
+            customer: null,
             from: '',
             to: '',
           }}
         >
-          {({ handleSubmit, setFieldValue, values }) => (
-            <form onSubmit={handleSubmit}>
+          {({ handleSubmit, handleReset, setFieldValue, values }) => (
+            <form onSubmit={handleSubmit} onReset={handleReset}>
               <Box display="flex" flexDirection={'row'}>
                 <Field
                   component={TextField}
@@ -324,11 +252,31 @@ const Bills = () => {
                 <Field
                   component={Autocomplete}
                   name="material"
-                  options={materialData?.material || []}
+                  onChange={(_: any, v: any) => setFieldValue('material', v)}
+                  loading={materialLoading}
+                  onOpen={() =>
+                    loadMaterialData({
+                      variables: {
+                        limit: 3000,
+                      },
+                    })
+                  }
+                  onInputChange={(_: any, v: any) => {
+                    loadMaterialData({
+                      variables: {
+                        where: {
+                          name: {
+                            _like: `%${v}%`,
+                          },
+                        },
+                        limit: 3000,
+                      },
+                    });
+                  }}
+                  options={materials}
                   renderInput={(params: any) => (
                     <TF {...params} label="Material" />
                   )}
-                  id="outlined-required"
                   sx={{
                     margin: 2,
                     width: '40%',
@@ -337,11 +285,47 @@ const Bills = () => {
                 <Field
                   component={Autocomplete}
                   name="customer"
-                  options={customerData?.customer || []}
+                  onChange={(_: any, v: any) => setFieldValue('customer', v)}
+                  loading={customerLoading}
+                  disableClearable
+                  isOptionEqualToValue={(option: any, value: any) =>
+                    option.value === value.value
+                  }
+                  onOpen={() =>
+                    loadCustomers({
+                      variables: {
+                        where: {
+                          tenent_id: {
+                            _eq: localStorage.getItem('x-tenent-id'),
+                          },
+                        },
+                      },
+                    })
+                  }
+                  onInputChange={(_: any, v: any) => {
+                    loadCustomers({
+                      variables: {
+                        where: {
+                          _and: [
+                            {
+                              name: {
+                                _like: `%${v}%`,
+                              },
+                            },
+                            {
+                              tenent_id: {
+                                _eq: localStorage.getItem('x-tenent-id'),
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    });
+                  }}
+                  options={customer}
                   renderInput={(params: any) => (
-                    <TF {...params} label="Customer" />
+                    <TF {...params} label="customer" />
                   )}
-                  id="outlined-required"
                   sx={{
                     margin: 2,
                     width: '40%',
@@ -350,11 +334,37 @@ const Bills = () => {
                 <Field
                   component={Autocomplete}
                   name="vehicle"
-                  options={vehicleData?.vehicle || []}
+                  loading={vehicleLoading}
+                  disableClearable
+                  onChange={(_: any, v: any) => {
+                    setFieldValue('vehicle', v.value);
+                  }}
+                  isOptionEqualToValue={(option: any, value: any) =>
+                    option.value === value.value
+                  }
+                  onOpen={() =>
+                    loadVehicleData({
+                      variables: {
+                        limit: 3000,
+                      },
+                    })
+                  }
+                  onInputChange={(_: any, v: any) => {
+                    loadVehicleData({
+                      variables: {
+                        where: {
+                          name: {
+                            _like: `%${v}%`,
+                          },
+                        },
+                        limit: 3000,
+                      },
+                    });
+                  }}
+                  options={vehicle}
                   renderInput={(params: any) => (
-                    <TF {...params} label="vehicle" />
+                    <TF {...params} label="Vehicle" />
                   )}
-                  id="outlined-required"
                   sx={{
                     margin: 2,
                     width: '40%',
@@ -363,6 +373,7 @@ const Bills = () => {
               </Box>
               <Box display="flex" alignItems="flex-start" sx={{ ml: 1 }}>
                 <Checkbox
+                  checked={filterByDateTime}
                   onChange={(e) => setFilterByDateTime(e.target.checked)}
                 />
                 <Typography variant="body2" sx={{ ml: 1, my: 'auto' }}>
@@ -409,10 +420,7 @@ const Bills = () => {
           )}
         </Formik>
 
-        {!totalRowsLoading &&
-        !customerLoading &&
-        !vehicleLoading &&
-        !materialLoading ? (
+        {!totalRowsLoading ? (
           <DataGrid
             loading={loading || totalRowsLoading}
             onPageChange={(p) => setPage(p)}
@@ -423,7 +431,120 @@ const Bills = () => {
             rows={data?.bill || []}
             paginationMode="server"
             rowCount={totalRows?.bill_aggregate.aggregate?.count}
-            columns={columns}
+            columns={[
+              {
+                field: 'vehicle_number',
+                headerName: 'vehicle number',
+                width: 150,
+                editable: false,
+              },
+              {
+                field: 'material',
+                headerName: 'material',
+                width: 100,
+                valueGetter: (params: GridValueGetterParams) =>
+                  params.value.name,
+              },
+              {
+                field: 'customer',
+                headerName: 'customer',
+                width: 150,
+                valueGetter: (params: GridValueGetterParams) =>
+                  params.value && params.value.name
+                    ? params.value.name
+                    : 'null',
+              },
+              {
+                field: 'customer_2',
+                headerName: 'customer 2',
+                width: 150,
+                valueGetter: (params: GridValueGetterParams) =>
+                  params.value && params.value.name
+                    ? params.value.name
+                    : 'null',
+              },
+              {
+                field: 'customer_3',
+                headerName: 'customer 3',
+                width: 150,
+                valueGetter: (params: GridValueGetterParams) =>
+                  params.value && params.value.name
+                    ? params.value.name
+                    : 'null',
+              },
+              {
+                field: 'vehicle',
+                headerName: 'vehicle',
+                sortable: true,
+                width: 150,
+                valueGetter: (params: GridValueGetterParams) =>
+                  params.value.name,
+              },
+              {
+                field: 'created_at',
+                headerName: 'created At',
+                sortable: true,
+                width: 250,
+                valueGetter: (params: GridValueGetterParams) =>
+                  (params.value &&
+                    new Date(params.value).toLocaleString('en-US', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      hour12: true,
+                      hour: 'numeric',
+                      minute: 'numeric',
+                      second: 'numeric',
+                      day: 'numeric',
+                    })) ||
+                  '',
+              },
+
+              {
+                field: 'second_weight',
+                headerName: 'second weight',
+                sortable: true,
+                width: 110,
+                valueGetter: (params: GridValueGetterParams) =>
+                  params.value ? 'scale weight' : 'tare weight',
+              },
+              {
+                field: 'scale_weight',
+                headerName: 'scaleWeight',
+                sortable: true,
+                width: 120,
+              },
+              {
+                field: 'tare_weight',
+                headerName: 'tareWeight',
+                sortable: true,
+                width: 120,
+              },
+              {
+                field: 'netWeight',
+                headerName: 'netWeight',
+                sortable: true,
+                width: 120,
+                valueGetter: (params) =>
+                  Math.abs(
+                    parseInt(`${params.row.scale_weight}`, 10) -
+                      parseInt(`${params.row.tare_weight}` || '0', 10) || 0
+                  ),
+              },
+              {
+                field: 'info',
+                headerName: 'info',
+                sortable: false,
+                width: 120,
+                renderCell: (params) => (
+                  <BillInfo
+                    setLoading={(l) => setShowLoading(l)}
+                    name="info"
+                    id={params.row.id}
+                  />
+                ),
+              },
+            ]}
             autoPageSize
             filterMode="server"
             onFilterModelChange={(f) => setFilter(f)}

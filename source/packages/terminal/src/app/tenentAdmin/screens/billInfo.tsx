@@ -12,6 +12,7 @@ import { CircularProgress } from '@mui/material';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '@infra-weigh/firebase';
 import ReactToPrint from 'react-to-print';
+import { toast } from 'react-toastify';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -25,7 +26,8 @@ const Transition = React.forwardRef(function Transition(
 const BillInfo: React.FunctionComponent<{
   name: string;
   id: string;
-}> = ({ name, id }) => {
+  setLoading: (loading: boolean) => void;
+}> = ({ name, id, setLoading }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -42,63 +44,41 @@ const BillInfo: React.FunctionComponent<{
     },
   });
   const printRef = React.useRef<any>();
-  const [loading, setLoading] = React.useState(false);
-
   return (
     <>
-      {loading && (
-        <div
-          style={{
-            position: 'fixed',
-            height: '100%',
-            width: '100%',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 9999,
-            backgroundColor: '#ffff',
-            opacity: '60%',
-          }}
-        >
-          <CircularProgress
-            sx={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              zIndex: 11000,
-            }}
-          />
-        </div>
-      )}
       <Button
         onClick={async () => {
-          setLoading(true);
-          // eslint-disable-next-line prefer-const
-          let dat1 = await getData();
-          const d1 = await getDownloadURL(
-            ref(storage, dat1.data?.bill_by_pk?.photos[0])
-          );
-          const d2 = await getDownloadURL(
-            ref(storage, dat1.data?.bill_by_pk?.photos[1])
-          );
-          const d3 = await getDownloadURL(
-            ref(storage, dat1.data?.bill_by_pk?.photos[2])
-          );
-          const d4 = await getDownloadURL(
-            ref(storage, dat1.data?.bill_by_pk?.photos[3])
-          );
-          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          dat1 &&
-          dat1.data &&
-          dat1.data.bill_by_pk &&
-          dat1.data.bill_by_pk.photos
-            ? (dat1.data.bill_by_pk.photos = [d1, d2, d3, d4])
-            : null;
-          setData(dat1);
-          setLoading(false);
-
-          handleClickOpen();
+          try {
+            setLoading(true);
+            // eslint-disable-next-line prefer-const
+            let dat1 = await getData();
+            const d1 = await getDownloadURL(
+              ref(storage, dat1.data?.bill_by_pk?.photos[0])
+            );
+            const d2 = await getDownloadURL(
+              ref(storage, dat1.data?.bill_by_pk?.photos[1])
+            );
+            const d3 = await getDownloadURL(
+              ref(storage, dat1.data?.bill_by_pk?.photos[2])
+            );
+            const d4 = await getDownloadURL(
+              ref(storage, dat1.data?.bill_by_pk?.photos[3])
+            );
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            dat1 &&
+            dat1.data &&
+            dat1.data.bill_by_pk &&
+            dat1.data.bill_by_pk.photos
+              ? (dat1.data.bill_by_pk.photos = [d1, d2, d3, d4])
+              : null;
+            setData(dat1);
+            setLoading(false);
+            handleClickOpen();
+          } catch {
+            handleClose();
+            setLoading(false);
+            toast.error('can not feth bill details');
+          }
         }}
         variant="outlined"
         size="small"

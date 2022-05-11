@@ -85,9 +85,18 @@ const Clients = () => {
         where: {
           _and: [
             {
-              name: {
-                _like: `%${search}%`,
-              },
+              _or: [
+                {
+                  name: {
+                    _like: `%${search}%`,
+                  },
+                },
+                {
+                  company_name: {
+                    _like: `%${search}%`,
+                  },
+                },
+              ],
             },
             {
               tenent_id: {
