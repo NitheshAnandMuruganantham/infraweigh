@@ -9,8 +9,17 @@ import { getFirestore, connectFirestoreEmulator } from '@firebase/firestore';
 import { connectStorageEmulator, getStorage } from 'firebase/storage';
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 
-const firebaseConfig = JSON.parse(process.env['NX_BASE_FIREBASE'] || '{}');
-const app = initializeApp(firebaseConfig);
+const app = initializeApp({
+  apiKey: 'AIzaSyBpoRyq3jdK2QkmzUte5oF2g8q-QUVq9vA',
+  authDomain: 'infra-weigh.firebaseapp.com',
+  databaseURL:
+    'https://infra-weigh-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: 'infra-weigh',
+  storageBucket: 'infra-weigh.appspot.com',
+  messagingSenderId: '48414145939',
+  appId: '1:48414145939:web:f16f10aa3d1ab22a3fbc66',
+  measurementId: 'G-YLJRZGV3ST',
+});
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 const storage = getStorage(app);
