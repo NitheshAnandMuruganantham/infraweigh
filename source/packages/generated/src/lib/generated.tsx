@@ -403,7 +403,9 @@ export enum Bill_Constraint {
   /** unique or primary key constraint */
   BillNanoIdKey = 'bill_nano_id_key',
   /** unique or primary key constraint */
-  BillPkey = 'bill_pkey'
+  BillPkey = 'bill_pkey',
+  /** unique or primary key constraint */
+  BillPkey_2 = 'bill_pkey_2'
 }
 
 /** input type for incrementing numeric columns in table "bill" */
@@ -2756,7 +2758,6 @@ export type User = {
   email: Scalars['String'];
   id: Scalars['uuid'];
   meta_data?: Maybe<Scalars['json']>;
-  password: Scalars['String'];
   profile?: Maybe<Scalars['json']>;
   role?: Maybe<Scalars['String']>;
   synced?: Maybe<Scalars['Boolean']>;
@@ -2826,7 +2827,6 @@ export type User_Bool_Exp = {
   email?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   meta_data?: InputMaybe<Json_Comparison_Exp>;
-  password?: InputMaybe<String_Comparison_Exp>;
   profile?: InputMaybe<Json_Comparison_Exp>;
   role?: InputMaybe<String_Comparison_Exp>;
   synced?: InputMaybe<Boolean_Comparison_Exp>;
@@ -2851,7 +2851,6 @@ export type User_Insert_Input = {
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   meta_data?: InputMaybe<Scalars['json']>;
-  password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<Scalars['json']>;
   role?: InputMaybe<Scalars['String']>;
   synced?: InputMaybe<Scalars['Boolean']>;
@@ -2868,7 +2867,6 @@ export type User_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
-  password?: Maybe<Scalars['String']>;
   role?: Maybe<Scalars['String']>;
   tenent_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2880,7 +2878,6 @@ export type User_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  password?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
   tenent_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -2893,7 +2890,6 @@ export type User_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
-  password?: Maybe<Scalars['String']>;
   role?: Maybe<Scalars['String']>;
   tenent_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2905,7 +2901,6 @@ export type User_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  password?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
   tenent_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -2934,7 +2929,6 @@ export type User_Order_By = {
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   meta_data?: InputMaybe<Order_By>;
-  password?: InputMaybe<Order_By>;
   profile?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
   synced?: InputMaybe<Order_By>;
@@ -2961,8 +2955,6 @@ export enum User_Select_Column {
   /** column name */
   MetaData = 'meta_data',
   /** column name */
-  Password = 'password',
-  /** column name */
   Profile = 'profile',
   /** column name */
   Role = 'role',
@@ -2982,7 +2974,6 @@ export type User_Set_Input = {
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   meta_data?: InputMaybe<Scalars['json']>;
-  password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<Scalars['json']>;
   role?: InputMaybe<Scalars['String']>;
   synced?: InputMaybe<Scalars['Boolean']>;
@@ -3001,8 +2992,6 @@ export enum User_Update_Column {
   Id = 'id',
   /** column name */
   MetaData = 'meta_data',
-  /** column name */
-  Password = 'password',
   /** column name */
   Profile = 'profile',
   /** column name */
@@ -3888,7 +3877,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, password: string, id: any, profile?: any | null, weighbridge_id: any, updated_at: any, role?: string | null, weighbridge: { __typename?: 'weighbridge', name: string, address: string } }> };
+export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, id: any, profile?: any | null, weighbridge_id: any, updated_at: any, role?: string | null, weighbridge: { __typename?: 'weighbridge', name: string, address: string } }> };
 
 export type GetAllUsersSubscriptionVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
@@ -4895,7 +4884,6 @@ export const GetUserDocument = gql`
     query getUser($where: user_bool_exp) {
   user(where: $where) {
     email
-    password
     id
     profile
     weighbridge_id

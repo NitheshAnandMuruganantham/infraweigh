@@ -3,8 +3,6 @@
   "projects": {
     "auth": "packages/auth",
     "client": "packages/client",
-    "customer": "packages/customer",
-    "customer-e2e": "packages/customer-e2e",
     "firebase": "packages/firebase",
     "generated": "packages/generated",
     "loading": "packages/loading",

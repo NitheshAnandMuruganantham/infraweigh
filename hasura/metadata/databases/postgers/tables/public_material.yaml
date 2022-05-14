@@ -10,6 +10,15 @@ array_relationships:
           schema: public
           name: bill
 select_permissions:
+  - role: customer
+    permission:
+      columns:
+        - hsn
+        - name
+        - created_at
+        - updated_at
+        - id
+      filter: {}
   - role: tenantAdmin
     permission:
       columns:

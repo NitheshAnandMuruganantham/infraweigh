@@ -48,7 +48,6 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
         <Formik
           initialValues={{
             name: '',
-            password: '',
             address: '',
             email: '',
             phone: '',
@@ -61,7 +60,6 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
           validationSchema={() => {
             return Yup.object().shape({
               name: Yup.string().required('Required'),
-              password: Yup.string().required('Required'),
               address: Yup.string().required('Required'),
               email: Yup.string().required('Required'),
               phone: Yup.string().required('Required'),
@@ -80,7 +78,6 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                 objects: [
                   {
                     email: values.email,
-                    password: values.password,
                     weighbridge_id: values.branch.value,
                     profile: {
                       name: values.name,
@@ -122,15 +119,6 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                       name="name"
                       type="text"
                       label="name"
-                    />
-                    <Field
-                      component={TextField}
-                      type="password"
-                      label="password"
-                      name="password"
-                      sx={{
-                        my: 1,
-                      }}
                     />
                     <Field
                       component={TextField}

@@ -31,6 +31,28 @@ array_relationships:
           schema: public
           name: weighbridge
 select_permissions:
+  - role: customer
+    permission:
+      columns:
+        - activate
+        - email
+        - id
+        - metadata
+        - name
+        - phone
+      filter:
+        bills:
+          _or:
+            - customer:
+                email:
+                  _eq: x-hasura-email
+            - customer_2:
+                email:
+                  _eq: x-hasura-email
+            - customer_3:
+                email:
+                  _eq: x-hasura-email
+      limit: 2000
   - role: tenantAdmin
     permission:
       columns:
@@ -44,6 +66,19 @@ select_permissions:
       filter:
         id:
           _eq: X-Hasura-tenent-Id
+  - role: terminal
+    permission:
+      columns:
+        - activate
+        - payment_pending
+        - metadata
+        - email
+        - name
+        - phone
+        - id
+      filter:
+        id:
+          _eq: x-hasura-tenent-id
 event_triggers:
   - name: new_client
     definition:

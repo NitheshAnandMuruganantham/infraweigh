@@ -30,7 +30,6 @@ insert_permissions:
         - email
         - id
         - meta_data
-        - password
         - profile
         - role
         - synced
@@ -41,36 +40,19 @@ select_permissions:
   - role: tenantAdmin
     permission:
       columns:
+        - created_at
+        - email
+        - id
+        - meta_data
+        - profile
+        - role
         - synced
-        - meta_data
-        - profile
-        - email
-        - password
-        - role
-        - created_at
-        - updated_at
-        - id
         - tenent_id
-        - weighbridge_id
-      filter:
-        tenent_id:
-          _eq: X-Hasura-tenent-Id
-update_permissions:
-  - role: tenantAdmin
-    permission:
-      columns:
-        - created_at
-        - email
-        - id
-        - meta_data
-        - profile
-        - role
         - updated_at
         - weighbridge_id
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id
-      check: null
 delete_permissions:
   - role: tenantAdmin
     permission:
@@ -113,8 +95,6 @@ event_triggers:
           - profile
           - email
           - role
-          - created_at
-          - updated_at
           - id
           - tenent_id
           - weighbridge_id

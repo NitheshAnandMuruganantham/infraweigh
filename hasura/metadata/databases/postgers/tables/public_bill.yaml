@@ -102,6 +102,42 @@ insert_permissions:
         - weighbridge_id
       backend_only: false
 select_permissions:
+  - role: customer
+    permission:
+      columns:
+        - second_weight
+        - nano_id
+        - scale_weight
+        - tare_weight
+        - photos
+        - charges
+        - image
+        - paid_by
+        - vehicle_number
+        - created_at
+        - updated_at
+        - customer_2_id
+        - customer_3_id
+        - customer_id
+        - id
+        - material_id
+        - reference_bill_id
+        - tenent_id
+        - vehicle_id
+        - weighbridge_id
+      filter:
+        _or:
+          - customer:
+              email:
+                _eq: x-hasura-email
+          - customer_2:
+              email:
+                _eq: x-hasura-email
+          - customer_3:
+              email:
+                _eq: x-hasura-email
+      limit: 500
+      allow_aggregations: true
   - role: tenantAdmin
     permission:
       columns:

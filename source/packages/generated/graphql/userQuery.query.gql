@@ -1,7 +1,6 @@
 query getUser($where: user_bool_exp) {
   user(where: $where) {
     email
-    password
     id
     profile
     weighbridge_id

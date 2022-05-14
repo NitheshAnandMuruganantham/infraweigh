@@ -37,8 +37,6 @@ const wsLink = new GraphQLWsLink(
         headers: getHeaders(),
       };
     },
-    // keepAlive: true,
-    // shouldRetry: true,
   })
 );
 
