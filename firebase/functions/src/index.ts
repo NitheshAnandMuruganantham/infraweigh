@@ -1,7 +1,22 @@
 import * as functions from "firebase-functions";
 import * as Admin from "firebase-admin";
+import { ApolloClient, HttpLink, InMemoryCache, gql } from "@apollo/client";
+import fetch from "cross-fetch";
 
 const admin = Admin.initializeApp();
+
+let headers: any = [];
+headers["x-hasura-admin-secret"] = `${process.env["ADMIN_SECRET"]}`;
+headers["Content-Type"] = "application/json";
+
+const client = new ApolloClient({
+  link: new HttpLink({
+    uri: process.env["HASURA_URL"] + "/v1/graphql",
+    headers,
+    fetch,
+  }),
+  cache: new InMemoryCache(),
+});
 
 const applyMiddleware = (req: any, res: any, next: any) => {
   if (
@@ -156,96 +171,90 @@ export const updateUser = functions.https.onRequest((req, res) =>
 
 export const genBill = functions.https.onRequest((req, res) =>
   applyMiddleware(req, res, async (req: any, res: any) => {
-    fetch(process.env["HASURA_URL"] + "/v1/query", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Hasura-Admin-Secret": process.env["HASURA_ADMIN_SECRET"] || "",
-      },
-      body: JSON.stringify({
-        query: `
-            query ($billByPkId: uuid!) {
-          bill_by_pk(id: $billByPkId) {
-            id
-            vehicle_number
-            created_at
-            second_weight
-            tare_weight
-            charges
-            photos
-            reference_bill_id
-            second_weight
-            tare_weight
-            photos
-            customer {
+    client
+      .query({
+        query: gql`
+          query ($billByPkId: uuid!) {
+            bill_by_pk(id: $billByPkId) {
               id
-              name
-              company_address
-              company_name
-              gst_in
-              metadata
-              email
-              phone
-            }
-            customer_2 {
-              id
-              name
-              company_address
-              company_name
-              gst_in
-              metadata
-              email
-              phone
-            }
-            customer_3 {
-              id
-              name
-              company_address
-              company_name
-              gst_in
-              email
-              phone
-              metadata
-            }
-            tenent {
-              id
-              email
-              phone
-              metadata
-              name
-            }
-            vehicle {
-              name
-              id
-              manufacturer
-            }
-            material {
-              name
-              id
-              hsn
-            }
-            paid_by
-            weighbridge {
-              display_name
-              id
-              address
-              pin_code
-              phone
-              logo
-              metadata
-              mail
-              name
+              vehicle_number
+              created_at
+              second_weight
+              tare_weight
+              charges
+              photos
+              reference_bill_id
+              second_weight
+              tare_weight
+              photos
+              customer {
+                id
+                name
+                company_address
+                company_name
+                gst_in
+                metadata
+                email
+                phone
+              }
+              customer_2 {
+                id
+                name
+                company_address
+                company_name
+                gst_in
+                metadata
+                email
+                phone
+              }
+              customer_3 {
+                id
+                name
+                company_address
+                company_name
+                gst_in
+                email
+                phone
+                metadata
+              }
+              tenent {
+                id
+                email
+                phone
+                metadata
+                name
+              }
+              vehicle {
+                name
+                id
+                manufacturer
+              }
+              material {
+                name
+                id
+                hsn
+              }
+              paid_by
+              weighbridge {
+                display_name
+                id
+                address
+                pin_code
+                phone
+                logo
+                metadata
+                mail
+                name
+              }
             }
           }
-        }
         `,
         variables: {
           billByPkId: req.body.event.data.new.id,
         },
-      }),
-    }).then((response) => {
-      response.json().then(async (data) => {
-        const dt = data.data.bill_by_pk;
+      })
+      .then(async (response) => {
+        const dt = response.data.bill_by_pk;
         if (dt.customer) {
           await admin
             .firestore()
@@ -406,7 +415,6 @@ export const genBill = functions.https.onRequest((req, res) =>
           id: req.body.event.data.new.id,
         });
       });
-    });
   })
 );
 
