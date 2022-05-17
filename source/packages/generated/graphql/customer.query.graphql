@@ -1,12 +1,17 @@
-query getCustomerDropdownOptions($where: customer_bool_exp) {
-  customer(where: $where) {
+query getCustomerDropdownOptions($where: customer_bool_exp, $limit: Int) {
+  customer(where: $where, limit: $limit) {
     value: id
-    label: company_name
+    label: name
   }
 }
 
-subscription getCustomers($where: customer_bool_exp) {
-  customer(where: $where) {
+subscription getCustomers(
+  $where: customer_bool_exp
+  $limit: Int
+  $offset: Int
+  $orderBy: [customer_order_by!]
+) {
+  customer(where: $where, limit: $limit, offset: $offset, order_by: $orderBy) {
     company_name
     id
     company_address
@@ -17,6 +22,24 @@ subscription getCustomers($where: customer_bool_exp) {
     credit
     credit_limit
     blocked
+  }
+}
+
+subscription getCustomersCount(
+  $where: customer_bool_exp
+  $limit: Int
+  $offset: Int
+  $orderBy: [customer_order_by!]
+) {
+  customer_aggregate(
+    where: $where
+    limit: $limit
+    offset: $offset
+    order_by: $orderBy
+  ) {
+    aggregate {
+      count
+    }
   }
 }
 

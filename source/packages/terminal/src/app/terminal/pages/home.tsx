@@ -3,9 +3,11 @@ import {
   Button,
   FormControlLabel,
   FormLabel,
+  Autocomplete as AC,
   InputAdornment,
   Radio,
   TextField as TF,
+  LinearProgress,
 } from '@mui/material';
 import BillInfo from '../printBill';
 import { FunctionComponent, useEffect, useState } from 'react';
@@ -14,76 +16,78 @@ import { Formik, Field } from 'formik';
 import { TextField, Autocomplete, RadioGroup, Switch } from 'formik-mui';
 import SelectWeight from '../components/selectWeight';
 import { v4 as uuid } from 'uuid';
-import Loader from '@infra-weigh/loading';
 
 import {
-  useGetMaterialDropDownListQuery,
-  useGetVehiclesDropDownListQuery,
   useAddBillMutation,
-  useGetCustomerDropdownOptionsQuery,
+  useGetCustomerDropdownOptionsLazyQuery,
+  useGetMaterialDropDownListLazyQuery,
+  useGetVehiclesDropDownListLazyQuery,
 } from '@infra-weigh/generated';
 import { auth, storage } from '@infra-weigh/firebase';
 import Capture from '../components/capture';
-import { ref, uploadString } from 'firebase/storage';
+import { toast } from 'react-toastify';
+import { ref, uploadString, deleteObject } from 'firebase/storage';
 const Home: FunctionComponent = () => {
-  const { data: customerData, loading: customerLoading } =
-    useGetCustomerDropdownOptionsQuery({
+  const [loadCustomers, { data: customerData, loading: customerLoading }] =
+    useGetCustomerDropdownOptionsLazyQuery({
       variables: {
         where: {
           tenent_id: {
             _eq: localStorage.getItem('x-tenent-id'),
           },
         },
+        limit: 3000,
       },
     });
-  const { data: materialData, loading: materialLoading } =
-    useGetMaterialDropDownListQuery();
-  const { data: vehicleData, loading: vehicleLoading } =
-    useGetVehiclesDropDownListQuery();
+  const [materials, setMaterials] = useState<any[]>([]);
+  const [customer, setCustomer] = useState<any[]>([]);
+  const [vehicle, setVehicle] = useState<any[]>([]);
+  const [loadMaterialData, { data: materialData, loading: materialLoading }] =
+    useGetMaterialDropDownListLazyQuery();
+  const [loadVehicleData, { data: vehicleData, loading: vehicleLoading }] =
+    useGetVehiclesDropDownListLazyQuery();
   const [addBill] = useAddBillMutation();
   const [BillRefId, SetBillRefId] = useState<string>();
   const [open, SetOpen] = useState<boolean>(false);
   const [data, SetData] = useState<any>(null);
+  const [photo1, setPhoto1] = useState<any>(null);
+  const [photo2, setPhoto2] = useState<any>(null);
+  const [photo3, setPhoto3] = useState<any>(null);
+  const [photo4, setPhoto4] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const [photo1, setPhoto1] = useState<any>();
-  const [photo2, setPhoto2] = useState<any>();
-  const [photo3, setPhoto3] = useState<any>();
-  const [photo4, setPhoto4] = useState<any>();
-  const [load, setLoad] = useState(true);
   useEffect(() => {
-    if (materialData && customerData && vehicleData) {
-      setLoad(false);
+    if (materialData) {
+      setMaterials(materialData.material);
     }
-  }, [
-    materialLoading,
-    customerLoading,
-    vehicleLoading,
-    materialData,
-    customerData,
-    vehicleData,
-  ]);
+  }, [materialData]);
+  useEffect(() => {
+    if (customerData) {
+      setCustomer(customerData.customer);
+    }
+  }, [customerData]);
+  useEffect(() => {
+    if (vehicleData) {
+      setVehicle(vehicleData.vehicle);
+    }
+  }, [vehicleData]);
+
   return (
     <>
-      <Loader open={load} setOpen={setLoad} />
+      {loading && (
+        <LinearProgress
+          sx={{
+            mx: '10px',
+          }}
+        />
+      )}
       <Formik
         initialValues={{
           vehicleNumber: '',
-          material: {
-            label: '',
-            value: '',
-          },
-          vehicle: {
-            label: '',
-            value: '',
-          },
-          buyer: {
-            label: '',
-            value: null,
-          },
-          seller: {
-            label: '',
-            value: null,
-          },
+          material: null,
+          vehicle: null,
+          buyer: null,
+          seller: null,
           trader: null,
           secondWeight: false,
           charges: 0,
@@ -107,21 +111,13 @@ const Home: FunctionComponent = () => {
               })
               .required(),
             charges: Yup.number().required(),
-            scaleWeight: Yup.string().required('Required'),
+            scaleWeight: Yup.number().required('Required'),
             tareWeight: Yup.lazy((val) =>
               val.secondWeight
                 ? Yup.string().required('Required')
-                : Yup.string()
+                : Yup.number()
             ),
             buyer: Yup.object().shape({
-              value: Yup.string().required('Required'),
-              label: Yup.string().required('Required'),
-            }),
-            seller: Yup.object().shape({
-              value: Yup.string().required('Required'),
-              label: Yup.string().required('Required'),
-            }),
-            trader: Yup.object().shape({
               value: Yup.string().required('Required'),
               label: Yup.string().required('Required'),
             }),
@@ -129,7 +125,6 @@ const Home: FunctionComponent = () => {
         }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
-          setLoad(true);
           try {
             const id = uuid();
             // eslint-disable-next-line prefer-const
@@ -150,23 +145,27 @@ const Home: FunctionComponent = () => {
               photo1,
               'data_url'
             );
+
             const up2 = await uploadString(
               ref(storage, n2),
               photo2,
               'data_url'
             );
+
             const up3 = await uploadString(
               ref(storage, n3),
               photo3,
               'data_url'
             );
+
             const up4 = await uploadString(
               ref(storage, n4),
               photo4,
               'data_url'
             );
 
-            const dat = await addBill({
+            const customerData: any = values;
+            await addBill({
               variables: {
                 object: {
                   id,
@@ -177,10 +176,12 @@ const Home: FunctionComponent = () => {
                     up4.ref.fullPath,
                   ],
                   charges: values.charges,
-                  vehicle_id: values.vehicle.value,
-                  material_id: values.material.value,
+                  vehicle_id: customerData.vehicle.value,
+                  material_id: customerData.material.value,
                   vehicle_number: values.vehicleNumber,
-                  customer_id: values.buyer.value,
+                  customer_id: customerData.buyer.value,
+                  customer_2_id: customerData.seller.value,
+                  customer_3_id: customerData.trader.value,
                   scale_weight: values.scaleWeight,
                   tare_weight: values.secondWeight ? values.tareWeight : 0,
                   second_weight: values.secondWeight,
@@ -188,22 +189,29 @@ const Home: FunctionComponent = () => {
                   paid_by: values.paidBy,
                 },
               },
-            });
-            // eslint-disable-next-line prefer-const
-            let dt: any = dat.data?.insert_bill_one;
-            dt.photos = [photo1, photo2, photo3, photo4];
-            SetData(dt);
-            SetOpen(true);
-            setPhoto1(null);
-            setPhoto2(null);
-            setPhoto3(null);
-            setPhoto4(null);
-            setSubmitting(false);
-            resetForm();
-            setLoad(false);
+            })
+              .catch(() => {
+                deleteObject(up1.ref);
+                deleteObject(up2.ref);
+                deleteObject(up3.ref);
+                deleteObject(up4.ref);
+              })
+              .then((dat) => {
+                // eslint-disable-next-line prefer-const
+                let dt: any = dat?.data?.insert_bill_one;
+                dt.photos = [photo1, photo2, photo3, photo4];
+                SetData(dt);
+                SetOpen(true);
+                setPhoto1(null);
+                setPhoto2(null);
+                setPhoto3(null);
+                setPhoto4(null);
+                setSubmitting(false);
+                toast.success('Bill Added Successfully');
+                resetForm();
+              });
           } catch (error) {
-            setLoad(false);
-            console.log(error);
+            setSubmitting(false);
           }
         }}
       >
@@ -255,14 +263,79 @@ const Home: FunctionComponent = () => {
                 setData3={setPhoto3}
                 setData4={setPhoto4}
               />
+              <Box flex={1} flexDirection="column">
+                {photo1 && (
+                  <img
+                    style={{
+                      margin: '10px',
+                      width: '100px',
+                    }}
+                    src={photo1}
+                    alt="photo1"
+                  />
+                )}
+                {photo2 && (
+                  <img
+                    style={{
+                      margin: '10px',
+                      width: '100px',
+                    }}
+                    src={photo2}
+                    alt="photo1"
+                  />
+                )}
+                {photo3 && (
+                  <img
+                    style={{
+                      margin: '10px',
+                      width: '100px',
+                    }}
+                    src={photo3}
+                    alt="photo1"
+                  />
+                )}
+                {photo4 && (
+                  <img
+                    style={{
+                      margin: '10px',
+                      width: '100px',
+                    }}
+                    src={photo4}
+                    alt="photo1"
+                  />
+                )}
+              </Box>
               <Field
                 component={Autocomplete}
                 name="material"
-                options={materialData?.material || []}
+                loading={materialLoading}
+                disableClearable
+                isOptionEqualToValue={(option: any, value: any) =>
+                  option.value === value.value
+                }
+                onOpen={() =>
+                  loadMaterialData({
+                    variables: {
+                      limit: 3000,
+                    },
+                  })
+                }
+                onInputChange={(_: any, v: any) => {
+                  loadMaterialData({
+                    variables: {
+                      where: {
+                        name: {
+                          _like: `%${v}%`,
+                        },
+                      },
+                      limit: 3000,
+                    },
+                  });
+                }}
+                options={materials}
                 renderInput={(params: any) => (
                   <TF {...params} label="Material" />
                 )}
-                id="outlined-required"
                 sx={{
                   margin: 2,
                   width: '90%',
@@ -271,33 +344,142 @@ const Home: FunctionComponent = () => {
               <Field
                 component={Autocomplete}
                 name="buyer"
-                options={customerData?.customer || []}
+                loading={customerLoading}
+                disableClearable
+                isOptionEqualToValue={(option: any, value: any) =>
+                  option.value === value.value
+                }
+                onOpen={() =>
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        tenent_id: {
+                          _eq: localStorage.getItem('x-tenent-id'),
+                        },
+                      },
+                      limit: 3000,
+                    },
+                  })
+                }
+                onInputChange={(_: any, v: any) => {
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        _and: [
+                          {
+                            name: {
+                              _like: `%${v}%`,
+                            },
+                          },
+                          {
+                            tenent_id: {
+                              _eq: localStorage.getItem('x-tenent-id'),
+                            },
+                          },
+                        ],
+                      },
+                      limit: 3000,
+                    },
+                  });
+                }}
+                options={customer}
                 renderInput={(params: any) => <TF {...params} label="buyer" />}
                 sx={{
                   margin: 2,
                   width: '90%',
                 }}
               />
-
               <Field
-                name="seller"
                 component={Autocomplete}
-                options={customerData?.customer || []}
+                name="seller"
+                loading={customerLoading}
+                disableClearable
+                isOptionEqualToValue={(option: any, value: any) =>
+                  option.value === value.value
+                }
+                onOpen={() =>
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        tenent_id: {
+                          _eq: localStorage.getItem('x-tenent-id'),
+                        },
+                      },
+                      limit: 3000,
+                    },
+                  })
+                }
+                onInputChange={(_: any, v: any) => {
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        _and: [
+                          {
+                            name: {
+                              _like: `%${v}%`,
+                            },
+                          },
+                          {
+                            tenent_id: {
+                              _eq: localStorage.getItem('x-tenent-id'),
+                            },
+                          },
+                        ],
+                      },
+                      limit: 3000,
+                    },
+                  });
+                }}
+                options={customer}
                 renderInput={(params: any) => <TF {...params} label="seller" />}
-                id="outlined-required"
                 sx={{
                   margin: 2,
                   width: '90%',
                 }}
               />
-
               <Field
-                name="trader"
                 component={Autocomplete}
-                options={customerData?.customer || []}
-                renderInput={(params: any) => (
-                  <TF {...params} label="trader or mediator" />
-                )}
+                name="trader"
+                loading={customerLoading}
+                disableClearable
+                isOptionEqualToValue={(option: any, value: any) =>
+                  option.value === value.value
+                }
+                onOpen={() =>
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        tenent_id: {
+                          _eq: localStorage.getItem('x-tenent-id'),
+                        },
+                      },
+                      limit: 3000,
+                    },
+                  })
+                }
+                onInputChange={(_: any, v: any) => {
+                  loadCustomers({
+                    variables: {
+                      where: {
+                        _and: [
+                          {
+                            name: {
+                              _like: `%${v}%`,
+                            },
+                          },
+                          {
+                            tenent_id: {
+                              _eq: localStorage.getItem('x-tenent-id'),
+                            },
+                          },
+                        ],
+                      },
+                      limit: 3000,
+                    },
+                  });
+                }}
+                options={customer}
+                renderInput={(params: any) => <TF {...params} label="trader" />}
                 sx={{
                   margin: 2,
                   width: '90%',
@@ -316,21 +498,27 @@ const Home: FunctionComponent = () => {
               >
                 <FormLabel>paid by</FormLabel>
                 <Field component={RadioGroup} row name="paidBy">
-                  <FormControlLabel
-                    value="buyer"
-                    control={<Radio />}
-                    label="buyer"
-                  />
-                  <FormControlLabel
-                    value="trader"
-                    control={<Radio />}
-                    label="trader"
-                  />
-                  <FormControlLabel
-                    value="seller"
-                    control={<Radio />}
-                    label="seller"
-                  />
+                  {values.buyer && (
+                    <FormControlLabel
+                      value="buyer"
+                      control={<Radio />}
+                      label="buyer"
+                    />
+                  )}
+                  {values.trader && (
+                    <FormControlLabel
+                      value="trader"
+                      control={<Radio />}
+                      label="trader"
+                    />
+                  )}
+                  {values.seller && (
+                    <FormControlLabel
+                      value="seller"
+                      control={<Radio />}
+                      label="seller"
+                    />
+                  )}
                   <FormControlLabel
                     value="driver"
                     control={<Radio />}
@@ -366,6 +554,7 @@ const Home: FunctionComponent = () => {
               {values.secondWeight && (
                 <Box sx={{ m: 1, width: '90%', display: 'flex' }}>
                   <SelectWeight
+                    setLoading={(loading: boolean) => setLoading(loading)}
                     setWeight={(val) => {
                       setFieldValue('tareWeight', val);
                     }}
@@ -390,11 +579,40 @@ const Home: FunctionComponent = () => {
               <Field
                 component={Autocomplete}
                 name="vehicle"
-                options={vehicleData?.vehicle || []}
+                loading={vehicleLoading}
+                disableClearable
+                onChange={(_: any, v: any) => {
+                  setFieldValue('vehicle', {
+                    value: v.value,
+                    label: v.label,
+                  });
+                }}
+                isOptionEqualToValue={(option: any, value: any) =>
+                  option.value === value.value
+                }
+                onOpen={() =>
+                  loadVehicleData({
+                    variables: {
+                      limit: 3000,
+                    },
+                  })
+                }
+                onInputChange={(_: any, v: any) => {
+                  loadVehicleData({
+                    variables: {
+                      where: {
+                        name: {
+                          _like: `%${v}%`,
+                        },
+                      },
+                      limit: 3000,
+                    },
+                  });
+                }}
+                options={vehicle}
                 renderInput={(params: any) => (
                   <TF {...params} label="Vehicle" />
                 )}
-                id="outlined-required"
                 sx={{
                   margin: 2,
                   width: '90%',
@@ -417,7 +635,7 @@ const Home: FunctionComponent = () => {
                   display: 'flex',
                 }}
               >
-                {isValid && (
+                {isValid && photo1 && photo2 && photo3 && photo3 && (
                   <Button
                     sx={{ marginRight: 2 }}
                     onClick={() => submitForm()}

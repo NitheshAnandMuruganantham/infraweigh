@@ -17,15 +17,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Avatar, Menu, MenuItem, Tooltip } from '@mui/material';
-import { auth, functions } from '@infra-weigh/firebase';
+import { auth } from '@infra-weigh/firebase';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import Home from '@mui/icons-material/Home';
-import { httpsCallable } from 'firebase/functions';
 import { useMatch, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import AssessmentIcon from '@mui/icons-material/Assessment';
+import DnsIcon from '@mui/icons-material/Dns';
 import { FunctionComponent } from 'react';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const drawerWidth = 240;
 
@@ -134,22 +131,10 @@ const NavBar: FunctionComponent<{
 
   const sideBarLinks = [
     {
-      name: 'Home',
-      path: '/',
-      icon: Home,
-      active: useMatch('/'),
-    },
-    {
-      name: 'report',
-      path: '/report',
-      icon: AssessmentIcon,
-      active: useMatch('/report'),
-    },
-    {
       name: 'clients',
-      path: '/clients',
+      path: '/',
       icon: PersonOutlineIcon,
-      active: useMatch('/clients'),
+      active: useMatch('/'),
     },
     {
       name: 'weighbridges',
@@ -158,10 +143,10 @@ const NavBar: FunctionComponent<{
       active: useMatch('/weighbridges'),
     },
     {
-      name: 'collection',
-      path: '/collection',
-      icon: AccountBalanceWalletIcon,
-      active: useMatch('/collections'),
+      name: 'users',
+      path: '/users',
+      icon: DnsIcon,
+      active: useMatch('/users'),
     },
   ];
 
@@ -173,12 +158,7 @@ const NavBar: FunctionComponent<{
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={async () => {
-              alert('Logout');
-              await handleDrawerOpen();
-              const a = httpsCallable(functions, 'callFunc');
-              await a();
-            }}
+            onClick={handleDrawerOpen}
             edge="start"
             sx={{
               marginRight: 5,

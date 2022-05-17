@@ -1,0 +1,108 @@
+table:
+  schema: public
+  name: user
+object_relationships:
+  - name: tenent
+    using:
+      foreign_key_constraint_on: tenent_id
+  - name: weighbridge
+    using:
+      foreign_key_constraint_on: weighbridge_id
+insert_permissions:
+  - role: tenantAdmin
+    permission:
+      check:
+        _and:
+          - tenent_id:
+              _eq: X-Hasura-tenent-Id
+          - weighbridge:
+              tenent_id:
+                _eq: X-Hasura-tenent-Id
+          - _or:
+              - role:
+                  _eq: terminal
+              - role:
+                  _eq: tenantAdmin
+      set:
+        tenent_id: x-hasura-tenent-id
+      columns:
+        - created_at
+        - email
+        - id
+        - meta_data
+        - profile
+        - role
+        - synced
+        - updated_at
+        - weighbridge_id
+      backend_only: false
+select_permissions:
+  - role: tenantAdmin
+    permission:
+      columns:
+        - created_at
+        - email
+        - id
+        - meta_data
+        - profile
+        - role
+        - synced
+        - tenent_id
+        - updated_at
+        - weighbridge_id
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+delete_permissions:
+  - role: tenantAdmin
+    permission:
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+event_triggers:
+  - name: delete_user
+    definition:
+      enable_manual: false
+      delete:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: DEL_USER
+    headers:
+      - name: authorization
+        value_from_env: API_KEY
+  - name: new_user
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: NEW_USER
+    headers:
+      - name: authorization
+        value_from_env: API_KEY
+  - name: update_user
+    definition:
+      enable_manual: false
+      update:
+        columns:
+          - meta_data
+          - profile
+          - email
+          - role
+          - id
+          - tenent_id
+          - weighbridge_id
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: UPDATE_USER
+    headers:
+      - name: authorization
+        value_from_env: API_KEY

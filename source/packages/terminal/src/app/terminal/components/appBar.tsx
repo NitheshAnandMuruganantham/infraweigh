@@ -16,14 +16,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Avatar, Menu, MenuItem, Tooltip } from '@mui/material';
-import { auth, functions } from '@infra-weigh/firebase';
+import { auth } from '@infra-weigh/firebase';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { Home } from '@mui/icons-material';
-import { httpsCallable } from 'firebase/functions';
 import { useMatch, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import { FunctionComponent } from 'react';
+import { toast } from 'react-toastify';
 
 const drawerWidth = 240;
 
@@ -149,12 +149,7 @@ const NavBar: FunctionComponent<{
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={async () => {
-              alert('Logout');
-              await handleDrawerOpen();
-              const a = httpsCallable(functions, 'callFunc');
-              await a();
-            }}
+            onClick={handleDrawerOpen}
             edge="start"
             sx={{
               marginRight: 5,
@@ -190,8 +185,11 @@ const NavBar: FunctionComponent<{
               <MenuItem
                 key={'logOut'}
                 onClick={() => {
-                  auth.signOut();
-                  window.location.reload();
+                  toast('Logging out...', {});
+                  setTimeout(() => {
+                    auth.signOut();
+                    window.location.reload();
+                  }, 1000);
                 }}
               >
                 <Typography textAlign="center">log out</Typography>

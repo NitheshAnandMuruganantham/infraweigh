@@ -88,11 +88,24 @@ subscription getAllBills(
       name
       id
     }
+
     vehicle_number
+    vehicle {
+      name
+    }
     charges
-    customer_id
-    customer_2_id
-    customer_3_id
+    customer {
+      id
+      name
+    }
+    customer_3 {
+      id
+      name
+    }
+    customer_2 {
+      id
+      name
+    }
     created_at
     material {
       name
@@ -112,6 +125,7 @@ query getBillForRecept($billByPkId: uuid!) {
     charges
     scale_weight
     photos
+    nano_id
     second_weight
     tare_weight
     reference_bill_id

@@ -1,0 +1,17 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "tsc": "^2.0.4",
+    "typecript": "^0.0.1-security"
+  },
+  "dependencies": {
+    "concurrently": "^7.1.0",
+    "typescript": "^4.6.4"
+  },
+  "scripts": {
+    "dev": "concurrently \"cd ../ && cd firebase && firebase emulators:start --import=\"emulatorData\" --export-on-exit=\"emulatorData\" \" \"cd ../ && cd firebase/functions && yarn tsc -w\" \"cd ../ && cd hasura && hasura console\" \"cd ../ && cd local-polyfils && node . \" "
+  }
+}

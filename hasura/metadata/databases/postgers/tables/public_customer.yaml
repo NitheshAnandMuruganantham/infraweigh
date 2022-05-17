@@ -1,0 +1,200 @@
+table:
+  schema: public
+  name: customer
+object_relationships:
+  - name: tenent
+    using:
+      foreign_key_constraint_on: tenent_id
+array_relationships:
+  - name: bills_2
+    using:
+      foreign_key_constraint_on:
+        column: customer_2_id
+        table:
+          schema: public
+          name: bill
+  - name: bills_3
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: bill
+        insertion_order: null
+        column_mapping:
+          id: customer_3_id
+  - name: bills_id
+    using:
+      foreign_key_constraint_on:
+        column: customer_id
+        table:
+          schema: public
+          name: bill
+insert_permissions:
+  - role: tenantAdmin
+    permission:
+      check:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      set:
+        tenent_id: x-hasura-tenent-id
+      columns:
+        - blocked
+        - company_address
+        - company_name
+        - created_at
+        - credit
+        - credit_limit
+        - email
+        - gst_in
+        - id
+        - metadata
+        - name
+        - phone
+        - updated_at
+      backend_only: false
+  - role: terminal
+    permission:
+      check:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      set:
+        tenent_id: x-hasura-tenent-id
+      columns:
+        - blocked
+        - company_address
+        - company_name
+        - created_at
+        - credit
+        - credit_limit
+        - email
+        - gst_in
+        - id
+        - metadata
+        - name
+        - phone
+        - updated_at
+      backend_only: false
+select_permissions:
+  - role: customer
+    permission:
+      columns:
+        - company_address
+        - company_name
+        - created_at
+        - email
+        - gst_in
+        - id
+        - metadata
+        - name
+        - phone
+        - tenent_id
+        - updated_at
+      filter:
+        bills_2:
+          _or:
+            - customer:
+                email:
+                  _eq: x-hasura-email
+            - customer_2:
+                email:
+                  _eq: x-hasura-email
+            - customer_3:
+                email:
+                  _eq: x-hasura-email
+  - role: tenantAdmin
+    permission:
+      columns:
+        - blocked
+        - credit
+        - metadata
+        - credit_limit
+        - company_address
+        - company_name
+        - email
+        - gst_in
+        - name
+        - phone
+        - created_at
+        - updated_at
+        - id
+        - tenent_id
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      allow_aggregations: true
+  - role: terminal
+    permission:
+      columns:
+        - blocked
+        - credit
+        - metadata
+        - credit_limit
+        - company_address
+        - company_name
+        - email
+        - gst_in
+        - name
+        - phone
+        - created_at
+        - updated_at
+        - id
+        - tenent_id
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      allow_aggregations: true
+update_permissions:
+  - role: tenantAdmin
+    permission:
+      columns:
+        - blocked
+        - credit
+        - metadata
+        - credit_limit
+        - company_address
+        - company_name
+        - email
+        - gst_in
+        - name
+        - phone
+        - created_at
+        - updated_at
+        - id
+        - tenent_id
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+      check: null
+delete_permissions:
+  - role: tenantAdmin
+    permission:
+      filter:
+        tenent_id:
+          _eq: X-Hasura-tenent-Id
+event_triggers:
+  - name: new_customer
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: GEN_CUSTOMER
+    headers:
+      - name: authorization
+        value_from_env: API_KEY
+  - name: update_customer
+    definition:
+      enable_manual: false
+      update:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: UPDATE_CUSTOMER
+    headers:
+      - name: authorization
+        value_from_env: API_KEY

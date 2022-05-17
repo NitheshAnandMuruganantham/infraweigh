@@ -1,0 +1,17 @@
+table:
+  schema: public
+  name: admin
+event_triggers:
+  - name: new_admin
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: NEW_ADMIN
+    headers:
+      - name: authorization
+        value_from_env: API_KEY

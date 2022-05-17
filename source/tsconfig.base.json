@@ -3,8 +3,10 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
+    "noImplicitAny": false,
     "declaration": false,
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,

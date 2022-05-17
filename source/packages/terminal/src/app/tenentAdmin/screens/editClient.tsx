@@ -15,6 +15,7 @@ import {
   useGetCustomerLazyQuery,
 } from '@infra-weigh/generated';
 import { apollo as gqlClient } from '@infra-weigh/client';
+import { toast } from 'react-toastify';
 
 const EditClient: React.FunctionComponent<{
   id: string;
@@ -87,11 +88,15 @@ const EditClient: React.FunctionComponent<{
                 },
               })
               .catch(() => {
-                alert(
-                  'realted resourses exists delete those resource to contine'
-                );
+                toast.error('can not update client');
+              })
+              .then((dat) => {
+                if (dat) {
+                  toast.success('client updated');
+                }
               });
-            setSubmitting(true);
+
+            setSubmitting(false);
             handleClose();
           }}
         >

@@ -12,6 +12,7 @@ import { CircularProgress } from '@mui/material';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '@infra-weigh/firebase';
 import ReactToPrint from 'react-to-print';
+import Loading from '@infra-weigh/loading';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -27,6 +28,7 @@ const BillInfo: React.FunctionComponent<{
   id: string;
 }> = ({ name, id }) => {
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -45,31 +47,38 @@ const BillInfo: React.FunctionComponent<{
 
   return (
     <>
+      <Loading open={loading} setOpen={() => null} />
       <Button
         onClick={async () => {
-          // eslint-disable-next-line no-var
-          var dat1 = await getData();
-          const d1 = await getDownloadURL(
-            ref(storage, dat1.data?.bill_by_pk?.photos[0])
-          );
-          const d2 = await getDownloadURL(
-            ref(storage, dat1.data?.bill_by_pk?.photos[1])
-          );
-          const d3 = await getDownloadURL(
-            ref(storage, dat1.data?.bill_by_pk?.photos[2])
-          );
-          const d4 = await getDownloadURL(
-            ref(storage, dat1.data?.bill_by_pk?.photos[3])
-          );
-          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          dat1 &&
-          dat1.data &&
-          dat1.data.bill_by_pk &&
-          dat1.data.bill_by_pk.photos
-            ? (dat1.data.bill_by_pk.photos = [d1, d2, d3, d4])
-            : null;
-          setData(dat1);
-          handleClickOpen();
+          try {
+            setLoading(true);
+            // eslint-disable-next-line no-var
+            var dat1 = await getData();
+            const d1 = await getDownloadURL(
+              ref(storage, dat1.data?.bill_by_pk?.photos[0])
+            );
+            const d2 = await getDownloadURL(
+              ref(storage, dat1.data?.bill_by_pk?.photos[1])
+            );
+            const d3 = await getDownloadURL(
+              ref(storage, dat1.data?.bill_by_pk?.photos[2])
+            );
+            const d4 = await getDownloadURL(
+              ref(storage, dat1.data?.bill_by_pk?.photos[3])
+            );
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            dat1 &&
+            dat1.data &&
+            dat1.data.bill_by_pk &&
+            dat1.data.bill_by_pk.photos
+              ? (dat1.data.bill_by_pk.photos = [d1, d2, d3, d4])
+              : null;
+            setData(dat1);
+            handleClickOpen();
+            setLoading(false);
+          } catch (error) {
+            setLoading(false);
+          }
         }}
         variant="outlined"
         size="small"
