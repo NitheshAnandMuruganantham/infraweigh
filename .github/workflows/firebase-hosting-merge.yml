@@ -19,6 +19,7 @@ jobs:
       - run: npm i -g yarn && cd scripts && yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
+          entrypoint: firebase
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_INFRA_WEIGH }}"
           channelId: live
