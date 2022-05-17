@@ -117,10 +117,6 @@ const Home: FunctionComponent = () => {
                 ? Yup.string().required('Required')
                 : Yup.number()
             ),
-            buyer: Yup.object().shape({
-              value: Yup.string().required('Required'),
-              label: Yup.string().required('Required'),
-            }),
           });
         }}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
@@ -179,9 +175,15 @@ const Home: FunctionComponent = () => {
                   vehicle_id: customerData.vehicle.value,
                   material_id: customerData.material.value,
                   vehicle_number: values.vehicleNumber,
-                  customer_id: customerData.buyer.value,
-                  customer_2_id: customerData.seller.value,
-                  customer_3_id: customerData.trader.value,
+                  customer_id: customerData.buyer
+                    ? customerData.buyer.value
+                    : null,
+                  customer_2_id: customerData.seller
+                    ? customerData.seller.value
+                    : null,
+                  customer_3_id: customerData.trader
+                    ? customerData.trader.value
+                    : null,
                   scale_weight: values.scaleWeight,
                   tare_weight: values.secondWeight ? values.tareWeight : 0,
                   second_weight: values.secondWeight,
@@ -345,6 +347,21 @@ const Home: FunctionComponent = () => {
                 component={Autocomplete}
                 name="buyer"
                 loading={customerLoading}
+                filterOptions={(options: any, state: any) => {
+                  let dat: any[] = options;
+                  const vals: any = values;
+                  if (vals.seller && vals.seller.value) {
+                    dat = dat.filter(
+                      (option: any) => option.value !== vals.seller.value
+                    );
+                  }
+                  if (vals.trader && vals.trader.value) {
+                    dat = dat.filter(
+                      (option: any) => option.value !== vals.trader.value
+                    );
+                  }
+                  return dat;
+                }}
                 disableClearable
                 isOptionEqualToValue={(option: any, value: any) =>
                   option.value === value.value
@@ -392,6 +409,21 @@ const Home: FunctionComponent = () => {
               <Field
                 component={Autocomplete}
                 name="seller"
+                filterOptions={(options: any, state: any) => {
+                  let dat: any[] = options;
+                  const vals: any = values;
+                  if (vals.buyer && vals.buyer.value) {
+                    dat = dat.filter(
+                      (option: any) => option.value !== vals.buyer.value
+                    );
+                  }
+                  if (vals.trader && vals.trader.value) {
+                    dat = dat.filter(
+                      (option: any) => option.value !== vals.trader.value
+                    );
+                  }
+                  return dat;
+                }}
                 loading={customerLoading}
                 disableClearable
                 isOptionEqualToValue={(option: any, value: any) =>
@@ -440,6 +472,21 @@ const Home: FunctionComponent = () => {
               <Field
                 component={Autocomplete}
                 name="trader"
+                filterOptions={(options: any, state: any) => {
+                  let dat: any[] = options;
+                  const vals: any = values;
+                  if (vals.buyer && vals.buyer.value) {
+                    dat = dat.filter(
+                      (option: any) => option.value !== vals.buyer.value
+                    );
+                  }
+                  if (vals.seller && vals.seller.value) {
+                    dat = dat.filter(
+                      (option: any) => option.value !== vals.seller.value
+                    );
+                  }
+                  return dat;
+                }}
                 loading={customerLoading}
                 disableClearable
                 isOptionEqualToValue={(option: any, value: any) =>
@@ -540,17 +587,48 @@ const Home: FunctionComponent = () => {
                 flexDirection: 'column',
               }}
             >
-              <Field
-                component={TextField}
-                name="scaleWeight"
-                label="scale weight"
-                sx={{ m: 2, width: '90%' }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">kg</InputAdornment>
-                  ),
-                }}
-              />
+              <Box display="flex" sx={{ width: '95%' }}>
+                <Field
+                  disabled
+                  component={TextField}
+                  name="scaleWeight"
+                  label="scale weight"
+                  sx={{ m: 2, width: '80%' }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">kg</InputAdornment>
+                    ),
+                  }}
+                />
+                <Button
+                  onClick={async () => {
+                    try {
+                      setLoading(true);
+                      const dat = await await (
+                        await fetch('http://localhost:8000/weight')
+                      ).json();
+                      if (
+                        dat &&
+                        dat.weighbridge_id !==
+                          localStorage.getItem('x-weighbridge-id')
+                      ) {
+                        throw new Error('not your weighbridge');
+                      }
+                      setFieldValue('scaleWeight', dat.weight || 0);
+                      setLoading(false);
+                      toast.success('weight fetched !');
+                    } catch {
+                      toast.error('can not fetch weight');
+                      setLoading(false);
+                    }
+                  }}
+                  sx={{ m: 2, width: '20%' }}
+                  variant="outlined"
+                  color="primary"
+                >
+                  capture
+                </Button>
+              </Box>
               {values.secondWeight && (
                 <Box sx={{ m: 1, width: '90%', display: 'flex' }}>
                   <SelectWeight

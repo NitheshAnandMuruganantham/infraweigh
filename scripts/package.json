@@ -12,6 +12,7 @@
     "typescript": "^4.6.4"
   },
   "scripts": {
-    "dev": "concurrently \"cd ../ && cd firebase && firebase emulators:start --import=\"emulatorData\" --export-on-exit=\"emulatorData\" \" \"cd ../ && cd firebase/functions && yarn tsc -w\" \"cd ../ && cd hasura && hasura console\" \"cd ../ && cd local-polyfils && node . \" "
+    "dev": "concurrently \"cd ../ && cd firebase && firebase emulators:start --import=\"emulatorData\" --export-on-exit=\"emulatorData\" \" \"cd ../ && cd firebase/functions && yarn tsc -w\" \"cd ../ && cd hasura && hasura console\" \"cd ../ && cd local-polyfils && node . \" \"cd ../ && cd deamon && yarn dev \" ",
+    "build": "cd source && npx nx run terminal:build:production && mv dist/packages/terminal dist/packages/public && cp -R dist/packages/public ../firebase"
   }
 }

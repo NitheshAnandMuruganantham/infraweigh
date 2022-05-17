@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:db.sqlite"
+}
+
+model Config {
+  id    Int     @id @default(autoincrement())
+  comPort String
+  ready Boolean
+  remoteAddr String
+  secretKey String
+  baudRate Int
+  dataBits Int
+  stopBits Int
+  parity Int
+  key String
+  weighbridgeId String
+  weighbridgeName String
+  enabled Boolean @unique
+}

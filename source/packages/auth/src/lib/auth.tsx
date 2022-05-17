@@ -2,12 +2,7 @@ import * as React from 'react';
 import { useEffect, useState, FunctionComponent } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { auth } from '@infra-weigh/firebase';
-import {
-  EmailAuthProvider,
-  GoogleAuthProvider,
-  PhoneAuthProvider,
-  signOut,
-} from 'firebase/auth';
+import { EmailAuthProvider, GoogleAuthProvider, signOut } from 'firebase/auth';
 import Loading from '@infra-weigh/loading';
 
 const App: FunctionComponent<{
@@ -31,7 +26,8 @@ const App: FunctionComponent<{
           localStorage.setItem('x-firebase-token', token);
           const idTokenResult = await user?.getIdTokenResult();
           const clm: any = idTokenResult.claims['https://hasura.io/jwt/claims'];
-          if (!clm) {
+          if (!clm || !clm['x-hasura-default-role']) {
+            alert('you can not access the resources');
             await signOut(auth);
             window.location.reload();
           }
@@ -78,6 +74,11 @@ const App: FunctionComponent<{
         <StyledFirebaseAuth
           uiConfig={{
             signInFlow: 'popup',
+            adminRestrictedOperation: {
+              adminEmail: 'anand@infraweigh.co',
+              helpLink: 'https://infraweigh.co',
+              status: true,
+            },
             signInSuccessUrl: '/',
             siteName: 'Infraweigh.co WeighBridge automation',
             privacyPolicyUrl: 'https://infraweigh.co/privacy-policy',

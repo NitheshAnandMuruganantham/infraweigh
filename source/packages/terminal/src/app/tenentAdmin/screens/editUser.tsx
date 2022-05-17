@@ -58,7 +58,6 @@ const EditUser: React.FunctionComponent<{
           initialValues={{
             name: data?.user[0].profile.name || '',
             address: data?.user[0].profile.address || '',
-            password: '*****************',
             email: data?.user[0].email || '',
             phone: data?.user[0].profile.phone || '',
             branch: {
@@ -100,8 +99,8 @@ const EditUser: React.FunctionComponent<{
                 },
               },
             })
-              .catch(() => toast.error('user already exist'))
-              .then((dat) => dat && toast.success('user updated successfully'));
+              .then((dat) => dat && toast.success('user updated successfully'))
+              .catch(() => toast.error('user already exist'));
             setSubmitting(true);
             handleClose();
           }}
@@ -124,16 +123,6 @@ const EditUser: React.FunctionComponent<{
                       name="name"
                       type="text"
                       label="name"
-                    />
-                    <Field
-                      component={TextField}
-                      disabled
-                      type="password"
-                      label="password"
-                      name="password"
-                      sx={{
-                        my: 1,
-                      }}
                     />
                     <Field
                       component={TextField}

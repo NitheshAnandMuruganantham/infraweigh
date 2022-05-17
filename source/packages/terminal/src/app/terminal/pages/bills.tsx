@@ -35,7 +35,6 @@ const Bills = () => {
   const [showLoading, setShowLoading] = React.useState<boolean>(false);
   const { data, loading } = useGetAllBillsSubscription({
     variables: {
-      orderBy: sort,
       where: {
         _and: [
           {

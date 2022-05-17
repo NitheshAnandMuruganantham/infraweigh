@@ -24,6 +24,7 @@ const TenentAdmin = Loadable({
   loader: () => import('./tenentAdmin/App'),
   loading: () => <Loader />,
 });
+
 const RootRouter: React.FunctionComponent = () => {
   const [role, SetRole] = React.useState<null | string>(null);
   React.useEffect(() => {
