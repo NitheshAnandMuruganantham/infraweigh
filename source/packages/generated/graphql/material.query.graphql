@@ -1,5 +1,9 @@
-query getMaterialDropDownList {
-  material {
+query getMaterialDropDownList(
+  $where: material_bool_exp
+  $limit: Int
+  $offset: Int
+) {
+  material(where: $where, limit: $limit, offset: $offset) {
     value: id
     label: name
   }

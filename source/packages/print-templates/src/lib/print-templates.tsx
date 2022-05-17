@@ -1,4 +1,4 @@
-import { Box, TableHead } from '@mui/material';
+import { Box, Chip, TableHead } from '@mui/material';
 import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,6 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
+import BarCode from 'react-barcode';
 
 const Bill: React.FunctionComponent<{
   data: any;
@@ -20,6 +22,7 @@ const Bill: React.FunctionComponent<{
     >
       <Box
         sx={{
+          position: 'relative',
           width: '98%',
           height: '98%',
           borderRadius: '10px',
@@ -35,15 +38,6 @@ const Bill: React.FunctionComponent<{
             textAlign: 'center',
           }}
         >
-          <div
-            style={{
-              marginTop: '5px',
-              fontSize: '10px',
-              fontFamily: 'Oswald',
-            }}
-          >
-            INFRA WEIGH & Co.
-          </div>
           <div
             style={{
               fontSize: '30px',
@@ -66,6 +60,7 @@ const Bill: React.FunctionComponent<{
               <TableHead>
                 <TableRow>
                   <TableCell
+                    align="center"
                     sx={{
                       fontWeight: 'bold',
                     }}
@@ -73,6 +68,7 @@ const Bill: React.FunctionComponent<{
                     VEHICLE NUMBER
                   </TableCell>
                   <TableCell
+                    align="center"
                     sx={{
                       fontWeight: 'bold',
                     }}
@@ -80,6 +76,7 @@ const Bill: React.FunctionComponent<{
                     MATERIAL
                   </TableCell>
                   <TableCell
+                    align="center"
                     sx={{
                       fontWeight: 'bold',
                     }}
@@ -88,13 +85,7 @@ const Bill: React.FunctionComponent<{
                   </TableCell>
 
                   <TableCell
-                    sx={{
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    VEHICLE TYPE
-                  </TableCell>
-                  <TableCell
+                    align="center"
                     sx={{
                       fontWeight: 'bold',
                     }}
@@ -102,6 +93,7 @@ const Bill: React.FunctionComponent<{
                     CHARGES
                   </TableCell>
                   <TableCell
+                    align="center"
                     sx={{
                       fontWeight: 'bold',
                     }}
@@ -112,14 +104,19 @@ const Bill: React.FunctionComponent<{
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>{props.data.vehicle_number}</TableCell>
-                  <TableCell>{props.data.material.name}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">
+                    {props.data.vehicle_number}
+                  </TableCell>
+                  <TableCell align="center">
+                    {props.data.material.name}
+                  </TableCell>
+                  <TableCell align="center">
                     {new Date(props.data.created_at).toLocaleString()}
                   </TableCell>
-                  <TableCell>{props.data.vehicle.name || ''}</TableCell>
-                  <TableCell>{props.data.charges}</TableCell>
-                  <TableCell>{props.data.customer?.name}</TableCell>
+                  <TableCell align="center">{props.data.charges}</TableCell>
+                  <TableCell align="center">
+                    {props.data.customer?.name}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -136,6 +133,7 @@ const Bill: React.FunctionComponent<{
                     SCALE WEIGHT
                   </TableCell>
                   <TableCell
+                    align="center"
                     sx={{
                       fontWeight: 'bold',
                     }}
@@ -143,6 +141,7 @@ const Bill: React.FunctionComponent<{
                     TARE WEIGHT
                   </TableCell>
                   <TableCell
+                    align="center"
                     sx={{
                       fontWeight: 'bold',
                     }}
@@ -150,6 +149,7 @@ const Bill: React.FunctionComponent<{
                     NET WEIGHT
                   </TableCell>
                   <TableCell
+                    align="center"
                     sx={{
                       fontWeight: 'bold',
                     }}
@@ -160,22 +160,28 @@ const Bill: React.FunctionComponent<{
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>{props.data.scale_weight}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">
+                    {props.data.scale_weight}
+                  </TableCell>
+                  <TableCell align="center">
                     {props.data.second_weight ? props.data.tare_weight : ''}
                   </TableCell>
-                  <TableCell>
+                  <TableCell align="center">
                     {props.data.second_weight
                       ? Math.abs(
                           props.data.scale_weight - props.data.tare_weight
                         ) || ''
                       : ''}
                   </TableCell>
-                  <TableCell>
-                    {props.data.reference_bill_id || !props.data.second_weight
-                      ? 'VERIFIED'
-                      : 'GENERIC'}
-                  </TableCell>
+                  {props.data.second_weight ? (
+                    <TableCell align="center">
+                      {props.data.reference_bill_id || !props.data.second_weight
+                        ? 'VERIFIED'
+                        : 'GENERIC'}
+                    </TableCell>
+                  ) : (
+                    <TableCell align="center">--</TableCell>
+                  )}
                 </TableRow>
               </TableBody>
             </Table>
@@ -221,6 +227,29 @@ const Bill: React.FunctionComponent<{
                 width: '135px',
                 aspectRatio: '1/1',
               }}
+            />
+          </div>
+          <Chip
+            sx={{
+              position: 'absolute',
+              right: '10px',
+              bottom: '10px',
+            }}
+            label="infra weigh secure"
+            size="small"
+            icon={<VerifiedUserOutlinedIcon />}
+            color="primary"
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: 0,
+            }}
+          >
+            <BarCode
+              value={`INF-${props.data.nano_id}`}
+              displayValue={false}
+              height={25}
             />
           </div>
         </Box>

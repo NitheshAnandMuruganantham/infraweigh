@@ -10,12 +10,12 @@ import TextF from '@mui/material/TextField';
 import { LinearProgress } from '@mui/material';
 import { Box } from '@mui/system';
 import * as Yup from 'yup';
-import Loader from '@infra-weigh/loading';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import {
-  useAddUserMutation,
+  useAddUsersMutation,
   useGetWeighbridgesDropDownQuery,
 } from '@infra-weigh/generated';
+import { toast } from 'react-toastify';
 
 const AddNewWeighBridge: React.FunctionComponent = () => {
   const [open, setOpen] = React.useState(false);
@@ -37,10 +37,9 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const [addUser, { loading }] = useAddUserMutation();
+  const [addUser, { loading }] = useAddUsersMutation();
   return (
     <div>
-      <Loader open={loading || dataToLoad1} setOpen={() => null} />
       <Button variant="outlined" sx={{ m: 1 }} onClick={handleClickOpen}>
         NEW STAFF
       </Button>
@@ -49,20 +48,18 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
         <Formik
           initialValues={{
             name: '',
-            password: '',
             address: '',
             email: '',
             phone: '',
             branch: {
               label: '',
-              value: '',
+              value: null,
             },
-            role: ['user'],
+            role: 'terminal',
           }}
           validationSchema={() => {
             return Yup.object().shape({
               name: Yup.string().required('Required'),
-              password: Yup.string().required('Required'),
               address: Yup.string().required('Required'),
               email: Yup.string().required('Required'),
               phone: Yup.string().required('Required'),
@@ -78,21 +75,30 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
             setSubmitting(true);
             addUser({
               variables: {
-                object: {
-                  email: values.email,
-                  password: values.password,
-                  weighbridge_id: values.branch.value,
-                  profile: {
-                    name: values.name,
-                    phone: values.phone,
-                    address: values.address,
+                objects: [
+                  {
+                    email: values.email,
+                    weighbridge_id: values.branch.value,
+                    profile: {
+                      name: values.name,
+                      phone: values.phone,
+                      address: values.address,
+                    },
+                    role: 'terminal',
                   },
-                },
+                ],
               },
-            }).catch(() => alert('user already exist'));
-
-            setSubmitting(false);
-            handleClose();
+            })
+              .then(() => {
+                toast.success('user created successfully exist');
+                setSubmitting(false);
+                handleClose();
+              })
+              .catch(() => {
+                toast.error('user already exist');
+                handleClose();
+                setSubmitting(false);
+              });
           }}
         >
           {({ submitForm, isSubmitting, setFieldValue, values }) => (
@@ -113,15 +119,6 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                       name="name"
                       type="text"
                       label="name"
-                    />
-                    <Field
-                      component={TextField}
-                      type="password"
-                      label="password"
-                      name="password"
-                      sx={{
-                        my: 1,
-                      }}
                     />
                     <Field
                       component={TextField}
@@ -164,7 +161,9 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                         <TextF {...params} label="Branch" />
                       )}
                     />
-                    {isSubmitting && <LinearProgress />}
+                    {(isSubmitting || loading || dataToLoad1) && (
+                      <LinearProgress />
+                    )}
                   </Box>
                 </Form>
               </DialogContent>

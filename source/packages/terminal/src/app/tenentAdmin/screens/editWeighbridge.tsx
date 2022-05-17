@@ -14,7 +14,7 @@ import {
   useGetWeighbridgeLazyQuery,
   useUpdateWeighBridgeMutation,
 } from '@infra-weigh/generated';
-import Loader from '@infra-weigh/loading';
+import { toast } from 'react-toastify';
 const EditWeighBridge: React.FunctionComponent<{
   id: string;
 }> = ({ id }) => {
@@ -40,7 +40,6 @@ const EditWeighBridge: React.FunctionComponent<{
 
   return (
     <div>
-      <Loader open={l1 || l2} setOpen={() => null} />
       <Button
         variant="contained"
         color="secondary"
@@ -86,7 +85,11 @@ const EditWeighBridge: React.FunctionComponent<{
                   mail: values.mail,
                 },
               },
-            });
+            })
+              .catch(() => toast.error('Something went wrong'))
+              .then(
+                (d) => d && toast.success('WeighBridge updated successfully')
+              );
             setSubmitting(true);
             handleClose();
           }}
@@ -157,8 +160,7 @@ const EditWeighBridge: React.FunctionComponent<{
                       onChange={(e) => setFieldValue('phone', e.toString())}
                     />
 
-                    {(l1 || l2) && <LinearProgress />}
-                    {isSubmitting && <LinearProgress />}
+                    {(isSubmitting || l1 || l2) && <LinearProgress />}
                   </Box>
                 </Form>
               </DialogContent>

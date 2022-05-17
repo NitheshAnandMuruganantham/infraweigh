@@ -3,10 +3,9 @@ config();
 module.exports = {
   schema: [
     {
-      'https://infra-weigh.herokuapp.com/v1/graphql': {
+      'http://localhost:8080/v1/graphql': {
         headers: {
-          'x-hasura-admin-secret':
-            'MhkFsJZvLCjCTsFicfR6itE0EY7OOC2kkQRBc41EyMgosT8P6qHLq4125hToRdus',
+          'x-hasura-admin-secret': 'myadminsecretkey',
         },
       },
     },

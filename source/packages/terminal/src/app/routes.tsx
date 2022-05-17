@@ -3,9 +3,15 @@ import Loadable from 'react-loadable';
 import Loader from './asyncLoader';
 import { auth } from '@infra-weigh/firebase';
 import Loading from '@infra-weigh/loading';
+import { signOut } from 'firebase/auth';
 
 const Terminal = Loadable({
   loader: () => import('./terminal/App'),
+  loading: () => <Loader />,
+});
+
+const Customer = Loadable({
+  loader: () => import('./customer/App'),
   loading: () => <Loader />,
 });
 
@@ -24,8 +30,14 @@ const RootRouter: React.FunctionComponent = () => {
     const unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
       user?.getIdTokenResult().then((dat) => {
         const clm: any = dat.claims['https://hasura.io/jwt/claims'];
-        console.log(clm['x-hasura-default-role']);
-        SetRole(clm['x-hasura-default-role']);
+        if (!clm) {
+          alert('you are not authorized to access the resources');
+          signOut(auth);
+          window.location.replace('/');
+        } else {
+          console.log(clm['x-hasura-default-role']);
+          SetRole(clm['x-hasura-default-role']);
+        }
       });
     });
     return () => unregisterAuthObserver();
@@ -39,6 +51,8 @@ const RootRouter: React.FunctionComponent = () => {
       return <Terminal />;
     } else if (role === 'tenantAdmin') {
       return <TenentAdmin />;
+    } else if (role === 'customer') {
+      return <Customer />;
     } else {
       return (
         <div>
