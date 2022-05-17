@@ -13,6 +13,7 @@ jobs:
       NX_BASE_FIREBASE: ${{secrets.NX_BASE_FIREBASE}}
       NX_BASE_URL: ${{secrets.NX_BASE_URL}}
       NX_BASE_WS_URL: ${{secrets.NX_BASE_WS_URL}}
+      NX_ENV: production
     steps:
       - uses: actions/checkout@v2
       - run: npm i -g yarn && cd scripts && yarn build
