@@ -1,22 +1,9 @@
 import * as functions from "firebase-functions";
 import * as Admin from "firebase-admin";
-import { ApolloClient, HttpLink, InMemoryCache, gql } from "@apollo/client";
+import { gql, ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import fetch from "cross-fetch";
 
 const admin = Admin.initializeApp();
-
-let headers: any = [];
-headers["x-hasura-admin-secret"] = `${process.env["ADMIN_SECRET"]}`;
-headers["Content-Type"] = "application/json";
-
-const client = new ApolloClient({
-  link: new HttpLink({
-    uri: process.env["HASURA_URL"] + "/v1/graphql",
-    headers,
-    fetch,
-  }),
-  cache: new InMemoryCache(),
-});
 
 const applyMiddleware = (req: any, res: any, next: any) => {
   if (
@@ -54,7 +41,7 @@ export const genUser = functions.https.onRequest((req, res) =>
         emailVerified: true,
       })
       .then(async (user) => {
-        await admin.auth().setCustomUserClaims(data.id, {
+        await admin.auth().setCustomUserClaims(user.uid, {
           "https://hasura.io/jwt/claims": {
             "x-hasura-allowed-roles": [data.role],
             "x-hasura-default-role": data.role,
@@ -171,7 +158,17 @@ export const updateUser = functions.https.onRequest((req, res) =>
 
 export const genBill = functions.https.onRequest((req, res) =>
   applyMiddleware(req, res, async (req: any, res: any) => {
-    client
+    let headers: any = [];
+    headers["x-hasura-admin-secret"] = `${process.env["ADMIN_SECRET"]}`;
+    headers["Content-Type"] = "application/json";
+    new ApolloClient({
+      link: new HttpLink({
+        uri: process.env["HASURA_URL"] + "/v1/graphql",
+        headers,
+        fetch,
+      }),
+      cache: new InMemoryCache(),
+    })
       .query({
         query: gql`
           query ($billByPkId: uuid!) {
