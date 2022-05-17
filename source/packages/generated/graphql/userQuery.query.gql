@@ -33,8 +33,11 @@ subscription getAllUsers(
   }
 }
 
-subscription getAllUsersCount($where: user_bool_exp) {
-  user_aggregate(where: $where) {
+subscription getAllUsersCount(
+  $where: user_bool_exp
+  $orderBy: [user_order_by!]
+) {
+  user_aggregate(where: $where, order_by: $orderBy) {
     aggregate {
       count
     }

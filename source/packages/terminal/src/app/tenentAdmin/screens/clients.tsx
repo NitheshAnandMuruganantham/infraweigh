@@ -21,26 +21,30 @@ const columns: GridColDef[] = [
     headerName: 'name',
     width: 300,
     editable: false,
+    filterable: false,
     sortable: true,
   },
 
   {
     field: 'company_address',
     headerName: 'Address',
-    sortable: false,
+    sortable: true,
+    filterable: false,
     width: 400,
   },
 
   {
     field: 'phone',
     headerName: 'phone',
-    sortable: false,
+    sortable: true,
     width: 150,
+    filterable: false,
   },
   {
     field: 'email',
     headerName: 'e-mail id',
-    sortable: false,
+    sortable: true,
+    filterable: false,
     width: 150,
   },
   {
@@ -105,9 +109,11 @@ const columns: GridColDef[] = [
 const Clients = () => {
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(1);
+  const [sort, SetSort] = React.useState([]);
   const [pageSize, setPageSize] = React.useState(1);
   const { data, loading } = useGetCustomersSubscription({
     variables: {
+      orderBy: sort,
       where: {
         _and: [
           {
@@ -117,6 +123,15 @@ const Clients = () => {
                   _like: `%${search}%`,
                 },
                 company_name: {
+                  _like: `%${search}%`,
+                },
+                phone: {
+                  _like: `%${search}%`,
+                },
+                email: {
+                  _like: `%${search}`,
+                },
+                company_address: {
                   _like: `%${search}%`,
                 },
               },
@@ -136,6 +151,7 @@ const Clients = () => {
   const { data: customerCountData, loading: customerCountLoading } =
     useGetCustomersCountSubscription({
       variables: {
+        orderBy: sort,
         where: {
           _and: [
             {
@@ -182,6 +198,17 @@ const Clients = () => {
         />
         {!customerCountLoading && (
           <DataGrid
+            sortingMode="server"
+            onSortModelChange={(s) => {
+              // eslint-disable-next-line prefer-const
+              let dt: any = [];
+              s.forEach((s) => {
+                dt.push({
+                  [s.field]: s.sort,
+                });
+              });
+              SetSort(dt);
+            }}
             loading={loading}
             rows={data?.customer || []}
             columns={columns}

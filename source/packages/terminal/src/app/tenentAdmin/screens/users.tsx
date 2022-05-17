@@ -20,13 +20,15 @@ const columns: GridColDef[] = [
   {
     field: 'email',
     headerName: 'Email Address',
-    sortable: false,
+    sortable: true,
+    filterable: false,
     width: 400,
   },
   {
     field: 'weighbridge',
     headerName: 'weighbridge',
     sortable: false,
+    filterable: false,
     width: 400,
     valueGetter: (params: GridValueGetterParams) => params.row.weighbridge.name,
   },
@@ -90,11 +92,13 @@ const columns: GridColDef[] = [
   },
 ];
 const Users = () => {
+  const [sort, SetSort] = React.useState([]);
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
   const { data, loading } = useGetAllUsersSubscription({
     variables: {
+      orderBy: sort,
       where: {
         _and: [
           {
@@ -121,6 +125,7 @@ const Users = () => {
   const { data: Count, loading: CountLoading } =
     useGetAllUsersCountSubscription({
       variables: {
+        orderBy: sort,
         where: {
           _and: [
             {
@@ -168,6 +173,17 @@ const Users = () => {
             loading={loading}
             rows={data?.user || []}
             paginationMode="server"
+            onSortModelChange={(s) => {
+              // eslint-disable-next-line prefer-const
+              let dt: any = [];
+              s.forEach((s) => {
+                dt.push({
+                  [s.field]: s.sort,
+                });
+              });
+              SetSort(dt);
+            }}
+            sortingMode="server"
             onPageChange={(page) => setPage(page)}
             onPageSizeChange={(pageSize) => setPageSize(pageSize)}
             columns={columns}
