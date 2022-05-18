@@ -20,6 +20,6 @@ jobs:
         with:
           entrypoint: firebase
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_INFRA_WEIGH }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_INFRA_WEIGH_STAGING }}"
           channelId: live
           projectId: infra-weigh-staging
