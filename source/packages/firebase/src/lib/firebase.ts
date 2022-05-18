@@ -21,9 +21,19 @@ const config = {
   measurementId: 'G-YLJRZGV3ST',
 };
 
+const config_2 = {
+  apiKey: 'AIzaSyDo4XvdkC2DueBgFgcDPIXwkuWQHd0y_Yw',
+  authDomain: 'infra-weigh-staging.firebaseapp.com',
+  projectId: 'infra-weigh-staging',
+  storageBucket: 'infra-weigh-staging.appspot.com',
+  messagingSenderId: '474780772139',
+  appId: '1:474780772139:web:1ac5e73f539963c9e7076e',
+};
+
 const app = initializeApp(
-  JSON.parse(process.env['NX_BASE_FIREBASE'] || JSON.stringify(config))
+  process.env['NX_ENV'] === 'staging' ? config_2 : config
 );
+
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 const storage = getStorage(app);
