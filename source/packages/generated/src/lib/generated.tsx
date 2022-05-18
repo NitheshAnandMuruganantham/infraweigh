@@ -3891,6 +3891,7 @@ export type GetAllUsersSubscription = { __typename?: 'subscription_root', user: 
 
 export type GetAllUsersCountSubscriptionVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
+  orderBy?: InputMaybe<Array<User_Order_By> | User_Order_By>;
 }>;
 
 
@@ -4967,8 +4968,8 @@ export function useGetAllUsersSubscription(baseOptions?: Apollo.SubscriptionHook
 export type GetAllUsersSubscriptionHookResult = ReturnType<typeof useGetAllUsersSubscription>;
 export type GetAllUsersSubscriptionResult = Apollo.SubscriptionResult<GetAllUsersSubscription>;
 export const GetAllUsersCountDocument = gql`
-    subscription getAllUsersCount($where: user_bool_exp) {
-  user_aggregate(where: $where) {
+    subscription getAllUsersCount($where: user_bool_exp, $orderBy: [user_order_by!]) {
+  user_aggregate(where: $where, order_by: $orderBy) {
     aggregate {
       count
     }
@@ -4989,6 +4990,7 @@ export const GetAllUsersCountDocument = gql`
  * const { data, loading, error } = useGetAllUsersCountSubscription({
  *   variables: {
  *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */

@@ -3,6 +3,8 @@
   "projects": {
     "auth": "packages/auth",
     "client": "packages/client",
+    "deamon-client": "packages/deamon-client",
+    "deamon-client-e2e": "packages/deamon-client-e2e",
     "firebase": "packages/firebase",
     "generated": "packages/generated",
     "loading": "packages/loading",

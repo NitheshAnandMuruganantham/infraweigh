@@ -26,7 +26,7 @@ const Bills = () => {
   const [pageSize, setPageSize] = React.useState(10);
   const [page, setPage] = React.useState(1);
   const [filter, setFilter] = React.useState<any>([]);
-  const [sort, setSort] = React.useState<any>({});
+  const [sort, setSort] = React.useState<any>([]);
   const [materials, setMaterials] = React.useState<any[]>([]);
   const [customer, setCustomer] = React.useState<any[]>([]);
   const [vehicle, setVehicle] = React.useState<any[]>([]);
@@ -43,7 +43,6 @@ const Bills = () => {
               _eq: localStorage.getItem('x-tenent-id'),
             },
           },
-
           ...filter,
         ],
       },
@@ -51,9 +50,11 @@ const Bills = () => {
       limit: pageSize,
     },
   });
+
   const { data: totalRows, loading: totalRowsLoading } =
     useGetTotalBillsSubscription({
       variables: {
+        orderBy: sort,
         where: {
           _and: [
             {
@@ -436,12 +437,22 @@ const Bills = () => {
                 field: 'vehicle_number',
                 headerName: 'vehicle number',
                 width: 150,
+                sortable: true,
                 editable: false,
+              },
+              {
+                field: 'weighbridge',
+                headerName: 'weighbridge',
+                width: 250,
+                sortable: false,
+                valueGetter: (params: GridValueGetterParams) =>
+                  params.value.name,
               },
               {
                 field: 'material',
                 headerName: 'material',
                 width: 100,
+                sortable: false,
                 valueGetter: (params: GridValueGetterParams) =>
                   params.value.name,
               },
@@ -449,6 +460,7 @@ const Bills = () => {
                 field: 'customer',
                 headerName: 'customer',
                 width: 150,
+                sortable: false,
                 valueGetter: (params: GridValueGetterParams) =>
                   params.value && params.value.name
                     ? params.value.name
@@ -457,6 +469,7 @@ const Bills = () => {
               {
                 field: 'customer_2',
                 headerName: 'customer 2',
+                sortable: false,
                 width: 150,
                 valueGetter: (params: GridValueGetterParams) =>
                   params.value && params.value.name
@@ -467,6 +480,7 @@ const Bills = () => {
                 field: 'customer_3',
                 headerName: 'customer 3',
                 width: 150,
+                sortable: false,
                 valueGetter: (params: GridValueGetterParams) =>
                   params.value && params.value.name
                     ? params.value.name
@@ -475,7 +489,7 @@ const Bills = () => {
               {
                 field: 'vehicle',
                 headerName: 'vehicle',
-                sortable: true,
+                sortable: false,
                 width: 150,
                 valueGetter: (params: GridValueGetterParams) =>
                   params.value.name,
@@ -523,7 +537,7 @@ const Bills = () => {
               {
                 field: 'netWeight',
                 headerName: 'netWeight',
-                sortable: true,
+                sortable: false,
                 width: 120,
                 valueGetter: (params) =>
                   Math.abs(
@@ -547,9 +561,18 @@ const Bills = () => {
             ]}
             autoPageSize
             filterMode="server"
-            onFilterModelChange={(f) => setFilter(f)}
-            onSortModelChange={(s) => setSort(s)}
             disableSelectionOnClick
+            onFilterModelChange={(f) => setFilter(f)}
+            onSortModelChange={(s) => {
+              // eslint-disable-next-line prefer-const
+              let dt: any = [];
+              s.forEach((s) => {
+                dt.push({
+                  [s.field]: s.sort,
+                });
+              });
+              setSort(dt);
+            }}
           />
         ) : null}
       </Box>
