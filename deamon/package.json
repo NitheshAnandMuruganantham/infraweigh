@@ -7,26 +7,22 @@
   "author": "nithesh anand <anand252825@gmail.com>",
   "keywords": [],
   "scripts": {
-    "start": "./bin/app",
+    "start": "node ./index.js",
     "prestart": "prisma generate",
-    "dev": "nodemon ./bin/app",
+    "dev": "nodemon ./index.js",
     "predev": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@prisma/client": "^3.14.0",
     "cors": "^2.8.5",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "http-errors": "^2.0.0",
-    "md5": "^2.3.0",
     "pino": "^7.11.0",
     "pino-http": "^7.0.0",
-    "pino-pretty": "^7.6.1",
-    "sqlite3": "^5.0.8"
+    "pino-pretty": "^7.6.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16",
-    "prisma": "^3.14.0"
+    "nodemon": "^2.0.16"
   }
 }

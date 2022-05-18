@@ -9,7 +9,10 @@ import { getFirestore, connectFirestoreEmulator } from '@firebase/firestore';
 import { connectStorageEmulator, getStorage } from 'firebase/storage';
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 let config = {};
-if (process.env['NX_ENV'] === 'production') {
+if (
+  process.env['NX_ENV'] === 'production' ||
+  window.location.hostname === 'localhost'
+) {
   config = {
     apiKey: 'AIzaSyBpoRyq3jdK2QkmzUte5oF2g8q-QUVq9vA',
     authDomain: 'infra-weigh.firebaseapp.com',
@@ -23,15 +26,12 @@ if (process.env['NX_ENV'] === 'production') {
   };
 } else {
   config = {
-    apiKey: 'AIzaSyBpoRyq3jdK2QkmzUte5oF2g8q-QUVq9vA',
-    authDomain: 'infra-weigh.firebaseapp.com',
-    databaseURL:
-      'https://infra-weigh-default-rtdb.asia-southeast1.firebasedatabase.app',
-    projectId: 'infra-weigh',
-    storageBucket: 'infra-weigh.appspot.com',
-    messagingSenderId: '48414145939',
-    appId: '1:48414145939:web:f16f10aa3d1ab22a3fbc66',
-    measurementId: 'G-YLJRZGV3ST',
+    apiKey: 'AIzaSyDo4XvdkC2DueBgFgcDPIXwkuWQHd0y_Yw',
+    authDomain: 'infra-weigh-staging.firebaseapp.com',
+    projectId: 'infra-weigh-staging',
+    storageBucket: 'infra-weigh-staging.appspot.com',
+    messagingSenderId: '474780772139',
+    appId: '1:474780772139:web:1ac5e73f539963c9e7076e',
   };
 }
 
