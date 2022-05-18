@@ -34,8 +34,8 @@ if (
     appId: '1:474780772139:web:1ac5e73f539963c9e7076e',
   };
 }
-
-const app = initializeApp(config);
+const envConfig: any = process.env['NX_BASE_FIREBASE'];
+const app = initializeApp(envConfig ? JSON.parse(envConfig) : config);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 const storage = getStorage(app);
