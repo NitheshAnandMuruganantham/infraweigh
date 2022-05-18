@@ -21,8 +21,9 @@ const config = {
   measurementId: 'G-YLJRZGV3ST',
 };
 
-const envConfig: any = process.env['NX_BASE_FIREBASE'];
-const app = initializeApp(envConfig ? JSON.parse(envConfig) : config);
+const app = initializeApp(
+  JSON.parse(process.env['NX_BASE_FIREBASE'] || JSON.stringify(config))
+);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 const storage = getStorage(app);
