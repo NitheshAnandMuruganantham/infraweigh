@@ -26,6 +26,7 @@ import {
 import { auth, storage } from '@infra-weigh/firebase';
 import Capture from '../components/capture';
 import { toast } from 'react-toastify';
+import Loader from '@infra-weigh/loading';
 import { ref, uploadString, deleteObject } from 'firebase/storage';
 const Home: FunctionComponent = () => {
   const [loadCustomers, { data: customerData, loading: customerLoading }] =
@@ -49,6 +50,7 @@ const Home: FunctionComponent = () => {
   const [addBill] = useAddBillMutation();
   const [BillRefId, SetBillRefId] = useState<string>();
   const [open, SetOpen] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [data, SetData] = useState<any>(null);
   const [photo1, setPhoto1] = useState<any>(null);
   const [photo2, setPhoto2] = useState<any>(null);
@@ -81,6 +83,7 @@ const Home: FunctionComponent = () => {
           }}
         />
       )}
+      <Loader open={submitting} setOpen={setSubmitting} />
       <Formik
         initialValues={{
           vehicleNumber: '',
@@ -119,7 +122,11 @@ const Home: FunctionComponent = () => {
             ),
           });
         }}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
+        onSubmit={async (
+          values,
+          { setSubmitting: setSubmitting_2, resetForm }
+        ) => {
+          setSubmitting_2(true);
           setSubmitting(true);
           try {
             const id = uuid();
@@ -209,11 +216,13 @@ const Home: FunctionComponent = () => {
                 setPhoto3(null);
                 setPhoto4(null);
                 setSubmitting(false);
+                setSubmitting_2(false);
                 toast.success('Bill Added Successfully');
                 resetForm();
               });
           } catch (error) {
             setSubmitting(false);
+            setSubmitting_2(false);
           }
         }}
       >

@@ -8,10 +8,7 @@
   "keywords": [],
   "scripts": {
     "start": "node ./index.js",
-    "prestart": "prisma generate",
-    "dev": "nodemon ./index.js",
-    "predev": "prisma generate",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon ./index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
