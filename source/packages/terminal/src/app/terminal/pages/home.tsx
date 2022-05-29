@@ -3,7 +3,6 @@ import {
   Button,
   FormControlLabel,
   FormLabel,
-  Autocomplete as AC,
   InputAdornment,
   Radio,
   TextField as TF,
@@ -24,9 +23,10 @@ import {
   useGetVehiclesDropDownListLazyQuery,
 } from '@infra-weigh/generated';
 import { auth, storage } from '@infra-weigh/firebase';
-import Capture from '../components/capture';
 import { toast } from 'react-toastify';
+import Loader from '@infra-weigh/loading';
 import { ref, uploadString, deleteObject } from 'firebase/storage';
+import MuiPhoneNumber from 'material-ui-phone-number';
 const Home: FunctionComponent = () => {
   const [loadCustomers, { data: customerData, loading: customerLoading }] =
     useGetCustomerDropdownOptionsLazyQuery({
@@ -49,11 +49,8 @@ const Home: FunctionComponent = () => {
   const [addBill] = useAddBillMutation();
   const [BillRefId, SetBillRefId] = useState<string>();
   const [open, SetOpen] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [data, SetData] = useState<any>(null);
-  const [photo1, setPhoto1] = useState<any>(null);
-  const [photo2, setPhoto2] = useState<any>(null);
-  const [photo3, setPhoto3] = useState<any>(null);
-  const [photo4, setPhoto4] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -81,6 +78,7 @@ const Home: FunctionComponent = () => {
           }}
         />
       )}
+      <Loader open={submitting} setOpen={setSubmitting} />
       <Formik
         initialValues={{
           vehicleNumber: '',
@@ -88,6 +86,7 @@ const Home: FunctionComponent = () => {
           vehicle: null,
           buyer: null,
           seller: null,
+          driver_phone: '',
           trader: null,
           secondWeight: false,
           charges: 0,
@@ -110,8 +109,8 @@ const Home: FunctionComponent = () => {
                 label: Yup.string().required('Required'),
               })
               .required(),
+            driver_phone: Yup.string().min(8).required(),
             charges: Yup.number().required(),
-            scaleWeight: Yup.number().required('Required'),
             tareWeight: Yup.lazy((val) =>
               val.secondWeight
                 ? Yup.string().required('Required')
@@ -119,7 +118,11 @@ const Home: FunctionComponent = () => {
             ),
           });
         }}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
+        onSubmit={async (
+          values,
+          { setSubmitting: setSubmitting_2, resetForm }
+        ) => {
+          setSubmitting_2(true);
           setSubmitting(true);
           try {
             const id = uuid();
@@ -128,35 +131,36 @@ const Home: FunctionComponent = () => {
             if (!values.secondWeight) {
               correctedVal.tareWeight = null;
             }
-
+            const dat = await fetch('http://localhost:9999', {}).then((res) =>
+              res.json()
+            );
             const claims = await auth.currentUser?.getIdTokenResult();
             const hasura: any = claims?.claims['https://hasura.io/jwt/claims'];
             const n1 = `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/one.jpeg`;
             const n2 = `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/two.jpeg`;
             const n3 = `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/three.jpeg`;
             const n4 = `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/four.jpeg`;
-
             const up1 = await uploadString(
               ref(storage, n1),
-              photo1,
+              `data:image/jpeg;base64,${dat.images[0]}`,
               'data_url'
             );
 
             const up2 = await uploadString(
               ref(storage, n2),
-              photo2,
+              `data:image/jpeg;base64,${dat.images[1]}`,
               'data_url'
             );
 
             const up3 = await uploadString(
               ref(storage, n3),
-              photo3,
+              `data:image/jpeg;base64,${dat.images[2]}`,
               'data_url'
             );
 
             const up4 = await uploadString(
               ref(storage, n4),
-              photo4,
+              `data:image/jpeg;base64,${dat.images[3]}`,
               'data_url'
             );
 
@@ -172,6 +176,7 @@ const Home: FunctionComponent = () => {
                     up4.ref.fullPath,
                   ],
                   charges: values.charges,
+                  driver_phone: values.driver_phone,
                   vehicle_id: customerData.vehicle.value,
                   material_id: customerData.material.value,
                   vehicle_number: values.vehicleNumber,
@@ -184,44 +189,48 @@ const Home: FunctionComponent = () => {
                   customer_3_id: customerData.trader
                     ? customerData.trader.value
                     : null,
-                  scale_weight: values.scaleWeight,
+                  scale_weight: dat.weight,
                   tare_weight: values.secondWeight ? values.tareWeight : 0,
                   second_weight: values.secondWeight,
                   reference_bill_id: values.secondWeight ? BillRefId : null,
-                  paid_by: values.paidBy,
+                  paid_by: customerData.paidBy,
                 },
               },
             })
-              .catch(() => {
+              .catch((e) => {
+                console.log(JSON.stringify(e));
                 deleteObject(up1.ref);
                 deleteObject(up2.ref);
                 deleteObject(up3.ref);
                 deleteObject(up4.ref);
+                setSubmitting(false);
+                setSubmitting_2(false);
               })
               .then((dat) => {
                 // eslint-disable-next-line prefer-const
                 let dt: any = dat?.data?.insert_bill_one;
-                dt.photos = [photo1, photo2, photo3, photo4];
                 SetData(dt);
                 SetOpen(true);
-                setPhoto1(null);
-                setPhoto2(null);
-                setPhoto3(null);
-                setPhoto4(null);
                 setSubmitting(false);
+                setSubmitting_2(false);
                 toast.success('Bill Added Successfully');
                 resetForm();
               });
           } catch (error) {
+            console.log(JSON.stringify(error));
             setSubmitting(false);
+            setSubmitting_2(false);
           }
         }}
       >
         {({
           submitForm,
+          errors,
           isSubmitting,
           setFieldValue,
           values,
+          handleBlur,
+          touched,
           isValid,
           resetForm,
         }) => (
@@ -258,55 +267,7 @@ const Home: FunctionComponent = () => {
                   width: '90%',
                 }}
               />
-              <Capture
-                submitting={isSubmitting}
-                setData1={setPhoto1}
-                setData2={setPhoto2}
-                setData3={setPhoto3}
-                setData4={setPhoto4}
-              />
-              <Box flex={1} flexDirection="column">
-                {photo1 && (
-                  <img
-                    style={{
-                      margin: '10px',
-                      width: '100px',
-                    }}
-                    src={photo1}
-                    alt="photo1"
-                  />
-                )}
-                {photo2 && (
-                  <img
-                    style={{
-                      margin: '10px',
-                      width: '100px',
-                    }}
-                    src={photo2}
-                    alt="photo1"
-                  />
-                )}
-                {photo3 && (
-                  <img
-                    style={{
-                      margin: '10px',
-                      width: '100px',
-                    }}
-                    src={photo3}
-                    alt="photo1"
-                  />
-                )}
-                {photo4 && (
-                  <img
-                    style={{
-                      margin: '10px',
-                      width: '100px',
-                    }}
-                    src={photo4}
-                    alt="photo1"
-                  />
-                )}
-              </Box>
+
               <Field
                 component={Autocomplete}
                 name="material"
@@ -587,48 +548,6 @@ const Home: FunctionComponent = () => {
                 flexDirection: 'column',
               }}
             >
-              <Box display="flex" sx={{ width: '95%' }}>
-                <Field
-                  disabled
-                  component={TextField}
-                  name="scaleWeight"
-                  label="scale weight"
-                  sx={{ m: 2, width: '80%' }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="start">kg</InputAdornment>
-                    ),
-                  }}
-                />
-                <Button
-                  onClick={async () => {
-                    try {
-                      setLoading(true);
-                      const dat = await await (
-                        await fetch('http://localhost:8000/weight')
-                      ).json();
-                      if (
-                        dat &&
-                        dat.weighbridge_id !==
-                          localStorage.getItem('x-weighbridge-id')
-                      ) {
-                        throw new Error('not your weighbridge');
-                      }
-                      setFieldValue('scaleWeight', dat.weight || 0);
-                      setLoading(false);
-                      toast.success('weight fetched !');
-                    } catch {
-                      toast.error('can not fetch weight');
-                      setLoading(false);
-                    }
-                  }}
-                  sx={{ m: 2, width: '20%' }}
-                  variant="outlined"
-                  color="primary"
-                >
-                  capture
-                </Button>
-              </Box>
               {values.secondWeight && (
                 <Box sx={{ m: 1, width: '90%', display: 'flex' }}>
                   <SelectWeight
@@ -696,6 +615,25 @@ const Home: FunctionComponent = () => {
                   width: '90%',
                 }}
               />
+              <MuiPhoneNumber
+                label="driver phone"
+                variant="outlined"
+                countryCodeEditable={false}
+                defaultCountry={'in'}
+                onBlur={handleBlur}
+                autoComplete="off"
+                disabled={isSubmitting}
+                error={
+                  touched.driver_phone && errors.driver_phone ? true : false
+                }
+                value={values.driver_phone}
+                onChange={(e) => setFieldValue('driver_phone', e.toString())}
+                name="driver_phone"
+                sx={{
+                  margin: 2,
+                  width: '90%',
+                }}
+              />
               <Field
                 component={TextField}
                 name="charges"
@@ -713,7 +651,7 @@ const Home: FunctionComponent = () => {
                   display: 'flex',
                 }}
               >
-                {isValid && photo1 && photo2 && photo3 && photo3 && (
+                {isValid && (
                   <Button
                     sx={{ marginRight: 2 }}
                     onClick={() => submitForm()}

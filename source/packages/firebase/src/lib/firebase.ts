@@ -45,12 +45,4 @@ if (window.location.hostname === 'localhost') {
   connectStorageEmulator(storage, 'localhost', 9199);
   connectFirestoreEmulator(firestore, 'localhost', 8081);
 }
-export {
-  app,
-  auth,
-  firestore,
-  storage,
-  functions,
-  GoogleAuthProvider,
-  EmailAuthProvider,
-};
+export { app, auth, firestore, storage, functions };

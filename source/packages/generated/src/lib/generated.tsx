@@ -241,13 +241,19 @@ export type Bill = {
   customer_3?: Maybe<Customer>;
   customer_3_id?: Maybe<Scalars['uuid']>;
   customer_id?: Maybe<Scalars['uuid']>;
+  driver_phone?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   image?: Maybe<Scalars['String']>;
   /** An object relationship */
   material: Material;
   material_id: Scalars['uuid'];
   nano_id: Scalars['Int'];
-  paid_by: Scalars['String'];
+  order_id?: Maybe<Scalars['String']>;
+  paid?: Maybe<Scalars['Boolean']>;
+  /** An object relationship */
+  paidByByPaidBy: Paid_By;
+  paid_by: Paid_By_Enum;
+  payment_initiated?: Maybe<Scalars['Boolean']>;
   photos?: Maybe<Scalars['json']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
   scale_weight: Scalars['Int'];
@@ -377,12 +383,17 @@ export type Bill_Bool_Exp = {
   customer_3?: InputMaybe<Customer_Bool_Exp>;
   customer_3_id?: InputMaybe<Uuid_Comparison_Exp>;
   customer_id?: InputMaybe<Uuid_Comparison_Exp>;
+  driver_phone?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   image?: InputMaybe<String_Comparison_Exp>;
   material?: InputMaybe<Material_Bool_Exp>;
   material_id?: InputMaybe<Uuid_Comparison_Exp>;
   nano_id?: InputMaybe<Int_Comparison_Exp>;
-  paid_by?: InputMaybe<String_Comparison_Exp>;
+  order_id?: InputMaybe<String_Comparison_Exp>;
+  paid?: InputMaybe<Boolean_Comparison_Exp>;
+  paidByByPaidBy?: InputMaybe<Paid_By_Bool_Exp>;
+  paid_by?: InputMaybe<Paid_By_Enum_Comparison_Exp>;
+  payment_initiated?: InputMaybe<Boolean_Comparison_Exp>;
   photos?: InputMaybe<Json_Comparison_Exp>;
   reference_bill_id?: InputMaybe<Uuid_Comparison_Exp>;
   scale_weight?: InputMaybe<Int_Comparison_Exp>;
@@ -429,12 +440,17 @@ export type Bill_Insert_Input = {
   customer_3?: InputMaybe<Customer_Obj_Rel_Insert_Input>;
   customer_3_id?: InputMaybe<Scalars['uuid']>;
   customer_id?: InputMaybe<Scalars['uuid']>;
+  driver_phone?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   image?: InputMaybe<Scalars['String']>;
   material?: InputMaybe<Material_Obj_Rel_Insert_Input>;
   material_id?: InputMaybe<Scalars['uuid']>;
   nano_id?: InputMaybe<Scalars['Int']>;
-  paid_by?: InputMaybe<Scalars['String']>;
+  order_id?: InputMaybe<Scalars['String']>;
+  paid?: InputMaybe<Scalars['Boolean']>;
+  paidByByPaidBy?: InputMaybe<Paid_By_Obj_Rel_Insert_Input>;
+  paid_by?: InputMaybe<Paid_By_Enum>;
+  payment_initiated?: InputMaybe<Scalars['Boolean']>;
   photos?: InputMaybe<Scalars['json']>;
   reference_bill_id?: InputMaybe<Scalars['uuid']>;
   scale_weight?: InputMaybe<Scalars['Int']>;
@@ -458,11 +474,12 @@ export type Bill_Max_Fields = {
   customer_2_id?: Maybe<Scalars['uuid']>;
   customer_3_id?: Maybe<Scalars['uuid']>;
   customer_id?: Maybe<Scalars['uuid']>;
+  driver_phone?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   image?: Maybe<Scalars['String']>;
   material_id?: Maybe<Scalars['uuid']>;
   nano_id?: Maybe<Scalars['Int']>;
-  paid_by?: Maybe<Scalars['String']>;
+  order_id?: Maybe<Scalars['String']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
   scale_weight?: Maybe<Scalars['Int']>;
   tare_weight?: Maybe<Scalars['Int']>;
@@ -480,11 +497,12 @@ export type Bill_Max_Order_By = {
   customer_2_id?: InputMaybe<Order_By>;
   customer_3_id?: InputMaybe<Order_By>;
   customer_id?: InputMaybe<Order_By>;
+  driver_phone?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   image?: InputMaybe<Order_By>;
   material_id?: InputMaybe<Order_By>;
   nano_id?: InputMaybe<Order_By>;
-  paid_by?: InputMaybe<Order_By>;
+  order_id?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
@@ -503,11 +521,12 @@ export type Bill_Min_Fields = {
   customer_2_id?: Maybe<Scalars['uuid']>;
   customer_3_id?: Maybe<Scalars['uuid']>;
   customer_id?: Maybe<Scalars['uuid']>;
+  driver_phone?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   image?: Maybe<Scalars['String']>;
   material_id?: Maybe<Scalars['uuid']>;
   nano_id?: Maybe<Scalars['Int']>;
-  paid_by?: Maybe<Scalars['String']>;
+  order_id?: Maybe<Scalars['String']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
   scale_weight?: Maybe<Scalars['Int']>;
   tare_weight?: Maybe<Scalars['Int']>;
@@ -525,11 +544,12 @@ export type Bill_Min_Order_By = {
   customer_2_id?: InputMaybe<Order_By>;
   customer_3_id?: InputMaybe<Order_By>;
   customer_id?: InputMaybe<Order_By>;
+  driver_phone?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   image?: InputMaybe<Order_By>;
   material_id?: InputMaybe<Order_By>;
   nano_id?: InputMaybe<Order_By>;
-  paid_by?: InputMaybe<Order_By>;
+  order_id?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
@@ -576,12 +596,17 @@ export type Bill_Order_By = {
   customer_3?: InputMaybe<Customer_Order_By>;
   customer_3_id?: InputMaybe<Order_By>;
   customer_id?: InputMaybe<Order_By>;
+  driver_phone?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   image?: InputMaybe<Order_By>;
   material?: InputMaybe<Material_Order_By>;
   material_id?: InputMaybe<Order_By>;
   nano_id?: InputMaybe<Order_By>;
+  order_id?: InputMaybe<Order_By>;
+  paid?: InputMaybe<Order_By>;
+  paidByByPaidBy?: InputMaybe<Paid_By_Order_By>;
   paid_by?: InputMaybe<Order_By>;
+  payment_initiated?: InputMaybe<Order_By>;
   photos?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
@@ -615,6 +640,8 @@ export enum Bill_Select_Column {
   /** column name */
   CustomerId = 'customer_id',
   /** column name */
+  DriverPhone = 'driver_phone',
+  /** column name */
   Id = 'id',
   /** column name */
   Image = 'image',
@@ -623,7 +650,13 @@ export enum Bill_Select_Column {
   /** column name */
   NanoId = 'nano_id',
   /** column name */
+  OrderId = 'order_id',
+  /** column name */
+  Paid = 'paid',
+  /** column name */
   PaidBy = 'paid_by',
+  /** column name */
+  PaymentInitiated = 'payment_initiated',
   /** column name */
   Photos = 'photos',
   /** column name */
@@ -653,11 +686,15 @@ export type Bill_Set_Input = {
   customer_2_id?: InputMaybe<Scalars['uuid']>;
   customer_3_id?: InputMaybe<Scalars['uuid']>;
   customer_id?: InputMaybe<Scalars['uuid']>;
+  driver_phone?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   image?: InputMaybe<Scalars['String']>;
   material_id?: InputMaybe<Scalars['uuid']>;
   nano_id?: InputMaybe<Scalars['Int']>;
-  paid_by?: InputMaybe<Scalars['String']>;
+  order_id?: InputMaybe<Scalars['String']>;
+  paid?: InputMaybe<Scalars['Boolean']>;
+  paid_by?: InputMaybe<Paid_By_Enum>;
+  payment_initiated?: InputMaybe<Scalars['Boolean']>;
   photos?: InputMaybe<Scalars['json']>;
   reference_bill_id?: InputMaybe<Scalars['uuid']>;
   scale_weight?: InputMaybe<Scalars['Int']>;
@@ -751,6 +788,8 @@ export enum Bill_Update_Column {
   /** column name */
   CustomerId = 'customer_id',
   /** column name */
+  DriverPhone = 'driver_phone',
+  /** column name */
   Id = 'id',
   /** column name */
   Image = 'image',
@@ -759,7 +798,13 @@ export enum Bill_Update_Column {
   /** column name */
   NanoId = 'nano_id',
   /** column name */
+  OrderId = 'order_id',
+  /** column name */
+  Paid = 'paid',
+  /** column name */
   PaidBy = 'paid_by',
+  /** column name */
+  PaymentInitiated = 'payment_initiated',
   /** column name */
   Photos = 'photos',
   /** column name */
@@ -1551,6 +1596,10 @@ export type Mutation_Root = {
   delete_material?: Maybe<Material_Mutation_Response>;
   /** delete single row from the table: "material" */
   delete_material_by_pk?: Maybe<Material>;
+  /** delete data from the table: "paid_by" */
+  delete_paid_by?: Maybe<Paid_By_Mutation_Response>;
+  /** delete single row from the table: "paid_by" */
+  delete_paid_by_by_pk?: Maybe<Paid_By>;
   /** delete data from the table: "tenents" */
   delete_tenents?: Maybe<Tenents_Mutation_Response>;
   /** delete single row from the table: "tenents" */
@@ -1583,6 +1632,10 @@ export type Mutation_Root = {
   insert_material?: Maybe<Material_Mutation_Response>;
   /** insert a single row into the table: "material" */
   insert_material_one?: Maybe<Material>;
+  /** insert data into the table: "paid_by" */
+  insert_paid_by?: Maybe<Paid_By_Mutation_Response>;
+  /** insert a single row into the table: "paid_by" */
+  insert_paid_by_one?: Maybe<Paid_By>;
   /** insert data into the table: "tenents" */
   insert_tenents?: Maybe<Tenents_Mutation_Response>;
   /** insert a single row into the table: "tenents" */
@@ -1615,6 +1668,10 @@ export type Mutation_Root = {
   update_material?: Maybe<Material_Mutation_Response>;
   /** update single row of the table: "material" */
   update_material_by_pk?: Maybe<Material>;
+  /** update data of the table: "paid_by" */
+  update_paid_by?: Maybe<Paid_By_Mutation_Response>;
+  /** update single row of the table: "paid_by" */
+  update_paid_by_by_pk?: Maybe<Paid_By>;
   /** update data of the table: "tenents" */
   update_tenents?: Maybe<Tenents_Mutation_Response>;
   /** update single row of the table: "tenents" */
@@ -1681,6 +1738,18 @@ export type Mutation_RootDelete_MaterialArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Material_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Paid_ByArgs = {
+  where: Paid_By_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Paid_By_By_PkArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -1785,6 +1854,20 @@ export type Mutation_RootInsert_MaterialArgs = {
 export type Mutation_RootInsert_Material_OneArgs = {
   object: Material_Insert_Input;
   on_conflict?: InputMaybe<Material_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Paid_ByArgs = {
+  objects: Array<Paid_By_Insert_Input>;
+  on_conflict?: InputMaybe<Paid_By_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Paid_By_OneArgs = {
+  object: Paid_By_Insert_Input;
+  on_conflict?: InputMaybe<Paid_By_On_Conflict>;
 };
 
 
@@ -1905,6 +1988,20 @@ export type Mutation_RootUpdate_Material_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Paid_ByArgs = {
+  _set?: InputMaybe<Paid_By_Set_Input>;
+  where: Paid_By_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Paid_By_By_PkArgs = {
+  _set?: InputMaybe<Paid_By_Set_Input>;
+  pk_columns: Paid_By_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_TenentsArgs = {
   _set?: InputMaybe<Tenents_Set_Input>;
   where: Tenents_Bool_Exp;
@@ -1977,6 +2074,175 @@ export enum Order_By {
   DescNullsLast = 'desc_nulls_last'
 }
 
+/** columns and relationships of "paid_by" */
+export type Paid_By = {
+  __typename?: 'paid_by';
+  /** An array relationship */
+  bills: Array<Bill>;
+  /** An aggregate relationship */
+  bills_aggregate: Bill_Aggregate;
+  comment: Scalars['String'];
+  value: Scalars['String'];
+};
+
+
+/** columns and relationships of "paid_by" */
+export type Paid_ByBillsArgs = {
+  distinct_on?: InputMaybe<Array<Bill_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Bill_Order_By>>;
+  where?: InputMaybe<Bill_Bool_Exp>;
+};
+
+
+/** columns and relationships of "paid_by" */
+export type Paid_ByBills_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Bill_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Bill_Order_By>>;
+  where?: InputMaybe<Bill_Bool_Exp>;
+};
+
+/** aggregated selection of "paid_by" */
+export type Paid_By_Aggregate = {
+  __typename?: 'paid_by_aggregate';
+  aggregate?: Maybe<Paid_By_Aggregate_Fields>;
+  nodes: Array<Paid_By>;
+};
+
+/** aggregate fields of "paid_by" */
+export type Paid_By_Aggregate_Fields = {
+  __typename?: 'paid_by_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Paid_By_Max_Fields>;
+  min?: Maybe<Paid_By_Min_Fields>;
+};
+
+
+/** aggregate fields of "paid_by" */
+export type Paid_By_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Paid_By_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "paid_by". All fields are combined with a logical 'AND'. */
+export type Paid_By_Bool_Exp = {
+  _and?: InputMaybe<Array<Paid_By_Bool_Exp>>;
+  _not?: InputMaybe<Paid_By_Bool_Exp>;
+  _or?: InputMaybe<Array<Paid_By_Bool_Exp>>;
+  bills?: InputMaybe<Bill_Bool_Exp>;
+  comment?: InputMaybe<String_Comparison_Exp>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "paid_by" */
+export enum Paid_By_Constraint {
+  /** unique or primary key constraint */
+  RolePkey = 'role_pkey'
+}
+
+export enum Paid_By_Enum {
+  /** buyer paid the bill */
+  Buyer = 'buyer',
+  /** paid by any means of cash at the terminal */
+  Cash = 'cash',
+  /** driver paid the bill */
+  Driver = 'driver',
+  /** seller paid the bill */
+  Seller = 'seller',
+  /** trader paid the bill */
+  Trader = 'trader'
+}
+
+/** Boolean expression to compare columns of type "paid_by_enum". All fields are combined with logical 'AND'. */
+export type Paid_By_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Paid_By_Enum>;
+  _in?: InputMaybe<Array<Paid_By_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Paid_By_Enum>;
+  _nin?: InputMaybe<Array<Paid_By_Enum>>;
+};
+
+/** input type for inserting data into table "paid_by" */
+export type Paid_By_Insert_Input = {
+  bills?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Paid_By_Max_Fields = {
+  __typename?: 'paid_by_max_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Paid_By_Min_Fields = {
+  __typename?: 'paid_by_min_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "paid_by" */
+export type Paid_By_Mutation_Response = {
+  __typename?: 'paid_by_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Paid_By>;
+};
+
+/** input type for inserting object relation for remote table "paid_by" */
+export type Paid_By_Obj_Rel_Insert_Input = {
+  data: Paid_By_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Paid_By_On_Conflict>;
+};
+
+/** on_conflict condition type for table "paid_by" */
+export type Paid_By_On_Conflict = {
+  constraint: Paid_By_Constraint;
+  update_columns?: Array<Paid_By_Update_Column>;
+  where?: InputMaybe<Paid_By_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "paid_by". */
+export type Paid_By_Order_By = {
+  bills_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
+  comment?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: paid_by */
+export type Paid_By_Pk_Columns_Input = {
+  value: Scalars['String'];
+};
+
+/** select columns of table "paid_by" */
+export enum Paid_By_Select_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "paid_by" */
+export type Paid_By_Set_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "paid_by" */
+export enum Paid_By_Update_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
 export type Query_Root = {
   __typename?: 'query_root';
   /** fetch data from the table: "admin" */
@@ -2003,6 +2269,12 @@ export type Query_Root = {
   material_aggregate: Material_Aggregate;
   /** fetch data from the table: "material" using primary key columns */
   material_by_pk?: Maybe<Material>;
+  /** fetch data from the table: "paid_by" */
+  paid_by: Array<Paid_By>;
+  /** fetch aggregated fields from the table: "paid_by" */
+  paid_by_aggregate: Paid_By_Aggregate;
+  /** fetch data from the table: "paid_by" using primary key columns */
+  paid_by_by_pk?: Maybe<Paid_By>;
   /** fetch data from the table: "tenents" */
   tenents: Array<Tenents>;
   /** fetch aggregated fields from the table: "tenents" */
@@ -2124,6 +2396,29 @@ export type Query_RootMaterial_By_PkArgs = {
 };
 
 
+export type Query_RootPaid_ByArgs = {
+  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
+  where?: InputMaybe<Paid_By_Bool_Exp>;
+};
+
+
+export type Query_RootPaid_By_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
+  where?: InputMaybe<Paid_By_Bool_Exp>;
+};
+
+
+export type Query_RootPaid_By_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
 export type Query_RootTenentsArgs = {
   distinct_on?: InputMaybe<Array<Tenents_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2241,6 +2536,12 @@ export type Subscription_Root = {
   material_aggregate: Material_Aggregate;
   /** fetch data from the table: "material" using primary key columns */
   material_by_pk?: Maybe<Material>;
+  /** fetch data from the table: "paid_by" */
+  paid_by: Array<Paid_By>;
+  /** fetch aggregated fields from the table: "paid_by" */
+  paid_by_aggregate: Paid_By_Aggregate;
+  /** fetch data from the table: "paid_by" using primary key columns */
+  paid_by_by_pk?: Maybe<Paid_By>;
   /** fetch data from the table: "tenents" */
   tenents: Array<Tenents>;
   /** fetch aggregated fields from the table: "tenents" */
@@ -2362,6 +2663,29 @@ export type Subscription_RootMaterial_By_PkArgs = {
 };
 
 
+export type Subscription_RootPaid_ByArgs = {
+  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
+  where?: InputMaybe<Paid_By_Bool_Exp>;
+};
+
+
+export type Subscription_RootPaid_By_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
+  where?: InputMaybe<Paid_By_Bool_Exp>;
+};
+
+
+export type Subscription_RootPaid_By_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
 export type Subscription_RootTenentsArgs = {
   distinct_on?: InputMaybe<Array<Tenents_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2471,6 +2795,7 @@ export type Tenents = {
   name: Scalars['String'];
   payment_pending: Scalars['Boolean'];
   phone: Scalars['String'];
+  razorpay_id: Scalars['String'];
   /** An array relationship */
   users: Array<User>;
   /** An aggregate relationship */
@@ -2603,6 +2928,7 @@ export type Tenents_Bool_Exp = {
   name?: InputMaybe<String_Comparison_Exp>;
   payment_pending?: InputMaybe<Boolean_Comparison_Exp>;
   phone?: InputMaybe<String_Comparison_Exp>;
+  razorpay_id?: InputMaybe<String_Comparison_Exp>;
   users?: InputMaybe<User_Bool_Exp>;
   weighbridges?: InputMaybe<Weighbridge_Bool_Exp>;
 };
@@ -2612,7 +2938,9 @@ export enum Tenents_Constraint {
   /** unique or primary key constraint */
   TenentsEmailKey = 'tenents_email_key',
   /** unique or primary key constraint */
-  TenentsPkey = 'tenents_pkey'
+  TenentsPkey = 'tenents_pkey',
+  /** unique or primary key constraint */
+  TenentsRazorpayIdKey = 'tenents_razorpay_id_key'
 }
 
 /** input type for inserting data into table "tenents" */
@@ -2626,6 +2954,7 @@ export type Tenents_Insert_Input = {
   name?: InputMaybe<Scalars['String']>;
   payment_pending?: InputMaybe<Scalars['Boolean']>;
   phone?: InputMaybe<Scalars['String']>;
+  razorpay_id?: InputMaybe<Scalars['String']>;
   users?: InputMaybe<User_Arr_Rel_Insert_Input>;
   weighbridges?: InputMaybe<Weighbridge_Arr_Rel_Insert_Input>;
 };
@@ -2637,6 +2966,7 @@ export type Tenents_Max_Fields = {
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
+  razorpay_id?: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -2646,6 +2976,7 @@ export type Tenents_Min_Fields = {
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
+  razorpay_id?: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "tenents" */
@@ -2682,6 +3013,7 @@ export type Tenents_Order_By = {
   name?: InputMaybe<Order_By>;
   payment_pending?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
+  razorpay_id?: InputMaybe<Order_By>;
   users_aggregate?: InputMaybe<User_Aggregate_Order_By>;
   weighbridges_aggregate?: InputMaybe<Weighbridge_Aggregate_Order_By>;
 };
@@ -2706,7 +3038,9 @@ export enum Tenents_Select_Column {
   /** column name */
   PaymentPending = 'payment_pending',
   /** column name */
-  Phone = 'phone'
+  Phone = 'phone',
+  /** column name */
+  RazorpayId = 'razorpay_id'
 }
 
 /** input type for updating data in table "tenents" */
@@ -2718,6 +3052,7 @@ export type Tenents_Set_Input = {
   name?: InputMaybe<Scalars['String']>;
   payment_pending?: InputMaybe<Scalars['Boolean']>;
   phone?: InputMaybe<Scalars['String']>;
+  razorpay_id?: InputMaybe<Scalars['String']>;
 };
 
 /** update columns of table "tenents" */
@@ -2735,7 +3070,9 @@ export enum Tenents_Update_Column {
   /** column name */
   PaymentPending = 'payment_pending',
   /** column name */
-  Phone = 'phone'
+  Phone = 'phone',
+  /** column name */
+  RazorpayId = 'razorpay_id'
 }
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
@@ -3745,7 +4082,7 @@ export type AddBillMutationVariables = Exact<{
 }>;
 
 
-export type AddBillMutation = { __typename?: 'mutation_root', insert_bill_one?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: string, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
+export type AddBillMutation = { __typename?: 'mutation_root', insert_bill_one?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
 
 export type GetTareWeightBillsQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
@@ -3765,10 +4102,9 @@ export type GetTotalCollectionQuery = { __typename?: 'query_root', bill_aggregat
 
 export type GetTotalBillsSubscriptionVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
-  limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<Bill_Order_By> | Bill_Order_By>;
-  distinctOn?: InputMaybe<Array<Bill_Select_Column> | Bill_Select_Column>;
+  limit?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -3783,14 +4119,14 @@ export type GetAllBillsSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: string, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, customer?: { __typename?: 'customer', id: any, name: string } | null, customer_3?: { __typename?: 'customer', id: any, name: string } | null, customer_2?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string } }> };
+export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: Paid_By_Enum, paid?: boolean | null, payment_initiated?: boolean | null, order_id?: string | null, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, customer?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, customer_3?: { __typename?: 'customer', id: any, name: string, email: string, phone: string } | null, customer_2?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, material: { __typename?: 'material', name: string } }> };
 
 export type GetBillForReceptQueryVariables = Exact<{
   billByPkId: Scalars['uuid'];
 }>;
 
 
-export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, nano_id: number, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: string, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
+export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, nano_id: number, second_weight: boolean, tare_weight: number, order_id?: string | null, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
 
 export type GetVehicleByCollectionsQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
@@ -4317,8 +4653,13 @@ export type GetTotalCollectionQueryHookResult = ReturnType<typeof useGetTotalCol
 export type GetTotalCollectionLazyQueryHookResult = ReturnType<typeof useGetTotalCollectionLazyQuery>;
 export type GetTotalCollectionQueryResult = Apollo.QueryResult<GetTotalCollectionQuery, GetTotalCollectionQueryVariables>;
 export const GetTotalBillsDocument = gql`
-    subscription getTotalBills($where: bill_bool_exp, $limit: Int, $offset: Int, $orderBy: [bill_order_by!], $distinctOn: [bill_select_column!]) {
-  bill_aggregate(where: $where) {
+    subscription getTotalBills($where: bill_bool_exp, $offset: Int, $orderBy: [bill_order_by!], $limit: Int) {
+  bill_aggregate(
+    where: $where
+    offset: $offset
+    order_by: $orderBy
+    limit: $limit
+  ) {
     aggregate {
       count
     }
@@ -4339,10 +4680,9 @@ export const GetTotalBillsDocument = gql`
  * const { data, loading, error } = useGetTotalBillsSubscription({
  *   variables: {
  *      where: // value for 'where'
- *      limit: // value for 'limit'
  *      offset: // value for 'offset'
  *      orderBy: // value for 'orderBy'
- *      distinctOn: // value for 'distinctOn'
+ *      limit: // value for 'limit'
  *   },
  * });
  */
@@ -4373,14 +4713,20 @@ export const GetAllBillsDocument = gql`
     charges
     customer {
       id
+      email
+      phone
       name
     }
     customer_3 {
       id
       name
+      email
+      phone
     }
     customer_2 {
       id
+      email
+      phone
       name
     }
     created_at
@@ -4388,6 +4734,9 @@ export const GetAllBillsDocument = gql`
       name
     }
     paid_by
+    paid
+    payment_initiated
+    order_id
     second_weight
     scale_weight
     tare_weight
@@ -4433,6 +4782,7 @@ export const GetBillForReceptDocument = gql`
     nano_id
     second_weight
     tare_weight
+    order_id
     reference_bill_id
     vehicle {
       name

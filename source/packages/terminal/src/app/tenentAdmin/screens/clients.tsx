@@ -86,9 +86,9 @@ const columns: GridColDef[] = [
                         toast.error('bills are linked to this client');
                       })
                       .then((dat) => {
-                        if (dat) {
+                        dat &&
+                          dat.data &&
                           toast.success('client deleted successfully');
-                        }
                       });
                   },
                 },

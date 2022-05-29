@@ -1,0 +1,12 @@
+table:
+  schema: public
+  name: paid_by
+is_enum: true
+array_relationships:
+  - name: bills
+    using:
+      foreign_key_constraint_on:
+        column: paid_by
+        table:
+          schema: public
+          name: bill

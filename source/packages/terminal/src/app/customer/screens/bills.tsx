@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { DataGrid, GridValueGetterParams } from '@mui/x-data-grid';
 import {
+  Badge,
   Box,
   Button,
   Checkbox,
+  Chip,
   LinearProgress,
   TextField as TF,
   Typography,
@@ -21,6 +23,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { auth } from '@infra-weigh/firebase';
+import { displayRazorpay } from '../../razorPay';
 
 const Bills = () => {
   const [pageSize, setPageSize] = React.useState(10);
@@ -34,7 +37,12 @@ const Bills = () => {
   const [showLoading, setShowLoading] = React.useState<boolean>(false);
   const { data, loading } = useGetAllBillsSubscription({
     variables: {
-      orderBy: sort,
+      orderBy: [
+        {
+          created_at: 'desc',
+        },
+        ...sort,
+      ],
       where: {
         _and: [...filter],
       },
@@ -45,6 +53,12 @@ const Bills = () => {
   const { data: totalRows, loading: totalRowsLoading } =
     useGetTotalBillsSubscription({
       variables: {
+        orderBy: [
+          {
+            created_at: 'desc',
+          },
+          ...sort,
+        ],
         where: {
           _and: [...filter],
         },
@@ -421,6 +435,62 @@ const Bills = () => {
                   ),
               },
               {
+                field: 'paid',
+                headerName: 'status',
+                sortable: true,
+                width: 120,
+                renderCell: (params) =>
+                  params.value ? (
+                    <Chip color="success" label="paid" />
+                  ) : (
+                    <Chip color="error" label="on due" />
+                  ),
+              },
+              {
+                field: 'pay now',
+                headerName: 'pay now',
+                sortable: false,
+                width: 120,
+                renderCell: (params) => (
+                  <Button
+                    disabled={
+                      !params.row.order_id || params.row.paid ? true : false
+                    }
+                    onClick={() => {
+                      const phone = (): any => {
+                        if (
+                          auth.currentUser?.email === params.row.customer?.email
+                        ) {
+                          return params.row.customer?.phone;
+                        } else if (
+                          auth.currentUser?.email ===
+                          params.row.customer_2?.email
+                        ) {
+                          return params.row.customer_2?.phone;
+                        } else if (
+                          auth.currentUser?.email ===
+                          params.row.customer_3?.email
+                        ) {
+                          return params.row.customer_3?.phone;
+                        } else {
+                          return null;
+                        }
+                      };
+                      displayRazorpay({
+                        amount: parseInt(`${5000}`),
+                        currency: 'INR',
+                        name: auth.currentUser?.displayName || '',
+                        mail: auth.currentUser?.email || '',
+                        order_id: params.row.order_id || '',
+                        phone: phone(),
+                      });
+                    }}
+                  >
+                    Pay now
+                  </Button>
+                ),
+              },
+              {
                 field: 'info',
                 headerName: 'info',
                 sortable: false,
@@ -436,8 +506,27 @@ const Bills = () => {
             ]}
             autoPageSize
             filterMode="server"
+            initialState={{
+              sorting: {
+                sortModel: [
+                  {
+                    field: 'created_at',
+                    sort: 'desc',
+                  },
+                ],
+              },
+            }}
             onFilterModelChange={(f) => setFilter(f)}
-            onSortModelChange={(s) => setSort(s)}
+            onSortModelChange={(s) => {
+              // eslint-disable-next-line prefer-const
+              let dt: any = [];
+              s.forEach((s) => {
+                dt.push({
+                  [s.field]: s.sort,
+                });
+              });
+              setSort(dt);
+            }}
             disableSelectionOnClick
           />
         ) : null}

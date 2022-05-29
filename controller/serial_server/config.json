@@ -1,0 +1,17 @@
+{
+  "server": {
+    "port": "9999",
+    "host": "infraweighcontrol"
+  },
+  "transducer": {
+    "port": "COM6",
+    "baudrate": 2400,
+    "timeout": 0.1
+  },
+  "camera": [
+    "rtsp://admin:123nithesh@@192.168.101.5/Streaming/Channels/101",
+    "rtsp://admin:123nithesh@@192.168.101.5/Streaming/Channels/201",
+    "rtsp://admin:123nithesh@@192.168.101.5/Streaming/Channels/301",
+    "rtsp://admin:123nithesh@@192.168.101.5/Streaming/Channels/401"
+  ]
+}

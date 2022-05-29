@@ -1,0 +1,29 @@
+{
+  "name": "serial_server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "prestart": "npm run build",
+    "start": "pm2 start build/index.js --watch -i max",
+    "prod": "node build/index.js",
+    "staging": "node build/index.js",
+    "dev": "ts-node-dev --inspect --respawn index.ts",
+    "build": "rimraf build && tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@serialport/parser-readline": "^10.3.0",
+    "@types/node": "^17.0.36",
+    "cors": "^2.8.5",
+    "cross-fetch": "^3.1.5",
+    "express": "^4.18.1",
+    "pm2": "^5.2.0",
+    "reflect-metadata": "^0.1.13",
+    "serialport": "^10.4.0",
+    "socket.io": "^4.5.1",
+    "ts-node-dev": "^2.0.0",
+    "tsc": "^2.0.4",
+    "typescript": "^4.7.2",
+    "ws": "^8.7.0"
+  }
+}

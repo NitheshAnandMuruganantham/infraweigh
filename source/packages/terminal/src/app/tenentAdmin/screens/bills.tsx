@@ -4,13 +4,13 @@ import {
   Box,
   Button,
   Checkbox,
+  Chip,
   LinearProgress,
   TextField as TF,
   Typography,
 } from '@mui/material';
 import {
   useGetAllBillsSubscription,
-  useGetCustomerDropdownOptionsLazyQuery,
   useGetMaterialDropDownListLazyQuery,
   useGetTotalBillsSubscription,
   useGetVehiclesDropDownListLazyQuery,
@@ -21,6 +21,8 @@ import { Autocomplete, TextField } from 'formik-mui';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { auth } from '@infra-weigh/firebase';
+import { displayRazorpay } from '../../razorPay';
 
 const Bills = () => {
   const [pageSize, setPageSize] = React.useState(10);
@@ -28,54 +30,37 @@ const Bills = () => {
   const [filter, setFilter] = React.useState<any>([]);
   const [sort, setSort] = React.useState<any>([]);
   const [materials, setMaterials] = React.useState<any[]>([]);
-  const [customer, setCustomer] = React.useState<any[]>([]);
   const [vehicle, setVehicle] = React.useState<any[]>([]);
   const [filterByDateTime, setFilterByDateTime] =
     React.useState<boolean>(false);
   const [showLoading, setShowLoading] = React.useState<boolean>(false);
   const { data, loading } = useGetAllBillsSubscription({
     variables: {
-      orderBy: sort,
+      orderBy: [
+        {
+          created_at: 'desc',
+        },
+        ...sort,
+      ],
       where: {
-        _and: [
-          {
-            tenent_id: {
-              _eq: localStorage.getItem('x-tenent-id'),
-            },
-          },
-          ...filter,
-        ],
+        _and: [...filter],
       },
       offset: (page - 1) * pageSize < 0 ? 0 : (page - 1) * pageSize,
       limit: pageSize,
     },
   });
-
   const { data: totalRows, loading: totalRowsLoading } =
     useGetTotalBillsSubscription({
       variables: {
-        orderBy: sort,
-        where: {
-          _and: [
-            {
-              tenent_id: {
-                _eq: localStorage.getItem('x-tenent-id'),
-              },
-            },
-            ...filter,
-          ],
-        },
-      },
-    });
-  const [loadCustomers, { data: customerData, loading: customerLoading }] =
-    useGetCustomerDropdownOptionsLazyQuery({
-      variables: {
-        where: {
-          tenent_id: {
-            _eq: localStorage.getItem('x-tenent-id'),
+        orderBy: [
+          {
+            created_at: 'desc',
           },
+          ...sort,
+        ],
+        where: {
+          _and: [...filter],
         },
-        limit: 3000,
       },
     });
 
@@ -89,12 +74,6 @@ const Bills = () => {
       setMaterials(materialData.material);
     }
   }, [materialData]);
-
-  React.useEffect(() => {
-    if (customerData) {
-      setCustomer(customerData.customer);
-    }
-  }, [customerData]);
 
   React.useEffect(() => {
     if (vehicleData) {
@@ -122,7 +101,6 @@ const Bills = () => {
               showLoading ||
               totalRowsLoading ||
               materialLoading ||
-              customerLoading ||
               vehicleLoading
                 ? 'visible'
                 : 'hidden',
@@ -162,34 +140,7 @@ const Bills = () => {
                 },
               ];
             }
-            if (
-              values.customer &&
-              values.customer.value &&
-              values.customer.value.length > 0
-            ) {
-              dat = [
-                ...dat,
-                {
-                  _or: [
-                    {
-                      customer_id: {
-                        _eq: values.customer.value,
-                      },
-                    },
-                    {
-                      customer_2_id: {
-                        _eq: values.customer.value,
-                      },
-                    },
-                    {
-                      customer_3_id: {
-                        _eq: values.customer.value,
-                      },
-                    },
-                  ],
-                },
-              ];
-            }
+
             if (
               values.from &&
               values.from.length > 0 &&
@@ -227,7 +178,6 @@ const Bills = () => {
             vehicle_number: '',
             material: null,
             vehicle: null,
-            customer: null,
             from: '',
             to: '',
           }}
@@ -277,55 +227,6 @@ const Bills = () => {
                   options={materials}
                   renderInput={(params: any) => (
                     <TF {...params} label="Material" />
-                  )}
-                  sx={{
-                    margin: 2,
-                    width: '40%',
-                  }}
-                />
-                <Field
-                  component={Autocomplete}
-                  name="customer"
-                  onChange={(_: any, v: any) => setFieldValue('customer', v)}
-                  loading={customerLoading}
-                  disableClearable
-                  isOptionEqualToValue={(option: any, value: any) =>
-                    option.value === value.value
-                  }
-                  onOpen={() =>
-                    loadCustomers({
-                      variables: {
-                        where: {
-                          tenent_id: {
-                            _eq: localStorage.getItem('x-tenent-id'),
-                          },
-                        },
-                      },
-                    })
-                  }
-                  onInputChange={(_: any, v: any) => {
-                    loadCustomers({
-                      variables: {
-                        where: {
-                          _and: [
-                            {
-                              name: {
-                                _like: `%${v}%`,
-                              },
-                            },
-                            {
-                              tenent_id: {
-                                _eq: localStorage.getItem('x-tenent-id'),
-                              },
-                            },
-                          ],
-                        },
-                      },
-                    });
-                  }}
-                  options={customer}
-                  renderInput={(params: any) => (
-                    <TF {...params} label="customer" />
                   )}
                   sx={{
                     margin: 2,
@@ -437,30 +338,32 @@ const Bills = () => {
                 field: 'vehicle_number',
                 headerName: 'vehicle number',
                 width: 150,
-                sortable: true,
                 editable: false,
               },
               {
                 field: 'weighbridge',
-                headerName: 'weighbridge',
-                width: 250,
                 sortable: false,
-                valueGetter: (params: GridValueGetterParams) =>
-                  params.value.name,
+                filterable: false,
+                headerName: 'weighbridge',
+                width: 150,
+                editable: false,
+                valueGetter: (params) => params.value.name,
               },
               {
                 field: 'material',
+                sortable: false,
+                filterable: false,
                 headerName: 'material',
                 width: 100,
-                sortable: false,
                 valueGetter: (params: GridValueGetterParams) =>
                   params.value.name,
               },
               {
                 field: 'customer',
+                sortable: false,
+                filterable: false,
                 headerName: 'customer',
                 width: 150,
-                sortable: false,
                 valueGetter: (params: GridValueGetterParams) =>
                   params.value && params.value.name
                     ? params.value.name
@@ -470,6 +373,7 @@ const Bills = () => {
                 field: 'customer_2',
                 headerName: 'customer 2',
                 sortable: false,
+                filterable: false,
                 width: 150,
                 valueGetter: (params: GridValueGetterParams) =>
                   params.value && params.value.name
@@ -478,9 +382,10 @@ const Bills = () => {
               },
               {
                 field: 'customer_3',
+                sortable: false,
+                filterable: false,
                 headerName: 'customer 3',
                 width: 150,
-                sortable: false,
                 valueGetter: (params: GridValueGetterParams) =>
                   params.value && params.value.name
                     ? params.value.name
@@ -490,6 +395,7 @@ const Bills = () => {
                 field: 'vehicle',
                 headerName: 'vehicle',
                 sortable: false,
+                filterable: false,
                 width: 150,
                 valueGetter: (params: GridValueGetterParams) =>
                   params.value.name,
@@ -497,7 +403,8 @@ const Bills = () => {
               {
                 field: 'created_at',
                 headerName: 'created At',
-                sortable: true,
+                sortable: false,
+                filterable: false,
                 width: 250,
                 valueGetter: (params: GridValueGetterParams) =>
                   (params.value &&
@@ -538,12 +445,69 @@ const Bills = () => {
                 field: 'netWeight',
                 headerName: 'netWeight',
                 sortable: false,
+                filterable: false,
                 width: 120,
                 valueGetter: (params) =>
                   Math.abs(
                     parseInt(`${params.row.scale_weight}`, 10) -
                       parseInt(`${params.row.tare_weight}` || '0', 10) || 0
                   ),
+              },
+              {
+                field: 'paid',
+                headerName: 'status',
+                sortable: true,
+                width: 120,
+                renderCell: (params) =>
+                  params.value ? (
+                    <Chip color="success" label="paid" />
+                  ) : (
+                    <Chip color="error" label="on due" />
+                  ),
+              },
+              {
+                field: 'pay now',
+                headerName: 'pay now',
+                sortable: false,
+                width: 120,
+                renderCell: (params) => (
+                  <Button
+                    disabled={
+                      !params.row.order_id || params.row.paid ? true : false
+                    }
+                    onClick={() => {
+                      const phone = (): any => {
+                        if (
+                          auth.currentUser?.email === params.row.customer?.email
+                        ) {
+                          return params.row.customer?.phone;
+                        } else if (
+                          auth.currentUser?.email ===
+                          params.row.customer_2?.email
+                        ) {
+                          return params.row.customer_2?.phone;
+                        } else if (
+                          auth.currentUser?.email ===
+                          params.row.customer_3?.email
+                        ) {
+                          return params.row.customer_3?.phone;
+                        } else {
+                          return null;
+                        }
+                      };
+                      displayRazorpay({
+                        amount: parseInt(`${5000}`),
+                        currency: 'INR',
+                        name: auth.currentUser?.displayName || '',
+                        mail: auth.currentUser?.email || '',
+                        order_id: params.row.order_id || '',
+                        phone: phone(),
+                      });
+                    }}
+                  >
+                    Pay now
+                  </Button>
+                ),
               },
               {
                 field: 'info',
@@ -561,7 +525,6 @@ const Bills = () => {
             ]}
             autoPageSize
             filterMode="server"
-            disableSelectionOnClick
             onFilterModelChange={(f) => setFilter(f)}
             onSortModelChange={(s) => {
               // eslint-disable-next-line prefer-const
@@ -573,6 +536,7 @@ const Bills = () => {
               });
               setSort(dt);
             }}
+            disableSelectionOnClick
           />
         ) : null}
       </Box>
