@@ -32,7 +32,7 @@ export async function displayRazorpay(result: {
   const { amount, order_id, currency } = result;
 
   const options = {
-    key: 'rzp_test_UXKFTQuUzIjcfM',
+    key: process.env['NX_RAZORPAY_ID'],
     amount: `${amount}`,
     method: 'upi',
     currency: currency,
