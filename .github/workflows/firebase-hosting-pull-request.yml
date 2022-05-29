@@ -11,6 +11,7 @@ jobs:
       NX_BASE_FIREBASE: ${{secrets.NX_BASE_FIREBASE}}
       NX_BASE_URL: ${{secrets.NX_BASE_URL}}
       NX_BASE_WS_URL: ${{secrets.NX_BASE_WS_URL}}
+      NX_RAZORPAY_ID: ${{secrets.NX_RAZORPAY_ID}}
       NX_ENV: production
     steps:
       - uses: actions/checkout@v2
