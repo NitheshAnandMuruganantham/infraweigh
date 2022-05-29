@@ -1,10 +1,13 @@
 import * as functions from "firebase-functions";
 import * as Admin from "firebase-admin";
-import { gql, ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
-import fetch from "cross-fetch";
+import * as cors from "cors";
+import razorPayHookFunction from "./webhooks";
+import { genBillHandler } from "./genBill";
 
-const admin = Admin.initializeApp();
+export const razorPayHook = razorPayHookFunction;
 
+export const admin = Admin.initializeApp();
+cors({ origin: true });
 const applyMiddleware = (req: any, res: any, next: any) => {
   if (
     process.env["API_KEY"] &&
@@ -21,6 +24,10 @@ export const ping = functions.https.onRequest((request, response) =>
   applyMiddleware(request, response, () => {
     response.send("pong");
   })
+);
+
+export const genTenent = functions.https.onRequest((request, response) =>
+  applyMiddleware(request, response, () => {})
 );
 
 export const genUser = functions.https.onRequest((req, res) =>
@@ -157,262 +164,9 @@ export const updateUser = functions.https.onRequest((req, res) =>
 );
 
 export const genBill = functions.https.onRequest((req, res) =>
-  applyMiddleware(req, res, async (req: any, res: any) => {
-    let headers: any = [];
-    headers["x-hasura-admin-secret"] = `${process.env["ADMIN_SECRET"]}`;
-    headers["Content-Type"] = "application/json";
-    new ApolloClient({
-      link: new HttpLink({
-        uri: process.env["HASURA_URL"] + "/v1/graphql",
-        headers,
-        fetch,
-      }),
-      cache: new InMemoryCache(),
-    })
-      .query({
-        query: gql`
-          query ($billByPkId: uuid!) {
-            bill_by_pk(id: $billByPkId) {
-              id
-              vehicle_number
-              created_at
-              second_weight
-              tare_weight
-              charges
-              photos
-              reference_bill_id
-              second_weight
-              tare_weight
-              photos
-              customer {
-                id
-                name
-                company_address
-                company_name
-                gst_in
-                metadata
-                email
-                phone
-              }
-              customer_2 {
-                id
-                name
-                company_address
-                company_name
-                gst_in
-                metadata
-                email
-                phone
-              }
-              customer_3 {
-                id
-                name
-                company_address
-                company_name
-                gst_in
-                email
-                phone
-                metadata
-              }
-              tenent {
-                id
-                email
-                phone
-                metadata
-                name
-              }
-              vehicle {
-                name
-                id
-                manufacturer
-              }
-              material {
-                name
-                id
-                hsn
-              }
-              paid_by
-              weighbridge {
-                display_name
-                id
-                address
-                pin_code
-                phone
-                logo
-                metadata
-                mail
-                name
-              }
-            }
-          }
-        `,
-        variables: {
-          billByPkId: req.body.event.data.new.id,
-        },
-      })
-      .then(async (response) => {
-        const dt = response.data.bill_by_pk;
-        if (dt.customer) {
-          await admin
-            .firestore()
-            .doc(`messages/${req.body.event.data.new.id}-buyer`)
-            .set({
-              to: dt.customer.phone,
-              body: `thank you for choosing ${
-                dt.weighbridge.display_name || ""
-              }!
-          vehicle number: ${dt.vehicle_number}
-          material: ${dt.material.name}
-          time: ${new Date(dt.created_at).toLocaleString()}
-          scale weight: ${dt.scale_weight}
-          tare weight: ${dt.tare_weight || ""}
-          net weight: ${
-            dt.second_weight
-              ? Math.abs(
-                  parseInt(dt.tare_weight || "0", 10) -
-                    parseInt(dt.scale_weight || "0", 10)
-                )
-              : ""
-          }
-
-          `,
-            });
-          await admin
-            .firestore()
-            .doc(`mail/${req.body.event.data.new.id}-buyer`)
-            .set({
-              to: dt.customer.email,
-              subject: `thanks for choosing ${dt.weighbridge.display_name}`,
-              html: `thank you for choosing ${
-                dt.weighbridge.display_name || ""
-              }!
-          vehicle number: ${dt.vehicle_number}
-          material: ${dt.material.name}
-          time: ${new Date(dt.created_at).toLocaleString()}
-          scale weight: ${dt.scale_weight}
-          tare weight: ${dt.tare_weight || ""}
-          net weight: ${
-            dt.second_weight
-              ? Math.abs(
-                  parseInt(dt.tare_weight || "0", 10) -
-                    parseInt(dt.scale_weight || "0", 10)
-                )
-              : ""
-          }
-
-          `,
-            });
-        }
-        if (dt.customer_2) {
-          await admin
-            .firestore()
-            .doc(`messages/${req.body.event.data.new.id}-seller`)
-            .set({
-              to: dt.customer_2.phone,
-              body: `thank you for choosing ${
-                dt.weighbridge.display_name || ""
-              }!
-          vehicle number: ${dt.vehicle_number}
-          material: ${dt.material.name}
-          time: ${new Date(dt.created_at).toLocaleString()}
-          scale weight: ${dt.scale_weight}
-          tare weight: ${dt.tare_weight || ""}
-          net weight: ${
-            dt.second_weight
-              ? Math.abs(
-                  parseInt(dt.tare_weight || "0", 10) -
-                    parseInt(dt.scale_weight || "0", 10)
-                )
-              : ""
-          }
-
-          `,
-            });
-          await admin
-            .firestore()
-            .doc(`mail/${req.body.event.data.new.id}-seller`)
-            .set({
-              to: dt.customer_2.email,
-              subject: `thanks for choosing ${dt.weighbridge.display_name}`,
-              html: `thank you for choosing ${
-                dt.weighbridge.display_name || ""
-              }!
-          vehicle number: ${dt.vehicle_number}
-          material: ${dt.material.name}
-          time: ${new Date(dt.created_at).toLocaleString()}
-          scale weight: ${dt.scale_weight}
-          tare weight: ${dt.tare_weight || ""}
-          net weight: ${
-            dt.second_weight
-              ? Math.abs(
-                  parseInt(dt.tare_weight || "0", 10) -
-                    parseInt(dt.scale_weight || "0", 10)
-                )
-              : ""
-          }
-
-          `,
-            });
-        }
-        if (dt.customer_3) {
-          await admin
-            .firestore()
-            .doc(`messages/${req.body.event.data.new.id}-trader`)
-            .set({
-              to: dt.customer_3.phone,
-              body: `thank you for choosing ${
-                dt.weighbridge.display_name || ""
-              }!
-          vehicle number: ${dt.vehicle_number}
-          material: ${dt.material.name}
-          time: ${new Date(dt.created_at).toLocaleString()}
-          scale weight: ${dt.scale_weight}
-          tare weight: ${dt.tare_weight || ""}
-          net weight: ${
-            dt.second_weight
-              ? Math.abs(
-                  parseInt(dt.tare_weight || "0", 10) -
-                    parseInt(dt.scale_weight || "0", 10)
-                )
-              : ""
-          }
-          `,
-            });
-          await admin
-            .firestore()
-            .doc(`mail/${req.body.event.data.new.id}-trader`)
-            .set({
-              to: dt.customer_3.email,
-              subject: `thanks for choosing ${dt.weighbridge.display_name}`,
-              html: `thank you for choosing ${
-                dt.weighbridge.display_name || ""
-              }!
-          vehicle number: ${dt.vehicle_number}
-          material: ${dt.material.name}
-          time: ${new Date(dt.created_at).toLocaleString()}
-          scale weight: ${dt.scale_weight}
-          tare weight: ${dt.tare_weight || ""}
-          net weight: ${
-            dt.second_weight
-              ? Math.abs(
-                  parseInt(dt.tare_weight || "0", 10) -
-                    parseInt(dt.scale_weight || "0", 10)
-                )
-              : ""
-          }
-          `,
-            });
-        }
-        await admin
-          .firestore()
-          .doc(`bills/${req.body.event.data.new.id}`)
-          .set(dt);
-        res.json({
-          status: "success",
-          id: req.body.event.data.new.id,
-        });
-      });
-  })
+  applyMiddleware(req, res, async (req: any, res: any) =>
+    genBillHandler(req, res, admin)
+  )
 );
 
 export const genCustomer = functions.https.onRequest((req, res) =>

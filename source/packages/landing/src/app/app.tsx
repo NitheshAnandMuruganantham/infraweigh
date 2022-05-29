@@ -1,10 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.scss';
-
+import { Route, Routes } from 'react-router-dom';
+import Home from './screens/home';
+import './app.module.scss';
+import Nav from './components/navBar';
 export function App() {
   return (
     <div>
-      <button className="bg-teal-300">hello</button>
+      <Nav />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </div>
   );
 }

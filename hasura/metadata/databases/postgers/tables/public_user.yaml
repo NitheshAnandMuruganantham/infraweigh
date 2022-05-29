@@ -53,6 +53,7 @@ select_permissions:
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id
+      allow_aggregations: true
 delete_permissions:
   - role: tenantAdmin
     permission:
