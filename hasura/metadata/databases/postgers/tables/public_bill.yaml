@@ -26,9 +26,6 @@ object_relationships:
   - name: material
     using:
       foreign_key_constraint_on: material_id
-  - name: paidByByPaidBy
-    using:
-      foreign_key_constraint_on: paid_by
   - name: tenent
     using:
       foreign_key_constraint_on: tenent_id
