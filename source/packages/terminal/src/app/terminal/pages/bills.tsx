@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridValueGetterParams } from '@mui/x-data-grid';
 import {
-  Badge,
   Box,
   Button,
   Checkbox,
