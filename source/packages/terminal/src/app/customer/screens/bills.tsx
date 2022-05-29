@@ -29,7 +29,7 @@ const Bills = () => {
   const [pageSize, setPageSize] = React.useState(10);
   const [page, setPage] = React.useState(1);
   const [filter, setFilter] = React.useState<any>([]);
-  const [sort, setSort] = React.useState<any>({});
+  const [sort, setSort] = React.useState<any>([]);
   const [materials, setMaterials] = React.useState<any[]>([]);
   const [vehicle, setVehicle] = React.useState<any[]>([]);
   const [filterByDateTime, setFilterByDateTime] =
