@@ -57,18 +57,21 @@ query getTotalCollection($where: bill_bool_exp) {
 
 subscription getTotalBills(
   $where: bill_bool_exp
-  $limit: Int
   $offset: Int
   $orderBy: [bill_order_by!]
-  $distinctOn: [bill_select_column!]
+  $limit: Int
 ) {
-  bill_aggregate(where: $where) {
+  bill_aggregate(
+    where: $where
+    offset: $offset
+    order_by: $orderBy
+    limit: $limit
+  ) {
     aggregate {
       count
     }
   }
 }
-
 subscription getAllBills(
   $where: bill_bool_exp
   $limit: Int
@@ -96,14 +99,20 @@ subscription getAllBills(
     charges
     customer {
       id
+      email
+      phone
       name
     }
     customer_3 {
       id
       name
+      email
+      phone
     }
     customer_2 {
       id
+      email
+      phone
       name
     }
     created_at
@@ -111,6 +120,9 @@ subscription getAllBills(
       name
     }
     paid_by
+    paid
+    payment_initiated
+    order_id
     second_weight
     scale_weight
     tare_weight
@@ -128,6 +140,7 @@ query getBillForRecept($billByPkId: uuid!) {
     nano_id
     second_weight
     tare_weight
+    order_id
     reference_bill_id
     vehicle {
       name

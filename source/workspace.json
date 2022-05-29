@@ -3,10 +3,10 @@
   "projects": {
     "auth": "packages/auth",
     "client": "packages/client",
-    "deamon-client": "packages/deamon-client",
-    "deamon-client-e2e": "packages/deamon-client-e2e",
     "firebase": "packages/firebase",
     "generated": "packages/generated",
+    "landing": "packages/landing",
+    "landing-e2e": "packages/landing-e2e",
     "loading": "packages/loading",
     "print-templates": "packages/print-templates",
     "terminal": "packages/terminal",

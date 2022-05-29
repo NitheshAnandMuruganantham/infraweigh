@@ -79,9 +79,9 @@ const AddNewClient: React.FunctionComponent = () => {
                 setSubmitting(false);
                 return;
               })
-              .then(() => {
+              .then((dt) => {
                 handleClose();
-                toast.success('client created successfully');
+                dt && dt.data && toast.success('client created successfully');
               });
             setSubmitting(false);
           }}

@@ -28,6 +28,12 @@ const TenentAdmin = Loadable({
 const RootRouter: React.FunctionComponent = () => {
   const [role, SetRole] = React.useState<null | string>(null);
   React.useEffect(() => {
+    console.log('environment', process.env['NX_ENV']);
+    console.log('firebase', process.env['NX_BASE_FIREBASE']);
+    console.log('http address', process.env['NX_BASE_URL']);
+    console.log('web socket address', process.env['NX_BASE_WS_URL']);
+  }, []);
+  React.useEffect(() => {
     const unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
       user?.getIdTokenResult().then((dat) => {
         const clm: any = dat.claims['https://hasura.io/jwt/claims'];

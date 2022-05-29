@@ -26,6 +26,9 @@ object_relationships:
   - name: material
     using:
       foreign_key_constraint_on: material_id
+  - name: paidByByPaidBy
+    using:
+      foreign_key_constraint_on: paid_by
   - name: tenent
     using:
       foreign_key_constraint_on: tenent_id
@@ -88,6 +91,7 @@ insert_permissions:
         - customer_2_id
         - customer_3_id
         - customer_id
+        - driver_phone
         - id
         - image
         - material_id
@@ -105,26 +109,30 @@ select_permissions:
   - role: customer
     permission:
       columns:
-        - second_weight
-        - nano_id
-        - scale_weight
-        - tare_weight
-        - photos
-        - charges
-        - image
-        - paid_by
         - vehicle_number
         - created_at
         - updated_at
-        - customer_2_id
-        - customer_3_id
-        - customer_id
         - id
         - material_id
-        - reference_bill_id
-        - tenent_id
+        - charges
         - vehicle_id
         - weighbridge_id
+        - scale_weight
+        - tare_weight
+        - second_weight
+        - paid_by
+        - reference_bill_id
+        - customer_id
+        - customer_2_id
+        - customer_3_id
+        - image
+        - tenent_id
+        - photos
+        - nano_id
+        - paid
+        - payment_initiated
+        - driver_phone
+        - order_id
       filter:
         _or:
           - customer:
@@ -146,11 +154,15 @@ select_permissions:
         - customer_2_id
         - customer_3_id
         - customer_id
+        - driver_phone
         - id
         - image
         - material_id
         - nano_id
+        - order_id
+        - paid
         - paid_by
+        - payment_initiated
         - photos
         - reference_bill_id
         - scale_weight
@@ -173,11 +185,15 @@ select_permissions:
         - customer_2_id
         - customer_3_id
         - customer_id
+        - driver_phone
         - id
         - image
         - material_id
         - nano_id
+        - order_id
+        - paid
         - paid_by
+        - payment_initiated
         - photos
         - reference_bill_id
         - scale_weight

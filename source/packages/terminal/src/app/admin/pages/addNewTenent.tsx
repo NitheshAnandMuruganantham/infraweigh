@@ -38,11 +38,13 @@ const AddNewTenent: React.FunctionComponent = () => {
             address: '',
             email: '',
             phone: '',
+            razorpay_id: '',
             activate: true,
           }}
           validationSchema={() => {
             return Yup.object().shape({
               name: Yup.string().required('Required'),
+              razorpay_id: Yup.string().required('Required'),
               address: Yup.string().required('Required'),
               email: Yup.string().required('Required'),
               phone: Yup.string().required('Required'),
@@ -55,6 +57,7 @@ const AddNewTenent: React.FunctionComponent = () => {
               variables: {
                 object: {
                   name: values.name,
+                  razorpay_id: values.razorpay_id,
                   email: values.email,
                   phone: values.phone,
                   activate: values.activate,
@@ -105,6 +108,15 @@ const AddNewTenent: React.FunctionComponent = () => {
                       type="text"
                       label="address"
                       name="address"
+                      sx={{
+                        my: 1,
+                      }}
+                    />
+                    <Field
+                      component={TextField}
+                      type="text"
+                      label="razor pay merchant id"
+                      name="razorpay_id"
                       sx={{
                         my: 1,
                       }}

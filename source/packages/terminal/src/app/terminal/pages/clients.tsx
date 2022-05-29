@@ -22,21 +22,21 @@ const columns: GridColDef[] = [
   {
     field: 'company_address',
     headerName: 'Address',
-    sortable: false,
+    sortable: true,
     width: 300,
   },
 
   {
     field: 'company_name',
     headerName: 'company',
-    sortable: false,
+    sortable: true,
     width: 200,
   },
 
   {
     field: 'phone',
     headerName: 'phone',
-    sortable: false,
+    sortable: true,
     width: 150,
   },
   {
@@ -48,10 +48,12 @@ const columns: GridColDef[] = [
 ];
 const Clients = () => {
   const [search, setSearch] = React.useState('');
+  const [sort, setSort] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(1);
   const { data, loading } = useGetCustomersSubscription({
     variables: {
+      orderBy: sort,
       where: {
         _and: [
           {
@@ -82,6 +84,7 @@ const Clients = () => {
   const { data: customerCountData, loading: customerCountLoading } =
     useGetCustomersCountSubscription({
       variables: {
+        orderBy: sort,
         where: {
           _and: [
             {
@@ -107,6 +110,7 @@ const Clients = () => {
         },
       },
     });
+
   return (
     <Box>
       <AddNewClient />
@@ -133,6 +137,17 @@ const Clients = () => {
             loading={loading}
             rows={data?.customer || []}
             columns={columns}
+            sortingMode="server"
+            onSortModelChange={(s) => {
+              // eslint-disable-next-line prefer-const
+              let dt: any = [];
+              s.forEach((s) => {
+                dt.push({
+                  [s.field]: s.sort,
+                });
+              });
+              setSort(dt);
+            }}
             rowCount={customerCountData?.customer_aggregate.aggregate?.count}
             paginationMode="server"
             onPageChange={(s) => setPage(s)}
