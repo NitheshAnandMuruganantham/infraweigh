@@ -50,7 +50,7 @@ app.get("/", async (req, res) => {
   const resultJson = await data.json();
 
   res.json({
-    images: resultJson.image,
+    image: resultJson.image,
     weight: x,
   });
 });

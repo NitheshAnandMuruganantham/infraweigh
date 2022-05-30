@@ -25,7 +25,12 @@ import {
 import { auth, storage } from '@infra-weigh/firebase';
 import { toast } from 'react-toastify';
 import Loader from '@infra-weigh/loading';
-import { ref, uploadString, deleteObject } from 'firebase/storage';
+import {
+  ref,
+  uploadString,
+  deleteObject,
+  getDownloadURL,
+} from 'firebase/storage';
 import MuiPhoneNumber from 'material-ui-phone-number';
 const Home: FunctionComponent = () => {
   const [loadCustomers, { data: customerData, loading: customerLoading }] =
@@ -131,37 +136,56 @@ const Home: FunctionComponent = () => {
             if (!values.secondWeight) {
               correctedVal.tareWeight = null;
             }
-            const dat = await fetch('http://localhost:9999', {}).then((res) =>
-              res.json()
-            );
+            const url =
+              window.location.hostname === 'localhost'
+                ? 'http://localhost:3030/dummy'
+                : 'http://infraweighcontroller.local:9999';
+            const dat = await fetch(url).then((res) => res.json());
             const claims = await auth.currentUser?.getIdTokenResult();
             const hasura: any = claims?.claims['https://hasura.io/jwt/claims'];
-            const n1 = `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/one.jpeg`;
-            const n2 = `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/two.jpeg`;
-            const n3 = `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/three.jpeg`;
-            const n4 = `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/four.jpeg`;
+
             const up1 = await uploadString(
-              ref(storage, n1),
-              `data:image/jpeg;base64,${dat.images[0]}`,
+              ref(
+                storage,
+                `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/one.jpeg`
+              ),
+              `data:image/jpeg;base64,${dat.image[0]}`,
               'data_url'
+            ).then(async (res) =>
+              getDownloadURL(ref(storage, res.ref.fullPath)).then((url) => url)
             );
 
             const up2 = await uploadString(
-              ref(storage, n2),
-              `data:image/jpeg;base64,${dat.images[1]}`,
+              ref(
+                storage,
+                `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/two.jpeg`
+              ),
+              `data:image/jpeg;base64,${dat.image[1]}`,
               'data_url'
+            ).then(async (res) =>
+              getDownloadURL(ref(storage, res.ref.fullPath)).then((url) => url)
             );
 
             const up3 = await uploadString(
-              ref(storage, n3),
-              `data:image/jpeg;base64,${dat.images[2]}`,
+              ref(
+                storage,
+                `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/three.jpeg`
+              ),
+              `data:image/jpeg;base64,${dat.image[2]}`,
               'data_url'
+            ).then(async (res) =>
+              getDownloadURL(ref(storage, res.ref.fullPath)).then((url) => url)
             );
 
             const up4 = await uploadString(
-              ref(storage, n4),
-              `data:image/jpeg;base64,${dat.images[3]}`,
+              ref(
+                storage,
+                `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/four.jpeg`
+              ),
+              `data:image/jpeg;base64,${dat.image[3]}`,
               'data_url'
+            ).then(async (res) =>
+              getDownloadURL(ref(storage, res.ref.fullPath)).then((url) => url)
             );
 
             const customerData: any = values;
@@ -169,12 +193,7 @@ const Home: FunctionComponent = () => {
               variables: {
                 object: {
                   id,
-                  photos: [
-                    up1.ref.fullPath,
-                    up2.ref.fullPath,
-                    up3.ref.fullPath,
-                    up4.ref.fullPath,
-                  ],
+                  photos: [up1, up2, up3, up4],
                   charges: values.charges,
                   driver_phone: values.driver_phone,
                   vehicle_id: customerData.vehicle.value,
@@ -196,26 +215,16 @@ const Home: FunctionComponent = () => {
                   paid_by: customerData.paidBy,
                 },
               },
-            })
-              .catch((e) => {
-                console.log(JSON.stringify(e));
-                deleteObject(up1.ref);
-                deleteObject(up2.ref);
-                deleteObject(up3.ref);
-                deleteObject(up4.ref);
-                setSubmitting(false);
-                setSubmitting_2(false);
-              })
-              .then((dat) => {
-                // eslint-disable-next-line prefer-const
-                let dt: any = dat?.data?.insert_bill_one;
-                SetData(dt);
-                SetOpen(true);
-                setSubmitting(false);
-                setSubmitting_2(false);
-                toast.success('Bill Added Successfully');
-                resetForm();
-              });
+            }).then((dat) => {
+              // eslint-disable-next-line prefer-const
+              let dt: any = dat?.data?.insert_bill_one;
+              SetData(dt);
+              SetOpen(true);
+              setSubmitting(false);
+              setSubmitting_2(false);
+              toast.success('Bill Added Successfully');
+              resetForm();
+            });
           } catch (error) {
             console.log(JSON.stringify(error));
             setSubmitting(false);
