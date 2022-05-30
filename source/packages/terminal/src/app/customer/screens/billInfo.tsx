@@ -9,8 +9,6 @@ import { TransitionProps } from '@mui/material/transitions';
 import { Bill } from '@infra-weigh/print-templates';
 import { useGetBillForReceptLazyQuery } from '@infra-weigh/generated';
 import { CircularProgress } from '@mui/material';
-import { getDownloadURL, ref } from 'firebase/storage';
-import { storage } from '@infra-weigh/firebase';
 import ReactToPrint from 'react-to-print';
 import { toast } from 'react-toastify';
 
@@ -35,10 +33,10 @@ const BillInfo: React.FunctionComponent<{
   };
 
   const handleClose = () => {
+    console.log('close');
     setOpen(false);
   };
-  const [data, setData] = React.useState<any | null>(null);
-  const [getData] = useGetBillForReceptLazyQuery({
+  const [getData, { loading, data, error }] = useGetBillForReceptLazyQuery({
     variables: {
       billByPkId: id,
     },
@@ -50,31 +48,15 @@ const BillInfo: React.FunctionComponent<{
         onClick={async () => {
           try {
             setLoading(true);
-            // eslint-disable-next-line prefer-const
-            let dat1 = await getData();
-            const d1 = await getDownloadURL(
-              ref(storage, dat1.data?.bill_by_pk?.photos[0])
-            );
-            const d2 = await getDownloadURL(
-              ref(storage, dat1.data?.bill_by_pk?.photos[1])
-            );
-            const d3 = await getDownloadURL(
-              ref(storage, dat1.data?.bill_by_pk?.photos[2])
-            );
-            const d4 = await getDownloadURL(
-              ref(storage, dat1.data?.bill_by_pk?.photos[3])
-            );
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            dat1 &&
-            dat1.data &&
-            dat1.data.bill_by_pk &&
-            dat1.data.bill_by_pk.photos
-              ? (dat1.data.bill_by_pk.photos = [d1, d2, d3, d4])
-              : null;
-            setData(dat1);
+            await getData();
+            if (error) {
+              toast.error(error.message);
+              throw new Error(JSON.stringify(error));
+            }
             setLoading(false);
             handleClickOpen();
-          } catch {
+          } catch (e) {
+            console.log(e);
             handleClose();
             setLoading(false);
             toast.error('can not feth bill details');
@@ -85,33 +67,35 @@ const BillInfo: React.FunctionComponent<{
       >
         {name}
       </Button>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        fullWidth
-        maxWidth="md"
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{}</DialogTitle>
-        <DialogContent>
-          <span ref={printRef}>
-            {data !== null && data ? (
-              <Bill data={data.data?.bill_by_pk} />
-            ) : (
-              <CircularProgress />
-            )}
-          </span>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>close</Button>
-          <ReactToPrint
-            content={() => printRef.current}
-            trigger={() => <Button>print</Button>}
-          />
-        </DialogActions>
-      </Dialog>
+      {open && (
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          fullWidth
+          maxWidth="md"
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>{}</DialogTitle>
+          <DialogContent>
+            <span ref={printRef}>
+              {!loading && data ? (
+                <Bill data={data.bill_by_pk} />
+              ) : (
+                <CircularProgress />
+              )}
+            </span>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>close</Button>
+            <ReactToPrint
+              content={() => printRef.current}
+              trigger={() => <Button>print</Button>}
+            />
+          </DialogActions>
+        </Dialog>
+      )}
     </>
   );
 };

@@ -115,31 +115,25 @@ const Clients = () => {
     variables: {
       orderBy: sort,
       where: {
-        _and: [
+        _or: [
           {
-            _or: [
-              {
-                name: {
-                  _like: `%${search}%`,
-                },
-                company_name: {
-                  _like: `%${search}%`,
-                },
-                phone: {
-                  _like: `%${search}%`,
-                },
-                email: {
-                  _like: `%${search}`,
-                },
-                company_address: {
-                  _like: `%${search}%`,
-                },
-              },
-            ],
+            name: {
+              _like: `%${search}%`,
+            },
           },
           {
-            tenent_id: {
-              _eq: localStorage.getItem('x-tenent-id'),
+            phone: {
+              _like: `%${search}%`,
+            },
+          },
+          {
+            email: {
+              _like: `%${search}%`,
+            },
+          },
+          {
+            company_name: {
+              _like: `%${search}%`,
             },
           },
         ],
@@ -153,22 +147,25 @@ const Clients = () => {
       variables: {
         orderBy: sort,
         where: {
-          _and: [
+          _or: [
             {
-              _or: [
-                {
-                  name: {
-                    _like: `%${search}%`,
-                  },
-                  company_name: {
-                    _like: `%${search}%`,
-                  },
-                },
-              ],
+              name: {
+                _like: `%${search}%`,
+              },
             },
             {
-              tenent_id: {
-                _eq: localStorage.getItem('x-tenent-id'),
+              phone: {
+                _like: `%${search}%`,
+              },
+            },
+            {
+              email: {
+                _like: `%${search}%`,
+              },
+            },
+            {
+              company_name: {
+                _like: `%${search}%`,
               },
             },
           ],
