@@ -10,42 +10,52 @@ import { FormLabel, LinearProgress } from '@mui/material';
 import { Box } from '@mui/system';
 import * as Yup from 'yup';
 import MuiPhoneNumber from 'material-ui-phone-number';
-import { useCreateCustomerMutation } from '@infra-weigh/generated';
+import {
+  UpdateClientDocument,
+  useGetCustomerLazyQuery,
+} from '@infra-weigh/generated';
+import { apollo as gqlClient } from '@infra-weigh/client';
 import { toast } from 'react-toastify';
 
-const AddNewClient: React.FunctionComponent = () => {
+const EditClient: React.FunctionComponent<{
+  id: string;
+}> = ({ id }) => {
   const [open, setOpen] = React.useState(false);
+  const [getData, { data }] = useGetCustomerLazyQuery({
+    variables: { customerByPkId: id },
+  });
 
-  const handleClickOpen = () => {
+  const handleClickOpen = async () => {
+    await getData();
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-  const [addNewClient, { loading }] = useCreateCustomerMutation();
+
   return (
-    <div>
-      <Button variant="outlined" sx={{ m: 1 }} onClick={handleClickOpen}>
-        new client
+    <>
+      <Button
+        variant="contained"
+        color="secondary"
+        size="small"
+        onClick={handleClickOpen}
+      >
+        Edit
       </Button>
       <Dialog fullWidth open={open} onClose={handleClose}>
-        {loading && <LinearProgress />}
-        <DialogTitle>New Client</DialogTitle>
+        <DialogTitle>Edit user</DialogTitle>
         <Formik
           initialValues={{
-            name: '',
-            address: '',
-            email: '',
-            phone: '',
-            gst_in: '',
-            company_name: '',
-            credit: false,
-            credit_limit: 0,
-            branch: {
-              value: null,
-              label: '',
-            },
+            name: data?.customer_by_pk?.name,
+            address: data?.customer_by_pk?.company_address,
+            email: data?.customer_by_pk?.email,
+            phone: data?.customer_by_pk?.phone,
+            gst_in: data?.customer_by_pk?.gst_in,
+            company_name: data?.customer_by_pk?.company_name,
+            credit: data?.customer_by_pk?.credit,
+            credit_limit: data?.customer_by_pk?.credit_limit,
           }}
           validationSchema={() => {
             return Yup.object().shape({
@@ -59,34 +69,38 @@ const AddNewClient: React.FunctionComponent = () => {
           }}
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
-            addNewClient({
-              variables: {
-                object: {
-                  name: values.name,
-                  email: values.email,
-                  phone: values.phone,
-                  gst_in: values.gst_in,
-                  blocked: false,
-                  company_name: values.company_name,
-                  company_address: values.address,
-                  credit: values.credit,
-                  credit_limit: values.credit_limit,
+            await gqlClient
+              .mutate({
+                mutation: UpdateClientDocument,
+                variables: {
+                  pkColumns: { id },
+                  set: {
+                    name: values.name,
+                    email: values.email,
+                    phone: values.phone,
+                    gst_in: values.gst_in,
+                    blocked: false,
+                    company_name: values.company_name,
+                    company_address: values.address,
+                    credit: values.credit,
+                    credit_limit: values.credit_limit,
+                  },
                 },
-              },
-            })
-              .catch(() => {
-                toast.error('can not create new client');
-                setSubmitting(false);
-                return;
               })
-              .then((dt) => {
-                handleClose();
-                dt && dt.data && toast.success('client created successfully');
+              .catch(() => {
+                toast.error('can not update client');
+              })
+              .then((dat) => {
+                if (dat) {
+                  toast.success('client updated');
+                }
               });
+
             setSubmitting(false);
+            handleClose();
           }}
         >
-          {({ submitForm, isSubmitting, setFieldValue }) => (
+          {({ submitForm, isSubmitting, setFieldValue, values }) => (
             <>
               <DialogContent>
                 <Form>
@@ -161,6 +175,7 @@ const AddNewClient: React.FunctionComponent = () => {
                     <MuiPhoneNumber
                       label="phone"
                       variant="outlined"
+                      value={values.phone}
                       countryCodeEditable={false}
                       sx={{
                         my: 1,
@@ -180,15 +195,15 @@ const AddNewClient: React.FunctionComponent = () => {
                     submitForm();
                   }}
                 >
-                  Add
+                  save
                 </Button>
               </DialogActions>
             </>
           )}
         </Formik>
       </Dialog>
-    </div>
+    </>
   );
 };
 
-export default AddNewClient;
+export default EditClient;

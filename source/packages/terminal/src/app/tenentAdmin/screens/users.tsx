@@ -168,31 +168,29 @@ const Users = () => {
             visibility: CountLoading || loading ? 'visible' : 'hidden',
           }}
         />
-        {!CountLoading && (
-          <DataGrid
-            loading={loading}
-            rows={data?.user || []}
-            paginationMode="server"
-            onSortModelChange={(s) => {
-              // eslint-disable-next-line prefer-const
-              let dt: any = [];
-              s.forEach((s) => {
-                dt.push({
-                  [s.field]: s.sort,
-                });
+        <DataGrid
+          loading={loading || CountLoading}
+          rows={data?.user || []}
+          paginationMode="server"
+          onSortModelChange={(s) => {
+            // eslint-disable-next-line prefer-const
+            let dt: any = [];
+            s.forEach((s) => {
+              dt.push({
+                [s.field]: s.sort,
               });
-              SetSort(dt);
-            }}
-            sortingMode="server"
-            onPageChange={(page) => setPage(page)}
-            onPageSizeChange={(pageSize) => setPageSize(pageSize)}
-            columns={columns}
-            autoPageSize
-            rowCount={Count?.user_aggregate.aggregate?.count}
-            checkboxSelection
-            disableSelectionOnClick
-          />
-        )}
+            });
+            SetSort(dt);
+          }}
+          sortingMode="server"
+          onPageChange={(page) => setPage(page + 1)}
+          onPageSizeChange={(pageSize) => setPageSize(pageSize)}
+          columns={columns}
+          autoPageSize
+          rowCount={Count?.user_aggregate?.aggregate?.count || 0}
+          disableColumnFilter
+          disableSelectionOnClick
+        />
       </Box>
     </Box>
   );

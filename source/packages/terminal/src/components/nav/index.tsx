@@ -17,13 +17,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Avatar, Menu, MenuItem, Tooltip } from '@mui/material';
 import { auth } from '@infra-weigh/firebase';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import { Home } from '@mui/icons-material';
-import { useMatch, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import AssessmentIcon from '@mui/icons-material/Assessment';
 import { FunctionComponent } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -97,7 +94,13 @@ const Drawer = styled(MuiDrawer, {
 
 const NavBar: FunctionComponent<{
   children: React.ReactNode;
-}> = ({ children }) => {
+  links: {
+    name: string;
+    path: string;
+    active: any;
+    icon: any;
+  }[];
+}> = ({ children, links }) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const navigate = useNavigate();
@@ -119,27 +122,6 @@ const NavBar: FunctionComponent<{
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  const sideBarLinks = [
-    {
-      name: 'Home',
-      path: '/',
-      icon: Home,
-      active: useMatch('/'),
-    },
-    {
-      name: 'report',
-      path: '/report',
-      icon: AssessmentIcon,
-      active: useMatch('/report'),
-    },
-    {
-      name: 'clients',
-      path: '/clients',
-      icon: PersonOutlineIcon,
-      active: useMatch('/clients'),
-    },
-  ];
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -215,7 +197,7 @@ const NavBar: FunctionComponent<{
         </DrawerHeader>
         <Divider />
         <List>
-          {sideBarLinks.map((data, index) => (
+          {links.map((data, index) => (
             <ListItemButton
               key={index}
               onClick={() => navigate(data.path)}

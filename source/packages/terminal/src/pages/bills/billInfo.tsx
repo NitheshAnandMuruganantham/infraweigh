@@ -59,7 +59,7 @@ const BillInfo: React.FunctionComponent<{
             console.log(e);
             handleClose();
             setLoading(false);
-            toast.error('can not feth bill details');
+            toast.error('can not fetch bill details');
           }
         }}
         variant="outlined"

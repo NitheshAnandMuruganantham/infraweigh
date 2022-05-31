@@ -3,10 +3,10 @@ import * as React from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
 import { Button, LinearProgress, TextField } from '@mui/material';
-import AddNewClient from './addNewClient';
+import AddNewClient from './add';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import EditClient from './editClient';
+import EditClient from './edit';
 import {
   DeleteCustomerDocument,
   useGetCustomersCountSubscription,
@@ -14,39 +14,11 @@ import {
 } from '@infra-weigh/generated';
 import { apollo as gqlClient } from '@infra-weigh/client';
 import { toast } from 'react-toastify';
+import columns from './columns';
+import { UserContext } from '../../context/auth';
+import Grid from '../../components/dataGrid';
 
-const columns: GridColDef[] = [
-  {
-    field: 'name',
-    headerName: 'name',
-    width: 300,
-    editable: false,
-    filterable: false,
-    sortable: true,
-  },
-
-  {
-    field: 'company_address',
-    headerName: 'Address',
-    sortable: true,
-    filterable: false,
-    width: 400,
-  },
-
-  {
-    field: 'phone',
-    headerName: 'phone',
-    sortable: true,
-    width: 150,
-    filterable: false,
-  },
-  {
-    field: 'email',
-    headerName: 'e-mail id',
-    sortable: true,
-    filterable: false,
-    width: 150,
-  },
+const TenentAdminColumns: GridColDef[] = [
   {
     field: 'edit',
     headerName: 'Edit',
@@ -107,36 +79,39 @@ const columns: GridColDef[] = [
   },
 ];
 const Clients = () => {
+  const [_, claims] = React.useContext(UserContext);
+
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [sort, SetSort] = React.useState([]);
   const [pageSize, setPageSize] = React.useState(1);
+  const searchParsed = [
+    {
+      name: {
+        _like: `%${search}%`,
+      },
+    },
+    {
+      phone: {
+        _like: `%${search}%`,
+      },
+    },
+    {
+      email: {
+        _like: `%${search}%`,
+      },
+    },
+    {
+      company_name: {
+        _like: `%${search}%`,
+      },
+    },
+  ];
   const { data, loading } = useGetCustomersSubscription({
     variables: {
       orderBy: sort,
       where: {
-        _or: [
-          {
-            name: {
-              _like: `%${search}%`,
-            },
-          },
-          {
-            phone: {
-              _like: `%${search}%`,
-            },
-          },
-          {
-            email: {
-              _like: `%${search}%`,
-            },
-          },
-          {
-            company_name: {
-              _like: `%${search}%`,
-            },
-          },
-        ],
+        _or: searchParsed,
       },
       offset: (page - 1) * pageSize < 0 ? 0 : (page - 1) * pageSize,
       limit: pageSize,
@@ -147,28 +122,7 @@ const Clients = () => {
       variables: {
         orderBy: sort,
         where: {
-          _or: [
-            {
-              name: {
-                _like: `%${search}%`,
-              },
-            },
-            {
-              phone: {
-                _like: `%${search}%`,
-              },
-            },
-            {
-              email: {
-                _like: `%${search}%`,
-              },
-            },
-            {
-              company_name: {
-                _like: `%${search}%`,
-              },
-            },
-          ],
+          _or: searchParsed,
         },
       },
     });
@@ -193,31 +147,20 @@ const Clients = () => {
             visibility: customerCountLoading || loading ? 'visible' : 'hidden',
           }}
         />
-        <DataGrid
-          sortingMode="server"
-          onSortModelChange={(s) => {
-            // eslint-disable-next-line prefer-const
-            let dt: any = [];
-            s.forEach((s) => {
-              dt.push({
-                [s.field]: s.sort,
-              });
-            });
-            SetSort(dt);
-          }}
-          loading={customerCountLoading || loading}
-          rows={data?.customer || []}
-          columns={columns}
-          rowCount={
-            customerCountData?.customer_aggregate?.aggregate?.count || 0
+        <Grid
+          data={data?.customer || []}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          setFilter={() => null}
+          setPage={setPage}
+          setSort={SetSort}
+          loading={loading || customerCountLoading}
+          rowCount={customerCountData?.customer_aggregate.aggregate?.count || 0}
+          columns={
+            claims['x-hasura-default-role'] === 'terminal'
+              ? columns
+              : [...columns, ...TenentAdminColumns]
           }
-          disableColumnMenu
-          disableColumnFilter
-          paginationMode="server"
-          onPageChange={(s) => setPage(s + 1)}
-          onPageSizeChange={(s) => setPageSize(s)}
-          autoPageSize
-          disableSelectionOnClick
         />
       </Box>
     </Box>

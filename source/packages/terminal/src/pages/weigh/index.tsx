@@ -1,19 +1,11 @@
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  FormLabel,
-  InputAdornment,
-  Radio,
-  TextField as TF,
-  LinearProgress,
-} from '@mui/material';
-import BillInfo from '../printBill';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { Box, Button, FormLabel, InputAdornment } from '@mui/material';
+import AutoComTextField from '../../components/autoComplete';
+import BillInfo from './printBill';
+import { FunctionComponent, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Field } from 'formik';
-import { TextField, Autocomplete, RadioGroup, Switch } from 'formik-mui';
-import SelectWeight from '../components/selectWeight';
+import { TextField, RadioGroup, Switch } from 'formik-mui';
+import SelectWeight from './selectWeight';
 import { v4 as uuid } from 'uuid';
 
 import {
@@ -25,65 +17,23 @@ import {
 import { auth, storage } from '@infra-weigh/firebase';
 import { toast } from 'react-toastify';
 import Loader from '@infra-weigh/loading';
-import {
-  ref,
-  uploadString,
-  deleteObject,
-  getDownloadURL,
-} from 'firebase/storage';
+import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import MuiPhoneNumber from 'material-ui-phone-number';
+import ChooseOptions from '../../components/radio';
 const Home: FunctionComponent = () => {
-  const [loadCustomers, { data: customerData, loading: customerLoading }] =
-    useGetCustomerDropdownOptionsLazyQuery({
-      variables: {
-        where: {
-          tenent_id: {
-            _eq: localStorage.getItem('x-tenent-id'),
-          },
-        },
-        limit: 3000,
-      },
-    });
-  const [materials, setMaterials] = useState<any[]>([]);
-  const [customer, setCustomer] = useState<any[]>([]);
-  const [vehicle, setVehicle] = useState<any[]>([]);
-  const [loadMaterialData, { data: materialData, loading: materialLoading }] =
-    useGetMaterialDropDownListLazyQuery();
-  const [loadVehicleData, { data: vehicleData, loading: vehicleLoading }] =
-    useGetVehiclesDropDownListLazyQuery();
   const [addBill] = useAddBillMutation();
   const [BillRefId, SetBillRefId] = useState<string>();
   const [open, SetOpen] = useState<boolean>(false);
-  const [submitting, setSubmitting] = useState<boolean>(false);
   const [data, SetData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (materialData) {
-      setMaterials(materialData.material);
-    }
-  }, [materialData]);
-  useEffect(() => {
-    if (customerData) {
-      setCustomer(customerData.customer);
-    }
-  }, [customerData]);
-  useEffect(() => {
-    if (vehicleData) {
-      setVehicle(vehicleData.vehicle);
-    }
-  }, [vehicleData]);
-
+  const optionValidate = Yup.object().shape({
+    value: Yup.string().required('Required'),
+    label: Yup.string().required('Required'),
+  });
   return (
     <>
-      {loading && (
-        <LinearProgress
-          sx={{
-            mx: '10px',
-          }}
-        />
-      )}
-      <Loader open={submitting} setOpen={setSubmitting} />
+      <Loader open={loading} setOpen={setLoading} />
       <Formik
         initialValues={{
           vehicleNumber: '',
@@ -102,18 +52,8 @@ const Home: FunctionComponent = () => {
         validationSchema={() => {
           return Yup.object().shape({
             vehicleNumber: Yup.string().required('Required'),
-            material: Yup.object()
-              .shape({
-                value: Yup.string().required('Required'),
-                label: Yup.string().required('Required'),
-              })
-              .required(),
-            vehicle: Yup.object()
-              .shape({
-                value: Yup.string().required('Required'),
-                label: Yup.string().required('Required'),
-              })
-              .required(),
+            material: optionValidate.required(),
+            vehicle: optionValidate.required(),
             driver_phone: Yup.string().min(8).required(),
             charges: Yup.number().required(),
             tareWeight: Yup.lazy((val) =>
@@ -123,16 +63,12 @@ const Home: FunctionComponent = () => {
             ),
           });
         }}
-        onSubmit={async (
-          values,
-          { setSubmitting: setSubmitting_2, resetForm }
-        ) => {
-          setSubmitting_2(true);
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
+          setLoading(true);
           setSubmitting(true);
           try {
             const id = uuid();
-            // eslint-disable-next-line prefer-const
-            let correctedVal: any = { ...values };
+            const correctedVal: any = { ...values };
             if (!values.secondWeight) {
               correctedVal.tareWeight = null;
             }
@@ -216,19 +152,18 @@ const Home: FunctionComponent = () => {
                 },
               },
             }).then((dat) => {
-              // eslint-disable-next-line prefer-const
-              let dt: any = dat?.data?.insert_bill_one;
+              const dt: any = dat?.data?.insert_bill_one;
               SetData(dt);
               SetOpen(true);
               setSubmitting(false);
-              setSubmitting_2(false);
+              setLoading(false);
               toast.success('Bill Added Successfully');
               resetForm();
             });
           } catch (error) {
             console.log(JSON.stringify(error));
             setSubmitting(false);
-            setSubmitting_2(false);
+            setLoading(false);
           }
         }}
       >
@@ -276,231 +211,74 @@ const Home: FunctionComponent = () => {
                   width: '90%',
                 }}
               />
-
-              <Field
-                component={Autocomplete}
+              <AutoComTextField
+                label="material"
+                serverName="material"
                 name="material"
-                loading={materialLoading}
-                disableClearable
-                isOptionEqualToValue={(option: any, value: any) =>
-                  option.value === value.value
-                }
-                onOpen={() =>
-                  loadMaterialData({
-                    variables: {
-                      limit: 3000,
-                    },
-                  })
-                }
-                onInputChange={(_: any, v: any) => {
-                  loadMaterialData({
-                    variables: {
-                      where: {
-                        name: {
-                          _like: `%${v}%`,
-                        },
-                      },
-                      limit: 3000,
-                    },
-                  });
-                }}
-                options={materials}
-                renderInput={(params: any) => (
-                  <TF {...params} label="Material" />
-                )}
-                sx={{
-                  margin: 2,
-                  width: '90%',
-                }}
+                queryHook={useGetMaterialDropDownListLazyQuery}
               />
-              <Field
-                component={Autocomplete}
+              <AutoComTextField
+                label="buyer"
+                serverName="customer"
                 name="buyer"
-                loading={customerLoading}
                 filterOptions={(options: any, state: any) => {
                   let dat: any[] = options;
                   const vals: any = values;
-                  if (vals.seller && vals.seller.value) {
+                  if (vals?.seller?.value) {
                     dat = dat.filter(
                       (option: any) => option.value !== vals.seller.value
                     );
                   }
-                  if (vals.trader && vals.trader.value) {
+                  if (vals?.trader?.value) {
                     dat = dat.filter(
                       (option: any) => option.value !== vals.trader.value
                     );
                   }
                   return dat;
                 }}
-                disableClearable
-                isOptionEqualToValue={(option: any, value: any) =>
-                  option.value === value.value
-                }
-                onOpen={() =>
-                  loadCustomers({
-                    variables: {
-                      where: {
-                        tenent_id: {
-                          _eq: localStorage.getItem('x-tenent-id'),
-                        },
-                      },
-                      limit: 3000,
-                    },
-                  })
-                }
-                onInputChange={(_: any, v: any) => {
-                  loadCustomers({
-                    variables: {
-                      where: {
-                        _and: [
-                          {
-                            name: {
-                              _like: `%${v}%`,
-                            },
-                          },
-                          {
-                            tenent_id: {
-                              _eq: localStorage.getItem('x-tenent-id'),
-                            },
-                          },
-                        ],
-                      },
-                      limit: 3000,
-                    },
-                  });
-                }}
-                options={customer}
-                renderInput={(params: any) => <TF {...params} label="buyer" />}
-                sx={{
-                  margin: 2,
-                  width: '90%',
-                }}
+                queryHook={useGetCustomerDropdownOptionsLazyQuery}
               />
-              <Field
-                component={Autocomplete}
+              <AutoComTextField
+                label="seller"
+                serverName="customer"
                 name="seller"
                 filterOptions={(options: any, state: any) => {
                   let dat: any[] = options;
                   const vals: any = values;
-                  if (vals.buyer && vals.buyer.value) {
+                  if (vals?.seller?.value) {
                     dat = dat.filter(
-                      (option: any) => option.value !== vals.buyer.value
+                      (option: any) => option.value !== vals.seller.value
                     );
                   }
-                  if (vals.trader && vals.trader.value) {
+                  if (vals?.buyer?.value) {
                     dat = dat.filter(
-                      (option: any) => option.value !== vals.trader.value
+                      (option: any) => option.value !== vals.buyer.value
                     );
                   }
                   return dat;
                 }}
-                loading={customerLoading}
-                disableClearable
-                isOptionEqualToValue={(option: any, value: any) =>
-                  option.value === value.value
-                }
-                onOpen={() =>
-                  loadCustomers({
-                    variables: {
-                      where: {
-                        tenent_id: {
-                          _eq: localStorage.getItem('x-tenent-id'),
-                        },
-                      },
-                      limit: 3000,
-                    },
-                  })
-                }
-                onInputChange={(_: any, v: any) => {
-                  loadCustomers({
-                    variables: {
-                      where: {
-                        _and: [
-                          {
-                            name: {
-                              _like: `%${v}%`,
-                            },
-                          },
-                          {
-                            tenent_id: {
-                              _eq: localStorage.getItem('x-tenent-id'),
-                            },
-                          },
-                        ],
-                      },
-                      limit: 3000,
-                    },
-                  });
-                }}
-                options={customer}
-                renderInput={(params: any) => <TF {...params} label="seller" />}
-                sx={{
-                  margin: 2,
-                  width: '90%',
-                }}
+                queryHook={useGetCustomerDropdownOptionsLazyQuery}
               />
-              <Field
-                component={Autocomplete}
+              <AutoComTextField
+                label="trader"
+                serverName="customer"
                 name="trader"
                 filterOptions={(options: any, state: any) => {
                   let dat: any[] = options;
                   const vals: any = values;
-                  if (vals.buyer && vals.buyer.value) {
+                  if (vals?.buyer?.value) {
                     dat = dat.filter(
                       (option: any) => option.value !== vals.buyer.value
                     );
                   }
-                  if (vals.seller && vals.seller.value) {
+                  if (vals?.seller?.value) {
                     dat = dat.filter(
                       (option: any) => option.value !== vals.seller.value
                     );
                   }
                   return dat;
                 }}
-                loading={customerLoading}
-                disableClearable
-                isOptionEqualToValue={(option: any, value: any) =>
-                  option.value === value.value
-                }
-                onOpen={() =>
-                  loadCustomers({
-                    variables: {
-                      where: {
-                        tenent_id: {
-                          _eq: localStorage.getItem('x-tenent-id'),
-                        },
-                      },
-                      limit: 3000,
-                    },
-                  })
-                }
-                onInputChange={(_: any, v: any) => {
-                  loadCustomers({
-                    variables: {
-                      where: {
-                        _and: [
-                          {
-                            name: {
-                              _like: `%${v}%`,
-                            },
-                          },
-                          {
-                            tenent_id: {
-                              _eq: localStorage.getItem('x-tenent-id'),
-                            },
-                          },
-                        ],
-                      },
-                      limit: 3000,
-                    },
-                  });
-                }}
-                options={customer}
-                renderInput={(params: any) => <TF {...params} label="trader" />}
-                sx={{
-                  margin: 2,
-                  width: '90%',
-                }}
+                queryHook={useGetCustomerDropdownOptionsLazyQuery}
               />
 
               <Box>
@@ -515,37 +293,30 @@ const Home: FunctionComponent = () => {
               >
                 <FormLabel>paid by</FormLabel>
                 <Field component={RadioGroup} row name="paidBy">
-                  {values.buyer && (
-                    <FormControlLabel
-                      value="buyer"
-                      control={<Radio />}
-                      label="buyer"
-                    />
-                  )}
-                  {values.trader && (
-                    <FormControlLabel
-                      value="trader"
-                      control={<Radio />}
-                      label="trader"
-                    />
-                  )}
-                  {values.seller && (
-                    <FormControlLabel
-                      value="seller"
-                      control={<Radio />}
-                      label="seller"
-                    />
-                  )}
-                  <FormControlLabel
-                    value="driver"
-                    control={<Radio />}
-                    label="driver"
-                  />
-                  <FormControlLabel
-                    value="other"
-                    control={<Radio />}
-                    label="other"
-                  />
+                  {[
+                    {
+                      name: 'buyer',
+                      show: values.buyer,
+                    },
+                    {
+                      name: 'seller',
+                      show: values.seller,
+                    },
+                    {
+                      name: 'trader',
+                      show: values.trader,
+                    },
+                    {
+                      name: 'driver',
+                      show: true,
+                    },
+                    {
+                      name: 'other',
+                      show: true,
+                    },
+                  ].map(({ name, show }) => (
+                    <ChooseOptions key={name} name={name} show={show} />
+                  ))}
                 </Field>
               </Box>
             </Box>
@@ -582,47 +353,11 @@ const Home: FunctionComponent = () => {
                   />
                 </Box>
               )}
-              <Field
-                component={Autocomplete}
+              <AutoComTextField
                 name="vehicle"
-                loading={vehicleLoading}
-                disableClearable
-                onChange={(_: any, v: any) => {
-                  setFieldValue('vehicle', {
-                    value: v.value,
-                    label: v.label,
-                  });
-                }}
-                isOptionEqualToValue={(option: any, value: any) =>
-                  option.value === value.value
-                }
-                onOpen={() =>
-                  loadVehicleData({
-                    variables: {
-                      limit: 3000,
-                    },
-                  })
-                }
-                onInputChange={(_: any, v: any) => {
-                  loadVehicleData({
-                    variables: {
-                      where: {
-                        name: {
-                          _like: `%${v}%`,
-                        },
-                      },
-                      limit: 3000,
-                    },
-                  });
-                }}
-                options={vehicle}
-                renderInput={(params: any) => (
-                  <TF {...params} label="Vehicle" />
-                )}
-                sx={{
-                  margin: 2,
-                  width: '90%',
-                }}
+                label="vehicle"
+                serverName="vehicle"
+                queryHook={useGetVehiclesDropDownListLazyQuery}
               />
               <MuiPhoneNumber
                 label="driver phone"
