@@ -4,8 +4,13 @@ mutation addTenent($object: tenents_insert_input!) {
   }
 }
 
-subscription getAllTenents {
-  tenents {
+subscription getAllTenants(
+  $limit: Int
+  $offset: Int
+  $orderBy: [tenents_order_by!]
+  $where: tenents_bool_exp
+) {
+  tenents(limit: $limit, offset: $offset, order_by: $orderBy, where: $where) {
     email
     name
     activate
@@ -15,8 +20,31 @@ subscription getAllTenents {
     payment_pending
   }
 }
-subscription getAllTenentsDropDown {
-  tenents {
+
+subscription getTenantsCount(
+  $where: tenents_bool_exp
+  $orderBy: [tenents_order_by!]
+  $offset: Int
+  $limit: Int
+) {
+  tenents_aggregate(
+    where: $where
+    order_by: $orderBy
+    offset: $offset
+    limit: $limit
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query getAllTenentsDropDown(
+  $where: tenents_bool_exp
+  $limit: Int
+  $orderBy: [tenents_order_by!]
+) {
+  tenents(where: $where, limit: $limit, order_by: $orderBy) {
     label: name
     value: id
   }

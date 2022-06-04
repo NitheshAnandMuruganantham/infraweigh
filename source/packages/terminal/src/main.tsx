@@ -1,21 +1,22 @@
 import * as ReactDOMClient from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import Client from '@infra-weigh/client';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import './styles.scss';
-import Routes from './app/routes';
-import Auth from '@infra-weigh/auth';
+import App from './app/App';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ContextInjector from './context';
 const root = ReactDOMClient.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <BrowserRouter>
-    <ToastContainer />
-    <Auth>
+    <ContextInjector>
+      <ToastContainer />
       <Client>
-        <Routes />
+        <App />
       </Client>
-    </Auth>
+    </ContextInjector>
   </BrowserRouter>
 );

@@ -37,11 +37,30 @@ query getTareWeightBills(
   $where: bill_bool_exp
   $limit: Int
   $orderBy: [bill_order_by!]
+  $offset: Int
 ) {
-  bill(where: $where, limit: $limit, order_by: $orderBy) {
+  bill(where: $where, limit: $limit, order_by: $orderBy, offset: $offset) {
     id
     scale_weight
     created_at
+  }
+}
+
+query getTareWeightCount(
+  $where: bill_bool_exp
+  $limit: Int
+  $offset: Int
+  $orderBy: [bill_order_by!]
+) {
+  bill_aggregate(
+    where: $where
+    limit: $limit
+    offset: $offset
+    order_by: $orderBy
+  ) {
+    aggregate {
+      count
+    }
   }
 }
 
@@ -198,6 +217,14 @@ query billsByCustomer($where: bill_bool_exp) {
           }
         }
       }
+    }
+  }
+}
+
+query BillAggregate($distinctOn: [bill_select_column!], $where: bill_bool_exp) {
+  bill_aggregate(distinct_on: $distinctOn, where: $where) {
+    aggregate {
+      count
     }
   }
 }

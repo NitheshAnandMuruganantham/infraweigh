@@ -8,7 +8,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
 import BarCode from 'react-barcode';
-
 const Bill: React.FunctionComponent<{
   data: any;
 }> = (props) => {
