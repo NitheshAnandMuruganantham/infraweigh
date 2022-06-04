@@ -1,0 +1,30 @@
+name: Firebase function deploy
+
+"on":
+  push:
+    branches:
+      - production
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NX_BASE_FIREBASE: ${{secrets.NX_BASE_FIREBASE}}
+      NX_BASE_URL: ${{secrets.NX_BASE_URL}}
+      NX_RAZORPAY_ID: ${{secrets.NX_RAZORPAY_ID}}
+      NX_BASE_WS_URL: ${{secrets.NX_BASE_WS_URL}}
+      NX_ENV: production
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install npm packages and build the app
+        run: |
+          npm i -g yarn && cd scripts && yarn build
+          cd ..
+          cd firebase/functions
+          npm install
+          firebase use production
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
