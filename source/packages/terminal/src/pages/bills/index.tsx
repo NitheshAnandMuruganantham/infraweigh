@@ -8,8 +8,8 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  useGetAllBillsSubscription,
   useGetCustomerDropdownOptionsLazyQuery,
+  useGetAllBillsSubscription,
   useGetMaterialDropDownListLazyQuery,
   useGetTotalBillsSubscription,
   useGetVehiclesDropDownListLazyQuery,
@@ -20,16 +20,17 @@ import { TextField } from 'formik-mui';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-
-import AutoComTextField from '../../components/autoComplete';
-import Grid from '../../components/dataGrid';
+import useRole from '../../hooks/role';
+import {
+  DataGridComponent as Grid,
+  AutoCompleteComponent as AutoComTextField,
+} from '@infra-weigh/shared-ui';
 import Columns from './columns';
-import { UserContext } from '../../context/auth';
 
 const Bills = () => {
-  const [_, claims] = React.useContext(UserContext);
   const [pageSize, setPageSize] = React.useState(10);
   const [page, setPage] = React.useState(1);
+  const [role, loadingRole] = useRole();
   const [filter, setFilter] = React.useState<any[]>([]);
   const [sort, setSort] = React.useState<any[]>([]);
   const [filterByDateTime, setFilterByDateTime] =
@@ -118,7 +119,7 @@ const Bills = () => {
               ];
             }
             if (
-              claims['x-hasura-default-role'] !== 'terminal' &&
+              role !== 'terminal' &&
               values.weighbridge &&
               values.weighbridge.value &&
               values.weighbridge.value.length > 0
@@ -169,6 +170,7 @@ const Bills = () => {
           initialValues={{
             vehicle_number: '',
             material: null,
+            weighbridge: null,
             vehicle: null,
             from: '',
             to: '',
@@ -210,7 +212,7 @@ const Bills = () => {
                   name="vehicle"
                   queryHook={useGetVehiclesDropDownListLazyQuery}
                 />
-                {claims['x-hasura-default-role'] !== 'terminal' && (
+                {role !== 'terminal' && (
                   <AutoComTextField
                     label="weighbridge"
                     serverName="weighbridge"
@@ -275,11 +277,10 @@ const Bills = () => {
           rowCount={totalRows?.bill_aggregate?.aggregate?.count || 0}
           setFilter={() => null}
           setPageSize={setPageSize}
-          loading={totalRowsLoading || loading}
+          loading={totalRowsLoading || loading || loadingRole}
           columns={
-            claims['x-hasura-default-role'] === 'terminal'
-              ? Columns
-              : [
+            role === 'admin' || role === 'tenantAdmin'
+              ? [
                   ...Columns,
                   {
                     field: 'weighbridge',
@@ -291,6 +292,7 @@ const Bills = () => {
                     valueGetter: (params) => params.value.name,
                   },
                 ]
+              : Columns
           }
         />
       </Box>

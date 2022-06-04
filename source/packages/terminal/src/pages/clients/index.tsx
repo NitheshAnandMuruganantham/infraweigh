@@ -1,6 +1,6 @@
 import * as React from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
+import useRole from '../../hooks/role';
 import { Box } from '@mui/system';
 import { Button, LinearProgress, TextField } from '@mui/material';
 import AddNewClient from './add';
@@ -15,8 +15,7 @@ import {
 import { apollo as gqlClient } from '@infra-weigh/client';
 import { toast } from 'react-toastify';
 import columns from './columns';
-import { UserContext } from '../../context/auth';
-import Grid from '../../components/dataGrid';
+import { DataGridComponent } from '@infra-weigh/shared-ui';
 
 const TenentAdminColumns: GridColDef[] = [
   {
@@ -79,8 +78,7 @@ const TenentAdminColumns: GridColDef[] = [
   },
 ];
 const Clients = () => {
-  const [_, claims] = React.useContext(UserContext);
-
+  const [role, loadingRole] = useRole();
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [sort, SetSort] = React.useState([]);
@@ -147,19 +145,17 @@ const Clients = () => {
             visibility: customerCountLoading || loading ? 'visible' : 'hidden',
           }}
         />
-        <Grid
+        <DataGridComponent
           data={data?.customer || []}
           pageSize={pageSize}
           setPageSize={setPageSize}
           setFilter={() => null}
           setPage={setPage}
           setSort={SetSort}
-          loading={loading || customerCountLoading}
+          loading={loading || customerCountLoading || loadingRole}
           rowCount={customerCountData?.customer_aggregate.aggregate?.count || 0}
           columns={
-            claims['x-hasura-default-role'] === 'terminal'
-              ? columns
-              : [...columns, ...TenentAdminColumns]
+            role === 'terminal' ? columns : [...columns, ...TenentAdminColumns]
           }
         />
       </Box>

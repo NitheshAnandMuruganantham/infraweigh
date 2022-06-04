@@ -1,5 +1,8 @@
 import { Box, Button, FormLabel, InputAdornment } from '@mui/material';
-import AutoComTextField from '../../components/autoComplete';
+import {
+  AutoCompleteComponent,
+  RadioListComponent,
+} from '@infra-weigh/shared-ui';
 import BillInfo from './printBill';
 import { FunctionComponent, useState } from 'react';
 import * as Yup from 'yup';
@@ -19,10 +22,10 @@ import { toast } from 'react-toastify';
 import Loader from '@infra-weigh/loading';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import MuiPhoneNumber from 'material-ui-phone-number';
-import ChooseOptions from '../../components/radio';
+
 const Home: FunctionComponent = () => {
   const [addBill] = useAddBillMutation();
-  const [BillRefId, SetBillRefId] = useState<string>();
+  const [BillRefId, SetBillRefId] = useState<string | null>(null);
   const [open, SetOpen] = useState<boolean>(false);
   const [data, SetData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -166,6 +169,10 @@ const Home: FunctionComponent = () => {
             setLoading(false);
           }
         }}
+        onReset={() => {
+          SetBillRefId(null);
+          setLoading(false);
+        }}
       >
         {({
           submitForm,
@@ -211,13 +218,13 @@ const Home: FunctionComponent = () => {
                   width: '90%',
                 }}
               />
-              <AutoComTextField
+              <AutoCompleteComponent
                 label="material"
                 serverName="material"
                 name="material"
                 queryHook={useGetMaterialDropDownListLazyQuery}
               />
-              <AutoComTextField
+              <AutoCompleteComponent
                 label="buyer"
                 serverName="customer"
                 name="buyer"
@@ -238,7 +245,7 @@ const Home: FunctionComponent = () => {
                 }}
                 queryHook={useGetCustomerDropdownOptionsLazyQuery}
               />
-              <AutoComTextField
+              <AutoCompleteComponent
                 label="seller"
                 serverName="customer"
                 name="seller"
@@ -259,7 +266,7 @@ const Home: FunctionComponent = () => {
                 }}
                 queryHook={useGetCustomerDropdownOptionsLazyQuery}
               />
-              <AutoComTextField
+              <AutoCompleteComponent
                 label="trader"
                 serverName="customer"
                 name="trader"
@@ -315,7 +322,7 @@ const Home: FunctionComponent = () => {
                       show: true,
                     },
                   ].map(({ name, show }) => (
-                    <ChooseOptions key={name} name={name} show={show} />
+                    <RadioListComponent key={name} name={name} show={show} />
                   ))}
                 </Field>
               </Box>
@@ -348,12 +355,13 @@ const Home: FunctionComponent = () => {
                         <InputAdornment position="start">kg</InputAdornment>
                       ),
                     }}
+                    disabled={BillRefId ? true : false}
                     name="tareWeight"
                     sx={{ m: 1, width: '50%' }}
                   />
                 </Box>
               )}
-              <AutoComTextField
+              <AutoCompleteComponent
                 name="vehicle"
                 label="vehicle"
                 serverName="vehicle"

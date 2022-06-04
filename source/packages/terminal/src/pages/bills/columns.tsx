@@ -1,7 +1,7 @@
 import { auth } from '@infra-weigh/firebase';
 import { Button, Chip } from '@mui/material';
 import { GridColumns, GridValueGetterParams } from '@mui/x-data-grid';
-import { displayRazorpay } from '../../app/razorPay';
+import { displayRazorpay } from '../../utils/razorPay';
 import BillInfo from './billInfo';
 
 const Columns: GridColumns = [

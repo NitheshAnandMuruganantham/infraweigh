@@ -3,30 +3,65 @@ import { ApolloClient, HttpLink, InMemoryCache, split } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
+import { setContext } from '@apollo/client/link/context';
+import { auth } from '@infra-weigh/firebase';
 
-// condition for signing the token
+const TOKEN_KEY = 'x-firebase-token';
+const DEV_TOKEN_KEY = 'x-firebase-dev-token';
+
 const isLocalEnvironment = () => {
   return window.location.hostname === 'localhost';
 };
 
 function getHeaders() {
-  // eslint-disable-next-line prefer-const
-  let headers: any = {};
+  const headers: any = {};
   headers['Authorization'] = `Bearer ${
     isLocalEnvironment()
-      ? window.localStorage.getItem('x-firebase-dev-token')
-      : window.localStorage.getItem('x-firebase-token')
+      ? window.localStorage.getItem(DEV_TOKEN_KEY)
+      : window.localStorage.getItem(TOKEN_KEY)
   }`;
 
   return headers;
 }
 
+const authLink = setContext(async (_, { headers }) => {
+  if (isLocalEnvironment()) {
+    const idTokenResult = await auth.currentUser?.getIdTokenResult();
+    const token = await fetch(
+      'http://localhost:3030/U2HOg0MESZzPk2ZCYLsFxoiIh38Iuw59',
+      {
+        body: JSON.stringify(idTokenResult?.claims),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        method: 'post',
+      }
+    )
+      .then(async (token) => await token.json().then((res) => res.token))
+      .catch((err) => console.log(err));
+    localStorage.setItem(DEV_TOKEN_KEY, token || '');
+
+    return {
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  } else {
+    const IdToken = await auth.currentUser?.getIdToken();
+    localStorage.setItem(TOKEN_KEY, IdToken || '');
+    return {
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${IdToken}`,
+      },
+    };
+  }
+});
+
 const httpLink = new HttpLink({
   uri: `${process.env['NX_BASE_URL']}/v1/graphql`,
-  fetch: (uri: RequestInfo, options: RequestInit) => {
-    options.headers = getHeaders();
-    return fetch(uri, options);
-  },
 });
 
 const wsLink = new GraphQLWsLink(
@@ -55,8 +90,8 @@ export default new ApolloClient({
           definition.operation === 'subscription'
         );
       },
-      wsLink,
-      httpLink
+      authLink.concat(wsLink),
+      authLink.concat(httpLink)
     )
   ),
 });

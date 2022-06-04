@@ -1,9 +1,9 @@
 import * as ReactDOMClient from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import Client from '@infra-weigh/client';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import './styles.scss';
-import Routes from './app/routes';
-import Auth from '@infra-weigh/auth';
+import App from './app/App';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ContextInjector from './context';
@@ -14,11 +14,9 @@ root.render(
   <BrowserRouter>
     <ContextInjector>
       <ToastContainer />
-      <Auth>
-        <Client>
-          <Routes />
-        </Client>
-      </Auth>
+      <Client>
+        <App />
+      </Client>
     </ContextInjector>
   </BrowserRouter>
 );
