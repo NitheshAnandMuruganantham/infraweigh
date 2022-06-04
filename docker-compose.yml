@@ -1,0 +1,41 @@
+version: "3.6"
+services:
+  postgres:
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+  graphql-engine:
+    image: hasura/graphql-engine:v2.6.1
+    ports:
+      - "8080:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - "postgres"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      PG_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false" # set to "false" to disable console
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "U2HOg0MESZzPk2ZCYLsFxoiIh38Iuw59"}'
+      NEW_ADMIN: http://host.docker.internal:5001/infra-weigh-staging/us-central1/genAdmin
+      NEW_USER: http://host.docker.internal:5001/infra-weigh-staging/us-central1/genUser
+      API_KEY: "MhkFsJZvLCjCTsFicfR6itE0EY7OOC2kkQRBc41EyMgosT8P6qHLq4125hToRdus"
+      GEN_BILL: "http://host.docker.internal:5001/infra-weigh-staging/us-central1/genBill"
+      GEN_CUSTOMER: "http://host.docker.internal:5001/infra-weigh-staging/us-central1/genCustomer"
+      UPDATE_USER: "http://host.docker.internal:5001/infra-weigh-staging/us-central1/updateUser"
+      UPDATE_CUSTOMER: "http://host.docker.internal:5001/infra-weigh-staging/us-central1/updateCustomer"
+      DEL_USER: "http://host.docker.internal:5001/infra-weigh-staging/us-central1/delUser"
+volumes:
+  db_data:

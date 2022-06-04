@@ -250,9 +250,7 @@ export type Bill = {
   nano_id: Scalars['Int'];
   order_id?: Maybe<Scalars['String']>;
   paid?: Maybe<Scalars['Boolean']>;
-  /** An object relationship */
-  paidByByPaidBy: Paid_By;
-  paid_by: Paid_By_Enum;
+  paid_by: Scalars['String'];
   payment_initiated?: Maybe<Scalars['Boolean']>;
   photos?: Maybe<Scalars['json']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
@@ -391,8 +389,7 @@ export type Bill_Bool_Exp = {
   nano_id?: InputMaybe<Int_Comparison_Exp>;
   order_id?: InputMaybe<String_Comparison_Exp>;
   paid?: InputMaybe<Boolean_Comparison_Exp>;
-  paidByByPaidBy?: InputMaybe<Paid_By_Bool_Exp>;
-  paid_by?: InputMaybe<Paid_By_Enum_Comparison_Exp>;
+  paid_by?: InputMaybe<String_Comparison_Exp>;
   payment_initiated?: InputMaybe<Boolean_Comparison_Exp>;
   photos?: InputMaybe<Json_Comparison_Exp>;
   reference_bill_id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -448,8 +445,7 @@ export type Bill_Insert_Input = {
   nano_id?: InputMaybe<Scalars['Int']>;
   order_id?: InputMaybe<Scalars['String']>;
   paid?: InputMaybe<Scalars['Boolean']>;
-  paidByByPaidBy?: InputMaybe<Paid_By_Obj_Rel_Insert_Input>;
-  paid_by?: InputMaybe<Paid_By_Enum>;
+  paid_by?: InputMaybe<Scalars['String']>;
   payment_initiated?: InputMaybe<Scalars['Boolean']>;
   photos?: InputMaybe<Scalars['json']>;
   reference_bill_id?: InputMaybe<Scalars['uuid']>;
@@ -480,6 +476,7 @@ export type Bill_Max_Fields = {
   material_id?: Maybe<Scalars['uuid']>;
   nano_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['String']>;
+  paid_by?: Maybe<Scalars['String']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
   scale_weight?: Maybe<Scalars['Int']>;
   tare_weight?: Maybe<Scalars['Int']>;
@@ -503,6 +500,7 @@ export type Bill_Max_Order_By = {
   material_id?: InputMaybe<Order_By>;
   nano_id?: InputMaybe<Order_By>;
   order_id?: InputMaybe<Order_By>;
+  paid_by?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
@@ -527,6 +525,7 @@ export type Bill_Min_Fields = {
   material_id?: Maybe<Scalars['uuid']>;
   nano_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['String']>;
+  paid_by?: Maybe<Scalars['String']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
   scale_weight?: Maybe<Scalars['Int']>;
   tare_weight?: Maybe<Scalars['Int']>;
@@ -550,6 +549,7 @@ export type Bill_Min_Order_By = {
   material_id?: InputMaybe<Order_By>;
   nano_id?: InputMaybe<Order_By>;
   order_id?: InputMaybe<Order_By>;
+  paid_by?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
@@ -604,7 +604,6 @@ export type Bill_Order_By = {
   nano_id?: InputMaybe<Order_By>;
   order_id?: InputMaybe<Order_By>;
   paid?: InputMaybe<Order_By>;
-  paidByByPaidBy?: InputMaybe<Paid_By_Order_By>;
   paid_by?: InputMaybe<Order_By>;
   payment_initiated?: InputMaybe<Order_By>;
   photos?: InputMaybe<Order_By>;
@@ -693,7 +692,7 @@ export type Bill_Set_Input = {
   nano_id?: InputMaybe<Scalars['Int']>;
   order_id?: InputMaybe<Scalars['String']>;
   paid?: InputMaybe<Scalars['Boolean']>;
-  paid_by?: InputMaybe<Paid_By_Enum>;
+  paid_by?: InputMaybe<Scalars['String']>;
   payment_initiated?: InputMaybe<Scalars['Boolean']>;
   photos?: InputMaybe<Scalars['json']>;
   reference_bill_id?: InputMaybe<Scalars['uuid']>;
@@ -1596,10 +1595,6 @@ export type Mutation_Root = {
   delete_material?: Maybe<Material_Mutation_Response>;
   /** delete single row from the table: "material" */
   delete_material_by_pk?: Maybe<Material>;
-  /** delete data from the table: "paid_by" */
-  delete_paid_by?: Maybe<Paid_By_Mutation_Response>;
-  /** delete single row from the table: "paid_by" */
-  delete_paid_by_by_pk?: Maybe<Paid_By>;
   /** delete data from the table: "tenents" */
   delete_tenents?: Maybe<Tenents_Mutation_Response>;
   /** delete single row from the table: "tenents" */
@@ -1632,10 +1627,6 @@ export type Mutation_Root = {
   insert_material?: Maybe<Material_Mutation_Response>;
   /** insert a single row into the table: "material" */
   insert_material_one?: Maybe<Material>;
-  /** insert data into the table: "paid_by" */
-  insert_paid_by?: Maybe<Paid_By_Mutation_Response>;
-  /** insert a single row into the table: "paid_by" */
-  insert_paid_by_one?: Maybe<Paid_By>;
   /** insert data into the table: "tenents" */
   insert_tenents?: Maybe<Tenents_Mutation_Response>;
   /** insert a single row into the table: "tenents" */
@@ -1668,10 +1659,6 @@ export type Mutation_Root = {
   update_material?: Maybe<Material_Mutation_Response>;
   /** update single row of the table: "material" */
   update_material_by_pk?: Maybe<Material>;
-  /** update data of the table: "paid_by" */
-  update_paid_by?: Maybe<Paid_By_Mutation_Response>;
-  /** update single row of the table: "paid_by" */
-  update_paid_by_by_pk?: Maybe<Paid_By>;
   /** update data of the table: "tenents" */
   update_tenents?: Maybe<Tenents_Mutation_Response>;
   /** update single row of the table: "tenents" */
@@ -1738,18 +1725,6 @@ export type Mutation_RootDelete_MaterialArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Material_By_PkArgs = {
   id: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Paid_ByArgs = {
-  where: Paid_By_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Paid_By_By_PkArgs = {
-  value: Scalars['String'];
 };
 
 
@@ -1854,20 +1829,6 @@ export type Mutation_RootInsert_MaterialArgs = {
 export type Mutation_RootInsert_Material_OneArgs = {
   object: Material_Insert_Input;
   on_conflict?: InputMaybe<Material_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Paid_ByArgs = {
-  objects: Array<Paid_By_Insert_Input>;
-  on_conflict?: InputMaybe<Paid_By_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Paid_By_OneArgs = {
-  object: Paid_By_Insert_Input;
-  on_conflict?: InputMaybe<Paid_By_On_Conflict>;
 };
 
 
@@ -1988,20 +1949,6 @@ export type Mutation_RootUpdate_Material_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_Paid_ByArgs = {
-  _set?: InputMaybe<Paid_By_Set_Input>;
-  where: Paid_By_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Paid_By_By_PkArgs = {
-  _set?: InputMaybe<Paid_By_Set_Input>;
-  pk_columns: Paid_By_Pk_Columns_Input;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdate_TenentsArgs = {
   _set?: InputMaybe<Tenents_Set_Input>;
   where: Tenents_Bool_Exp;
@@ -2074,175 +2021,6 @@ export enum Order_By {
   DescNullsLast = 'desc_nulls_last'
 }
 
-/** columns and relationships of "paid_by" */
-export type Paid_By = {
-  __typename?: 'paid_by';
-  /** An array relationship */
-  bills: Array<Bill>;
-  /** An aggregate relationship */
-  bills_aggregate: Bill_Aggregate;
-  comment: Scalars['String'];
-  value: Scalars['String'];
-};
-
-
-/** columns and relationships of "paid_by" */
-export type Paid_ByBillsArgs = {
-  distinct_on?: InputMaybe<Array<Bill_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Bill_Order_By>>;
-  where?: InputMaybe<Bill_Bool_Exp>;
-};
-
-
-/** columns and relationships of "paid_by" */
-export type Paid_ByBills_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Bill_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Bill_Order_By>>;
-  where?: InputMaybe<Bill_Bool_Exp>;
-};
-
-/** aggregated selection of "paid_by" */
-export type Paid_By_Aggregate = {
-  __typename?: 'paid_by_aggregate';
-  aggregate?: Maybe<Paid_By_Aggregate_Fields>;
-  nodes: Array<Paid_By>;
-};
-
-/** aggregate fields of "paid_by" */
-export type Paid_By_Aggregate_Fields = {
-  __typename?: 'paid_by_aggregate_fields';
-  count: Scalars['Int'];
-  max?: Maybe<Paid_By_Max_Fields>;
-  min?: Maybe<Paid_By_Min_Fields>;
-};
-
-
-/** aggregate fields of "paid_by" */
-export type Paid_By_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Paid_By_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
-};
-
-/** Boolean expression to filter rows from the table "paid_by". All fields are combined with a logical 'AND'. */
-export type Paid_By_Bool_Exp = {
-  _and?: InputMaybe<Array<Paid_By_Bool_Exp>>;
-  _not?: InputMaybe<Paid_By_Bool_Exp>;
-  _or?: InputMaybe<Array<Paid_By_Bool_Exp>>;
-  bills?: InputMaybe<Bill_Bool_Exp>;
-  comment?: InputMaybe<String_Comparison_Exp>;
-  value?: InputMaybe<String_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "paid_by" */
-export enum Paid_By_Constraint {
-  /** unique or primary key constraint */
-  RolePkey = 'role_pkey'
-}
-
-export enum Paid_By_Enum {
-  /** buyer paid the bill */
-  Buyer = 'buyer',
-  /** paid by any means of cash at the terminal */
-  Cash = 'cash',
-  /** driver paid the bill */
-  Driver = 'driver',
-  /** seller paid the bill */
-  Seller = 'seller',
-  /** trader paid the bill */
-  Trader = 'trader'
-}
-
-/** Boolean expression to compare columns of type "paid_by_enum". All fields are combined with logical 'AND'. */
-export type Paid_By_Enum_Comparison_Exp = {
-  _eq?: InputMaybe<Paid_By_Enum>;
-  _in?: InputMaybe<Array<Paid_By_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _neq?: InputMaybe<Paid_By_Enum>;
-  _nin?: InputMaybe<Array<Paid_By_Enum>>;
-};
-
-/** input type for inserting data into table "paid_by" */
-export type Paid_By_Insert_Input = {
-  bills?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
-  comment?: InputMaybe<Scalars['String']>;
-  value?: InputMaybe<Scalars['String']>;
-};
-
-/** aggregate max on columns */
-export type Paid_By_Max_Fields = {
-  __typename?: 'paid_by_max_fields';
-  comment?: Maybe<Scalars['String']>;
-  value?: Maybe<Scalars['String']>;
-};
-
-/** aggregate min on columns */
-export type Paid_By_Min_Fields = {
-  __typename?: 'paid_by_min_fields';
-  comment?: Maybe<Scalars['String']>;
-  value?: Maybe<Scalars['String']>;
-};
-
-/** response of any mutation on the table "paid_by" */
-export type Paid_By_Mutation_Response = {
-  __typename?: 'paid_by_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Paid_By>;
-};
-
-/** input type for inserting object relation for remote table "paid_by" */
-export type Paid_By_Obj_Rel_Insert_Input = {
-  data: Paid_By_Insert_Input;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Paid_By_On_Conflict>;
-};
-
-/** on_conflict condition type for table "paid_by" */
-export type Paid_By_On_Conflict = {
-  constraint: Paid_By_Constraint;
-  update_columns?: Array<Paid_By_Update_Column>;
-  where?: InputMaybe<Paid_By_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "paid_by". */
-export type Paid_By_Order_By = {
-  bills_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
-  comment?: InputMaybe<Order_By>;
-  value?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: paid_by */
-export type Paid_By_Pk_Columns_Input = {
-  value: Scalars['String'];
-};
-
-/** select columns of table "paid_by" */
-export enum Paid_By_Select_Column {
-  /** column name */
-  Comment = 'comment',
-  /** column name */
-  Value = 'value'
-}
-
-/** input type for updating data in table "paid_by" */
-export type Paid_By_Set_Input = {
-  comment?: InputMaybe<Scalars['String']>;
-  value?: InputMaybe<Scalars['String']>;
-};
-
-/** update columns of table "paid_by" */
-export enum Paid_By_Update_Column {
-  /** column name */
-  Comment = 'comment',
-  /** column name */
-  Value = 'value'
-}
-
 export type Query_Root = {
   __typename?: 'query_root';
   /** fetch data from the table: "admin" */
@@ -2269,12 +2047,6 @@ export type Query_Root = {
   material_aggregate: Material_Aggregate;
   /** fetch data from the table: "material" using primary key columns */
   material_by_pk?: Maybe<Material>;
-  /** fetch data from the table: "paid_by" */
-  paid_by: Array<Paid_By>;
-  /** fetch aggregated fields from the table: "paid_by" */
-  paid_by_aggregate: Paid_By_Aggregate;
-  /** fetch data from the table: "paid_by" using primary key columns */
-  paid_by_by_pk?: Maybe<Paid_By>;
   /** fetch data from the table: "tenents" */
   tenents: Array<Tenents>;
   /** fetch aggregated fields from the table: "tenents" */
@@ -2396,29 +2168,6 @@ export type Query_RootMaterial_By_PkArgs = {
 };
 
 
-export type Query_RootPaid_ByArgs = {
-  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
-  where?: InputMaybe<Paid_By_Bool_Exp>;
-};
-
-
-export type Query_RootPaid_By_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
-  where?: InputMaybe<Paid_By_Bool_Exp>;
-};
-
-
-export type Query_RootPaid_By_By_PkArgs = {
-  value: Scalars['String'];
-};
-
-
 export type Query_RootTenentsArgs = {
   distinct_on?: InputMaybe<Array<Tenents_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2536,12 +2285,6 @@ export type Subscription_Root = {
   material_aggregate: Material_Aggregate;
   /** fetch data from the table: "material" using primary key columns */
   material_by_pk?: Maybe<Material>;
-  /** fetch data from the table: "paid_by" */
-  paid_by: Array<Paid_By>;
-  /** fetch aggregated fields from the table: "paid_by" */
-  paid_by_aggregate: Paid_By_Aggregate;
-  /** fetch data from the table: "paid_by" using primary key columns */
-  paid_by_by_pk?: Maybe<Paid_By>;
   /** fetch data from the table: "tenents" */
   tenents: Array<Tenents>;
   /** fetch aggregated fields from the table: "tenents" */
@@ -2663,29 +2406,6 @@ export type Subscription_RootMaterial_By_PkArgs = {
 };
 
 
-export type Subscription_RootPaid_ByArgs = {
-  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
-  where?: InputMaybe<Paid_By_Bool_Exp>;
-};
-
-
-export type Subscription_RootPaid_By_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
-  where?: InputMaybe<Paid_By_Bool_Exp>;
-};
-
-
-export type Subscription_RootPaid_By_By_PkArgs = {
-  value: Scalars['String'];
-};
-
-
 export type Subscription_RootTenentsArgs = {
   distinct_on?: InputMaybe<Array<Tenents_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2785,6 +2505,7 @@ export type Tenents = {
   bills: Array<Bill>;
   /** An aggregate relationship */
   bills_aggregate: Bill_Aggregate;
+  created_at?: Maybe<Scalars['timestamptz']>;
   /** An array relationship */
   customers: Array<Customer>;
   /** An aggregate relationship */
@@ -2796,6 +2517,7 @@ export type Tenents = {
   payment_pending: Scalars['Boolean'];
   phone: Scalars['String'];
   razorpay_id: Scalars['String'];
+  updated_at?: Maybe<Scalars['timestamptz']>;
   /** An array relationship */
   users: Array<User>;
   /** An aggregate relationship */
@@ -2921,6 +2643,7 @@ export type Tenents_Bool_Exp = {
   _or?: InputMaybe<Array<Tenents_Bool_Exp>>;
   activate?: InputMaybe<Boolean_Comparison_Exp>;
   bills?: InputMaybe<Bill_Bool_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   customers?: InputMaybe<Customer_Bool_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -2929,6 +2652,7 @@ export type Tenents_Bool_Exp = {
   payment_pending?: InputMaybe<Boolean_Comparison_Exp>;
   phone?: InputMaybe<String_Comparison_Exp>;
   razorpay_id?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   users?: InputMaybe<User_Bool_Exp>;
   weighbridges?: InputMaybe<Weighbridge_Bool_Exp>;
 };
@@ -2947,6 +2671,7 @@ export enum Tenents_Constraint {
 export type Tenents_Insert_Input = {
   activate?: InputMaybe<Scalars['Boolean']>;
   bills?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   customers?: InputMaybe<Customer_Arr_Rel_Insert_Input>;
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
@@ -2955,6 +2680,7 @@ export type Tenents_Insert_Input = {
   payment_pending?: InputMaybe<Scalars['Boolean']>;
   phone?: InputMaybe<Scalars['String']>;
   razorpay_id?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
   users?: InputMaybe<User_Arr_Rel_Insert_Input>;
   weighbridges?: InputMaybe<Weighbridge_Arr_Rel_Insert_Input>;
 };
@@ -2962,21 +2688,25 @@ export type Tenents_Insert_Input = {
 /** aggregate max on columns */
 export type Tenents_Max_Fields = {
   __typename?: 'tenents_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   razorpay_id?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate min on columns */
 export type Tenents_Min_Fields = {
   __typename?: 'tenents_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   razorpay_id?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** response of any mutation on the table "tenents" */
@@ -3006,6 +2736,7 @@ export type Tenents_On_Conflict = {
 export type Tenents_Order_By = {
   activate?: InputMaybe<Order_By>;
   bills_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
+  created_at?: InputMaybe<Order_By>;
   customers_aggregate?: InputMaybe<Customer_Aggregate_Order_By>;
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -3014,6 +2745,7 @@ export type Tenents_Order_By = {
   payment_pending?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   razorpay_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
   users_aggregate?: InputMaybe<User_Aggregate_Order_By>;
   weighbridges_aggregate?: InputMaybe<Weighbridge_Aggregate_Order_By>;
 };
@@ -3028,6 +2760,8 @@ export enum Tenents_Select_Column {
   /** column name */
   Activate = 'activate',
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   Email = 'email',
   /** column name */
   Id = 'id',
@@ -3040,12 +2774,15 @@ export enum Tenents_Select_Column {
   /** column name */
   Phone = 'phone',
   /** column name */
-  RazorpayId = 'razorpay_id'
+  RazorpayId = 'razorpay_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "tenents" */
 export type Tenents_Set_Input = {
   activate?: InputMaybe<Scalars['Boolean']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   metadata?: InputMaybe<Scalars['json']>;
@@ -3053,12 +2790,15 @@ export type Tenents_Set_Input = {
   payment_pending?: InputMaybe<Scalars['Boolean']>;
   phone?: InputMaybe<Scalars['String']>;
   razorpay_id?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** update columns of table "tenents" */
 export enum Tenents_Update_Column {
   /** column name */
   Activate = 'activate',
+  /** column name */
+  CreatedAt = 'created_at',
   /** column name */
   Email = 'email',
   /** column name */
@@ -3072,7 +2812,9 @@ export enum Tenents_Update_Column {
   /** column name */
   Phone = 'phone',
   /** column name */
-  RazorpayId = 'razorpay_id'
+  RazorpayId = 'razorpay_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
@@ -4052,15 +3794,34 @@ export type AddTenentMutationVariables = Exact<{
 
 export type AddTenentMutation = { __typename?: 'mutation_root', insert_tenents_one?: { __typename?: 'tenents', id: any } | null };
 
-export type GetAllTenentsSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type GetAllTenantsSubscriptionVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<Tenents_Order_By> | Tenents_Order_By>;
+  where?: InputMaybe<Tenents_Bool_Exp>;
+}>;
 
 
-export type GetAllTenentsSubscription = { __typename?: 'subscription_root', tenents: Array<{ __typename?: 'tenents', email: string, name: string, activate: boolean, id: any, phone: string, metadata: any, payment_pending: boolean }> };
+export type GetAllTenantsSubscription = { __typename?: 'subscription_root', tenents: Array<{ __typename?: 'tenents', email: string, name: string, activate: boolean, id: any, phone: string, metadata: any, payment_pending: boolean }> };
 
-export type GetAllTenentsDropDownSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type GetTenantsCountSubscriptionVariables = Exact<{
+  where?: InputMaybe<Tenents_Bool_Exp>;
+  orderBy?: InputMaybe<Array<Tenents_Order_By> | Tenents_Order_By>;
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
 
 
-export type GetAllTenentsDropDownSubscription = { __typename?: 'subscription_root', tenents: Array<{ __typename?: 'tenents', label: string, value: any }> };
+export type GetTenantsCountSubscription = { __typename?: 'subscription_root', tenents_aggregate: { __typename?: 'tenents_aggregate', aggregate?: { __typename?: 'tenents_aggregate_fields', count: number } | null } };
+
+export type GetAllTenentsDropDownQueryVariables = Exact<{
+  where?: InputMaybe<Tenents_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<Tenents_Order_By> | Tenents_Order_By>;
+}>;
+
+
+export type GetAllTenentsDropDownQuery = { __typename?: 'query_root', tenents: Array<{ __typename?: 'tenents', label: string, value: any }> };
 
 export type EditTenentMutationVariables = Exact<{
   pkColumns: Tenents_Pk_Columns_Input;
@@ -4082,16 +3843,27 @@ export type AddBillMutationVariables = Exact<{
 }>;
 
 
-export type AddBillMutation = { __typename?: 'mutation_root', insert_bill_one?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
+export type AddBillMutation = { __typename?: 'mutation_root', insert_bill_one?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: string, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
 
 export type GetTareWeightBillsQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
   limit?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<Bill_Order_By> | Bill_Order_By>;
+  offset?: InputMaybe<Scalars['Int']>;
 }>;
 
 
 export type GetTareWeightBillsQuery = { __typename?: 'query_root', bill: Array<{ __typename?: 'bill', id: any, scale_weight: number, created_at: any }> };
+
+export type GetTareWeightCountQueryVariables = Exact<{
+  where?: InputMaybe<Bill_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<Bill_Order_By> | Bill_Order_By>;
+}>;
+
+
+export type GetTareWeightCountQuery = { __typename?: 'query_root', bill_aggregate: { __typename?: 'bill_aggregate', aggregate?: { __typename?: 'bill_aggregate_fields', count: number } | null } };
 
 export type GetTotalCollectionQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
@@ -4119,14 +3891,14 @@ export type GetAllBillsSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: Paid_By_Enum, paid?: boolean | null, payment_initiated?: boolean | null, order_id?: string | null, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, customer?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, customer_3?: { __typename?: 'customer', id: any, name: string, email: string, phone: string } | null, customer_2?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, material: { __typename?: 'material', name: string } }> };
+export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: string, paid?: boolean | null, payment_initiated?: boolean | null, order_id?: string | null, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, customer?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, customer_3?: { __typename?: 'customer', id: any, name: string, email: string, phone: string } | null, customer_2?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, material: { __typename?: 'material', name: string } }> };
 
 export type GetBillForReceptQueryVariables = Exact<{
   billByPkId: Scalars['uuid'];
 }>;
 
 
-export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, nano_id: number, second_weight: boolean, tare_weight: number, order_id?: string | null, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
+export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, nano_id: number, second_weight: boolean, tare_weight: number, order_id?: string | null, reference_bill_id?: any | null, paid_by: string, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
 
 export type GetVehicleByCollectionsQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
@@ -4141,6 +3913,14 @@ export type BillsByCustomerQueryVariables = Exact<{
 
 
 export type BillsByCustomerQuery = { __typename?: 'query_root', customer_aggregate: { __typename?: 'customer_aggregate', nodes: Array<{ __typename?: 'customer', id: any, name: string, bills_id_aggregate: { __typename?: 'bill_aggregate', aggregate?: { __typename?: 'bill_aggregate_fields', sum?: { __typename?: 'bill_sum_fields', charges?: any | null } | null } | null } }> } };
+
+export type BillAggregateQueryVariables = Exact<{
+  distinctOn?: InputMaybe<Array<Bill_Select_Column> | Bill_Select_Column>;
+  where?: InputMaybe<Bill_Bool_Exp>;
+}>;
+
+
+export type BillAggregateQuery = { __typename?: 'query_root', bill_aggregate: { __typename?: 'bill_aggregate', aggregate?: { __typename?: 'bill_aggregate_fields', count: number } | null } };
 
 export type GetCustomerDropdownOptionsQueryVariables = Exact<{
   where?: InputMaybe<Customer_Bool_Exp>;
@@ -4372,9 +4152,9 @@ export function useAddTenentMutation(baseOptions?: Apollo.MutationHookOptions<Ad
 export type AddTenentMutationHookResult = ReturnType<typeof useAddTenentMutation>;
 export type AddTenentMutationResult = Apollo.MutationResult<AddTenentMutation>;
 export type AddTenentMutationOptions = Apollo.BaseMutationOptions<AddTenentMutation, AddTenentMutationVariables>;
-export const GetAllTenentsDocument = gql`
-    subscription getAllTenents {
-  tenents {
+export const GetAllTenantsDocument = gql`
+    subscription getAllTenants($limit: Int, $offset: Int, $orderBy: [tenents_order_by!], $where: tenents_bool_exp) {
+  tenents(limit: $limit, offset: $offset, order_by: $orderBy, where: $where) {
     email
     name
     activate
@@ -4387,29 +4167,73 @@ export const GetAllTenentsDocument = gql`
     `;
 
 /**
- * __useGetAllTenentsSubscription__
+ * __useGetAllTenantsSubscription__
  *
- * To run a query within a React component, call `useGetAllTenentsSubscription` and pass it any options that fit your needs.
- * When your component renders, `useGetAllTenentsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllTenantsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllTenantsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllTenentsSubscription({
+ * const { data, loading, error } = useGetAllTenantsSubscription({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      orderBy: // value for 'orderBy'
+ *      where: // value for 'where'
  *   },
  * });
  */
-export function useGetAllTenentsSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetAllTenentsSubscription, GetAllTenentsSubscriptionVariables>) {
+export function useGetAllTenantsSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetAllTenantsSubscription, GetAllTenantsSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<GetAllTenentsSubscription, GetAllTenentsSubscriptionVariables>(GetAllTenentsDocument, options);
+        return Apollo.useSubscription<GetAllTenantsSubscription, GetAllTenantsSubscriptionVariables>(GetAllTenantsDocument, options);
       }
-export type GetAllTenentsSubscriptionHookResult = ReturnType<typeof useGetAllTenentsSubscription>;
-export type GetAllTenentsSubscriptionResult = Apollo.SubscriptionResult<GetAllTenentsSubscription>;
+export type GetAllTenantsSubscriptionHookResult = ReturnType<typeof useGetAllTenantsSubscription>;
+export type GetAllTenantsSubscriptionResult = Apollo.SubscriptionResult<GetAllTenantsSubscription>;
+export const GetTenantsCountDocument = gql`
+    subscription getTenantsCount($where: tenents_bool_exp, $orderBy: [tenents_order_by!], $offset: Int, $limit: Int) {
+  tenents_aggregate(
+    where: $where
+    order_by: $orderBy
+    offset: $offset
+    limit: $limit
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTenantsCountSubscription__
+ *
+ * To run a query within a React component, call `useGetTenantsCountSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetTenantsCountSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTenantsCountSubscription({
+ *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetTenantsCountSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetTenantsCountSubscription, GetTenantsCountSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetTenantsCountSubscription, GetTenantsCountSubscriptionVariables>(GetTenantsCountDocument, options);
+      }
+export type GetTenantsCountSubscriptionHookResult = ReturnType<typeof useGetTenantsCountSubscription>;
+export type GetTenantsCountSubscriptionResult = Apollo.SubscriptionResult<GetTenantsCountSubscription>;
 export const GetAllTenentsDropDownDocument = gql`
-    subscription getAllTenentsDropDown {
-  tenents {
+    query getAllTenentsDropDown($where: tenents_bool_exp, $limit: Int, $orderBy: [tenents_order_by!]) {
+  tenents(where: $where, limit: $limit, order_by: $orderBy) {
     label: name
     value: id
   }
@@ -4417,26 +4241,34 @@ export const GetAllTenentsDropDownDocument = gql`
     `;
 
 /**
- * __useGetAllTenentsDropDownSubscription__
+ * __useGetAllTenentsDropDownQuery__
  *
- * To run a query within a React component, call `useGetAllTenentsDropDownSubscription` and pass it any options that fit your needs.
- * When your component renders, `useGetAllTenentsDropDownSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllTenentsDropDownQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllTenentsDropDownQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllTenentsDropDownSubscription({
+ * const { data, loading, error } = useGetAllTenentsDropDownQuery({
  *   variables: {
+ *      where: // value for 'where'
+ *      limit: // value for 'limit'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */
-export function useGetAllTenentsDropDownSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetAllTenentsDropDownSubscription, GetAllTenentsDropDownSubscriptionVariables>) {
+export function useGetAllTenentsDropDownQuery(baseOptions?: Apollo.QueryHookOptions<GetAllTenentsDropDownQuery, GetAllTenentsDropDownQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<GetAllTenentsDropDownSubscription, GetAllTenentsDropDownSubscriptionVariables>(GetAllTenentsDropDownDocument, options);
+        return Apollo.useQuery<GetAllTenentsDropDownQuery, GetAllTenentsDropDownQueryVariables>(GetAllTenentsDropDownDocument, options);
       }
-export type GetAllTenentsDropDownSubscriptionHookResult = ReturnType<typeof useGetAllTenentsDropDownSubscription>;
-export type GetAllTenentsDropDownSubscriptionResult = Apollo.SubscriptionResult<GetAllTenentsDropDownSubscription>;
+export function useGetAllTenentsDropDownLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllTenentsDropDownQuery, GetAllTenentsDropDownQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllTenentsDropDownQuery, GetAllTenentsDropDownQueryVariables>(GetAllTenentsDropDownDocument, options);
+        }
+export type GetAllTenentsDropDownQueryHookResult = ReturnType<typeof useGetAllTenentsDropDownQuery>;
+export type GetAllTenentsDropDownLazyQueryHookResult = ReturnType<typeof useGetAllTenentsDropDownLazyQuery>;
+export type GetAllTenentsDropDownQueryResult = Apollo.QueryResult<GetAllTenentsDropDownQuery, GetAllTenentsDropDownQueryVariables>;
 export const EditTenentDocument = gql`
     mutation editTenent($pkColumns: tenents_pk_columns_input!, $set: tenents_set_input) {
   update_tenents_by_pk(pk_columns: $pkColumns, _set: $set) {
@@ -4575,8 +4407,8 @@ export type AddBillMutationHookResult = ReturnType<typeof useAddBillMutation>;
 export type AddBillMutationResult = Apollo.MutationResult<AddBillMutation>;
 export type AddBillMutationOptions = Apollo.BaseMutationOptions<AddBillMutation, AddBillMutationVariables>;
 export const GetTareWeightBillsDocument = gql`
-    query getTareWeightBills($where: bill_bool_exp, $limit: Int, $orderBy: [bill_order_by!]) {
-  bill(where: $where, limit: $limit, order_by: $orderBy) {
+    query getTareWeightBills($where: bill_bool_exp, $limit: Int, $orderBy: [bill_order_by!], $offset: Int) {
+  bill(where: $where, limit: $limit, order_by: $orderBy, offset: $offset) {
     id
     scale_weight
     created_at
@@ -4599,6 +4431,7 @@ export const GetTareWeightBillsDocument = gql`
  *      where: // value for 'where'
  *      limit: // value for 'limit'
  *      orderBy: // value for 'orderBy'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -4613,6 +4446,51 @@ export function useGetTareWeightBillsLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetTareWeightBillsQueryHookResult = ReturnType<typeof useGetTareWeightBillsQuery>;
 export type GetTareWeightBillsLazyQueryHookResult = ReturnType<typeof useGetTareWeightBillsLazyQuery>;
 export type GetTareWeightBillsQueryResult = Apollo.QueryResult<GetTareWeightBillsQuery, GetTareWeightBillsQueryVariables>;
+export const GetTareWeightCountDocument = gql`
+    query getTareWeightCount($where: bill_bool_exp, $limit: Int, $offset: Int, $orderBy: [bill_order_by!]) {
+  bill_aggregate(
+    where: $where
+    limit: $limit
+    offset: $offset
+    order_by: $orderBy
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTareWeightCountQuery__
+ *
+ * To run a query within a React component, call `useGetTareWeightCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTareWeightCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTareWeightCountQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      orderBy: // value for 'orderBy'
+ *   },
+ * });
+ */
+export function useGetTareWeightCountQuery(baseOptions?: Apollo.QueryHookOptions<GetTareWeightCountQuery, GetTareWeightCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTareWeightCountQuery, GetTareWeightCountQueryVariables>(GetTareWeightCountDocument, options);
+      }
+export function useGetTareWeightCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTareWeightCountQuery, GetTareWeightCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTareWeightCountQuery, GetTareWeightCountQueryVariables>(GetTareWeightCountDocument, options);
+        }
+export type GetTareWeightCountQueryHookResult = ReturnType<typeof useGetTareWeightCountQuery>;
+export type GetTareWeightCountLazyQueryHookResult = ReturnType<typeof useGetTareWeightCountLazyQuery>;
+export type GetTareWeightCountQueryResult = Apollo.QueryResult<GetTareWeightCountQuery, GetTareWeightCountQueryVariables>;
 export const GetTotalCollectionDocument = gql`
     query getTotalCollection($where: bill_bool_exp) {
   bill_aggregate(where: $where) {
@@ -4930,6 +4808,44 @@ export function useBillsByCustomerLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type BillsByCustomerQueryHookResult = ReturnType<typeof useBillsByCustomerQuery>;
 export type BillsByCustomerLazyQueryHookResult = ReturnType<typeof useBillsByCustomerLazyQuery>;
 export type BillsByCustomerQueryResult = Apollo.QueryResult<BillsByCustomerQuery, BillsByCustomerQueryVariables>;
+export const BillAggregateDocument = gql`
+    query BillAggregate($distinctOn: [bill_select_column!], $where: bill_bool_exp) {
+  bill_aggregate(distinct_on: $distinctOn, where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useBillAggregateQuery__
+ *
+ * To run a query within a React component, call `useBillAggregateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBillAggregateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBillAggregateQuery({
+ *   variables: {
+ *      distinctOn: // value for 'distinctOn'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useBillAggregateQuery(baseOptions?: Apollo.QueryHookOptions<BillAggregateQuery, BillAggregateQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BillAggregateQuery, BillAggregateQueryVariables>(BillAggregateDocument, options);
+      }
+export function useBillAggregateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BillAggregateQuery, BillAggregateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BillAggregateQuery, BillAggregateQueryVariables>(BillAggregateDocument, options);
+        }
+export type BillAggregateQueryHookResult = ReturnType<typeof useBillAggregateQuery>;
+export type BillAggregateLazyQueryHookResult = ReturnType<typeof useBillAggregateLazyQuery>;
+export type BillAggregateQueryResult = Apollo.QueryResult<BillAggregateQuery, BillAggregateQueryVariables>;
 export const GetCustomerDropdownOptionsDocument = gql`
     query getCustomerDropdownOptions($where: customer_bool_exp, $limit: Int) {
   customer(where: $where, limit: $limit) {

@@ -1,13 +1,3 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -15,19 +5,18 @@ declare namespace Cypress {
     login(email: string, password: string): void;
   }
 }
-//
-// -- This is a parent command --
 Cypress.Commands.add('login', (email, password) => {
-  console.log('Custom command example: Login', email, password);
+  cy.window().then((win) => {
+    win.sessionStorage.clear();
+    win.indexedDB.deleteDatabase('firebaseLocalStorageDb');
+    cy.clearCookies();
+    cy.clearLocalStorage();
+  });
+  cy.visit('/');
+  cy.url().should('include', '/login');
+  cy.get(':nth-child(1) > .firebaseui-idp-button').click();
+  cy.get('#ui-sign-in-email-input').type(email);
+  cy.get('.firebaseui-id-submit').click();
+  cy.get('#ui-sign-in-password-input').type(password);
+  cy.get('.firebaseui-id-submit').click();
 });
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
