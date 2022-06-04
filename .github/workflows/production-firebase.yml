@@ -22,9 +22,4 @@ jobs:
           cd firebase/functions
           npm install
           firebase use default
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
