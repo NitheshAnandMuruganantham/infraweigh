@@ -2505,7 +2505,6 @@ export type Tenents = {
   bills: Array<Bill>;
   /** An aggregate relationship */
   bills_aggregate: Bill_Aggregate;
-  created_at?: Maybe<Scalars['timestamptz']>;
   /** An array relationship */
   customers: Array<Customer>;
   /** An aggregate relationship */
@@ -2517,7 +2516,6 @@ export type Tenents = {
   payment_pending: Scalars['Boolean'];
   phone: Scalars['String'];
   razorpay_id: Scalars['String'];
-  updated_at?: Maybe<Scalars['timestamptz']>;
   /** An array relationship */
   users: Array<User>;
   /** An aggregate relationship */
@@ -2643,7 +2641,6 @@ export type Tenents_Bool_Exp = {
   _or?: InputMaybe<Array<Tenents_Bool_Exp>>;
   activate?: InputMaybe<Boolean_Comparison_Exp>;
   bills?: InputMaybe<Bill_Bool_Exp>;
-  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   customers?: InputMaybe<Customer_Bool_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -2652,7 +2649,6 @@ export type Tenents_Bool_Exp = {
   payment_pending?: InputMaybe<Boolean_Comparison_Exp>;
   phone?: InputMaybe<String_Comparison_Exp>;
   razorpay_id?: InputMaybe<String_Comparison_Exp>;
-  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   users?: InputMaybe<User_Bool_Exp>;
   weighbridges?: InputMaybe<Weighbridge_Bool_Exp>;
 };
@@ -2671,7 +2667,6 @@ export enum Tenents_Constraint {
 export type Tenents_Insert_Input = {
   activate?: InputMaybe<Scalars['Boolean']>;
   bills?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
   customers?: InputMaybe<Customer_Arr_Rel_Insert_Input>;
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
@@ -2680,7 +2675,6 @@ export type Tenents_Insert_Input = {
   payment_pending?: InputMaybe<Scalars['Boolean']>;
   phone?: InputMaybe<Scalars['String']>;
   razorpay_id?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
   users?: InputMaybe<User_Arr_Rel_Insert_Input>;
   weighbridges?: InputMaybe<Weighbridge_Arr_Rel_Insert_Input>;
 };
@@ -2688,25 +2682,21 @@ export type Tenents_Insert_Input = {
 /** aggregate max on columns */
 export type Tenents_Max_Fields = {
   __typename?: 'tenents_max_fields';
-  created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   razorpay_id?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate min on columns */
 export type Tenents_Min_Fields = {
   __typename?: 'tenents_min_fields';
-  created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   razorpay_id?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** response of any mutation on the table "tenents" */
@@ -2736,7 +2726,6 @@ export type Tenents_On_Conflict = {
 export type Tenents_Order_By = {
   activate?: InputMaybe<Order_By>;
   bills_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
-  created_at?: InputMaybe<Order_By>;
   customers_aggregate?: InputMaybe<Customer_Aggregate_Order_By>;
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -2745,7 +2734,6 @@ export type Tenents_Order_By = {
   payment_pending?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   razorpay_id?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
   users_aggregate?: InputMaybe<User_Aggregate_Order_By>;
   weighbridges_aggregate?: InputMaybe<Weighbridge_Aggregate_Order_By>;
 };
@@ -2760,8 +2748,6 @@ export enum Tenents_Select_Column {
   /** column name */
   Activate = 'activate',
   /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
   Email = 'email',
   /** column name */
   Id = 'id',
@@ -2774,15 +2760,12 @@ export enum Tenents_Select_Column {
   /** column name */
   Phone = 'phone',
   /** column name */
-  RazorpayId = 'razorpay_id',
-  /** column name */
-  UpdatedAt = 'updated_at'
+  RazorpayId = 'razorpay_id'
 }
 
 /** input type for updating data in table "tenents" */
 export type Tenents_Set_Input = {
   activate?: InputMaybe<Scalars['Boolean']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   metadata?: InputMaybe<Scalars['json']>;
@@ -2790,15 +2773,12 @@ export type Tenents_Set_Input = {
   payment_pending?: InputMaybe<Scalars['Boolean']>;
   phone?: InputMaybe<Scalars['String']>;
   razorpay_id?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** update columns of table "tenents" */
 export enum Tenents_Update_Column {
   /** column name */
   Activate = 'activate',
-  /** column name */
-  CreatedAt = 'created_at',
   /** column name */
   Email = 'email',
   /** column name */
@@ -2812,9 +2792,7 @@ export enum Tenents_Update_Column {
   /** column name */
   Phone = 'phone',
   /** column name */
-  RazorpayId = 'razorpay_id',
-  /** column name */
-  UpdatedAt = 'updated_at'
+  RazorpayId = 'razorpay_id'
 }
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
@@ -4076,6 +4054,9 @@ export type SubscribeWeighbridgeAdminSubscription = { __typename?: 'subscription
 
 export type WeighbridgesCountSubscriptionVariables = Exact<{
   where?: InputMaybe<Weighbridge_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<Weighbridge_Order_By> | Weighbridge_Order_By>;
 }>;
 
 
@@ -4090,6 +4071,9 @@ export type GetAllWeighbridgeQuery = { __typename?: 'query_root', weighbridge: A
 
 export type GetAllWeighbridgeRealtimeSubscriptionVariables = Exact<{
   where?: InputMaybe<Weighbridge_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<Weighbridge_Order_By> | Weighbridge_Order_By>;
 }>;
 
 
@@ -5569,8 +5553,13 @@ export function useSubscribeWeighbridgeAdminSubscription(baseOptions?: Apollo.Su
 export type SubscribeWeighbridgeAdminSubscriptionHookResult = ReturnType<typeof useSubscribeWeighbridgeAdminSubscription>;
 export type SubscribeWeighbridgeAdminSubscriptionResult = Apollo.SubscriptionResult<SubscribeWeighbridgeAdminSubscription>;
 export const WeighbridgesCountDocument = gql`
-    subscription weighbridgesCount($where: weighbridge_bool_exp) {
-  weighbridge_aggregate(where: $where) {
+    subscription weighbridgesCount($where: weighbridge_bool_exp, $limit: Int, $offset: Int, $orderBy: [weighbridge_order_by!]) {
+  weighbridge_aggregate(
+    where: $where
+    limit: $limit
+    offset: $offset
+    order_by: $orderBy
+  ) {
     aggregate {
       count
     }
@@ -5591,6 +5580,9 @@ export const WeighbridgesCountDocument = gql`
  * const { data, loading, error } = useWeighbridgesCountSubscription({
  *   variables: {
  *      where: // value for 'where'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */
@@ -5645,8 +5637,8 @@ export type GetAllWeighbridgeQueryHookResult = ReturnType<typeof useGetAllWeighb
 export type GetAllWeighbridgeLazyQueryHookResult = ReturnType<typeof useGetAllWeighbridgeLazyQuery>;
 export type GetAllWeighbridgeQueryResult = Apollo.QueryResult<GetAllWeighbridgeQuery, GetAllWeighbridgeQueryVariables>;
 export const GetAllWeighbridgeRealtimeDocument = gql`
-    subscription getAllWeighbridgeRealtime($where: weighbridge_bool_exp) {
-  weighbridge(where: $where) {
+    subscription getAllWeighbridgeRealtime($where: weighbridge_bool_exp, $limit: Int, $offset: Int, $orderBy: [weighbridge_order_by!]) {
+  weighbridge(where: $where, limit: $limit, offset: $offset, order_by: $orderBy) {
     display_name
     id
     address
@@ -5674,6 +5666,9 @@ export const GetAllWeighbridgeRealtimeDocument = gql`
  * const { data, loading, error } = useGetAllWeighbridgeRealtimeSubscription({
  *   variables: {
  *      where: // value for 'where'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */

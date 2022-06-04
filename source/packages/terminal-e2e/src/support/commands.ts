@@ -6,12 +6,6 @@ declare namespace Cypress {
   }
 }
 Cypress.Commands.add('login', (email, password) => {
-  cy.window().then((win) => {
-    win.sessionStorage.clear();
-    win.indexedDB.deleteDatabase('firebaseLocalStorageDb');
-    cy.clearCookies();
-    cy.clearLocalStorage();
-  });
   cy.visit('/');
   cy.url().should('include', '/login');
   cy.get(':nth-child(1) > .firebaseui-idp-button').click();
