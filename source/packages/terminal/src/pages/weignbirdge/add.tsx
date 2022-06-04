@@ -55,15 +55,15 @@ export default function AddNewWeighBridge() {
               name: Yup.string().required('Required'),
               address: Yup.string().required('Required'),
               tenant: Yup.lazy(() => {
-                if (role === 'admin' && role !== null) {
+                if (role !== 'admin') {
+                  return Yup.object().notRequired();
+                } else {
                   return Yup.object()
                     .shape({
                       label: Yup.string().required('Required'),
                       value: Yup.string().required('Required'),
                     })
                     .required('Required');
-                } else {
-                  return Yup.object().notRequired();
                 }
               }),
               display_name: Yup.string().required('Required'),
@@ -75,9 +75,8 @@ export default function AddNewWeighBridge() {
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
             let dt = {};
-            if (role === 'admin' && role !== null) {
+            if (role !== 'admin') {
               dt = {
-                tenent_id: values.tenant.value,
                 address: values.address,
                 display_name: values.display_name,
                 pin_code: values.pin_code,
@@ -87,6 +86,7 @@ export default function AddNewWeighBridge() {
               };
             } else {
               dt = {
+                tenent_id: values.tenant.value,
                 address: values.address,
                 display_name: values.display_name,
                 pin_code: values.pin_code,
@@ -174,13 +174,13 @@ export default function AddNewWeighBridge() {
                       defaultCountry={'in'}
                       onChange={(e) => setFieldValue('phone', e.toString())}
                     />
-                    {role !== 'terminal' && role !== null && (
+                    {role === 'admin' && role !== null && (
                       <AutoCompleteComponent
                         sx={{
                           width: '100%',
                         }}
-                        name="tenent"
-                        label="teneant"
+                        name="tenant"
+                        label="tenant"
                         serverName="tenents"
                         queryHook={useGetAllTenentsDropDownLazyQuery}
                       />
