@@ -17,11 +17,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install npm packages and build the app
         run: |
-          npm i -g yarn && cd scripts && yarn build
+          npm i -g yarn firebase firebase-tools && cd scripts && yarn build
           cd ..
           cd firebase/functions
           npm install
-          firebase use production
+          firebase use default
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
