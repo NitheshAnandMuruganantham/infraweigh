@@ -1,4 +1,4 @@
-describe('terminal', () => {
+describe('terminal login', () => {
   cy.on('uncaught:exception', () => {
     return false;
   });
@@ -23,5 +23,19 @@ describe('terminal', () => {
     cy.get('.firebaseui-id-submit').click();
     cy.get('#ui-sign-in-password-input').type('123123123');
     cy.get('.firebaseui-id-submit').click();
+  });
+
+  it('should redirect if logged in terminal', () => {
+    cy.visit('/login');
+    cy.url().should('not.include', '/login');
+  });
+
+  after(() => {
+    cy.window().then((win) => {
+      win.sessionStorage.clear();
+      win.indexedDB.deleteDatabase('firebaseLocalStorageDb');
+      cy.clearCookies();
+      cy.clearLocalStorage();
+    });
   });
 });

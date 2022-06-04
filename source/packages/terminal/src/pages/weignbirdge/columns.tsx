@@ -77,7 +77,7 @@ const columns: GridColDef[] = [
                         );
                       })
                       .then((d) => {
-                        d && toast.success('weighbridge deleted successfully');
+                        d && toast.success('WeighBridge deleted successfully');
                       });
                   },
                 },

@@ -59,8 +59,18 @@ subscription subscribeWeighbridgeAdmin(
   }
 }
 
-subscription weighbridgesCount($where: weighbridge_bool_exp) {
-  weighbridge_aggregate(where: $where) {
+subscription weighbridgesCount(
+  $where: weighbridge_bool_exp
+  $limit: Int
+  $offset: Int
+  $orderBy: [weighbridge_order_by!]
+) {
+  weighbridge_aggregate(
+    where: $where
+    limit: $limit
+    offset: $offset
+    order_by: $orderBy
+  ) {
     aggregate {
       count
     }
@@ -82,8 +92,18 @@ query getAllWeighbridge($where: weighbridge_bool_exp) {
   }
 }
 
-subscription getAllWeighbridgeRealtime($where: weighbridge_bool_exp) {
-  weighbridge(where: $where) {
+subscription getAllWeighbridgeRealtime(
+  $where: weighbridge_bool_exp
+  $limit: Int
+  $offset: Int
+  $orderBy: [weighbridge_order_by!]
+) {
+  weighbridge(
+    where: $where
+    limit: $limit
+    offset: $offset
+    order_by: $orderBy
+  ) {
     display_name
     id
     address

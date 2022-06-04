@@ -12,9 +12,19 @@ const Weighbridges: React.FunctionComponent = () => {
   const [sort, SetSort] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
-  const { data, loading } = useGetAllWeighbridgeRealtimeSubscription({});
+  const { data, loading } = useGetAllWeighbridgeRealtimeSubscription({
+    variables: {
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+      orderBy: sort,
+    },
+  });
   const { data: count, loading: countLoading } =
-    useWeighbridgesCountSubscription();
+    useWeighbridgesCountSubscription({
+      variables: {
+        orderBy: sort,
+      },
+    });
   return (
     <Box>
       <AddNewWeighBridge />
