@@ -17,7 +17,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@infra-weigh/auth": ["packages/auth/src/index.ts"],
       "@infra-weigh/client": ["packages/client/src/index.ts"],
       "@infra-weigh/firebase": ["packages/firebase/src/index.ts"],
       "@infra-weigh/generated": ["packages/generated/src/index.ts"],

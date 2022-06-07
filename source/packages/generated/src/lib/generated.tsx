@@ -3973,6 +3973,13 @@ export type GetUserQueryVariables = Exact<{
 
 export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, id: any, profile?: any | null, weighbridge_id: any, updated_at: any, role?: string | null, weighbridge: { __typename?: 'weighbridge', name: string, address: string } }> };
 
+export type GetUserCountQueryVariables = Exact<{
+  where?: InputMaybe<User_Bool_Exp>;
+}>;
+
+
+export type GetUserCountQuery = { __typename?: 'query_root', user_aggregate: { __typename?: 'user_aggregate', aggregate?: { __typename?: 'user_aggregate_fields', count: number } | null } };
+
 export type GetAllUsersSubscriptionVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5175,6 +5182,43 @@ export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
 export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const GetUserCountDocument = gql`
+    query getUserCount($where: user_bool_exp) {
+  user_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserCountQuery__
+ *
+ * To run a query within a React component, call `useGetUserCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserCountQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetUserCountQuery(baseOptions?: Apollo.QueryHookOptions<GetUserCountQuery, GetUserCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserCountQuery, GetUserCountQueryVariables>(GetUserCountDocument, options);
+      }
+export function useGetUserCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserCountQuery, GetUserCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserCountQuery, GetUserCountQueryVariables>(GetUserCountDocument, options);
+        }
+export type GetUserCountQueryHookResult = ReturnType<typeof useGetUserCountQuery>;
+export type GetUserCountLazyQueryHookResult = ReturnType<typeof useGetUserCountLazyQuery>;
+export type GetUserCountQueryResult = Apollo.QueryResult<GetUserCountQuery, GetUserCountQueryVariables>;
 export const GetAllUsersDocument = gql`
     subscription getAllUsers($where: user_bool_exp, $limit: Int, $offset: Int, $orderBy: [user_order_by!]) {
   user(where: $where, limit: $limit, offset: $offset, order_by: $orderBy) {
