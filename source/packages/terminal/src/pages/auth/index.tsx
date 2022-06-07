@@ -8,16 +8,17 @@ import Loading from '@infra-weigh/loading';
 const AuthPage: React.FunctionComponent = () => {
   const location: any = useLocation();
   const [canLoadLogin, setCanLoadLogin] = React.useState(false);
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
   React.useEffect(() => {
-    if (!user) {
+    if (!user && !loading) {
       setCanLoadLogin(true);
-    } else {
+    } else if (!loading) {
       navigate('/');
     }
-  }, [navigate, user]);
-  return canLoadLogin ? (
+  }, [navigate, user, loading]);
+
+  return canLoadLogin && !loading ? (
     <StyledFirebaseAuth
       uiConfig={{
         signInFlow: 'popup',

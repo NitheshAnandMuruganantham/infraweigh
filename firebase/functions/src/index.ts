@@ -8,6 +8,7 @@ export const razorPayHook = razorPayHookFunction;
 
 export const admin = Admin.initializeApp();
 cors({ origin: true });
+
 const applyMiddleware = (req: any, res: any, next: any) => {
   if (
     process.env["API_KEY"] &&

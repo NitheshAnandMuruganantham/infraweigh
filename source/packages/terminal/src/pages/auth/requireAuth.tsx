@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@infra-weigh/firebase';
@@ -10,13 +10,22 @@ import useRole from '../../hooks/role';
 
 const RequireAuth: FunctionComponent = () => {
   const location = useLocation();
-  const [user, loading] = useAuthState(auth);
+  const [loading, setLoading] = useState(true);
+  const [user, AuthLoading] = useAuthState(auth);
   const [role, Reloading] = useRole();
-  return loading || Reloading ? (
-    <Loading open={true} setOpen={() => null} />
-  ) : user ? (
+
+  useEffect(() => {
+    if (AuthLoading || Reloading) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [AuthLoading, Reloading]);
+  return loading ? (
+    <Loading open={loading} setOpen={setLoading} />
+  ) : user && !AuthLoading && !Reloading && role ? (
     <NavComponent>
-      <AccessControl role={role || ''}>
+      <AccessControl role={role}>
         <Outlet />
       </AccessControl>
     </NavComponent>

@@ -23,17 +23,18 @@ import Loader from '@infra-weigh/loading';
 import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import MuiPhoneNumber from 'material-ui-phone-number';
 
-const Home: FunctionComponent = () => {
+const Weigh: FunctionComponent = () => {
   const [addBill] = useAddBillMutation();
   const [BillRefId, SetBillRefId] = useState<string | null>(null);
   const [open, SetOpen] = useState<boolean>(false);
-  const [data, SetData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [data, SetData] = useState<any>(null);
 
   const optionValidate = Yup.object().shape({
     value: Yup.string().required('Required'),
     label: Yup.string().required('Required'),
   });
+
   return (
     <>
       <Loader open={loading} setOpen={setLoading} />
@@ -175,7 +176,8 @@ const Home: FunctionComponent = () => {
         }}
       >
         {({
-          submitForm,
+          handleReset,
+          handleSubmit,
           errors,
           isSubmitting,
           setFieldValue,
@@ -183,10 +185,11 @@ const Home: FunctionComponent = () => {
           handleBlur,
           touched,
           isValid,
-          resetForm,
         }) => (
           <Box
             component="form"
+            onSubmit={handleSubmit}
+            onReset={handleReset}
             sx={{
               display: 'flex',
               flexDirection: 'row',
@@ -406,18 +409,14 @@ const Home: FunctionComponent = () => {
                 {isValid && (
                   <Button
                     sx={{ marginRight: 2 }}
-                    onClick={() => submitForm()}
+                    type="submit"
                     variant="contained"
                     color="success"
                   >
                     ACCEPT
                   </Button>
                 )}
-                <Button
-                  variant="contained"
-                  onClick={() => resetForm()}
-                  color="error"
-                >
+                <Button variant="contained" type="reset" color="error">
                   RESET
                 </Button>
               </Box>
@@ -430,4 +429,4 @@ const Home: FunctionComponent = () => {
   );
 };
 
-export default Home;
+export default Weigh;

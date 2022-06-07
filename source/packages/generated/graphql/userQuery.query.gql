@@ -13,6 +13,15 @@ query getUser($where: user_bool_exp) {
   }
 }
 
+query getUserCount($where: user_bool_exp) {
+  user_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+
+
 subscription getAllUsers(
   $where: user_bool_exp
   $limit: Int

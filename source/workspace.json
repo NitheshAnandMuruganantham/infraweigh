@@ -1,7 +1,6 @@
 {
   "version": 2,
   "projects": {
-    "auth": "packages/auth",
     "client": "packages/client",
     "firebase": "packages/firebase",
     "generated": "packages/generated",

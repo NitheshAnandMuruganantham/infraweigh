@@ -20,7 +20,8 @@ const AccessControl: React.FunctionComponent<AccessControlProps> = ({
     // eslint-disable-next-line react/jsx-no-useless-fragment
     return <>{children}</>;
   } else {
-    return <Navigate to="/" replace />;
+    alert('You are not authorized to access this page');
+    return <Navigate to="/" />;
   }
 };
 
