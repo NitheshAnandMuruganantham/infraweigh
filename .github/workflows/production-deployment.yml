@@ -19,4 +19,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
       - name: Install npm packages and build the app
-        run: yarn build && cd packages/serverless && firebase use staging && firebase deploy --token $FIREBASE_TOKEN
+        run: yarn build && cd packages/serverless && yarn deploy:production --token $FIREBASE_TOKEN
