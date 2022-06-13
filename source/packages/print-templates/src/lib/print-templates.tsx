@@ -195,38 +195,21 @@ const Bill: React.FunctionComponent<{
               gap: '10px',
             }}
           >
-            <img
-              src={props.data.photos[0]}
-              alt=""
-              style={{
-                width: '135px',
-                aspectRatio: '1/1',
-              }}
-            />
-            <img
-              src={props.data.photos[1]}
-              alt=""
-              style={{
-                width: '135px',
-                aspectRatio: '1/1',
-              }}
-            />
-            <img
-              src={props.data.photos[2]}
-              alt=""
-              style={{
-                width: '135px',
-                aspectRatio: '1/1',
-              }}
-            />
-            <img
-              src={props.data.photos[3]}
-              alt=""
-              style={{
-                width: '135px',
-                aspectRatio: '1/1',
-              }}
-            />
+            {props.data.photos.map((photo, index) => {
+              if (index > 3) {
+                return null;
+              } else
+                return (
+                  <img
+                    src={props.data.photos[index]}
+                    alt=""
+                    style={{
+                      width: '135px',
+                      aspectRatio: '1/1',
+                    }}
+                  />
+                );
+            })}
           </div>
           <Chip
             sx={{

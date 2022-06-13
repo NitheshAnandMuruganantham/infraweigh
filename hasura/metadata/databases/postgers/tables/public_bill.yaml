@@ -44,34 +44,6 @@ array_relationships:
           schema: public
           name: bill
 insert_permissions:
-  - role: tenantAdmin
-    permission:
-      check:
-        tenent_id:
-          _eq: X-Hasura-tenent-Id
-      set:
-        tenent_id: x-hasura-tenent-id
-        weighbridge_id: x-hasura-weighbridge-id
-      columns:
-        - charges
-        - created_at
-        - customer_2_id
-        - customer_3_id
-        - customer_id
-        - id
-        - image
-        - material_id
-        - paid_by
-        - photos
-        - reference_bill_id
-        - scale_weight
-        - second_weight
-        - tare_weight
-        - updated_at
-        - vehicle_id
-        - vehicle_number
-        - weighbridge_id
-      backend_only: false
   - role: terminal
     permission:
       check:
@@ -100,7 +72,6 @@ insert_permissions:
         - tare_weight
         - vehicle_id
         - vehicle_number
-        - weighbridge_id
       backend_only: false
 select_permissions:
   - role: customer

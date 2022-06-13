@@ -83,57 +83,27 @@ const Weigh: FunctionComponent = () => {
             const dat = await fetch(url).then((res) => res.json());
             const claims = await auth.currentUser?.getIdTokenResult();
             const hasura: any = claims?.claims['https://hasura.io/jwt/claims'];
-
-            const up1 = await uploadString(
-              ref(
-                storage,
-                `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/one.jpeg`
-              ),
-              `data:image/jpeg;base64,${dat.image[0]}`,
-              'data_url'
-            ).then(async (res) =>
-              getDownloadURL(ref(storage, res.ref.fullPath)).then((url) => url)
-            );
-
-            const up2 = await uploadString(
-              ref(
-                storage,
-                `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/two.jpeg`
-              ),
-              `data:image/jpeg;base64,${dat.image[1]}`,
-              'data_url'
-            ).then(async (res) =>
-              getDownloadURL(ref(storage, res.ref.fullPath)).then((url) => url)
-            );
-
-            const up3 = await uploadString(
-              ref(
-                storage,
-                `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/three.jpeg`
-              ),
-              `data:image/jpeg;base64,${dat.image[2]}`,
-              'data_url'
-            ).then(async (res) =>
-              getDownloadURL(ref(storage, res.ref.fullPath)).then((url) => url)
-            );
-
-            const up4 = await uploadString(
-              ref(
-                storage,
-                `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/four.jpeg`
-              ),
-              `data:image/jpeg;base64,${dat.image[3]}`,
-              'data_url'
-            ).then(async (res) =>
-              getDownloadURL(ref(storage, res.ref.fullPath)).then((url) => url)
-            );
+            const filePath = `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/`;
+            const prefix = `data:image/jpeg;base64,`;
+            const imageurls: string[] = [];
+            dat.image.map(async (item: any, index) => {
+              await uploadString(
+                ref(storage, `${filePath}${index}.jpeg`),
+                `${prefix}${dat.image[0]}`,
+                'data_url'
+              ).then(async (res) =>
+                getDownloadURL(ref(storage, res.ref.fullPath)).then((url) =>
+                  imageurls.push(url)
+                )
+              );
+            });
 
             const customerData: any = values;
             await addBill({
               variables: {
                 object: {
                   id,
-                  photos: [up1, up2, up3, up4],
+                  photos: imageurls,
                   charges: values.charges,
                   driver_phone: values.driver_phone,
                   vehicle_id: customerData.vehicle.value,

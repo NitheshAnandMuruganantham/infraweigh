@@ -152,7 +152,7 @@ const Columns: GridColumns = [
             }
           };
           displayRazorpay({
-            amount: parseInt(`${5000}`),
+            amount: parseInt(`${params.row.charges}`.split('$')[1]) * 100,
             currency: 'INR',
             name: auth.currentUser?.displayName || '',
             mail: auth.currentUser?.email || '',
