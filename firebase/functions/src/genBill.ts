@@ -24,11 +24,15 @@ export const genBillHandler = (req: Request, res: Response, admin: any) => {
       },
     })
     .then(async (response) => {
-      const dt = response.data.bill_by_pk;
+      const dt: any = response.data.bill_by_pk;
       if (dt.customer) {
         sendMessageAndMail({
           admin,
           dt: {
+            charges: dt.charges,
+            vehicle: {
+              name: dt.vehicle.name,
+            },
             created_at: dt.created_at,
             email: dt.customer.email,
             material: dt.material,
@@ -47,6 +51,10 @@ export const genBillHandler = (req: Request, res: Response, admin: any) => {
         sendMessageAndMail({
           admin,
           dt: {
+            charges: dt.charges,
+            vehicle: {
+              name: dt.vehicle.name,
+            },
             created_at: dt.created_at,
             email: dt.customer_2.email,
             phone: dt.customer_2.phone,
@@ -65,6 +73,10 @@ export const genBillHandler = (req: Request, res: Response, admin: any) => {
         sendMessageAndMail({
           admin,
           dt: {
+            charges: dt.charges,
+            vehicle: {
+              name: dt.vehicle.name,
+            },
             created_at: dt.created_at,
             email: dt.customer_3.email,
             phone: dt.customer_3.phone,
@@ -182,6 +194,10 @@ const sendMessageAndMail = async ({
 }: {
   id: string;
   dt: {
+    charges: string;
+    vehicle: {
+      name: string;
+    };
     phone: string;
     email: string;
     weighbridge: {
@@ -226,6 +242,28 @@ const sendMessageAndMail = async ({
     .doc(`mail/${id}-${prefix}`)
     .set({
       to: dt.email,
+      template: {
+        name: "bill",
+        data: {
+          Weighbridge_name: dt.weighbridge.display_name,
+          address: "",
+          vehicle_number: dt.vehicle_number,
+          material: dt.material.name,
+          date: `${new Date(dt.created_at).toLocaleString()}`,
+          vehicle: dt.vehicle.name,
+          scale_weight: dt.scale_weight,
+          tare_weight: dt.tare_weight || "",
+          net_weight: `${
+            dt.second_weight
+              ? Math.abs(
+                  parseInt(dt.tare_weight || "0", 10) -
+                    parseInt(dt.scale_weight || "0", 10)
+                )
+              : ""
+          }`,
+          charges: dt.charges,
+        },
+      },
       subject: `thanks for choosing ${dt.weighbridge.display_name}`,
       html: `thank you for choosing ${dt.weighbridge.display_name || ""}!
           vehicle number: ${dt.vehicle_number}
