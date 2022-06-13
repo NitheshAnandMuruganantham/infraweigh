@@ -16,8 +16,14 @@ jobs:
       FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
     steps:
       - uses: actions/checkout@v2
+
+      - uses: bahmutov/npm-install@v1
+        with:
+          install-command: npm install -g yarn firebase firebase-tools
+
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: source
+
       - name: Install npm packages and build the app
-        run: npm i -g yarn firebase firebase-tools && cd scripts && yarn build && cd .. && cd firebase/functions && yarn install && yarn build && cd .. && firebase use staging && firebase deploy --token $FIREBASE_TOKEN
+        run: cd scripts && yarn build && cd .. && cd firebase/functions && yarn install && yarn build && cd .. && firebase use staging && firebase deploy --token $FIREBASE_TOKEN
