@@ -10564,11 +10564,6 @@ expect@^27.5.1:
     jest-matcher-utils "^27.5.1"
     jest-message-util "^27.5.1"
 
-experss@^0.0.1-security:
-  version "0.0.1-security"
-  resolved "https://registry.yarnpkg.com/experss/-/experss-0.0.1-security.tgz#d949d352ad77ef97856032d454e728b35b89b7ed"
-  integrity sha512-L2HxG73D04Y/U/YOryT50t8SlN+ZAX0MPTX6QyduHSBnGDXTAxRb+6z7buDjAmV/zPPnCan62k5vL0dsGmhBLg==
-
 express@^4.16.4, express@^4.17.1, express@^4.17.3, express@^4.18.1:
   version "4.18.1"
   resolved "https://registry.yarnpkg.com/express/-/express-4.18.1.tgz#7797de8b9c72c857b9cd0e14a5eea80666267caf"
@@ -11083,7 +11078,7 @@ firebase-tools@^11.0.1:
     winston-transport "^4.4.0"
     ws "^7.2.3"
 
-firebase@^9.6.8:
+firebase@^9.6.8, firebase@^9.8.3:
   version "9.8.3"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-9.8.3.tgz#63e5664ad4d5740c8db00702fb9b948665f65cbf"
   integrity sha512-PCThy5cFXnbiUtFPJ9vVdcG7wKibOKNR+iuNXf+54xMGJzYb+rM2P8GUqtr2fhVQkfs42uJ6gGKG4soNGkP64w==
