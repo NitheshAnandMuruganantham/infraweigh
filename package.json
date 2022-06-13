@@ -1,0 +1,19 @@
+{
+  "name": "infraweigh",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": "true",
+  "dependencies": {
+    "concurrently": "^7.2.1",
+    "firebase-tools": "^11.0.1"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": "https://github.com/mentorSqr/infraweigh.git",
+  "author": "nithesh  anand <anand252825@gmail.com>",
+  "scripts": {
+    "dev": "concurrently \"cd ../ && cd firebase && firebase emulators:start --import=\"emulatorData\" --export-on-exit=\"emulatorData\" \" \"cd ../ && cd firebase/functions && yarn tsc -w\" \"cd ../ && cd hasura && hasura console\" \"cd ../ && cd local-polyfils && node . \" \"cd ../ && cd deamon && yarn dev \" ",
+    "build": "cd packages/source && yarn nx run terminal:build:production && mv dist/packages/terminal dist/packages/public && cp -R dist/packages/public ../serverless"
+  }
+}
