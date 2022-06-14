@@ -83,27 +83,72 @@ const Weigh: FunctionComponent = () => {
             const dat = await fetch(url).then((res) => res.json());
             const claims = await auth.currentUser?.getIdTokenResult();
             const hasura: any = claims?.claims['https://hasura.io/jwt/claims'];
-            const filePath = `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/`;
-            const prefix = `data:image/jpeg;base64,`;
-            const imageurls: string[] = [];
-            dat.image.map(async (item: any, index) => {
-              await uploadString(
-                ref(storage, `${filePath}${index}.jpeg`),
-                `${prefix}${dat.image[0]}`,
-                'data_url'
-              ).then(async (res) =>
-                getDownloadURL(ref(storage, res.ref.fullPath)).then((url) =>
-                  imageurls.push(url)
+            const up1 = dat.image[0]
+              ? await uploadString(
+                  ref(
+                    storage,
+                    `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/one.jpeg`
+                  ),
+                  `data:image/jpeg;base64,${dat.image[0]}`,
+                  'data_url'
+                ).then(async (res) =>
+                  getDownloadURL(ref(storage, res.ref.fullPath)).then(
+                    (url) => url
+                  )
                 )
-              );
-            });
+              : null;
+
+            const up2 = dat.image[1]
+              ? await uploadString(
+                  ref(
+                    storage,
+                    `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/two.jpeg`
+                  ),
+                  `data:image/jpeg;base64,${dat.image[1]}`,
+                  'data_url'
+                ).then(async (res) =>
+                  getDownloadURL(ref(storage, res.ref.fullPath)).then(
+                    (url) => url
+                  )
+                )
+              : null;
+
+            const up3 = dat.image[2]
+              ? await uploadString(
+                  ref(
+                    storage,
+                    `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/three.jpeg`
+                  ),
+                  `data:image/jpeg;base64,${dat.image[2]}`,
+                  'data_url'
+                ).then(async (res) =>
+                  getDownloadURL(ref(storage, res.ref.fullPath)).then(
+                    (url) => url
+                  )
+                )
+              : null;
+
+            const up4 = dat.image[3]
+              ? await uploadString(
+                  ref(
+                    storage,
+                    `${hasura['x-hasura-tenent-id']}/${hasura['x-hasura-weighbridge-id']}/${id}-folder/four.jpeg`
+                  ),
+                  `data:image/jpeg;base64,${dat.image[3]}`,
+                  'data_url'
+                ).then(async (res) =>
+                  getDownloadURL(ref(storage, res.ref.fullPath)).then(
+                    (url) => url
+                  )
+                )
+              : null;
 
             const customerData: any = values;
             await addBill({
               variables: {
                 object: {
                   id,
-                  photos: imageurls,
+                  photos: [up1, up2, up3, up4],
                   charges: values.charges,
                   driver_phone: values.driver_phone,
                   vehicle_id: customerData.vehicle.value,

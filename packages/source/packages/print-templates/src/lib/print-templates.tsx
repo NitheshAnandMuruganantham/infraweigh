@@ -11,6 +11,9 @@ import BarCode from 'react-barcode';
 const Bill: React.FunctionComponent<{
   data: any;
 }> = (props) => {
+  React.useEffect(() => {
+    console.log(props.data);
+  }, []);
   return (
     <Box
       sx={{
