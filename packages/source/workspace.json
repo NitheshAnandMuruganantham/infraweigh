@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "projects": {
+    "client": "packages/client",
+    "firebase": "packages/firebase",
+    "generated": "packages/generated",
+    "loading": "packages/loading",
+    "print-templates": "packages/print-templates",
+    "shared-ui": "packages/shared-ui",
+    "shared-ui-e2e": "packages/shared-ui-e2e",
+    "terminal": "packages/terminal",
+    "terminal-e2e": "packages/terminal-e2e"
+  }
+}
