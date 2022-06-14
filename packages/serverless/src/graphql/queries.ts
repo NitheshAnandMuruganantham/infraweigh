@@ -11,7 +11,7 @@ export const getBillDetails = gql`
       charges
       photos
       reference_bill_id
-      second_weight
+      scale_weight
       tare_weight
       photos
       customer {
