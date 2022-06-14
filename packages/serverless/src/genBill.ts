@@ -173,11 +173,7 @@ export const genBillHandler = (req: Request, res: Response, admin: any) => {
               },
             });
           })
-          .catch((error) => {
-            admin.firestore().doc(`errors/${req.body.event.data.new.id}`).set({
-              error: error,
-            });
-          });
+          .catch((error) => {});
       }
       res.json({
         status: "success",
