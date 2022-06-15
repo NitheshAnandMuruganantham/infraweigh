@@ -79,7 +79,7 @@ const Weigh: FunctionComponent = () => {
             const url =
               window.location.hostname === 'localhost'
                 ? 'http://localhost:3030/dummy'
-                : 'http://infraweighcontroller.local:9999';
+                : 'https://infraweighcontroller.local:9999';
             const dat = await fetch(url).then((res) => res.json());
             const claims = await auth.currentUser?.getIdTokenResult();
             const hasura: any = claims?.claims['https://hasura.io/jwt/claims'];
