@@ -30,7 +30,6 @@ insert_permissions:
         tenent_id: x-hasura-tenent-id
       columns:
         - address
-        - created_at
         - display_name
         - id
         - logo
@@ -39,7 +38,6 @@ insert_permissions:
         - name
         - phone
         - pin_code
-        - updated_at
       backend_only: false
 select_permissions:
   - role: customer
@@ -120,7 +118,6 @@ update_permissions:
         - name
         - phone
         - pin_code
-        - tenent_id
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id
