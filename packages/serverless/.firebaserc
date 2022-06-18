@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "infra-weigh",
+    "default": "infra-weigh-staging",
     "staging": "infra-weigh-staging"
   }
 }

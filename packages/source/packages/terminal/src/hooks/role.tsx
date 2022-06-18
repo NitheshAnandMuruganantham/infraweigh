@@ -12,8 +12,7 @@ function useAuth(): [roles, boolean] {
     const loadRole = async () => {
       setLoading(true);
       const idTokenResult = await user?.getIdTokenResult();
-      const claims =
-        idTokenResult?.claims['https://hasura.io/jwt/claims'] || 'guest';
+      const claims = idTokenResult?.claims['https://hasura.io/jwt/claims'];
       setRole(claims ? claims['x-hasura-default-role'] : 'guest');
       setLoading(false);
     };

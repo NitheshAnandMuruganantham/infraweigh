@@ -7,7 +7,7 @@
   "files": [
     "../../../../node_modules/@nrwl/react/typings/cssmodule.d.ts",
     "../../../../node_modules/@nrwl/react/typings/image.d.ts",
-    "../../../../types/react-barcode/index.d.ts"
+    "../../types/react-barcode/index.d.ts"
   ],
   "exclude": [
     "**/*.spec.ts",

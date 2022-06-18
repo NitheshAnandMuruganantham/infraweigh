@@ -17,5 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: packages/source
       - name: build apps
         run: yarn build && cd packages/serverless && yarn deploy:staging --token $FIREBASE_TOKEN
