@@ -14,7 +14,8 @@
   "repository": "https://github.com/mentorSqr/infraweigh.git",
   "author": "nithesh  anand <anand252825@gmail.com>",
   "scripts": {
-    "dev": "concurrently \"cd packages/serverless && firebase emulators:start\" \"cd packages/serverless && yarn build:watch\" \"cd packages/hasura && hasura console\" \"cd packages/local-polyfils && node . \"",
-    "build": "cd packages/source && yarn nx run terminal:build:production && mv dist/packages/terminal dist/packages/public && cp -R dist/packages/public ../serverless"
+    "dev": "concurrently \"yarn dev:terminal\" \"cd packages/serverless && firebase emulators:start\" \"cd packages/serverless && yarn build:watch\" \"cd packages/hasura && hasura console\" \"cd packages/local-polyfils && node . \"",
+    "build": "cd packages/terminal && yarn build && mv dist public && cp -R public ../serverless",
+    "dev:terminal": "yarn workspace terminal dev"
   }
 }
