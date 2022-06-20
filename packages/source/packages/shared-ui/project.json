@@ -18,37 +18,6 @@
         "jestConfig": "packages/shared-ui/jest.config.js",
         "passWithNoTests": true
       }
-    },
-    "storybook": {
-      "executor": "@nrwl/storybook:storybook",
-      "options": {
-        "uiFramework": "@storybook/react",
-        "port": 4400,
-        "config": {
-          "configFolder": "packages/shared-ui/.storybook"
-        }
-      },
-      "configurations": {
-        "ci": {
-          "quiet": true
-        }
-      }
-    },
-    "build-storybook": {
-      "executor": "@nrwl/storybook:build",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "uiFramework": "@storybook/react",
-        "outputPath": "dist/storybook/shared-ui",
-        "config": {
-          "configFolder": "packages/shared-ui/.storybook"
-        }
-      },
-      "configurations": {
-        "ci": {
-          "quiet": true
-        }
-      }
     }
   }
 }
