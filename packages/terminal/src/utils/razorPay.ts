@@ -32,7 +32,7 @@ export async function displayRazorpay(result: {
   const { amount, order_id, currency } = result;
 
   const options = {
-    key: import.meta.env["NX_RAZORPAY_ID"],
+    key: import.meta.env["VITE_RAZORPAY_ID"],
     amount: `${amount * 100}`,
     method: "upi",
     currency: currency,
