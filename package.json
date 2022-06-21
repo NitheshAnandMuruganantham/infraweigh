@@ -14,8 +14,12 @@
   "repository": "https://github.com/mentorSqr/infraweigh.git",
   "author": "nithesh  anand <anand252825@gmail.com>",
   "scripts": {
+    "prepare": "husky install",
     "dev": "concurrently \"yarn dev:terminal\" \"cd packages/serverless && firebase emulators:start\" \"cd packages/serverless && yarn build:watch\" \"cd packages/hasura && hasura console\" \"cd packages/local-polyfils && node . \"",
     "build": "cd packages/terminal && yarn build && mv dist public && cp -R public ../serverless",
     "dev:terminal": "yarn workspace terminal dev"
+  },
+  "devDependencies": {
+    "husky": "^8.0.1"
   }
 }
