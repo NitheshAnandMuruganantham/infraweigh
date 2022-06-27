@@ -3,7 +3,7 @@ import { auth } from "../../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Loading from "../../components/loading";
-import Page from "./page";
+import Page from "./logIn";
 const AuthPage: React.FunctionComponent = () => {
   const [canLoadLogin, setCanLoadLogin] = React.useState(false);
   const [user, loading] = useAuthState(auth);

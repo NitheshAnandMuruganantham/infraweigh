@@ -67,39 +67,46 @@ select_permissions:
             - customer_3:
                 email:
                   _eq: x-hasura-email
+  - role: serviceEngineer
+    permission:
+      columns:
+        - config
+      filter: {}
   - role: tenantAdmin
     permission:
       columns:
-        - metadata
         - address
+        - config
+        - created_at
         - display_name
+        - id
         - logo
         - mail
+        - metadata
         - name
         - phone
         - pin_code
-        - created_at
-        - updated_at
-        - id
         - tenent_id
+        - updated_at
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id
   - role: terminal
     permission:
       columns:
-        - name
         - address
-        - pin_code
-        - logo
+        - config
+        - created_at
         - display_name
         - id
-        - created_at
-        - updated_at
-        - metadata
+        - logo
         - mail
+        - metadata
+        - name
         - phone
+        - pin_code
         - tenent_id
+        - updated_at
       filter:
         _and:
           - tenent_id:
@@ -107,6 +114,12 @@ select_permissions:
           - id:
               _eq: X-Hasura-Weighbridge-Id
 update_permissions:
+  - role: serviceEngineer
+    permission:
+      columns:
+        - config
+      filter: {}
+      check: null
   - role: tenantAdmin
     permission:
       columns:

@@ -4,7 +4,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start --only functions",
+    "serve": "npm run build && firebase emulators:start  --import emulatorData --export-on-exit",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy:staging": "firebase use staging && firebase deploy",
@@ -26,6 +26,8 @@
     "react": "^18.1.0"
   },
   "devDependencies": {
+    "concurrently": "^7.2.1",
+    "firebase-tools": "^11.0.1",
     "typescript": "^4.6.4"
   },
   "private": true

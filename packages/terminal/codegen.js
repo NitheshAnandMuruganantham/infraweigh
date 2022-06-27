@@ -1,23 +1,23 @@
-const { config } = require('dotenv');
+const { config } = require("dotenv");
 config();
 module.exports = {
   schema: [
     {
-      'http://localhost:8080/v1/graphql': {
+      "http://localhost:3001/v1/graphql": {
         headers: {
-          'x-hasura-admin-secret': 'myadminsecretkey',
+          "x-hasura-admin-secret": "myadminsecretkey",
         },
       },
     },
   ],
-  documents: './**/*{.graphql,.gql}',
+  documents: "./**/*{.graphql,.gql}",
   overwrite: true,
   generates: {
-    './src/generated/generated.tsx': {
+    "./src/generated/generated.tsx": {
       plugins: [
-        'typescript',
-        'typescript-operations',
-        'typescript-react-apollo',
+        "typescript",
+        "typescript-operations",
+        "typescript-react-apollo",
       ],
       config: {
         skipTypename: false,
@@ -26,8 +26,8 @@ module.exports = {
         withComponent: false,
       },
     },
-    './graphql.schema.json': {
-      plugins: ['introspection'],
+    "./graphql.schema.json": {
+      plugins: ["introspection"],
     },
   },
 };
