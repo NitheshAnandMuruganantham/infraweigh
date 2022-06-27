@@ -23,8 +23,6 @@
     "@nivo/bar": "^0.79.1",
     "@nivo/core": "^0.79.0",
     "@nivo/pie": "^0.79.1",
-    "aws-amplify": "^4.3.26",
-    "bwip-js": "^3.1.0",
     "cypress": "^10.1.0",
     "dexie": "^3.2.2",
     "dexie-react-hooks": "^1.1.1",
