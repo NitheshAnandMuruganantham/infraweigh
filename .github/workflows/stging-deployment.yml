@@ -19,6 +19,7 @@ jobs:
       - uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
+          install-command: yarn install
           working-directory: |
             packages/terminal
             packages/serverless
