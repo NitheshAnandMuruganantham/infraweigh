@@ -3436,6 +3436,7 @@ export type Weighbridge = {
   bills: Array<Bill>;
   /** An aggregate relationship */
   bills_aggregate: Bill_Aggregate;
+  config?: Maybe<Scalars['json']>;
   created_at: Scalars['timestamptz'];
   display_name: Scalars['String'];
   id: Scalars['uuid'];
@@ -3473,6 +3474,12 @@ export type WeighbridgeBills_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Bill_Order_By>>;
   where?: InputMaybe<Bill_Bool_Exp>;
+};
+
+
+/** columns and relationships of "weighbridge" */
+export type WeighbridgeConfigArgs = {
+  path?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -3544,6 +3551,7 @@ export type Weighbridge_Bool_Exp = {
   _or?: InputMaybe<Array<Weighbridge_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
   bills?: InputMaybe<Bill_Bool_Exp>;
+  config?: InputMaybe<Json_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   display_name?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -3569,6 +3577,7 @@ export enum Weighbridge_Constraint {
 export type Weighbridge_Insert_Input = {
   address?: InputMaybe<Scalars['String']>;
   bills?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
+  config?: InputMaybe<Scalars['json']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   display_name?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
@@ -3673,6 +3682,7 @@ export type Weighbridge_On_Conflict = {
 export type Weighbridge_Order_By = {
   address?: InputMaybe<Order_By>;
   bills_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
+  config?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   display_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -3697,6 +3707,8 @@ export type Weighbridge_Pk_Columns_Input = {
 export enum Weighbridge_Select_Column {
   /** column name */
   Address = 'address',
+  /** column name */
+  Config = 'config',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -3724,6 +3736,7 @@ export enum Weighbridge_Select_Column {
 /** input type for updating data in table "weighbridge" */
 export type Weighbridge_Set_Input = {
   address?: InputMaybe<Scalars['String']>;
+  config?: InputMaybe<Scalars['json']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   display_name?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
@@ -3741,6 +3754,8 @@ export type Weighbridge_Set_Input = {
 export enum Weighbridge_Update_Column {
   /** column name */
   Address = 'address',
+  /** column name */
+  Config = 'config',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -4108,6 +4123,11 @@ export type UpdateWeighBridgeMutationVariables = Exact<{
 
 
 export type UpdateWeighBridgeMutation = { __typename?: 'mutation_root', update_weighbridge_by_pk?: { __typename?: 'weighbridge', id: any } | null };
+
+export type GetConfigrationQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetConfigrationQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', config?: any | null }> };
 
 
 export const AddTenentDocument = gql`
@@ -5834,3 +5854,37 @@ export function useUpdateWeighBridgeMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdateWeighBridgeMutationHookResult = ReturnType<typeof useUpdateWeighBridgeMutation>;
 export type UpdateWeighBridgeMutationResult = Apollo.MutationResult<UpdateWeighBridgeMutation>;
 export type UpdateWeighBridgeMutationOptions = Apollo.BaseMutationOptions<UpdateWeighBridgeMutation, UpdateWeighBridgeMutationVariables>;
+export const GetConfigrationDocument = gql`
+    query getConfigration {
+  weighbridge {
+    config
+  }
+}
+    `;
+
+/**
+ * __useGetConfigrationQuery__
+ *
+ * To run a query within a React component, call `useGetConfigrationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetConfigrationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetConfigrationQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetConfigrationQuery(baseOptions?: Apollo.QueryHookOptions<GetConfigrationQuery, GetConfigrationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetConfigrationQuery, GetConfigrationQueryVariables>(GetConfigrationDocument, options);
+      }
+export function useGetConfigrationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetConfigrationQuery, GetConfigrationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetConfigrationQuery, GetConfigrationQueryVariables>(GetConfigrationDocument, options);
+        }
+export type GetConfigrationQueryHookResult = ReturnType<typeof useGetConfigrationQuery>;
+export type GetConfigrationLazyQueryHookResult = ReturnType<typeof useGetConfigrationLazyQuery>;
+export type GetConfigrationQueryResult = Apollo.QueryResult<GetConfigrationQuery, GetConfigrationQueryVariables>;

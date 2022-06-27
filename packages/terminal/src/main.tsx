@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "./styles.scss";
 import App from "./App";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ContextInjector from "./context";
@@ -14,8 +15,8 @@ import client from "./utils/client";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
+      <ToastContainer />
       <ContextInjector>
-        <ToastContainer />
         <ApolloProvider client={client}>
           <App />
         </ApolloProvider>

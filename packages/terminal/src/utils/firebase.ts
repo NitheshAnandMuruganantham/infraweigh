@@ -4,8 +4,6 @@ import { getFirestore, connectFirestoreEmulator } from "@firebase/firestore";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 
-console.log(import.meta.env);
-
 const config = JSON.parse(import.meta.env["VITE_BASE_FIREBASE"]);
 const app = initializeApp(config);
 

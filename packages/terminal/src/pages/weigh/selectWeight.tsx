@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import SelectWeightGrid from './selectWeightGrid';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import SelectWeightGrid from "./selectWeightGrid";
 
 const AddNewClient: React.FunctionComponent<{
   vehicleNumber: string;
@@ -22,7 +22,7 @@ const AddNewClient: React.FunctionComponent<{
     <>
       <Button
         variant="outlined"
-        sx={{ m: 1, width: '60%' }}
+        sx={{ m: 1, width: "60%" }}
         onClick={() => {
           handleClickOpen();
         }}

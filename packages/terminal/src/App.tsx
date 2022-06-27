@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import Loading from "./components/loading";
 import RequireAuth from "./pages/auth/requireAuth";
-
 const LogIn = React.lazy(() => import("./pages/auth"));
 const Bills = React.lazy(() => import("./pages/bills"));
 const Clients = React.lazy(() => import("./pages/clients"));

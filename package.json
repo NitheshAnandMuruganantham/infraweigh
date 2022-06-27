@@ -15,9 +15,15 @@
   "author": "nithesh  anand <anand252825@gmail.com>",
   "scripts": {
     "prepare": "husky install",
-    "dev": "concurrently \"yarn dev:terminal\" \"cd packages/serverless && firebase emulators:start\" \"cd packages/serverless && yarn build:watch\" \"cd packages/hasura && hasura console\" \"cd packages/local-polyfils && node . \"",
+    "dev": "concurrently \"yarn dev:kiosk\" \"yarn dev:terminal\" \"yarn dev:firebase\" \"yarn start:localpolyfils\" \"yarn dev:hasura\"",
     "build": "cd packages/terminal && yarn build && mv dist public && cp -R public ../serverless",
-    "dev:terminal": "yarn workspace terminal dev"
+    "dev:terminal": "yarn workspace terminal dev",
+    "dev:firebase": "concurrently \"yarn workspace serverless serve\" \"yarn firebase:watch\" ",
+    "firebase:watch": "yarn workspace serverless build:watch",
+    "start:localpolyfils": "yarn workspace local-polyfils start",
+    "dev:hasura": "yarn workspace hasura-graphql-server dev",
+    "dev:kiosk": "yarn workspace kiosk start",
+    "dev:server": "concurrently \"yarn workspace server watch\" \"yarn workspace server dev\""
   },
   "devDependencies": {
     "husky": "^8.0.1"

@@ -1,41 +1,42 @@
-import { Box, Button, FormLabel, InputAdornment } from "@mui/material";
-import RadioListComponent from "../../components/radio";
-import AutoCompleteComponent from "../../components/autoComplete";
-import BillInfo from "./printBill";
-import { FunctionComponent, useState } from "react";
-import * as Yup from "yup";
-import { Formik, Field } from "formik";
-import { TextField, RadioGroup, Switch } from "formik-mui";
-import SelectWeight from "./selectWeight";
-import { v4 as uuid } from "uuid";
+import { Field, Formik } from "formik";
+import { RadioGroup, Switch, TextField } from "formik-mui";
+import MuiPhoneNumber from "material-ui-phone-number";
+import { FunctionComponent, useEffect, useState } from "react";
 
+import { Box, Button, FormLabel, InputAdornment } from "@mui/material";
+
+import AutoCompleteComponent from "../../components/autoComplete";
+import Loader from "../../components/loading";
+import RadioListComponent from "../../components/radio";
 import {
   useAddBillMutation,
+  useGetConfigrationQuery,
   useGetCustomerDropdownOptionsLazyQuery,
   useGetMaterialDropDownListLazyQuery,
   useGetVehiclesDropDownListLazyQuery,
 } from "../../generated";
-import { auth, storage } from "../../utils/firebase";
-import { toast } from "react-toastify";
-import Loader from "../../components/loading";
-import { ref, uploadString, getDownloadURL } from "firebase/storage";
-import MuiPhoneNumber from "material-ui-phone-number";
+import { db } from "../../utils/db";
+import BillInfo from "./printBill";
+import pullConfig from "./pullConfig";
+import SelectWeight from "./selectWeight";
+import submitHandler from "./submitHandler";
+import validation from "./validation";
 
 const Weigh: FunctionComponent = () => {
-  const [addBill] = useAddBillMutation();
   const [BillRefId, SetBillRefId] = useState<string | null>(null);
   const [open, SetOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [data, SetData] = useState<any>(null);
-
-  const optionValidate = Yup.object().shape({
-    value: Yup.string().required("Required"),
-    label: Yup.string().required("Required"),
-  });
+  const [addBill] = useAddBillMutation();
+  const configQuery = useGetConfigrationQuery();
+  useEffect(() => {
+    pullConfig(configQuery);
+  }, [configQuery.data, configQuery.loading === false]);
 
   return (
     <>
-      <Loader open={loading} setOpen={setLoading} />
+      <Loader open={loading || configQuery.loading} setOpen={setLoading} />
+
       <Formik
         initialValues={{
           vehicleNumber: "",
@@ -51,138 +52,16 @@ const Weigh: FunctionComponent = () => {
           tareWeight: 0,
           paidBy: "other",
         }}
-        validationSchema={() => {
-          return Yup.object().shape({
-            vehicleNumber: Yup.string().required("Required"),
-            material: optionValidate.required(),
-            vehicle: optionValidate.required(),
-            driver_phone: Yup.string().min(8).required(),
-            charges: Yup.number().required(),
-            tareWeight: Yup.lazy((val) =>
-              val.secondWeight
-                ? Yup.string().required("Required")
-                : Yup.number()
-            ),
-          });
-        }}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
-          setLoading(true);
-          setSubmitting(true);
-          try {
-            const id = uuid();
-            const correctedVal: any = { ...values };
-            if (!values.secondWeight) {
-              correctedVal.tareWeight = null;
-            }
-            const url =
-              window.location.hostname === "localhost"
-                ? "http://localhost:3030/dummy"
-                : "https://infraweighcontroller.local:9999";
-            const dat = await fetch(url).then((res) => res.json());
-            const claims = await auth.currentUser?.getIdTokenResult();
-            const hasura: any = claims?.claims["https://hasura.io/jwt/claims"];
-            const up1 = dat.image[0]
-              ? await uploadString(
-                  ref(
-                    storage,
-                    `${hasura["x-hasura-tenent-id"]}/${hasura["x-hasura-weighbridge-id"]}/${id}-folder/one.jpeg`
-                  ),
-                  `data:image/jpeg;base64,${dat.image[0]}`,
-                  "data_url"
-                ).then(async (res) =>
-                  getDownloadURL(ref(storage, res.ref.fullPath)).then(
-                    (url) => url
-                  )
-                )
-              : null;
-
-            const up2 = dat.image[1]
-              ? await uploadString(
-                  ref(
-                    storage,
-                    `${hasura["x-hasura-tenent-id"]}/${hasura["x-hasura-weighbridge-id"]}/${id}-folder/two.jpeg`
-                  ),
-                  `data:image/jpeg;base64,${dat.image[1]}`,
-                  "data_url"
-                ).then(async (res) =>
-                  getDownloadURL(ref(storage, res.ref.fullPath)).then(
-                    (url) => url
-                  )
-                )
-              : null;
-
-            const up3 = dat.image[2]
-              ? await uploadString(
-                  ref(
-                    storage,
-                    `${hasura["x-hasura-tenent-id"]}/${hasura["x-hasura-weighbridge-id"]}/${id}-folder/three.jpeg`
-                  ),
-                  `data:image/jpeg;base64,${dat.image[2]}`,
-                  "data_url"
-                ).then(async (res) =>
-                  getDownloadURL(ref(storage, res.ref.fullPath)).then(
-                    (url) => url
-                  )
-                )
-              : null;
-
-            const up4 = dat.image[3]
-              ? await uploadString(
-                  ref(
-                    storage,
-                    `${hasura["x-hasura-tenent-id"]}/${hasura["x-hasura-weighbridge-id"]}/${id}-folder/four.jpeg`
-                  ),
-                  `data:image/jpeg;base64,${dat.image[3]}`,
-                  "data_url"
-                ).then(async (res) =>
-                  getDownloadURL(ref(storage, res.ref.fullPath)).then(
-                    (url) => url
-                  )
-                )
-              : null;
-
-            const customerData: any = values;
-            await addBill({
-              variables: {
-                object: {
-                  id,
-                  photos: [up1, up2, up3, up4],
-                  charges: values.charges,
-                  driver_phone: values.driver_phone,
-                  vehicle_id: customerData.vehicle.value,
-                  material_id: customerData.material.value,
-                  vehicle_number: values.vehicleNumber,
-                  customer_id: customerData.buyer
-                    ? customerData.buyer.value
-                    : null,
-                  customer_2_id: customerData.seller
-                    ? customerData.seller.value
-                    : null,
-                  customer_3_id: customerData.trader
-                    ? customerData.trader.value
-                    : null,
-                  scale_weight: dat.weight,
-                  tare_weight: values.secondWeight ? values.tareWeight : 0,
-                  second_weight: values.secondWeight,
-                  reference_bill_id: values.secondWeight ? BillRefId : null,
-                  paid_by: customerData.paidBy,
-                },
-              },
-            }).then((dat) => {
-              const dt: any = dat?.data?.insert_bill_one;
-              SetData(dt);
-              SetOpen(true);
-              setSubmitting(false);
-              setLoading(false);
-              toast.success("Bill Added Successfully");
-              resetForm();
-            });
-          } catch (error) {
-            console.log(JSON.stringify(error));
-            setSubmitting(false);
-            setLoading(false);
-          }
-        }}
+        validationSchema={validation}
+        onSubmit={(values, helpers) =>
+          submitHandler(values, helpers, {
+            setLoading,
+            addBill,
+            SetData,
+            SetOpen,
+            BillRefId,
+          })
+        }
         onReset={() => {
           SetBillRefId(null);
           setLoading(false);

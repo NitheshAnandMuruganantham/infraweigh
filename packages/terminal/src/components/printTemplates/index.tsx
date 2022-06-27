@@ -1,4 +1,4 @@
-import Box  from "@mui/material/Box";
+import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import TableHead from "@mui/material/TableHead";
 import * as React from "react";
@@ -9,13 +9,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
-import BarCode from "react-barcode";
+import Barcode from "./barcode";
 const Bill: React.FunctionComponent<{
   data: any;
 }> = (props) => {
-  React.useEffect(() => {
-    console.log(props.data);
-  }, []);
   return (
     <Box
       sx={{
@@ -196,7 +193,7 @@ const Bill: React.FunctionComponent<{
               flexDirection: "row",
               height: "160px",
               alignItems: "center",
-              justifyContent: "space-around",
+              justifyContent: "center",
               gap: "10px",
             }}
           >
@@ -206,11 +203,12 @@ const Bill: React.FunctionComponent<{
               } else
                 return (
                   <img
-                    src={props.data.photos[index]}
+                    key={index}
+                    src={props.data.photos[index].url}
                     alt=""
                     style={{
                       width: "135px",
-                      aspectRatio: "1/1",
+                      height: "135px",
                     }}
                   />
                 );
@@ -227,18 +225,8 @@ const Bill: React.FunctionComponent<{
             icon={<VerifiedUserOutlinedIcon />}
             color="primary"
           />
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-            }}
-          >
-            <BarCode
-              value={`INF-${props.data.nano_id}`}
-              displayValue={false}
-              height={25}
-            />
-          </div>
+
+          <Barcode value={`INF-${props.data.nano_id}`} />
         </Box>
       </Box>
     </Box>
