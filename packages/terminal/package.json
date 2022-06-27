@@ -34,7 +34,7 @@
     "graphql": "^16.5.0",
     "graphql-ws": "^5.9.0",
     "material-ui-phone-number": "^3.0.0",
-    "react": "^18.2.0",
+    "react": "^18.0.0",
     "react-confirm-alert": "^2.8.0",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.0.3",
