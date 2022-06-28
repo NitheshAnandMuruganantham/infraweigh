@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home";
 import Loading from "./components/loading";
 import RequireAuth from "./pages/auth/requireAuth";
+import Unknown from "./pages/auth/unknown";
 const LogIn = React.lazy(() => import("./pages/auth"));
 const Bills = React.lazy(() => import("./pages/bills"));
 const Clients = React.lazy(() => import("./pages/clients"));
@@ -52,6 +53,7 @@ const LazyWeighbridges = () => (
 const App: React.FunctionComponent = () => {
   return (
     <Routes>
+      <Route path="*" element={<NotFound />} />
       <Route element={<RequireAuth />}>
         <Route path="/" element={<Home />} />
         <Route path="/weighbridges" element={<LazyWeighbridges />} />
@@ -62,8 +64,11 @@ const App: React.FunctionComponent = () => {
         <Route path="/clients" element={<LazyClients />} />
       </Route>
       <Route path="/login" element={<LazyLogIn />} />
+      <Route path="/unknown" element={<Unknown />} />
     </Routes>
   );
 };
 
 export default App;
+
+const NotFound = () => <Navigate to="/" replace />;

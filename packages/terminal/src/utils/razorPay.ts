@@ -38,7 +38,6 @@ export async function displayRazorpay(result: {
     currency: currency,
     name: "INFRA WEIGH CO",
     order_id: order_id,
-
     prefill: {
       name: result.name,
       email: result.mail,
