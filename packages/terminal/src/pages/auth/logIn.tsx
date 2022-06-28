@@ -28,12 +28,15 @@ function Copyright(props: any) {
   return (
     <Typography
       variant="body2"
+      sx={{
+        marginTop: "50px",
+      }}
       color="text.secondary"
       align="center"
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="https:infraweigh.co/">
         Infraweigh.co
       </Link>{" "}
       {new Date().getFullYear()}
@@ -81,8 +84,9 @@ export default function SignInSide() {
           {loading && <LinearProgress />}
           <Box
             sx={{
-              my: 8,
-              mx: 4,
+              justifyContent: "center",
+              height: "100%",
+              width: "100%",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -94,92 +98,8 @@ export default function SignInSide() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Formik
-              initialValues={{
-                email: "",
-                password: "",
-              }}
-              validationSchema={Yup.object({
-                email: Yup.string().email("Invalid email").required("Required"),
-                password: Yup.string().required("Required"),
-              })}
-              onSubmit={async (values, { setSubmitting, setFieldError }) => {
-                setLoading(true);
-                setSubmitting(true);
-                await signInWithEmailAndPassword(
-                  auth,
-                  values.email,
-                  values.password
-                ).catch((error: any) => {
-                  console.log(JSON.stringify(error));
-                  if (error.code === "auth/user-not-found") {
-                    setFieldError("email", "User not found");
-                  } else if (error.code === "auth/wrong-password") {
-                    setFieldError("password", "Wrong password");
-                  } else if (error.code === "auth/too-many-requests") {
-                    toast.error("Too many requests");
-                  } else if (error.code === "auth/user-disabled") {
-                    toast.error("User disabled");
-                  } else {
-                    toast.error("Something went wrong");
-                  }
-                  setLoading(false);
-                  setSubmitting(true);
-                });
-
-                setLoading(false);
-                setSubmitting(true);
-              }}
-            >
-              {({ handleSubmit, handleReset, handleBlur }) => (
-                <Box
-                  onSubmit={handleSubmit}
-                  onBlur={handleBlur}
-                  onReset={handleReset}
-                  component="form"
-                  noValidate
-                  sx={{ mt: 1 }}
-                >
-                  <Field
-                    component={TextField}
-                    margin="normal"
-                    fullWidth
-                    disabled={loading}
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                  />
-                  <Field
-                    component={TextField}
-                    margin="normal"
-                    fullWidth
-                    disabled={loading}
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                  />
-                  <Button
-                    disabled={loading}
-                    type="submit"
-                    fullWidth
-                    variant="outlined"
-                    sx={{ mt: 3, mb: 2 }}
-                  >
-                    signIn
-                  </Button>
-                  <Grid container>
-                    <Grid item xs></Grid>
-                  </Grid>
-                  or
-                  <GoogleButton />
-                  <Copyright sx={{ mt: 5 }} />
-                </Box>
-              )}
-            </Formik>
+            <GoogleButton />
+            <Copyright />
           </Box>
         </Grid>
       </Grid>
