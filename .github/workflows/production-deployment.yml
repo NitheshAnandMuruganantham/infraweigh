@@ -17,5 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+          install-command: yarn install
+          working-directory: |
+            packages/terminal
+            packages/serverless
       - name: build the app
         run: yarn build && cd packages/serverless && yarn deploy:production --token $FIREBASE_TOKEN
