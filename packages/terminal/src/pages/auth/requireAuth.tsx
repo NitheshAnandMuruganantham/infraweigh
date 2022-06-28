@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
 import { Navigate } from "react-router-dom";
@@ -24,18 +24,26 @@ const RequireAuth: FunctionComponent = () => {
     }
   }, [AuthLoading, roleLoading]);
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (user) {
-      user.getIdTokenResult().then((res) => {
-        const claims = res.claims["https://hasura.io/jwt/claims"];
-        if (claims) {
-          setIsAnonymousGuardActive(true);
-        } else {
+      user
+        .getIdTokenResult()
+        .then((res) => {
+          const claims = res.claims["https://hasura.io/jwt/claims"];
+          if (claims) {
+            setIsAnonymousGuardActive(true);
+          } else {
+            setIsAnonymousGuardActive(false);
+            navigate("/unknown", { replace: true });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
           setIsAnonymousGuardActive(false);
-          toast.error("You are not authorized to access this page");
+          toast.error("Error while fetching user claims");
           signOut(auth);
-        }
-      });
+        });
     }
   }, [user]);
 
