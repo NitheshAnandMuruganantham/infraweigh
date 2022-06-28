@@ -8,11 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      VITE_BASE_FIREBASE: ${{secrets.BASE_FIREBASE_STAGING}}
-      VITE_BASE_URL: ${{secrets.BASE_URL_STAGING}}
-      VITE_BASE_WS_URL: ${{secrets.BASE_WS_URL_STAGING}}
-      VITE_RAZORPAY_ID: ${{secrets.RAZORPAY_ID_STAGING}}
       VITE_ENV: staging
+      ENV: staging
+      NODE_ENV: staging
       FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
     steps:
       - uses: actions/checkout@v2
