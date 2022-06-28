@@ -13,7 +13,6 @@ jobs:
       VITE_BASE_WS_URL: ${{secrets.BASE_WS_URL_STAGING}}
       VITE_RAZORPAY_ID: ${{secrets.RAZORPAY_ID_STAGING}}
       VITE_ENV: staging
-      ENV: staging
       FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
     steps:
       - uses: actions/checkout@v2
