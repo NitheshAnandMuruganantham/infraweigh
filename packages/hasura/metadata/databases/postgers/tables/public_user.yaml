@@ -26,14 +26,12 @@ insert_permissions:
       set:
         tenent_id: x-hasura-tenent-id
       columns:
-        - created_at
         - email
         - id
         - meta_data
         - profile
         - role
         - synced
-        - updated_at
         - weighbridge_id
       backend_only: false
 select_permissions:

@@ -8,15 +8,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NX_BASE_FIREBASE: ${{secrets.NX_BASE_FIREBASE}}
-      NX_BASE_URL: ${{secrets.NX_BASE_URL}}
-      NX_RAZORPAY_ID: ${{secrets.NX_RAZORPAY_ID}}
-      NX_BASE_WS_URL: ${{secrets.NX_BASE_WS_URL}}
-      NX_ENV: production
+      VITE_BASE_FIREBASE: ${{secrets.BASE_FIREBASE}}
+      VITE_BASE_URL: ${{secrets.BASE_URL}}
+      VITE_RAZORPAY_ID: ${{secrets.RAZORPAY_ID}}
+      VITE_BASE_WS_URL: ${{secrets.BASE_WS_URL}}
+      VITE_ENV: production
       FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+          install-command: yarn install
+          working-directory: |
+            packages/terminal
+            packages/serverless
       - name: build the app
         run: yarn build && cd packages/serverless && yarn deploy:production --token $FIREBASE_TOKEN

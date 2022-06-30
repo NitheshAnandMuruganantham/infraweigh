@@ -5,12 +5,11 @@ import * as crypto from "crypto";
 import { log } from "firebase-functions/logger";
 export default functions.https.onRequest(async (request, response) => {
   if (process.env["RAZORPAY_HMAC_SECRET"]) {
-    const shasum = crypto.createHmac(
-      "sha256",
-      process.env.RAZORPAY_HMAC_SECRET || ""
-    );
-    shasum.update(JSON.stringify(request.body));
-    const digest = shasum.digest("hex");
+    const digest = crypto
+      .createHmac("sha256", process.env.RAZORPAY_HMAC_SECRET || "")
+      .update(JSON.stringify(request.body))
+      .digest("hex");
+
     if (digest === request.headers["x-razorpay-signature"]) {
       let headers: any = [];
       headers["x-hasura-admin-secret"] = `${process.env["ADMIN_SECRET"]}`;
