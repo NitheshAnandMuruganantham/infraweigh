@@ -23,7 +23,8 @@
     "start:localpolyfils": "yarn workspace local-polyfils start",
     "dev:hasura": "yarn workspace hasura-graphql-server dev",
     "dev:kiosk": "yarn workspace kiosk start",
-    "dev:server": "concurrently \"yarn workspace server watch\" \"yarn workspace server dev\""
+    "watch:server": "yarn workspace server watch",
+    "dev:server": "yarn workspace server dev"
   },
   "devDependencies": {
     "husky": "^8.0.1"
