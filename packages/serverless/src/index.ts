@@ -16,7 +16,7 @@ const applyMiddleware = (req: any, res: any, next: any) => {
   ) {
     next(req, res);
   } else {
-    res.status(403).send("Unauthorized");
+    res.status(403).send("Un Authorized");
     return;
   }
 };
@@ -164,12 +164,6 @@ export const updateUser = functions.https.onRequest((req, res) =>
   })
 );
 
-export const genBill = functions.https.onRequest((req, res) =>
-  applyMiddleware(req, res, async (req: any, res: any) =>
-    genBillHandler(req, res, admin)
-  )
-);
-
 export const genCustomer = functions.https.onRequest((req, res) =>
   applyMiddleware(req, res, async (req: any, res: any) => {
     const pass = () => {
@@ -275,4 +269,10 @@ export const updateCustomer = functions.https.onRequest((req, res) =>
           });
       });
   })
+);
+
+export const genBill = functions.https.onRequest((req, res) =>
+  applyMiddleware(req, res, async (req: any, res: any) =>
+    genBillHandler(req, res, admin)
+  )
 );
