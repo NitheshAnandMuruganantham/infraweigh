@@ -272,7 +272,7 @@ export const updateCustomer = functions.https.onRequest((req, res) =>
 );
 
 export const genBill = functions.https.onRequest((req, res) =>
-  applyMiddleware(req, res, async (req: any, res: any) =>
+  applyMiddleware(req, res, (req: any, res: any) =>
     genBillHandler(req, res, admin)
   )
 );

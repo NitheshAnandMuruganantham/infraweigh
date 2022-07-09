@@ -1,12 +1,9 @@
 {
-  "name": "hasura-graphql-server",
+  "name": "hasura",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "scripts": {
-    "dev": "hasura console"
-  },
   "devDependencies": {
-    "hasura": "^2.0.1"
+    "hasura-cli": "^2.8.3"
   }
 }

@@ -125,7 +125,8 @@ CREATE TABLE public.weighbridge (
     metadata json DEFAULT json_build_object() NOT NULL,
     mail text NOT NULL,
     phone text NOT NULL,
-    tenent_id uuid NOT NULL
+    tenent_id uuid NOT NULL,
+    config json DEFAULT json_build_object()
 );
 ALTER TABLE ONLY public.bill ALTER COLUMN nano_id SET DEFAULT nextval('public.bill_nano_id_seq'::regclass);
 ALTER TABLE ONLY public.admin

@@ -72,7 +72,6 @@ insert_permissions:
         - tare_weight
         - vehicle_id
         - vehicle_number
-      backend_only: false
 select_permissions:
   - role: customer
     permission:
