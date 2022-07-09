@@ -15,4 +15,4 @@ jobs:
           install-command: yarn install
           working-directory: packages/terminal
       - name: build apps
-        run: cd packages/hasura && yarn hasura deploy --admin-secret ${{secrets.ADMIN_SECRET}} --endpoint ${{secrets.BASE_URL_STAGING}}
+        run: cd packages/hasura && yarn hasura deploy --admin-secret ${{secrets.ADMIN_SECRET_STAGING}} --endpoint ${{secrets.BASE_URL_STAGING}}
