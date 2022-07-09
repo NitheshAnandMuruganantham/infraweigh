@@ -13,10 +13,10 @@ jobs:
       VITE_BASE_WS_URL: ${{secrets.BASE_WS_URL}}
       VITE_RAZORPAY_ID: ${{secrets.RAZORPAY_ID}}
       VITE_ENV: production
-      BUCKET: ${{ secrets.BUCKET_NAME }}
+      BUCKET: ${{ secrets.S3_BUCKET }}
       DIST: packages/terminal/dist
-      REGION: us-east-1
-      DIST_ID: ${{ secrets.DIST_ID }}
+      REGION: ${{ secrets.S3_BUCKET_REGION }}
+      DIST_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
