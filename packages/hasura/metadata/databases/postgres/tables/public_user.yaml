@@ -33,7 +33,6 @@ insert_permissions:
         - role
         - synced
         - weighbridge_id
-      backend_only: false
 select_permissions:
   - role: tenantAdmin
     permission:
@@ -55,6 +54,7 @@ select_permissions:
 delete_permissions:
   - role: tenantAdmin
     permission:
+      backend_only: false
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id

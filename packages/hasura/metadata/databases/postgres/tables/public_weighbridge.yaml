@@ -38,7 +38,6 @@ insert_permissions:
         - name
         - phone
         - pin_code
-      backend_only: false
 select_permissions:
   - role: customer
     permission:
@@ -138,6 +137,7 @@ update_permissions:
 delete_permissions:
   - role: tenantAdmin
     permission:
+      backend_only: false
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id
