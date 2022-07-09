@@ -33,4 +33,4 @@ jobs:
           invalidation: /
           delete-removed: true
           private: true
-          filesToInclude: ".*/*,*/*,**"
+          filesToInclude: "dist/**/*"
