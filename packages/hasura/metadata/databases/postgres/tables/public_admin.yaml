@@ -13,5 +13,5 @@ event_triggers:
       timeout_sec: 60
     webhook_from_env: NEW_ADMIN
     headers:
-      - name: authorization
+      - name: apiKey
         value_from_env: API_KEY

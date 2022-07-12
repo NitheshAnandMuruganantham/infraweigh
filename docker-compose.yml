@@ -12,7 +12,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgrespassword
   graphql-engine:
-    image: hasura/graphql-engine:v2.6.1
+    image: hasura/graphql-engine:v2.8.4
     ports:
       - "8080:8080"
     extra_hosts:
@@ -29,13 +29,13 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
       HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "U2HOg0MESZzPk2ZCYLsFxoiIh38Iuw59"}'
-      NEW_ADMIN: http://host.docker.internal:5001/infra-weigh-staging/us-central1/genAdmin
-      NEW_USER: http://host.docker.internal:5001/infra-weigh-staging/us-central1/genUser
-      API_KEY: "MhkFsJZvLCjCTsFicfR6itE0EY7OOC2kkQRBc41EyMgosT8P6qHLq4125hToRdus"
-      GEN_BILL: "http://host.docker.internal:5001/infra-weigh-staging/us-central1/genBill"
-      GEN_CUSTOMER: "http://host.docker.internal:5001/infra-weigh-staging/us-central1/genCustomer"
-      UPDATE_USER: "http://host.docker.internal:5001/infra-weigh-staging/us-central1/updateUser"
-      UPDATE_CUSTOMER: "http://host.docker.internal:5001/infra-weigh-staging/us-central1/updateCustomer"
-      DEL_USER: "http://host.docker.internal:5001/infra-weigh-staging/us-central1/delUser"
+      NEW_ADMIN: http://host.docker.internal:9090/user-webhook/admin
+      API_KEY: "someapikeyfordevlopment"
+      GEN_BILL: "http://host.docker.internal:9090/bill-webhook"
+      GEN_CUSTOMER: "http://host.docker.internal:9090/customer-webhook"
+      UPDATE_CUSTOMER: "http://host.docker.internal:9090/customer-webhook"
+      NEW_USER: "http://host.docker.internal:9090/user-webhook"
+      UPDATE_USER: "http://host.docker.internal:9090/user-webhook"
+      DEL_USER: "http://host.docker.internal:9090/user-webhook"
 volumes:
   db_data:

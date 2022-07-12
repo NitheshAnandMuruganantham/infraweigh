@@ -98,6 +98,7 @@ export default function SignInSide() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
+
             <GoogleButton />
             <Copyright />
           </Box>
