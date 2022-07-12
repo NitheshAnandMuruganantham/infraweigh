@@ -91,5 +91,10 @@ event_triggers:
       timeout_sec: 60
     webhook_from_env: NEW_USER
     headers:
-      - name: authorization
+      - name: apikey
         value_from_env: API_KEY
+    request_transform:
+      method: POST
+      version: 2
+      query_params: {}
+      template_engine: Kriti

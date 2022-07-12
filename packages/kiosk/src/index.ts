@@ -60,7 +60,7 @@ app.on("activate", () => {
 
 httpProxy
   .createProxyServer({
-    target: "http://192.168.101.12",
+    target: "http://infraweighcontroller.local",
     autoRewrite: true,
     hostRewrite: "localhost",
     changeOrigin: true,

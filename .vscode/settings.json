@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["Razorpay"]
+  "cSpell.words": ["headerapikey", "Razorpay"],
+  "githubPullRequests.ignoredPullRequestBranches": ["master"]
 }
