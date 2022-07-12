@@ -1,4 +1,4 @@
-name: hasura production deployment
+name: apply hasura migrations for production deployment
 
 "on":
   push:
