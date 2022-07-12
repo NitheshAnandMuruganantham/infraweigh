@@ -1,12 +1,8 @@
 name: build container for server
 
-"on":
+on:
   push:
-    branches:
-      - production
-
-name: server deployment to ecr
-
+    branch: production
 jobs:
   deploy:
     name: Deploy
