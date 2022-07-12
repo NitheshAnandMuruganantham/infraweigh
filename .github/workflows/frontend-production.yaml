@@ -1,5 +1,5 @@
 name: Build and Deploy React App to CloudFront
-on:
+"on":
   push:
     branch: production
 jobs:
