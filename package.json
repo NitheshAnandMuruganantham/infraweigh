@@ -25,7 +25,7 @@
     "dev:kiosk": "yarn workspace kiosk start",
     "watch:server": "yarn workspace server watch",
     "dev:server": "yarn workspace server start:debug",
-    "deploy:server": "cd packages/server && && npm ci && npm run build && node run start:prod"
+    "deploy:server": "cd packages/server && && npm ci && npm run build && npm run start:prod"
   },
   "devDependencies": {
     "husky": "^8.0.1"
