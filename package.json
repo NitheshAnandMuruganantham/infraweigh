@@ -24,7 +24,8 @@
     "dev:hasura": "yarn workspace hasura hasura console",
     "dev:kiosk": "yarn workspace kiosk start",
     "watch:server": "yarn workspace server watch",
-    "dev:server": "yarn workspace server start:debug"
+    "dev:server": "yarn workspace server start:debug",
+    "deploy:server": "cd packages/server && && npm ci && npm run build && node run start:prod"
   },
   "devDependencies": {
     "husky": "^8.0.1"
