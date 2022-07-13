@@ -1,7 +1,9 @@
 name: Build and Deploy React App to CloudFront
+
 "on":
   push:
-    branch: production
+    branches:
+      - production
 jobs:
   build:
     name: Build and Deploy

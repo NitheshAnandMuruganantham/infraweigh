@@ -1,8 +1,9 @@
-name: build container for server
+name: build a server container for server
 
 "on":
   push:
-    branch: production
+    branches:
+      - production
 jobs:
   build:
     runs-on: ubuntu-latest
