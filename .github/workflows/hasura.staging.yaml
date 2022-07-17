@@ -1,0 +1,18 @@
+name: apply hasura migrations for production deployment
+
+"on":
+  push:
+    branches:
+      - staging
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+          install-command: yarn install
+          working-directory: packages/terminal
+      - name: deployment to hasura
+        run: cd packages/hasura && yarn hasura deploy --admin-secret ${{secrets.ADMIN_SECRET_STAGING}} --endpoint https://st-hasura.infraweigh.co

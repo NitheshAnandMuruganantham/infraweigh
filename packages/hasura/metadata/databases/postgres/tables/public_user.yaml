@@ -70,8 +70,13 @@ event_triggers:
       timeout_sec: 60
     webhook_from_env: DEL_USER
     headers:
-      - name: authorization
+      - name: apikey
         value_from_env: API_KEY
+    request_transform:
+      method: DELETE
+      version: 2
+      query_params: {}
+      template_engine: Kriti
   - name: new_user
     definition:
       enable_manual: false
@@ -83,8 +88,13 @@ event_triggers:
       timeout_sec: 60
     webhook_from_env: NEW_USER
     headers:
-      - name: authorization
+      - name: apiKey
         value_from_env: API_KEY
+    request_transform:
+      method: POST
+      version: 2
+      query_params: {}
+      template_engine: Kriti
   - name: update_user
     definition:
       enable_manual: false
@@ -103,5 +113,10 @@ event_triggers:
       timeout_sec: 60
     webhook_from_env: UPDATE_USER
     headers:
-      - name: authorization
+      - name: apikey
         value_from_env: API_KEY
+    request_transform:
+      method: PATCH
+      version: 2
+      query_params: {}
+      template_engine: Kriti

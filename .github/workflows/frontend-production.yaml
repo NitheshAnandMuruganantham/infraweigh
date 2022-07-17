@@ -1,0 +1,50 @@
+name: Build and Deploy React App to CloudFront
+
+"on":
+  push:
+    branches:
+      - production
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    env:
+      VITE_BASE_FIREBASE: ${{secrets.BASE_FIREBASE}}
+      VITE_BASE_URL: ${{secrets.BASE_URL}}
+      VITE_BASE_WS_URL: ${{secrets.BASE_WS_URL}}
+      VITE_RAZORPAY_ID: ${{secrets.RAZORPAY_ID}}
+      VITE_ENV: production
+      BUCKET: ${{ secrets.S3_BUCKET }}
+      DIST: packages/terminal/dist
+      REGION: ${{ secrets.S3_BUCKET_REGION }}
+      DIST_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_FOR_HOSTING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_FOR_HOSTING }}
+          aws-region: us-east-1
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+          install-command: yarn install
+          working-directory: packages/terminal
+
+      - name: Build Static Website
+        run: yarn build
+
+      - name: Copy files to the production website with the AWS CLI
+        run: |
+          aws s3 sync --delete ${{ env.DIST }} s3://${{ env.BUCKET }}
+
+      - name: Copy files to the production website with the AWS CLI
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ env.DIST_ID }} \
+            --paths "/*"
