@@ -14,7 +14,6 @@
   "repository": "https://github.com/mentorSqr/infraweigh.git",
   "author": "nithesh  anand <anand252825@gmail.com>",
   "scripts": {
-    "prepare": "husky install",
     "dev": "concurrently \"yarn dev:kiosk\" \"yarn dev:terminal\" \"yarn dev:firebase\" \"yarn start:localpolyfils\" \"yarn dev:hasura\" \"yarn dev:server\"",
     "build": "cd packages/terminal && yarn build",
     "dev:terminal": "yarn workspace terminal dev",
@@ -27,7 +26,5 @@
     "dev:server": "yarn workspace server start:debug",
     "deploy:server": "yarn workspace server build && yarn workspace server start:prod"
   },
-  "devDependencies": {
-    "husky": "^8.0.1"
-  }
+  "devDependencies": {}
 }
