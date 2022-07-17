@@ -188,7 +188,7 @@ event_triggers:
       num_retries: 0
       interval_sec: 10
       timeout_sec: 60
-    webhook_from_env: GEN_BILL
+    webhook_from_env: BILL
     headers:
       - name: apikey
         value_from_env: API_KEY

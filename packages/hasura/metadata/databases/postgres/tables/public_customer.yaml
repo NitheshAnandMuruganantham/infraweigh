@@ -180,7 +180,7 @@ event_triggers:
       num_retries: 0
       interval_sec: 10
       timeout_sec: 60
-    webhook_from_env: GEN_CUSTOMER
+    webhook_from_env: CUSTOMER
     headers:
       - name: apikey
         value_from_env: API_KEY
@@ -198,7 +198,7 @@ event_triggers:
       num_retries: 0
       interval_sec: 10
       timeout_sec: 60
-    webhook_from_env: UPDATE_CUSTOMER
+    webhook_from_env: CUSTOMER
     headers:
       - name: apikey
         value_from_env: API_KEY
