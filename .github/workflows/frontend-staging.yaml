@@ -16,7 +16,7 @@ jobs:
       VITE_ENV: staging
       BUCKET: ${{ secrets.S3_BUCKET_STAGING }}
       DIST: packages/terminal/dist
-      REGION: ${{ secrets.S3_BUCKET_REGION }}
+      REGION: ${{ secrets.S3_BUCKET_REGION_STAGING }}
       DIST_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID_STAGING }}
     steps:
       - name: Checkout
