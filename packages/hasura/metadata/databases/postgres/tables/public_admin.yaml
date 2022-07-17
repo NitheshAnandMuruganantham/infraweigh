@@ -11,7 +11,12 @@ event_triggers:
       num_retries: 0
       interval_sec: 10
       timeout_sec: 60
-    webhook_from_env: NEW_ADMIN
+    webhook_from_env: ADMIN
     headers:
       - name: apiKey
         value_from_env: API_KEY
+    request_transform:
+      method: POST
+      version: 2
+      query_params: {}
+      template_engine: Kriti

@@ -89,7 +89,7 @@ event_triggers:
       num_retries: 0
       interval_sec: 10
       timeout_sec: 60
-    webhook_from_env: NEW_USER
+    webhook_from_env: USER
     headers:
       - name: apikey
         value_from_env: API_KEY
