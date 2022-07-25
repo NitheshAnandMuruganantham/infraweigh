@@ -25,13 +25,12 @@ insert_permissions:
                   _eq: tenantAdmin
       set:
         tenent_id: x-hasura-tenent-id
+        role: terminal
       columns:
         - email
         - id
         - meta_data
         - profile
-        - role
-        - synced
         - weighbridge_id
 select_permissions:
   - role: tenantAdmin

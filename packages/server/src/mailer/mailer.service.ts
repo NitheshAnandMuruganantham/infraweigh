@@ -8,7 +8,7 @@ export class MailerService {
     await this.mailService.sendMail({
       to: email,
       subject: 'new Bill created',
-      template: 'newBill',
+      template: '/newBill',
       context: {
         Weighbridge_name: dt.weighbridge.display_name,
         address: '',
@@ -27,6 +27,16 @@ export class MailerService {
             : ''
         }`,
         charges: dt.charges,
+      },
+    });
+  }
+  async sendPasswordResetEmail(email: string, link: string) {
+    await this.mailService.sendMail({
+      to: email,
+      subject: 'password reset request',
+      template: 'passwordReset',
+      context: {
+        link,
       },
     });
   }

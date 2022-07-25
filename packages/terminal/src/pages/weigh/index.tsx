@@ -2,9 +2,9 @@ import { Field, Formik } from "formik";
 import { RadioGroup, Switch, TextField } from "formik-mui";
 import MuiPhoneNumber from "material-ui-phone-number";
 import { FunctionComponent, useEffect, useState } from "react";
-
+import axios from "axios";
 import { Box, Button, FormLabel, InputAdornment } from "@mui/material";
-
+import FormData from "form-data";
 import AutoCompleteComponent from "../../components/autoComplete";
 import Loader from "../../components/loading";
 import RadioListComponent from "../../components/radio";
@@ -15,23 +15,17 @@ import {
   useGetMaterialDropDownListLazyQuery,
   useGetVehiclesDropDownListLazyQuery,
 } from "../../generated";
-import { db } from "../../utils/db";
 import BillInfo from "./printBill";
-import pullConfig from "./pullConfig";
 import SelectWeight from "./selectWeight";
-import submitHandler from "./submitHandler";
 import validation from "./validation";
+import { toast } from "react-toastify";
 
 const Weigh: FunctionComponent = () => {
   const [BillRefId, SetBillRefId] = useState<string | null>(null);
   const [open, SetOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [data, SetData] = useState<any>(null);
-  const [addBill] = useAddBillMutation();
   const configQuery = useGetConfigrationQuery();
-  useEffect(() => {
-    pullConfig(configQuery);
-  }, [configQuery.data, configQuery.loading === false]);
 
   return (
     <>
@@ -53,15 +47,82 @@ const Weigh: FunctionComponent = () => {
           paidBy: "other",
         }}
         validationSchema={validation}
-        onSubmit={(values, helpers) =>
-          submitHandler(values, helpers, {
-            setLoading,
-            addBill,
-            SetData,
-            SetOpen,
-            BillRefId,
-          })
-        }
+        onSubmit={async (values: any, { setSubmitting, resetForm }) => {
+          try {
+            setLoading(true);
+            setSubmitting(true);
+            const config: any = await configQuery.data?.weighbridge[0].config;
+
+            const getLocalData = await Promise.all([
+              fetch(`${config.url}/weight`),
+              Promise.all(
+                config.camera.map((camera: any) => {
+                  return fetch(`${config.url}/?url=${camera}`);
+                })
+              ),
+            ]);
+            const ImagesBlob = await Promise.all(
+              getLocalData[1].map((image) => {
+                return image.blob();
+              })
+            );
+
+            const form = new FormData();
+
+            ImagesBlob.map((images, index) => {
+              const file = new File([images], `${index}.jpg`);
+              form.append("files", file, `${index}.jpg`);
+            });
+
+            if (values.secondWeight) {
+              form.append("tare_weight", values.tareWeight);
+              if (BillRefId) {
+                form.append("reference_bill_id", BillRefId);
+              }
+            }
+
+            if (values.buyer) {
+              form.append("customer", values.buyer.value);
+            }
+
+            if (values.seller) {
+              form.append("customer_2_id", values.buyer.value);
+            }
+
+            if (values.trader) {
+              form.append("customer_3_id", values.trader.id);
+            }
+
+            form.append("vehicle_number", values.vehicleNumber);
+            form.append("material_id", values.material.value);
+            form.append("vehicle_id", values.vehicle.value);
+            form.append("paid_by", values.paidBy);
+            form.append("driver_phone", values.driver_phone);
+            form.append("charges", values.charges);
+            form.append("scale_weight", values.scaleWeight);
+
+            const dat = await axios({
+              method: "post",
+              url: import.meta.env["VITE_SERVER_URL"] + "/bill",
+              headers: {
+                authorization: "Bearer " + sessionStorage.getItem("token"),
+                "Content-Type": "undefined",
+              },
+              data: form,
+            });
+
+            var dt: any = { ...dat.data[0], photos: dat.data[1] };
+            SetData(dt);
+            SetOpen(true);
+            setSubmitting(false);
+            setLoading(false);
+            toast.success("Bill Added Successfully");
+            resetForm();
+          } catch (err) {
+            setLoading(false);
+            console.log(err);
+          }
+        }}
         onReset={() => {
           SetBillRefId(null);
           setLoading(false);

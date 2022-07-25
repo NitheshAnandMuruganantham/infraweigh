@@ -18,9 +18,9 @@ export async function displayRazorpay(result: {
   amount: number;
   order_id: string;
   currency: string;
-  name: string;
-  mail: string;
-  phone: string;
+  name?: string;
+  mail?: string;
+  phone?: string;
 }) {
   const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 

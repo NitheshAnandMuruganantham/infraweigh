@@ -7,7 +7,7 @@
   "devDependencies": {
     "hasura-cli": "^2.8.3"
   },
-  "dependencies": {
-    "hasura-cli": "^2.8.3"
+  "scripts": {
+    "dev": "hasura console"
   }
 }

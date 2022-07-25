@@ -1,62 +1,28 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
 import { Navigate } from "react-router-dom";
 import NavComponent from "../../components/nav";
 import AccessControl from "./accessControl";
-import useRole from "../../hooks/role";
-import { toast } from "react-toastify";
-import { signOut } from "firebase/auth";
 import Loading from "../../components/loading";
+import useUser from "../../hooks/user";
 
 const RequireAuth: FunctionComponent = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
-  const [user, AuthLoading] = useAuthState(auth);
-  const [role, roleLoading] = useRole();
-  const [isAnonymousGuardActive, setIsAnonymousGuardActive] = useState(false);
+  const [user, AuthLoading] = useUser();
   useEffect(() => {
-    if (AuthLoading || roleLoading) {
+    if (AuthLoading) {
       setLoading(true);
     } else {
       setLoading(false);
     }
-  }, [AuthLoading, roleLoading]);
+  }, [AuthLoading]);
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (user) {
-      user
-        .getIdTokenResult()
-        .then((res) => {
-          const claims = res.claims["https://hasura.io/jwt/claims"];
-          if (claims) {
-            setIsAnonymousGuardActive(true);
-          } else {
-            setIsAnonymousGuardActive(false);
-            navigate("/unknown", { replace: true });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsAnonymousGuardActive(false);
-          toast.error("Error while fetching user claims");
-          signOut(auth);
-        });
-    }
-  }, [user]);
-
-  return loading || AuthLoading || roleLoading ? (
+  return loading || AuthLoading ? (
     <Loading open={loading} setOpen={setLoading} />
-  ) : !loading &&
-    !AuthLoading &&
-    !roleLoading &&
-    user &&
-    role &&
-    isAnonymousGuardActive ? (
+  ) : !loading && !AuthLoading && user ? (
     <NavComponent>
-      <AccessControl role={role}>
+      <AccessControl role={user.user.role}>
         <Outlet />
       </AccessControl>
     </NavComponent>

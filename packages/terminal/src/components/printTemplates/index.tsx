@@ -204,7 +204,7 @@ const Bill: React.FunctionComponent<{
                 return (
                   <img
                     key={index}
-                    src={props.data.photos[index].url}
+                    src={photo}
                     alt=""
                     style={{
                       width: "135px",

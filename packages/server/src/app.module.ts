@@ -6,13 +6,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { BillWebhookModule } from './bill-webhook/bill-webhook.module';
 import { CustomerWebhookModule } from './customer-webhook/customer-webhook.module';
-import { MailerService } from './mailer/mailer.service';
 import { MessengerService } from './messenger/messenger.service';
 import { RazorPayWebhookModule } from './razor-pay-webhook/razor-pay-webhook.module';
-import { UserWebhookModule } from './user-webhook/user-webhook.module';
 import { TwilioModule } from 'nestjs-twilio';
+import { PrismaModule } from 'nestjs-prisma';
+import { BillModule } from './bill/bill.module';
+import { S3Service } from './s3/s3.service';
 
 @Module({
   imports: [
@@ -20,10 +20,11 @@ import { TwilioModule } from 'nestjs-twilio';
       isGlobal: true,
     }),
     AuthModule,
-    UserWebhookModule,
     CustomerWebhookModule,
     RazorPayWebhookModule,
-    BillWebhookModule,
+    PrismaModule.forRoot({
+      isGlobal: true,
+    }),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config) => ({
@@ -36,7 +37,7 @@ import { TwilioModule } from 'nestjs-twilio';
           },
         },
         defaults: {
-          from: config.get('SMTP_USER'),
+          from: `no-replay <${config.get('DEFAULT_SENDER')}>`,
         },
         template: {
           dir: join(__dirname, './mailer/templates'),
@@ -56,8 +57,10 @@ import { TwilioModule } from 'nestjs-twilio';
       }),
       inject: [ConfigService],
     }),
+    MailerModule,
+    BillModule,
   ],
   controllers: [AppController],
-  providers: [AppService, MailerService, MessengerService],
+  providers: [AppService, MessengerService, S3Service],
 })
 export class AppModule {}

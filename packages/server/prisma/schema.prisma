@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model bill {
+  vehicle_number                        String
+  created_at                            DateTime    @default(now()) @db.Timestamptz(6)
+  updated_at                            DateTime    @default(now()) @db.Timestamptz(6)
+  id                                    String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  material_id                           String      @db.Uuid
+  charges                               Decimal     @db.Money
+  vehicle_id                            String      @db.Uuid
+  weighbridge_id                        String      @db.Uuid
+  scale_weight                          Int
+  tare_weight                           Int
+  second_weight                         Boolean     @default(false)
+  paid_by                               String      @default("other")
+  reference_bill_id                     String?     @db.Uuid
+  customer_id                           String?     @db.Uuid
+  customer_2_id                         String?     @db.Uuid
+  customer_3_id                         String?     @db.Uuid
+  tenent_id                             String      @db.Uuid
+  nano_id                               Int         @unique @default(autoincrement())
+  paid                                  Boolean?    @default(false)
+  payment_initiated                     Boolean?    @default(false)
+  driver_phone                          String?
+  order_id                              String?
+  customer_bill_customer_2_idTocustomer customer?   @relation("bill_customer_2_idTocustomer", fields: [customer_2_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  customer_bill_customer_3_idTocustomer customer?   @relation("bill_customer_3_idTocustomer", fields: [customer_3_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  customer_bill_customer_idTocustomer   customer?   @relation("bill_customer_idTocustomer", fields: [customer_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  material                              material    @relation(fields: [material_id], references: [id], onUpdate: Restrict)
+  paid_by_billTopaid_by                 paid_by     @relation(fields: [paid_by], references: [value], onUpdate: Restrict)
+  bill                                  bill?       @relation("billTobill_reference_bill_id", fields: [reference_bill_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  tenents                               tenents     @relation(fields: [tenent_id], references: [id], onUpdate: Restrict)
+  vehicle                               vehicle     @relation(fields: [vehicle_id], references: [id], onUpdate: Restrict)
+  weighbridge                           weighbridge @relation(fields: [weighbridge_id], references: [id], onUpdate: Restrict)
+  other_bill                            bill[]      @relation("billTobill_reference_bill_id")
+}
+
+model customer {
+  name                              String
+  phone                             String
+  email                             String
+  company_name                      String
+  company_address                   String
+  gst_in                            String?
+  blocked                           Boolean  @default(true)
+  credit                            Boolean? @default(false)
+  credit_limit                      Decimal? @default(dbgenerated("'$0.00'::money")) @db.Money
+  created_at                        DateTime @default(now()) @db.Timestamptz(6)
+  updated_at                        DateTime @default(now()) @db.Timestamptz(6)
+  id                                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  metadata                          Json?    @db.Json
+  tenent_id                         String   @db.Uuid
+  tenents                           tenents  @relation(fields: [tenent_id], references: [id], onUpdate: Restrict)
+  bill_bill_customer_2_idTocustomer bill[]   @relation("bill_customer_2_idTocustomer")
+  bill_bill_customer_3_idTocustomer bill[]   @relation("bill_customer_3_idTocustomer")
+  bill_bill_customer_idTocustomer   bill[]   @relation("bill_customer_idTocustomer")
+}
+
+model material {
+  id         String   @id(map: "materials_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  name       String
+  hsn        String   @unique(map: "materials_hsn_key")
+  bill       bill[]
+}
+
+model tenents {
+  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String
+  email           String        @unique
+  phone           String
+  activate        Boolean
+  metadata        Json          @default(dbgenerated("json_build_object()")) @db.Json
+  payment_pending Boolean       @default(false)
+  razorpay_id     String        @unique
+  bill            bill[]
+  customer        customer[]
+  user            user[]
+  weighbridge     weighbridge[]
+}
+
+model user {
+  id                         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                 DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime     @default(now()) @db.Timestamptz(6)
+  profile                    Json?        @default(dbgenerated("json_build_object()")) @db.Json
+  meta_data                  Json?        @default(dbgenerated("json_build_object()")) @db.Json
+  weighbridge_id             String?      @db.Uuid
+  synced                     Boolean?     @default(false)
+  tenent_id                  String?      @db.Uuid
+  email                      String       @unique
+  role                       String?
+  password                   String?      @default(dbgenerated("gen_random_uuid()"))
+  blocked                    Boolean?     @default(false)
+  email_verified             Boolean?     @default(false)
+  refresh_token_hash         String?
+  forgot_password_token_hash String?
+  role_roleTouser            role?        @relation(fields: [role], references: [value], onDelete: Restrict, onUpdate: Restrict)
+  tenents                    tenents?     @relation(fields: [tenent_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  weighbridge                weighbridge? @relation(fields: [weighbridge_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_weighbridge_id_fkey2")
+}
+
+model vehicle {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime @default(now()) @db.Timestamptz(6)
+  name         String
+  manufacturer String
+  bill         bill[]
+}
+
+model weighbridge {
+  name         String
+  address      String
+  pin_code     String
+  logo         String?
+  display_name String
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime @default(now()) @db.Timestamptz(6)
+  metadata     Json     @default(dbgenerated("json_build_object()")) @db.Json
+  mail         String
+  phone        String
+  tenent_id    String   @db.Uuid
+  config       Json?    @default(dbgenerated("json_build_object()")) @db.Json
+  tenents      tenents  @relation(fields: [tenent_id], references: [id], onUpdate: Restrict)
+  bill         bill[]
+  user         user[]
+}
+
+model role {
+  value   String @id
+  comment String
+  user    user[]
+}
+
+model paid_by {
+  value   String @id
+  comment String
+  bill    bill[]
+}

@@ -1,24 +1,26 @@
 import * as React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../utils/firebase";
+import jwt_decode from "jwt-decode";
+import { useLocation } from "react-router-dom";
 type roles = "admin" | "terminal" | "customer" | "tenantAdmin" | null | "guest";
 
-function useAuth(): [roles, boolean] {
+function useRoles(): [roles, boolean] {
   const [loading, setLoading] = React.useState(true);
   const [role, setRole] = React.useState<roles | null>(null);
-  const [user, AuthLoading] = useAuthState(auth);
+  const location = useLocation();
 
   React.useEffect(() => {
     const loadRole = async () => {
       setLoading(true);
-      const idTokenResult = await user?.getIdTokenResult();
-      const claims: any = idTokenResult?.claims["https://hasura.io/jwt/claims"];
+      const idTokenResult: any = await jwt_decode(
+        sessionStorage.getItem("token") || ""
+      );
+      const claims: any = idTokenResult["https://hasura.io/jwt/claims"];
       setRole(claims ? claims["x-hasura-default-role"] : "guest");
       setLoading(false);
     };
     loadRole();
-  }, [user]);
+  }, [location]);
 
-  return [role, loading || AuthLoading ? true : false];
+  return [role, loading ? true : false];
 }
-export default useAuth;
+export default useRoles;

@@ -43,63 +43,32 @@ array_relationships:
         table:
           schema: public
           name: bill
-insert_permissions:
-  - role: terminal
-    permission:
-      check:
-        _and:
-          - tenent_id:
-              _eq: X-Hasura-tenent-Id
-          - weighbridge_id:
-              _eq: X-Hasura-Weighbridge-Id
-      set:
-        tenent_id: x-hasura-tenent-id
-        weighbridge_id: x-hasura-weighbridge-id
-      columns:
-        - charges
-        - customer_2_id
-        - customer_3_id
-        - customer_id
-        - driver_phone
-        - id
-        - image
-        - material_id
-        - paid_by
-        - photos
-        - reference_bill_id
-        - scale_weight
-        - second_weight
-        - tare_weight
-        - vehicle_id
-        - vehicle_number
 select_permissions:
   - role: customer
     permission:
       columns:
-        - vehicle_number
-        - created_at
-        - updated_at
-        - id
-        - material_id
         - charges
-        - vehicle_id
-        - weighbridge_id
-        - scale_weight
-        - tare_weight
-        - second_weight
-        - paid_by
-        - reference_bill_id
-        - customer_id
+        - created_at
         - customer_2_id
         - customer_3_id
-        - image
-        - tenent_id
-        - photos
-        - nano_id
-        - paid
-        - payment_initiated
+        - customer_id
         - driver_phone
+        - id
+        - material_id
+        - nano_id
         - order_id
+        - paid
+        - paid_by
+        - payment_initiated
+        - reference_bill_id
+        - scale_weight
+        - second_weight
+        - tare_weight
+        - tenent_id
+        - updated_at
+        - vehicle_id
+        - vehicle_number
+        - weighbridge_id
       filter:
         _or:
           - customer:
@@ -123,14 +92,12 @@ select_permissions:
         - customer_id
         - driver_phone
         - id
-        - image
         - material_id
         - nano_id
         - order_id
         - paid
         - paid_by
         - payment_initiated
-        - photos
         - reference_bill_id
         - scale_weight
         - second_weight
@@ -154,14 +121,12 @@ select_permissions:
         - customer_id
         - driver_phone
         - id
-        - image
         - material_id
         - nano_id
         - order_id
         - paid
         - paid_by
         - payment_initiated
-        - photos
         - reference_bill_id
         - scale_weight
         - second_weight

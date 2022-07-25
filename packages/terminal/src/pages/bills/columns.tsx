@@ -1,8 +1,8 @@
-import { auth } from "../../utils/firebase";
 import { Button, Chip } from "@mui/material";
 import { GridColumns, GridValueGetterParams } from "@mui/x-data-grid";
 import { displayRazorpay } from "../../utils/razorPay";
 import BillInfo from "./billInfo";
+import decode from "jwt-decode";
 
 const Columns: GridColumns = [
   {
@@ -136,28 +136,10 @@ const Columns: GridColumns = [
       <Button
         disabled={!params.row.order_id || params.row.paid ? true : false}
         onClick={() => {
-          const phone = (): any => {
-            if (auth.currentUser?.email === params.row.customer?.email) {
-              return params.row.customer?.phone;
-            } else if (
-              auth.currentUser?.email === params.row.customer_2?.email
-            ) {
-              return params.row.customer_2?.phone;
-            } else if (
-              auth.currentUser?.email === params.row.customer_3?.email
-            ) {
-              return params.row.customer_3?.phone;
-            } else {
-              return null;
-            }
-          };
           displayRazorpay({
             amount: parseInt(`${params.row.charges}`.split("$")[1]) * 100,
             currency: "INR",
-            name: auth.currentUser?.displayName || "",
-            mail: auth.currentUser?.email || "",
             order_id: params.row.order_id || "",
-            phone: phone(),
           });
         }}
       >
