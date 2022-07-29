@@ -61,6 +61,7 @@ const Weigh: FunctionComponent = () => {
                 })
               ),
             ]);
+
             const ImagesBlob = await Promise.all(
               getLocalData[1].map((image) => {
                 return image.blob();

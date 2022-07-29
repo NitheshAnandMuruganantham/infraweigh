@@ -8,6 +8,7 @@ import { CreateBillDto } from './bill.dto';
 import { v4 as uuid } from 'uuid';
 import { MailerService } from 'src/mailer/mailer.service';
 import { MessengerService } from 'src/messenger/messenger.service';
+import * as admin from 'firebase-admin';
 @Injectable()
 export class BillService {
   constructor(
@@ -60,6 +61,8 @@ export class BillService {
         }),
         this.s3.uploadBillImages(file, id),
       ]);
+
+      await admin.firestore().doc(`bill/${id}`).create(data).catch();
 
       if (data[0].paid_by !== 'cash') {
         try {
