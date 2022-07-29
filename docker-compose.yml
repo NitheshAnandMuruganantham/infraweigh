@@ -28,7 +28,7 @@ services:
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
-      HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS256", "key": "-----BEGIN PUBLIC KEY-----\nMFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKh7sIdeMEw/q/X8duzfcAwe7mEkDlbT\nO5gy+f1v3mT8FVAPQcvaE3upMFS+QS7M8nl6+UJQOQOiu+7g6Wxom8cCAwEAAQ==\n-----END PUBLIC KEY-----"}'
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS256", "key": "-----BEGIN PUBLIC KEY-----\nMFswDQYJKoZIhvcNAQEBBQADSgAwRwJAdL1NXWAO2AF9FT6Zm3OS9k81q35tuXLS\nITBBUsn0HT1RstUTNMzjTj8ZKA0bdrtx7Jlv6uy0lmLjpp9lF/q0UQIDAQAB\n-----END PUBLIC KEY-----"}'
       ADMIN: http://host.docker.internal:9090/user-webhook/admin
       USER: "http://host.docker.internal:9090/user-webhook"
       BILL: "http://host.docker.internal:9090/bill-webhook"

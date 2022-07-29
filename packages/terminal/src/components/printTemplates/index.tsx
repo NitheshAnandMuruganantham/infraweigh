@@ -45,7 +45,7 @@ const Bill: React.FunctionComponent<{
               fontFamily: "Oswald",
             }}
           >
-            {props.data.weighbridge.display_name}
+            {props.data?.weighbridge?.display_name}
           </div>
           <div
             style={{
@@ -54,7 +54,7 @@ const Bill: React.FunctionComponent<{
               marginBottom: "3%",
             }}
           >
-            {props.data.weighbridge.address}
+            {props.data?.weighbridge?.address}
           </div>
           <TableContainer component={Paper}>
             <Table sx={{ width: "100%", height: "20%" }}>
@@ -116,7 +116,7 @@ const Bill: React.FunctionComponent<{
                   </TableCell>
                   <TableCell align="center">{props.data.charges}</TableCell>
                   <TableCell align="center">
-                    {props.data.customer?.name}
+                    {props.data.customer_bill_customer_idTocustomer?.company_name || props.data.customer_bill_customer_3_idTocustomer?.company_name || props.data.customer_bill_customer_2_idTocustomer?.company_name}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -197,14 +197,14 @@ const Bill: React.FunctionComponent<{
               gap: "10px",
             }}
           >
-            {props.data.photos.map((photo: string, index: number) => {
+            { props?.data?.photos && props.data.photos.map((photo: string, index: number) => {
               if (index > 3) {
                 return null;
               } else
-                return (
+                return ( 
                   <img
                     key={index}
-                    src={photo}
+                    src={photo} 
                     alt=""
                     style={{
                       width: "135px",

@@ -2,6 +2,9 @@ table:
   schema: public
   name: user
 object_relationships:
+  - name: roleByRole
+    using:
+      foreign_key_constraint_on: role
   - name: tenent
     using:
       foreign_key_constraint_on: tenent_id
@@ -42,21 +45,26 @@ select_permissions:
         - meta_data
         - profile
         - role
-        - synced
         - tenent_id
         - updated_at
         - weighbridge_id
       filter:
-        tenent_id:
-          _eq: X-Hasura-tenent-Id
+        _and:
+          - tenent_id:
+              _eq: X-Hasura-tenent-Id
+          - email:
+              _neq: X-Hasura-user-email
       allow_aggregations: true
 delete_permissions:
   - role: tenantAdmin
     permission:
       backend_only: false
       filter:
-        tenent_id:
-          _eq: X-Hasura-tenent-Id
+        _and:
+          - tenent_id:
+              _eq: X-Hasura-tenent-Id
+          - role:
+              _neq: tenantAdmin
 event_triggers:
   - name: delete_user
     definition:

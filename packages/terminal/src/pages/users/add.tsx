@@ -61,12 +61,18 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
               address: Yup.string().required("Required"),
               email: Yup.string().required("Required"),
               phone: Yup.string().required("Required"),
-              branch: Yup.object()
-                .shape({
-                  label: Yup.string().required("Required"),
-                  value: Yup.string().required("Required"),
-                })
-                .required(),
+              branch: Yup.lazy(() => {
+                if (role !== "admin" && role !== null) {
+                  return Yup.object()
+                    .shape({
+                      label: Yup.string().required("Required"),
+                      value: Yup.string().required("Required"),
+                    })
+                    .required("Required");
+                } else {
+                  return Yup.object().notRequired();
+                }
+              }),
               tenent: Yup.lazy(() => {
                 if (role === "admin" && role !== null) {
                   return Yup.object()
@@ -94,13 +100,12 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                   phone: values.phone,
                   address: values.address,
                 },
-                role: "terminal",
               };
-            } else {
+            }
+            else {
               dt = {
                 tenent_id: values.tenent.value,
                 email: values.email,
-                weighbridge_id: values.branch.value,
                 profile: {
                   name: values.name,
                   phone: values.phone,
@@ -185,25 +190,7 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                           serverName="tenents"
                           queryHook={useGetAllTenentsDropDownLazyQuery}
                         />
-                        {values?.tenent?.value && (
-                          <AutoCompleteComponent
-                            sx={{
-                              mt: 2,
-                              width: "100%",
-                            }}
-                            name="branch"
-                            label="branch"
-                            queryVariables={{
-                              where: {
-                                tenent_id: {
-                                  _eq: values.tenent.value,
-                                },
-                              },
-                            }}
-                            serverName="weighbridge"
-                            queryHook={useGetWeighbridgesDropDownLazyQuery}
-                          />
-                        )}
+         
                       </>
                     ) : (
                       <AutoCompleteComponent

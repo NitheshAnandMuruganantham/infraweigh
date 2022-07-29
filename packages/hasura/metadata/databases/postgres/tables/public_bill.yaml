@@ -26,6 +26,9 @@ object_relationships:
   - name: material
     using:
       foreign_key_constraint_on: material_id
+  - name: paidByByPaidBy
+    using:
+      foreign_key_constraint_on: paid_by
   - name: tenent
     using:
       foreign_key_constraint_on: tenent_id
@@ -44,44 +47,6 @@ array_relationships:
           schema: public
           name: bill
 select_permissions:
-  - role: customer
-    permission:
-      columns:
-        - charges
-        - created_at
-        - customer_2_id
-        - customer_3_id
-        - customer_id
-        - driver_phone
-        - id
-        - material_id
-        - nano_id
-        - order_id
-        - paid
-        - paid_by
-        - payment_initiated
-        - reference_bill_id
-        - scale_weight
-        - second_weight
-        - tare_weight
-        - tenent_id
-        - updated_at
-        - vehicle_id
-        - vehicle_number
-        - weighbridge_id
-      filter:
-        _or:
-          - customer:
-              email:
-                _eq: x-hasura-email
-          - customer_2:
-              email:
-                _eq: x-hasura-email
-          - customer_3:
-              email:
-                _eq: x-hasura-email
-      limit: 500
-      allow_aggregations: true
   - role: tenantAdmin
     permission:
       columns:

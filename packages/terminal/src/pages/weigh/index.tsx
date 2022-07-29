@@ -66,7 +66,8 @@ const Weigh: FunctionComponent = () => {
                 return image.blob();
               })
             );
-
+              console.log(values);
+              
             const form = new FormData();
 
             ImagesBlob.map((images, index) => {
@@ -81,8 +82,8 @@ const Weigh: FunctionComponent = () => {
               }
             }
 
-            if (values.buyer) {
-              form.append("customer", values.buyer.value);
+            if (values?.buyer?.value) {
+              form.append("customer_id", values.buyer.value);
             }
 
             if (values.seller) {
@@ -90,7 +91,7 @@ const Weigh: FunctionComponent = () => {
             }
 
             if (values.trader) {
-              form.append("customer_3_id", values.trader.id);
+              form.append("customer_3_id", values.trader.value);
             }
 
             form.append("vehicle_number", values.vehicleNumber);
@@ -99,7 +100,7 @@ const Weigh: FunctionComponent = () => {
             form.append("paid_by", values.paidBy);
             form.append("driver_phone", values.driver_phone);
             form.append("charges", values.charges);
-            form.append("scale_weight", values.scaleWeight);
+            form.append("scale_weight",await getLocalData[0].json().then(weight => weight.weight));
 
             const dat = await axios({
               method: "post",
@@ -110,7 +111,7 @@ const Weigh: FunctionComponent = () => {
               },
               data: form,
             });
-
+              
             var dt: any = { ...dat.data[0], photos: dat.data[1] };
             SetData(dt);
             SetOpen(true);

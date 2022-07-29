@@ -13,10 +13,12 @@ export class AuthService {
     private jwtService: JwtService,
     private config: ConfigService,
   ) {}
+
   private readonly StoredApiKey: string = this.config.get<string>('API_KEY');
   validateApiKey(apiKey: string) {
     return apiKey === this.StoredApiKey;
   }
+
   async signinLocal(dto: AuthDto) {
     const user = await this.prisma.user.findFirst({
       where: {
@@ -96,35 +98,45 @@ export class AuthService {
       },
     });
     if (!user) throw new ForbiddenException('Access Denied');
+
+    let custom_claims = {};
+    if (user.role === 'tenantAdmin') {
+      custom_claims = {
+        'x-hasura-tenent-id': user.tenent_id,
+      };
+    } else if (user.role === 'terminal') {
+      custom_claims = {
+        'x-hasura-tenent-id': user.tenent_id,
+        'x-hasura-weighbridge-id': user.weighbridge_id,
+      };
+    }
     const jwtPayload = {
       sub: user.id,
       email: user.email,
       'https://hasura.io/jwt/claims': {
         'x-hasura-allowed-roles': [user.role],
         'x-hasura-default-role': user.role,
-        'x-hasura-tenent-id': user.tenent_id,
         'x-hasura-user-id': user.id,
-        'x-hasura-weighbridge-id': user.weighbridge_id,
         'x-hasura-user-email': user.email,
+        ...custom_claims,
       },
     };
-    const buff = new Buffer(this.config.get<string>('AT_PRIVATE'), 'base64');
 
-    const key = buff.toString('utf8');
     const [at, rt] = await Promise.all([
       this.jwtService.signAsync(
         { ...jwtPayload, type: 'access_token' },
         {
           algorithm: 'RS256',
-          privateKey: key,
-          expiresIn: '15m',
+          privateKey: this.config.get<string>('AT_PRIVATE'),
+          expiresIn: '3h',
         },
       ),
       this.jwtService.signAsync(
         { ...jwtPayload, type: 'refresh_token' },
         {
-          secret: this.config.get<string>('RT_SECRET'),
-          expiresIn: '6h',
+          algorithm: 'RS256',
+          privateKey: this.config.get<string>('RT_PRIVATE'),
+          expiresIn: '12h',
         },
       ),
     ]);

@@ -1,6 +1,9 @@
 import {
+  BadGatewayException,
   Body,
   Controller,
+  Get,
+  Param,
   Post,
   UnauthorizedException,
   UploadedFiles,
@@ -12,6 +15,7 @@ import * as path from 'path';
 import { CreateBillDto } from './bill.dto';
 import { GetCurrentUserHasuraClaims } from 'src/common/decorators/get-hasura-claims.decorator';
 import { HttpsHasuraIoJwtClaims } from 'src/auth/types';
+import { Public } from 'src/common/decorators';
 
 @Controller('bill')
 export class BillController {
@@ -38,5 +42,14 @@ export class BillController {
     if (claims['x-hasura-default-role'] !== 'terminal') {
       throw new UnauthorizedException();
     } else return this.billService.create(claims, body, files);
+  }
+
+  @Public()
+  @Get('/:id')
+  getBill(@Param() params: any) {
+    if (!params?.id) {
+      throw new BadGatewayException();
+    }
+    return this.billService.getBill(params.id);
   }
 }

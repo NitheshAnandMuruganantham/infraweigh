@@ -73,32 +73,6 @@ insert_permissions:
         - phone
         - updated_at
 select_permissions:
-  - role: customer
-    permission:
-      columns:
-        - company_address
-        - company_name
-        - created_at
-        - email
-        - gst_in
-        - id
-        - metadata
-        - name
-        - phone
-        - tenent_id
-        - updated_at
-      filter:
-        bills_2:
-          _or:
-            - customer:
-                email:
-                  _eq: x-hasura-email
-            - customer_2:
-                email:
-                  _eq: x-hasura-email
-            - customer_3:
-                email:
-                  _eq: x-hasura-email
   - role: tenantAdmin
     permission:
       columns:

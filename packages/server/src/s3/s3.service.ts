@@ -9,6 +9,8 @@ export class S3Service {
   AWS_S3_BUCKET = this.config.get<string>('BILL_BUCKET_NAME');
   s3 = new AWS.S3({
     accessKeyId: this.config.get<string>('AWS_ACCESS_KEY_ID'),
+    signatureVersion: 'v4',
+    region: 'ap-south-1',
     secretAccessKey: this.config.get<string>('AWS_SECRET_ACCESS_KEY'),
   });
 
@@ -51,5 +53,28 @@ export class S3Service {
       Key: name,
       Expires: 60 * 60 * 12,
     });
+  }
+  async getBillImageUrls(id: string) {
+    const ur1 = this.s3.getSignedUrl('getObject', {
+      Bucket: this.AWS_S3_BUCKET + `/bills/${id}`,
+      Key: '0.jpg',
+      Expires: 60 * 60 * 12,
+    });
+    const ur2 = this.s3.getSignedUrl('getObject', {
+      Bucket: this.AWS_S3_BUCKET + `/bills/${id}`,
+      Key: '1.jpg',
+      Expires: 60 * 60 * 12,
+    });
+    const ur3 = this.s3.getSignedUrl('getObject', {
+      Bucket: this.AWS_S3_BUCKET + `/bills/${id}`,
+      Key: '2.jpg',
+      Expires: 60 * 60 * 12,
+    });
+    const ur4 = this.s3.getSignedUrl('getObject', {
+      Bucket: this.AWS_S3_BUCKET + `/bills/${id}`,
+      Key: '3.jpg',
+      Expires: 60 * 60 * 12,
+    });
+    return [ur1, ur2, ur3, ur4];
   }
 }

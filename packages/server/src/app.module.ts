@@ -6,7 +6,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { CustomerWebhookModule } from './customer-webhook/customer-webhook.module';
 import { MessengerService } from './messenger/messenger.service';
 import { RazorPayWebhookModule } from './razor-pay-webhook/razor-pay-webhook.module';
 import { TwilioModule } from 'nestjs-twilio';
@@ -14,13 +13,13 @@ import { PrismaModule } from 'nestjs-prisma';
 import { BillModule } from './bill/bill.module';
 import { S3Service } from './s3/s3.service';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     AuthModule,
-    CustomerWebhookModule,
     RazorPayWebhookModule,
     PrismaModule.forRoot({
       isGlobal: true,
@@ -58,7 +57,7 @@ import { S3Service } from './s3/s3.service';
       inject: [ConfigService],
     }),
     MailerModule,
-    BillModule,
+    BillModule
   ],
   controllers: [AppController],
   providers: [AppService, MessengerService, S3Service],

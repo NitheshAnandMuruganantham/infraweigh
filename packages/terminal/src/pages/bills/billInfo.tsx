@@ -27,20 +27,8 @@ const BillInfo: React.FunctionComponent<{
   setLoading: (loading: boolean) => void;
 }> = ({ name, id, setLoading }) => {
   const [open, setOpen] = React.useState(false);
+  const [data, setData] = React.useState({});
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    console.log("close");
-    setOpen(false);
-  };
-  const [getData, { loading, data, error }] = useGetBillForReceptLazyQuery({
-    variables: {
-      billByPkId: id,
-    },
-  });
   const printRef = React.useRef<any>();
   return (
     <>
@@ -48,16 +36,18 @@ const BillInfo: React.FunctionComponent<{
         onClick={async () => {
           try {
             setLoading(true);
-            await getData();
-            if (error) {
-              toast.error(error.message);
-              throw new Error(JSON.stringify(error));
+            const data = await fetch(import.meta.env["VITE_SERVER_URL"]+'/bill/' + id)
+            if (!data.ok) {
+              toast.error("something went wrong");
+            } else {
+              const result = await data.json();
+              setData(result);
             }
             setLoading(false);
-            handleClickOpen();
+            setOpen(true);
           } catch (e) {
             console.log(e);
-            handleClose();
+            setOpen(false);
             setLoading(false);
             toast.error("can not fetch bill details");
           }
@@ -74,21 +64,21 @@ const BillInfo: React.FunctionComponent<{
           keepMounted
           fullWidth
           maxWidth="md"
-          onClose={handleClose}
+          onClose={() => setOpen(false)}
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle>{}</DialogTitle>
           <DialogContent>
             <span ref={printRef}>
-              {!loading && data ? (
-                <Bill data={data.bill_by_pk} />
+              {data ? (
+                <Bill data={data} />
               ) : (
                 <CircularProgress />
               )}
             </span>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>close</Button>
+            <Button onClick={() => setOpen(false)}>close</Button>
             <ReactToPrint
               content={() => printRef.current}
               trigger={() => <Button>print</Button>}

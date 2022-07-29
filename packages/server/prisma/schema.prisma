@@ -94,7 +94,6 @@ model user {
   profile                    Json?        @default(dbgenerated("json_build_object()")) @db.Json
   meta_data                  Json?        @default(dbgenerated("json_build_object()")) @db.Json
   weighbridge_id             String?      @db.Uuid
-  synced                     Boolean?     @default(false)
   tenent_id                  String?      @db.Uuid
   email                      String       @unique
   role                       String?

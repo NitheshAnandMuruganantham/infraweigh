@@ -64,8 +64,17 @@ const wsLink = new GraphQLWsLink(
   })
 );
 
-const errorLink = onError((error) => {
-  console.log(error);
+const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+    if (graphQLErrors) {
+    for (let err of graphQLErrors) {
+      switch (err.extensions.code) {
+        case "invalid-headers":
+          sessionStorage.clear();
+          window.location.replace('/login')
+          break;
+      }
+    }
+  }
 });
 
 export default new ApolloClient({

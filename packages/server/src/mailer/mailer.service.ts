@@ -8,7 +8,7 @@ export class MailerService {
     await this.mailService.sendMail({
       to: email,
       subject: 'new Bill created',
-      template: '/newBill',
+      template: 'newBill',
       context: {
         Weighbridge_name: dt.weighbridge.display_name,
         address: '',

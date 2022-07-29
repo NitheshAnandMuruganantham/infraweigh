@@ -41,9 +41,8 @@ const BillInfo: React.FunctionComponent<{
       fullWidth
       maxWidth="md"
       onClose={handleClose}
-      aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle>{}</DialogTitle>
+      <DialogTitle>Bill invoice</DialogTitle>
       <DialogContent>
         {open ? (
           <span ref={printRef}>

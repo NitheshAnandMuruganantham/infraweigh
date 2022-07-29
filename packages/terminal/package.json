@@ -22,7 +22,6 @@
     "@nivo/bar": "^0.79.1",
     "@nivo/core": "^0.79.0",
     "@nivo/pie": "^0.79.1",
-    "amazon-cognito-identity-js": "^5.2.10",
     "axios": "^0.27.2",
     "bwip-js": "^3.1.0",
     "cypress": "^10.1.0",

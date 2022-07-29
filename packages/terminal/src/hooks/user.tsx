@@ -31,7 +31,7 @@ function useUser(): [RootObject | null, boolean] {
           import.meta.env["VITE_SERVER_URL"] + "/auth/refresh",
           {
             headers: {
-              Authorization:
+              authorization:
                 "Bearer " + sessionStorage.getItem("refresh_token"),
             },
             method: "post",
@@ -47,7 +47,7 @@ function useUser(): [RootObject | null, boolean] {
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        sessionStorage.clear();
+        // sessionStorage.clear();
         navigate("/login", { replace: true });
         return;
       }

@@ -8,7 +8,6 @@ import { CreateBillDto } from './bill.dto';
 import { v4 as uuid } from 'uuid';
 import { MailerService } from 'src/mailer/mailer.service';
 import { MessengerService } from 'src/messenger/messenger.service';
-
 @Injectable()
 export class BillService {
   constructor(
@@ -51,14 +50,17 @@ export class BillService {
           },
           include: {
             tenents: true,
+            weighbridge: true,
+            vehicle: true,
+            material: true,
             customer_bill_customer_2_idTocustomer: true,
             customer_bill_customer_3_idTocustomer: true,
             customer_bill_customer_idTocustomer: true,
-            weighbridge: true,
           },
         }),
         this.s3.uploadBillImages(file, id),
       ]);
+
       if (data[0].paid_by !== 'cash') {
         try {
           const razorpay = new Razorpay({
@@ -95,52 +97,88 @@ export class BillService {
         } catch (er) {}
       }
       await Promise.all([
-        Promise.all([
-          data[0].customer_2_id
-            ? this.mailer.sendBillEmail(
-                data[0].customer_bill_customer_2_idTocustomer.email,
-                data[0],
-              )
-            : null,
-          data[0].customer_2_id
-            ? this.messenger.sendSMS(
-                data[0].customer_bill_customer_2_idTocustomer.phone,
-                data[0],
-              )
-            : null,
-        ]),
-        Promise.all([
-          data[0].customer_3_id
-            ? this.mailer.sendBillEmail(
-                data[0].customer_bill_customer_3_idTocustomer.email,
-                data[0],
-              )
-            : null,
-          data[0].customer_3_id
-            ? this.messenger.sendSMS(
-                data[0].customer_bill_customer_3_idTocustomer.phone,
-                data[0],
-              )
-            : null,
-        ]),
-        Promise.all([
-          data[0].customer_id
-            ? this.mailer.sendBillEmail(
-                data[0].customer_bill_customer_idTocustomer.email,
-                data[0],
-              )
-            : null,
-          data[0].customer_id
-            ? this.messenger.sendSMS(
-                data[0].customer_bill_customer_idTocustomer.phone,
-                data[0],
-              )
-            : null,
-        ]),
+        data[0].customer_2_id
+          ? this.mailer.sendBillEmail(
+              data[0].customer_bill_customer_2_idTocustomer.email,
+              data[0],
+            )
+          : null,
+        data[0].customer_2_id
+          ? this.messenger.sendSMS(
+              data[0].customer_bill_customer_2_idTocustomer.phone,
+              data[0],
+            )
+          : null,
+      ]);
+      await Promise.all([
+        data[0].customer_3_id
+          ? this.mailer.sendBillEmail(
+              data[0].customer_bill_customer_3_idTocustomer.email,
+              data[0],
+            )
+          : null,
+        data[0].customer_3_id
+          ? this.messenger.sendSMS(
+              data[0].customer_bill_customer_3_idTocustomer.phone,
+              data[0],
+            )
+          : null,
+      ]);
+      await Promise.all([
+        data[0].customer_id
+          ? this.mailer.sendBillEmail(
+              data[0].customer_bill_customer_idTocustomer.email,
+              data[0],
+            )
+          : null,
+        data[0].customer_id
+          ? this.messenger.sendSMS(
+              data[0].customer_bill_customer_idTocustomer.phone,
+              data[0],
+            )
+          : null,
       ]);
       return data;
     } catch (err) {
       throw new BadRequestException();
     }
+  }
+  async getBill(id: string) {
+    const data = await this.prisma.bill.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        material: true,
+        vehicle: true,
+        weighbridge: {
+          select: {
+            name: true,
+            address: true,
+            display_name: true,
+            phone: true,
+            pin_code: true,
+            logo: true,
+            mail: true,
+          },
+        },
+        tenents: {
+          select: {
+            name: true,
+            email: true,
+            phone: true,
+          },
+        },
+        customer_bill_customer_2_idTocustomer: true,
+        customer_bill_customer_3_idTocustomer: true,
+        customer_bill_customer_idTocustomer: true,
+      },
+    });
+    const bucketUrl = await this.s3.getBillImageUrls(id);
+
+    return {
+      ...data,
+      photos: bucketUrl,
+    };
   }
 }

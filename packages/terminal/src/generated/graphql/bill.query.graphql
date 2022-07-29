@@ -5,7 +5,6 @@ mutation addBill($object: bill_insert_input!) {
     created_at
     charges
     scale_weight
-    photos
     second_weight
     tare_weight
     reference_bill_id
@@ -155,7 +154,6 @@ query getBillForRecept($billByPkId: uuid!) {
     created_at
     charges
     scale_weight
-    photos
     nano_id
     second_weight
     tare_weight
