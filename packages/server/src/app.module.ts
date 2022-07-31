@@ -54,11 +54,9 @@ import { S3Service } from './s3/s3.service';
     TwilioModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config) => {
-        const twilioconfig = JSON.parse(config.getOrThrow('TWILIO_CONFIG'));
-
         return {
-          accountSid: twilioconfig.id,
-          authToken: twilioconfig.key,
+          accountSid: config.getOrThrow('TWILIO_ACCOUNT_ID'),
+          authToken: config.getOrThrow('TWILIO_AUTH_TOKEN'),
         };
       },
       inject: [ConfigService],
