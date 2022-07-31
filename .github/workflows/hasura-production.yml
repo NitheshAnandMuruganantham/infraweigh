@@ -13,6 +13,30 @@ jobs:
         with:
           useLockFile: false
           install-command: yarn install
-          working-directory: packages/terminal
+          working-directory: 
       - name: deployment to hasura
-        run: cd packages/hasura && yarn hasura deploy --admin-secret ${{secrets.ADMIN_SECRET}} --endpoint https://hasura.infraweigh.co
+        run: cd packages/hasura && yarn hasura deploy --admin-secret  --endpoint 
+
+
+
+name: Hasura migration
+on:
+  push:
+    branches:
+      - production
+jobs:
+  hasura_migration:
+    name: Hasura migration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Apply hasura migrations
+        uses: tibotiber/hasura-action@master
+        with:
+          args: deploy
+        env:
+          HASURA_ENDPOINT: https://hasura.infraweigh.co
+          HASURA_ADMIN_SECRET: ${{secrets.ADMIN_SECRET}}
+          HASURA_WORKDIR: packages/terminal
+          HASURA_ENGINE_VERSION: v2.8.4
