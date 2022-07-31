@@ -18,5 +18,5 @@ jobs:
         env:
           HASURA_ENDPOINT: https://hasura.infraweigh.co
           HASURA_ADMIN_SECRET: ${{secrets.ADMIN_SECRET}}
-          HASURA_WORKDIR: packages/terminal
+          HASURA_WORKDIR: packages/hasura
           HASURA_ENGINE_VERSION: v2.8.4
