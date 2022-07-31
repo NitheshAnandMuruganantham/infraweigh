@@ -29,6 +29,7 @@ import * as Joi from 'joi';
         AT_PUBLIC: Joi.string().required(),
         RT_PRIVATE: Joi.string().required(),
         RT_PUBLIC: Joi.string().required(),
+        RAZORPAY_WEBHOOK_SECRET: Joi.string().required(),
         PORT: Joi.required(),
         SMTP_CONFIG: Joi.required(),
         AWS_SERVICE_CONFIG: Joi.required(),
