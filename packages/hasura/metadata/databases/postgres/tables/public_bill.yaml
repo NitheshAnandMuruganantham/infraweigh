@@ -108,22 +108,3 @@ select_permissions:
           - weighbridge_id:
               _eq: X-Hasura-Weighbridge-Id
       allow_aggregations: true
-event_triggers:
-  - name: new_bill
-    definition:
-      enable_manual: false
-      insert:
-        columns: '*'
-    retry_conf:
-      num_retries: 0
-      interval_sec: 10
-      timeout_sec: 60
-    webhook_from_env: BILL
-    headers:
-      - name: apikey
-        value_from_env: API_KEY
-    request_transform:
-      method: POST
-      version: 2
-      query_params: {}
-      template_engine: Kriti

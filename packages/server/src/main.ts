@@ -5,24 +5,26 @@ import { PrismaService } from 'nestjs-prisma';
 import { ValidationPipe } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { ServiceAccount } from 'firebase-admin';
+import * as cokkieparser from 'cookie-parser';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService: ConfigService = app.get(ConfigService);
+  app.use(cokkieparser());
   app.enableCors({
-    origin: ['http://localhost:8000'],
+    origin: [configService.getOrThrow<string>('FRONTEND_URL')],
     credentials: true,
   });
+
+  app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
-  const adminConfig: ServiceAccount = {
-    projectId: configService.get<string>('FIREBASE_PROJECT_ID'),
-    privateKey: configService
-      .get<string>('FIREBASE_PRIVATE_KEY')
-      .replace(/\\n/g, '\n'),
-    clientEmail: configService.get<string>('FIREBASE_CLIENT_EMAIL'),
-  };
+
+  const firebase_Service = JSON.parse(
+    configService.getOrThrow<any>('FIREBASE_SERVICE'),
+  );
   admin.initializeApp({
-    credential: admin.credential.cert(adminConfig),
+    credential: admin.credential.cert(firebase_Service),
   });
 
   const prismaService: PrismaService = app.get(PrismaService);

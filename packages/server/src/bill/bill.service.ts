@@ -9,6 +9,8 @@ import { v4 as uuid } from 'uuid';
 import { MailerService } from 'src/mailer/mailer.service';
 import { MessengerService } from 'src/messenger/messenger.service';
 import * as admin from 'firebase-admin';
+import * as _ from 'lodash';
+
 @Injectable()
 export class BillService {
   constructor(
@@ -54,22 +56,46 @@ export class BillService {
             weighbridge: true,
             vehicle: true,
             material: true,
-            customer_bill_customer_2_idTocustomer: true,
-            customer_bill_customer_3_idTocustomer: true,
-            customer_bill_customer_idTocustomer: true,
+            customer_bill_customer_2_idTocustomer: {
+              select: {
+                company_address: true,
+                company_name: true,
+                gst_in: true,
+                name: true,
+                phone: true,
+                email: true,
+              },
+            },
+            customer_bill_customer_3_idTocustomer: {
+              select: {
+                company_address: true,
+                company_name: true,
+                gst_in: true,
+                name: true,
+                phone: true,
+                email: true,
+              },
+            },
+            customer_bill_customer_idTocustomer: {
+              select: {
+                company_address: true,
+                company_name: true,
+                gst_in: true,
+                name: true,
+                phone: true,
+                email: true,
+              },
+            },
           },
         }),
         this.s3.uploadBillImages(file, id),
       ]);
-
-      await admin.firestore().doc(`bill/${id}`).create(data).catch();
-
+      let order_id = null;
+      let payment_initiated = null;
+      let paid = false;
       if (data[0].paid_by !== 'cash') {
         try {
-          const razorpay = new Razorpay({
-            key_id: this.config.get('RAZORPAY_ID'),
-            key_secret: this.config.get('RAZORPAY_KEY'),
-          });
+          const razorpay = new Razorpay(this.config.get('RAZORPAY_SERVICE'));
 
           const order = await razorpay.orders.create({
             amount: parseInt(`${data[0].charges}`, 10) * 100,
@@ -88,6 +114,8 @@ export class BillService {
               },
             ],
           });
+          order_id = order.id;
+          payment_initiated = true;
           await this.prisma.bill.update({
             where: {
               id: data[0].id,
@@ -98,6 +126,9 @@ export class BillService {
             },
           });
         } catch (er) {}
+      } else {
+        paid = true;
+        payment_initiated = true;
       }
       await Promise.all([
         data[0].customer_2_id
@@ -141,8 +172,24 @@ export class BillService {
             )
           : null,
       ]);
+      const charges = `${data[0].charges}`;
+      await admin
+        .firestore()
+        .doc(`bill/${id}`)
+        .set({
+          ..._.omit(data[0], ['charges', 'order_id', 'paid']),
+          charges,
+          paid,
+          order_id,
+          payment_initiated,
+        })
+        .catch((e) => {
+          console.log(e);
+        });
       return data;
     } catch (err) {
+      console.log(err);
+
       throw new BadRequestException();
     }
   }

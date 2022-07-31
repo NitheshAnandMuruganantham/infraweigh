@@ -9,8 +9,17 @@ import { AtStrategy } from './at.statagy';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { RtStrategy } from './rt.statagy';
+
+import { ThrottlerModule } from '@nestjs/throttler';
+
 @Module({
-  imports: [JwtModule.register({})],
+  imports: [
+    JwtModule.register({}),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
+    }),
+  ],
   controllers: [AuthController],
   providers: [
     AuthService,
