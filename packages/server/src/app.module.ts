@@ -12,11 +12,30 @@ import { TwilioModule } from 'nestjs-twilio';
 import { PrismaModule } from 'nestjs-prisma';
 import { BillModule } from './bill/bill.module';
 import { S3Service } from './s3/s3.service';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      validationSchema: Joi.object({
+        DATABASE_URL: Joi.string().uri().required(),
+        TWILIO_ACCOUNT_ID: Joi.string().required(),
+        TWILIO_AUTH_TOKEN: Joi.string().required(),
+        TWILIO_PHONE: Joi.string().required(),
+        BILL_BUCKET_NAME: Joi.string().required(),
+        FORGOT_PASSWORD_SECRET: Joi.string().required(),
+        AT_PRIVATE: Joi.string().required(),
+        AT_PUBLIC: Joi.string().required(),
+        RT_PRIVATE: Joi.string().required(),
+        RT_PUBLIC: Joi.string().required(),
+        PORT: Joi.required(),
+        SMTP_CONFIG: Joi.required(),
+        AWS_SERVICE_CONFIG: Joi.required(),
+        FIREBASE_SERVICE: Joi.required(),
+        RAZORPAY_SERVICE: Joi.required(),
+        FRONTEND_URL: Joi.string().required(),
+      }),
     }),
     AuthModule,
     RazorPayWebhookModule,
