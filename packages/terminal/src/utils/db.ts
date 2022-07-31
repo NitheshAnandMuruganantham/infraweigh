@@ -6,15 +6,15 @@ export interface Config {
   url: string;
 }
 
-export class MySubClassedDexie extends Dexie {
+export class configStore extends Dexie {
   config!: Table<Config>;
 
   constructor() {
-    super("myDatabase");
+    super("configStore");
     this.version(1).stores({
       config: "++id, camera, url",
     });
   }
 }
 
-export const db = new MySubClassedDexie();
+export const db = new configStore();

@@ -13,47 +13,29 @@ select_permissions:
   - role: customer
     permission:
       columns:
-        - charges
-        - special_price_1
-        - special_price_2
-        - special_price_3
-        - special_price_4
-        - special_price_5
+        - created_at
+        - id
         - manufacturer
         - name
-        - created_at
         - updated_at
-        - id
       filter: {}
   - role: tenantAdmin
     permission:
       columns:
-        - charges
-        - special_price_1
-        - special_price_2
-        - special_price_3
-        - special_price_4
-        - special_price_5
+        - created_at
+        - id
         - manufacturer
         - name
-        - created_at
         - updated_at
-        - id
       filter: {}
       allow_aggregations: true
   - role: terminal
     permission:
       columns:
-        - charges
-        - special_price_1
-        - special_price_2
-        - special_price_3
-        - special_price_4
-        - special_price_5
+        - created_at
+        - id
         - manufacturer
         - name
-        - created_at
         - updated_at
-        - id
       filter: {}
       allow_aggregations: true

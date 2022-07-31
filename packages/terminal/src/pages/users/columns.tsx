@@ -21,7 +21,7 @@ const columns: GridColDef[] = [
     sortable: false,
     filterable: false,
     width: 400,
-    valueGetter: (params) => params.row.weighbridge.name,
+    valueGetter: (params) => params.row?.weighbridge?.name || "",
   },
   {
     field: "edit",

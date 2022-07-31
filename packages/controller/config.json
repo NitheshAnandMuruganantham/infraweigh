@@ -1,0 +1,7 @@
+{
+  "transducer": {
+    "port": "COM3",
+    "baudrate": 2400,
+    "timeout": 0.1
+  }
+}

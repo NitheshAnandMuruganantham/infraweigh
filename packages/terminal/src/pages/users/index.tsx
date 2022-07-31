@@ -8,7 +8,6 @@ import {
   useGetAllUsersSubscription,
 } from "../../generated";
 import columns from "./columns";
-import { auth } from "../../utils/firebase";
 import DataGridComponent from "../../components/dataGrid";
 const Users = () => {
   const [sort, SetSort] = React.useState([]);
@@ -18,11 +17,6 @@ const Users = () => {
 
   const filter = {
     _and: [
-      {
-        _not: {
-          email: { _eq: auth.currentUser?.email },
-        },
-      },
       {
         _or: [
           {

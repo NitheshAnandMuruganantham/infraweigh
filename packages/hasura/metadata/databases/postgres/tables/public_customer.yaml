@@ -73,32 +73,6 @@ insert_permissions:
         - phone
         - updated_at
 select_permissions:
-  - role: customer
-    permission:
-      columns:
-        - company_address
-        - company_name
-        - created_at
-        - email
-        - gst_in
-        - id
-        - metadata
-        - name
-        - phone
-        - tenent_id
-        - updated_at
-      filter:
-        bills_2:
-          _or:
-            - customer:
-                email:
-                  _eq: x-hasura-email
-            - customer_2:
-                email:
-                  _eq: x-hasura-email
-            - customer_3:
-                email:
-                  _eq: x-hasura-email
   - role: tenantAdmin
     permission:
       columns:
@@ -170,40 +144,3 @@ delete_permissions:
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id
-event_triggers:
-  - name: new_customer
-    definition:
-      enable_manual: false
-      insert:
-        columns: '*'
-    retry_conf:
-      num_retries: 0
-      interval_sec: 10
-      timeout_sec: 60
-    webhook_from_env: CUSTOMER
-    headers:
-      - name: apikey
-        value_from_env: API_KEY
-    request_transform:
-      method: POST
-      version: 2
-      query_params: {}
-      template_engine: Kriti
-  - name: update_customer
-    definition:
-      enable_manual: false
-      update:
-        columns: '*'
-    retry_conf:
-      num_retries: 0
-      interval_sec: 10
-      timeout_sec: 60
-    webhook_from_env: CUSTOMER
-    headers:
-      - name: apikey
-        value_from_env: API_KEY
-    request_transform:
-      method: PATCH
-      version: 2
-      query_params: {}
-      template_engine: Kriti

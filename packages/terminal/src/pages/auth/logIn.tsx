@@ -1,43 +1,33 @@
+import { Field, Form, Formik } from "formik";
+import { TextField } from "formik-mui";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
+
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import { TextField } from "formik-mui";
+import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import {
-  getIdTokenResult,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
-
-import * as Yup from "yup";
-import { auth } from "../../utils/firebase";
-import { toast } from "react-toastify";
-import { useState } from "react";
-import { LinearProgress } from "@mui/material";
-import { Field, Formik } from "formik";
+import Typography from "@mui/material/Typography";
+import Loader from "../../components/loading";
 
 function Copyright(props: any) {
   return (
     <Typography
       variant="body2"
-      sx={{
-        marginTop: "50px",
-      }}
       color="text.secondary"
       align="center"
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https:infraweigh.co/">
-        Infraweigh.co
+      <Link color="inherit" href="https://infraweigh.co/">
+        infraweigh.co
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -48,10 +38,16 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignInSide() {
-  const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
+  React.useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, []);
   return (
     <ThemeProvider theme={theme}>
+      <Loader open={loading} setOpen={() => null} />
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -60,8 +56,7 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage:
-              "url(https://source.unsplash.com/random/?office,company)",
+            backgroundImage: "url(https://source.unsplash.com/random)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -71,56 +66,110 @@ export default function SignInSide() {
             backgroundPosition: "center",
           }}
         />
-        <Grid
-          position={"relative"}
-          item
-          xs={12}
-          sm={8}
-          md={5}
-          component={Paper}
-          elevation={6}
-          square
-        >
-          {loading && <LinearProgress />}
-          <Box
-            sx={{
-              justifyContent: "center",
-              height: "100%",
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Formik
+            onSubmit={async ({ email, password }, { setFieldError }) => {
+              setLoading(true);
+              toast.clearWaitingQueue();
+              const dat = await fetch(
+                import.meta.env.VITE_SERVER_URL + "/auth/signin",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  credentials: "include",
+                  body: JSON.stringify({
+                    email,
+                    password,
+                  }),
+                }
+              ).then((res) =>
+                res.json().then((data) => {
+                  if (res.ok) {
+                    sessionStorage.setItem("refresh_token", data.refresh_token);
+                    navigate("/", { replace: true });
+                  } else {
+                    setFieldError("password", "Invalid email or password");
+                  }
+                })
+              );
+              setLoading(false);
+            }}
+            validationSchema={Yup.object().shape({
+              email: Yup.string()
+                .email("Invalid email address")
+                .required("Email is required"),
+              password: Yup.string().required("Password is required"),
+            })}
+            initialValues={{
+              email: "",
+              password: "",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-
-            <GoogleButton />
-            <Copyright />
-          </Box>
+            {() => (
+              <Form>
+                <Box
+                  sx={{
+                    my: 8,
+                    mx: 4,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                    <LockOutlinedIcon />
+                  </Avatar>
+                  <Typography component="h1" variant="h5">
+                    Sign in
+                  </Typography>
+                  <Box sx={{ mt: 1 }}>
+                    <Field
+                      component={TextField}
+                      margin="normal"
+                      fullWidth
+                      name="email"
+                      label="email"
+                      autoComplete="email"
+                      autoFocus
+                    />
+                    <Field
+                      component={TextField}
+                      margin="normal"
+                      fullWidth
+                      name="password"
+                      label="password"
+                      type="password"
+                      autoComplete="off"
+                      autoFocus
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2 }}
+                    >
+                      Sign In
+                    </Button>
+                    <Grid container>
+                      <Grid item xs>
+                        <Link href="/forgetPassword" variant="body2">
+                          Forgot password?
+                        </Link>
+                      </Grid>
+                      <Grid item>
+                        <Link href="#" variant="body2"></Link>
+                      </Grid>
+                    </Grid>
+                    <Copyright sx={{ mt: 5 }} />
+                  </Box>
+                </Box>
+              </Form>
+            )}
+          </Formik>
         </Grid>
       </Grid>
     </ThemeProvider>
   );
 }
-
-const GoogleButton = () => {
-  return (
-    <div
-      onClick={() => signInWithPopup(auth, new GoogleAuthProvider())}
-      className="google-btn"
-    >
-      <div className="google-icon-wrapper">
-        <img
-          className="google-icon"
-          src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-        />
-      </div>
-      <p className="btn-text">Sign in with google</p>
-    </div>
-  );
-};

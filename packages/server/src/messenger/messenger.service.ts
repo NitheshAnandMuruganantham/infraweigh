@@ -11,7 +11,7 @@ export class MessengerService {
 
   async sendSMS(phone: string, dt: any) {
     try {
-      return await this.client.messages.create({
+      const data = await this.client.messages.create({
         body: `
         thank you for choosing ${dt.weighbridge.display_name || ''}!
           vehicle number: ${dt.vehicle_number}
@@ -31,7 +31,10 @@ export class MessengerService {
         to: phone,
         from: this.config.get('TWILIO_PHONE'),
       });
+
+      return data;
     } catch (e) {
+      console.log(e);
       return e;
     }
   }

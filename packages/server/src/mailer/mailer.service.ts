@@ -30,4 +30,14 @@ export class MailerService {
       },
     });
   }
+  async sendPasswordResetEmail(email: string, link: string) {
+    await this.mailService.sendMail({
+      to: email,
+      subject: 'password reset request',
+      template: 'passwordReset',
+      context: {
+        link,
+      },
+    });
+  }
 }

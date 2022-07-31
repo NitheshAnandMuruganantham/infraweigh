@@ -18,9 +18,9 @@ export async function displayRazorpay(result: {
   amount: number;
   order_id: string;
   currency: string;
-  name: string;
-  mail: string;
-  phone: string;
+  name?: string;
+  mail?: string;
+  phone?: string;
 }) {
   const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
@@ -36,7 +36,9 @@ export async function displayRazorpay(result: {
     amount: `${amount * 100}`,
     method: "upi",
     currency: currency,
-    name: "INFRA WEIGH CO",
+    name: "INFRAWEIGH TECHNOLOGIES",
+    
+    image:"https://imfraweigh-brand-kit.s3.ap-south-1.amazonaws.com/logo.png",
     order_id: order_id,
     prefill: {
       name: result.name,
@@ -44,7 +46,7 @@ export async function displayRazorpay(result: {
       contact: result.phone,
     },
     theme: {
-      color: "#61dafb",
+      color: "#1976d2",
     },
   };
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
