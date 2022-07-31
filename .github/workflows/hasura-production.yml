@@ -5,26 +5,6 @@ name: apply hasura migrations for production deployment
     branches:
       - production
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
-          install-command: yarn install
-          working-directory: 
-      - name: deployment to hasura
-        run: cd packages/hasura && yarn hasura deploy --admin-secret  --endpoint 
-
-
-
-name: Hasura migration
-on:
-  push:
-    branches:
-      - production
-jobs:
   hasura_migration:
     name: Hasura migration
     runs-on: ubuntu-latest
