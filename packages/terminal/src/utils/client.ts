@@ -4,59 +4,48 @@ import { onError } from "@apollo/client/link/error";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { createClient } from "graphql-ws";
 import { setContext } from "@apollo/client/link/context";
-import { auth } from "./firebase";
-
-const TOKEN_KEY = "x-firebase-token";
-const DEV_TOKEN_KEY = "x-firebase-dev-token";
-
-const isLocalEnvironment = () => {
-  return window.location.hostname === "localhost";
-};
+import decode from "jwt-decode";
 
 function getHeaders() {
   const headers: any = {};
-  headers["Authorization"] = `Bearer ${
-    isLocalEnvironment()
-      ? window.localStorage.getItem(DEV_TOKEN_KEY)
-      : window.localStorage.getItem(TOKEN_KEY)
-  }`;
+  headers["Authorization"] = `Bearer ${sessionStorage.getItem("token")}`;
 
   return headers;
 }
 
 const authLink = setContext(async (_, { headers }) => {
-  if (isLocalEnvironment()) {
-    const idTokenResult = await auth.currentUser?.getIdTokenResult();
-    const token = await fetch(
-      "http://localhost:3030/U2HOg0MESZzPk2ZCYLsFxoiIh38Iuw59",
-      {
-        body: JSON.stringify(idTokenResult?.claims),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "post",
-      }
-    )
-      .then(async (token) => await token.json().then((res) => res.token))
-      .catch((err) => console.log(err));
-    localStorage.setItem(DEV_TOKEN_KEY, token || "");
+  try {
+    const PresistedToken: any = sessionStorage.getItem("token");
+    const jwtDecoded: any = decode(PresistedToken);
+    const expired = jwtDecoded.exp < (Date.now() - 1000 * 60 * 5) / 1000;
 
-    return {
-      headers: {
-        ...headers,
-        Authorization: `Bearer ${token}`,
-      },
-    };
-  } else {
-    const IdToken = await auth.currentUser?.getIdToken();
-    localStorage.setItem(TOKEN_KEY, IdToken || "");
-    return {
-      headers: {
-        ...headers,
-        Authorization: `Bearer ${IdToken}`,
-      },
-    };
+    if (expired) {
+      console.log("called");
+      const data = await fetch(
+        import.meta.env["VITE_SERVER_URL"] + "/auth/refresh",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+      const tokenData = await data.json();
+      sessionStorage.setItem("token", tokenData.access_token);
+      return {
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${tokenData.access_token}`,
+        },
+      };
+    } else {
+      return {
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${PresistedToken}`,
+        },
+      };
+    }
+  } catch {
+    window.location.replace("/login");
   }
 });
 
@@ -75,8 +64,17 @@ const wsLink = new GraphQLWsLink(
   })
 );
 
-const errorLink = onError((error) => {
-  console.log(error);
+const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+    if (graphQLErrors) {
+    for (let err of graphQLErrors) {
+      switch (err.extensions.code) {
+        case "invalid-headers":
+          sessionStorage.clear();
+          window.location.replace('/login')
+          break;
+      }
+    }
+  }
 });
 
 export default new ApolloClient({

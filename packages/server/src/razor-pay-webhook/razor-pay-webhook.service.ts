@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils';
 import crossFetch from 'cross-fetch';
@@ -24,7 +19,7 @@ export class RazorPayWebhookService {
       const isValid = await validateWebhookSignature(
         JSON.stringify(body),
         headers['x-razorpay-signature'],
-        '6D5970337336763979244226452948404D635166546A576E5A7234743777217A25432A462D4A614E645267556B58703273357638782F413F4428472B4B625065',
+        secret,
       );
       if (!isValid) {
         throw new BadRequestException(

@@ -3,7 +3,7 @@ config();
 module.exports = {
   schema: [
     {
-      "http://localhost:3001/v1/graphql": {
+      "http://localhost:8080/v1/graphql": {
         headers: {
           "x-hasura-admin-secret": "myadminsecretkey",
         },

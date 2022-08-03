@@ -3,8 +3,10 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home";
 import Loading from "./components/loading";
 import RequireAuth from "./pages/auth/requireAuth";
-import Unknown from "./pages/auth/unknown";
-const LogIn = React.lazy(() => import("./pages/auth"));
+import SignInSide from "./pages/auth/logIn";
+
+const ForgetPassword = React.lazy(() => import("./pages/auth/forgetPassword"));
+const SetNewPassword = React.lazy(() => import("./pages/auth/setPassword"));
 const Bills = React.lazy(() => import("./pages/bills"));
 const Clients = React.lazy(() => import("./pages/clients"));
 const Weigh = React.lazy(() => import("./pages/weigh"));
@@ -14,9 +16,15 @@ const Weighbridges = React.lazy(() => import("./pages/weignbirdge"));
 
 const LazyLoader = () => <Loading open={true} setOpen={() => null} />;
 
-const LazyLogIn = () => (
+const LazyForgetPassword = () => (
   <React.Suspense fallback={<LazyLoader />}>
-    <LogIn />
+    <ForgetPassword />
+  </React.Suspense>
+);
+
+const LazySetNewPassword = () => (
+  <React.Suspense fallback={<LazyLoader />}>
+    <SetNewPassword />
   </React.Suspense>
 );
 const LazyBills = () => (
@@ -63,8 +71,9 @@ const App: React.FunctionComponent = () => {
         <Route path="/tenants" element={<LazyTenants />} />
         <Route path="/clients" element={<LazyClients />} />
       </Route>
-      <Route path="/login" element={<LazyLogIn />} />
-      <Route path="/unknown" element={<Unknown />} />
+      <Route path="/login" element={<SignInSide />} />
+      <Route path="/forgetPassword" element={<LazyForgetPassword />} />
+      <Route path="/reset-password" element={<LazySetNewPassword />} />
     </Routes>
   );
 };

@@ -78,147 +78,6 @@ export type String_Comparison_Exp = {
   _similar?: InputMaybe<Scalars['String']>;
 };
 
-/** columns and relationships of "admin" */
-export type Admin = {
-  __typename?: 'admin';
-  email: Scalars['String'];
-  id: Scalars['uuid'];
-  name: Scalars['String'];
-  phone: Scalars['String'];
-};
-
-/** aggregated selection of "admin" */
-export type Admin_Aggregate = {
-  __typename?: 'admin_aggregate';
-  aggregate?: Maybe<Admin_Aggregate_Fields>;
-  nodes: Array<Admin>;
-};
-
-/** aggregate fields of "admin" */
-export type Admin_Aggregate_Fields = {
-  __typename?: 'admin_aggregate_fields';
-  count: Scalars['Int'];
-  max?: Maybe<Admin_Max_Fields>;
-  min?: Maybe<Admin_Min_Fields>;
-};
-
-
-/** aggregate fields of "admin" */
-export type Admin_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Admin_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
-};
-
-/** Boolean expression to filter rows from the table "admin". All fields are combined with a logical 'AND'. */
-export type Admin_Bool_Exp = {
-  _and?: InputMaybe<Array<Admin_Bool_Exp>>;
-  _not?: InputMaybe<Admin_Bool_Exp>;
-  _or?: InputMaybe<Array<Admin_Bool_Exp>>;
-  email?: InputMaybe<String_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  name?: InputMaybe<String_Comparison_Exp>;
-  phone?: InputMaybe<String_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "admin" */
-export enum Admin_Constraint {
-  /** unique or primary key constraint */
-  AdminEmailKey = 'admin_email_key',
-  /** unique or primary key constraint */
-  AdminPhoneKey = 'admin_phone_key',
-  /** unique or primary key constraint */
-  AdminPkey = 'admin_pkey'
-}
-
-/** input type for inserting data into table "admin" */
-export type Admin_Insert_Input = {
-  email?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  name?: InputMaybe<Scalars['String']>;
-  phone?: InputMaybe<Scalars['String']>;
-};
-
-/** aggregate max on columns */
-export type Admin_Max_Fields = {
-  __typename?: 'admin_max_fields';
-  email?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
-};
-
-/** aggregate min on columns */
-export type Admin_Min_Fields = {
-  __typename?: 'admin_min_fields';
-  email?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
-};
-
-/** response of any mutation on the table "admin" */
-export type Admin_Mutation_Response = {
-  __typename?: 'admin_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Admin>;
-};
-
-/** on_conflict condition type for table "admin" */
-export type Admin_On_Conflict = {
-  constraint: Admin_Constraint;
-  update_columns?: Array<Admin_Update_Column>;
-  where?: InputMaybe<Admin_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "admin". */
-export type Admin_Order_By = {
-  email?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  name?: InputMaybe<Order_By>;
-  phone?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: admin */
-export type Admin_Pk_Columns_Input = {
-  email: Scalars['String'];
-  id: Scalars['uuid'];
-  phone: Scalars['String'];
-};
-
-/** select columns of table "admin" */
-export enum Admin_Select_Column {
-  /** column name */
-  Email = 'email',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  Phone = 'phone'
-}
-
-/** input type for updating data in table "admin" */
-export type Admin_Set_Input = {
-  email?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  name?: InputMaybe<Scalars['String']>;
-  phone?: InputMaybe<Scalars['String']>;
-};
-
-/** update columns of table "admin" */
-export enum Admin_Update_Column {
-  /** column name */
-  Email = 'email',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  Phone = 'phone'
-}
-
 /** columns and relationships of "bill" */
 export type Bill = {
   __typename?: 'bill';
@@ -243,16 +102,14 @@ export type Bill = {
   customer_id?: Maybe<Scalars['uuid']>;
   driver_phone?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
-  image?: Maybe<Scalars['String']>;
   /** An object relationship */
   material: Material;
   material_id: Scalars['uuid'];
   nano_id: Scalars['Int'];
   order_id?: Maybe<Scalars['String']>;
   paid?: Maybe<Scalars['Boolean']>;
-  paid_by: Scalars['String'];
+  paid_by: Paid_By_Enum;
   payment_initiated?: Maybe<Scalars['Boolean']>;
-  photos?: Maybe<Scalars['json']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
   scale_weight: Scalars['Int'];
   second_weight: Scalars['Boolean'];
@@ -288,12 +145,6 @@ export type BillBillsByReferenceBillId_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Bill_Order_By>>;
   where?: InputMaybe<Bill_Bool_Exp>;
-};
-
-
-/** columns and relationships of "bill" */
-export type BillPhotosArgs = {
-  path?: InputMaybe<Scalars['String']>;
 };
 
 /** aggregated selection of "bill" */
@@ -383,15 +234,13 @@ export type Bill_Bool_Exp = {
   customer_id?: InputMaybe<Uuid_Comparison_Exp>;
   driver_phone?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
-  image?: InputMaybe<String_Comparison_Exp>;
   material?: InputMaybe<Material_Bool_Exp>;
   material_id?: InputMaybe<Uuid_Comparison_Exp>;
   nano_id?: InputMaybe<Int_Comparison_Exp>;
   order_id?: InputMaybe<String_Comparison_Exp>;
   paid?: InputMaybe<Boolean_Comparison_Exp>;
-  paid_by?: InputMaybe<String_Comparison_Exp>;
+  paid_by?: InputMaybe<Paid_By_Enum_Comparison_Exp>;
   payment_initiated?: InputMaybe<Boolean_Comparison_Exp>;
-  photos?: InputMaybe<Json_Comparison_Exp>;
   reference_bill_id?: InputMaybe<Uuid_Comparison_Exp>;
   scale_weight?: InputMaybe<Int_Comparison_Exp>;
   second_weight?: InputMaybe<Boolean_Comparison_Exp>;
@@ -408,11 +257,11 @@ export type Bill_Bool_Exp = {
 
 /** unique or primary key constraints on table "bill" */
 export enum Bill_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "nano_id" */
   BillNanoIdKey = 'bill_nano_id_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   BillPkey = 'bill_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "nano_id" */
   BillPkey_2 = 'bill_pkey_2'
 }
 
@@ -439,15 +288,13 @@ export type Bill_Insert_Input = {
   customer_id?: InputMaybe<Scalars['uuid']>;
   driver_phone?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
-  image?: InputMaybe<Scalars['String']>;
   material?: InputMaybe<Material_Obj_Rel_Insert_Input>;
   material_id?: InputMaybe<Scalars['uuid']>;
   nano_id?: InputMaybe<Scalars['Int']>;
   order_id?: InputMaybe<Scalars['String']>;
   paid?: InputMaybe<Scalars['Boolean']>;
-  paid_by?: InputMaybe<Scalars['String']>;
+  paid_by?: InputMaybe<Paid_By_Enum>;
   payment_initiated?: InputMaybe<Scalars['Boolean']>;
-  photos?: InputMaybe<Scalars['json']>;
   reference_bill_id?: InputMaybe<Scalars['uuid']>;
   scale_weight?: InputMaybe<Scalars['Int']>;
   second_weight?: InputMaybe<Scalars['Boolean']>;
@@ -472,11 +319,9 @@ export type Bill_Max_Fields = {
   customer_id?: Maybe<Scalars['uuid']>;
   driver_phone?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
-  image?: Maybe<Scalars['String']>;
   material_id?: Maybe<Scalars['uuid']>;
   nano_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['String']>;
-  paid_by?: Maybe<Scalars['String']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
   scale_weight?: Maybe<Scalars['Int']>;
   tare_weight?: Maybe<Scalars['Int']>;
@@ -496,11 +341,9 @@ export type Bill_Max_Order_By = {
   customer_id?: InputMaybe<Order_By>;
   driver_phone?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  image?: InputMaybe<Order_By>;
   material_id?: InputMaybe<Order_By>;
   nano_id?: InputMaybe<Order_By>;
   order_id?: InputMaybe<Order_By>;
-  paid_by?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
@@ -521,11 +364,9 @@ export type Bill_Min_Fields = {
   customer_id?: Maybe<Scalars['uuid']>;
   driver_phone?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
-  image?: Maybe<Scalars['String']>;
   material_id?: Maybe<Scalars['uuid']>;
   nano_id?: Maybe<Scalars['Int']>;
   order_id?: Maybe<Scalars['String']>;
-  paid_by?: Maybe<Scalars['String']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
   scale_weight?: Maybe<Scalars['Int']>;
   tare_weight?: Maybe<Scalars['Int']>;
@@ -545,11 +386,9 @@ export type Bill_Min_Order_By = {
   customer_id?: InputMaybe<Order_By>;
   driver_phone?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  image?: InputMaybe<Order_By>;
   material_id?: InputMaybe<Order_By>;
   nano_id?: InputMaybe<Order_By>;
   order_id?: InputMaybe<Order_By>;
-  paid_by?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   tare_weight?: InputMaybe<Order_By>;
@@ -598,7 +437,6 @@ export type Bill_Order_By = {
   customer_id?: InputMaybe<Order_By>;
   driver_phone?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  image?: InputMaybe<Order_By>;
   material?: InputMaybe<Material_Order_By>;
   material_id?: InputMaybe<Order_By>;
   nano_id?: InputMaybe<Order_By>;
@@ -606,7 +444,6 @@ export type Bill_Order_By = {
   paid?: InputMaybe<Order_By>;
   paid_by?: InputMaybe<Order_By>;
   payment_initiated?: InputMaybe<Order_By>;
-  photos?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
   scale_weight?: InputMaybe<Order_By>;
   second_weight?: InputMaybe<Order_By>;
@@ -643,8 +480,6 @@ export enum Bill_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Image = 'image',
-  /** column name */
   MaterialId = 'material_id',
   /** column name */
   NanoId = 'nano_id',
@@ -656,8 +491,6 @@ export enum Bill_Select_Column {
   PaidBy = 'paid_by',
   /** column name */
   PaymentInitiated = 'payment_initiated',
-  /** column name */
-  Photos = 'photos',
   /** column name */
   ReferenceBillId = 'reference_bill_id',
   /** column name */
@@ -687,14 +520,12 @@ export type Bill_Set_Input = {
   customer_id?: InputMaybe<Scalars['uuid']>;
   driver_phone?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
-  image?: InputMaybe<Scalars['String']>;
   material_id?: InputMaybe<Scalars['uuid']>;
   nano_id?: InputMaybe<Scalars['Int']>;
   order_id?: InputMaybe<Scalars['String']>;
   paid?: InputMaybe<Scalars['Boolean']>;
-  paid_by?: InputMaybe<Scalars['String']>;
+  paid_by?: InputMaybe<Paid_By_Enum>;
   payment_initiated?: InputMaybe<Scalars['Boolean']>;
-  photos?: InputMaybe<Scalars['json']>;
   reference_bill_id?: InputMaybe<Scalars['uuid']>;
   scale_weight?: InputMaybe<Scalars['Int']>;
   second_weight?: InputMaybe<Scalars['Boolean']>;
@@ -791,8 +622,6 @@ export enum Bill_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Image = 'image',
-  /** column name */
   MaterialId = 'material_id',
   /** column name */
   NanoId = 'nano_id',
@@ -804,8 +633,6 @@ export enum Bill_Update_Column {
   PaidBy = 'paid_by',
   /** column name */
   PaymentInitiated = 'payment_initiated',
-  /** column name */
-  Photos = 'photos',
   /** column name */
   ReferenceBillId = 'reference_bill_id',
   /** column name */
@@ -1066,7 +893,7 @@ export type Customer_Bool_Exp = {
 
 /** unique or primary key constraints on table "customer" */
 export enum Customer_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   CustomerPkey = 'customer_pkey'
 }
 
@@ -1452,9 +1279,9 @@ export type Material_Bool_Exp = {
 
 /** unique or primary key constraints on table "material" */
 export enum Material_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "hsn" */
   MaterialsHsnKey = 'materials_hsn_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   MaterialsPkey = 'materials_pkey'
 }
 
@@ -1579,10 +1406,6 @@ export type Money_Comparison_Exp = {
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
-  /** delete data from the table: "admin" */
-  delete_admin?: Maybe<Admin_Mutation_Response>;
-  /** delete single row from the table: "admin" */
-  delete_admin_by_pk?: Maybe<Admin>;
   /** delete data from the table: "bill" */
   delete_bill?: Maybe<Bill_Mutation_Response>;
   /** delete single row from the table: "bill" */
@@ -1595,6 +1418,14 @@ export type Mutation_Root = {
   delete_material?: Maybe<Material_Mutation_Response>;
   /** delete single row from the table: "material" */
   delete_material_by_pk?: Maybe<Material>;
+  /** delete data from the table: "paid_by" */
+  delete_paid_by?: Maybe<Paid_By_Mutation_Response>;
+  /** delete single row from the table: "paid_by" */
+  delete_paid_by_by_pk?: Maybe<Paid_By>;
+  /** delete data from the table: "role" */
+  delete_role?: Maybe<Role_Mutation_Response>;
+  /** delete single row from the table: "role" */
+  delete_role_by_pk?: Maybe<Role>;
   /** delete data from the table: "tenents" */
   delete_tenents?: Maybe<Tenents_Mutation_Response>;
   /** delete single row from the table: "tenents" */
@@ -1611,10 +1442,6 @@ export type Mutation_Root = {
   delete_weighbridge?: Maybe<Weighbridge_Mutation_Response>;
   /** delete single row from the table: "weighbridge" */
   delete_weighbridge_by_pk?: Maybe<Weighbridge>;
-  /** insert data into the table: "admin" */
-  insert_admin?: Maybe<Admin_Mutation_Response>;
-  /** insert a single row into the table: "admin" */
-  insert_admin_one?: Maybe<Admin>;
   /** insert data into the table: "bill" */
   insert_bill?: Maybe<Bill_Mutation_Response>;
   /** insert a single row into the table: "bill" */
@@ -1627,6 +1454,14 @@ export type Mutation_Root = {
   insert_material?: Maybe<Material_Mutation_Response>;
   /** insert a single row into the table: "material" */
   insert_material_one?: Maybe<Material>;
+  /** insert data into the table: "paid_by" */
+  insert_paid_by?: Maybe<Paid_By_Mutation_Response>;
+  /** insert a single row into the table: "paid_by" */
+  insert_paid_by_one?: Maybe<Paid_By>;
+  /** insert data into the table: "role" */
+  insert_role?: Maybe<Role_Mutation_Response>;
+  /** insert a single row into the table: "role" */
+  insert_role_one?: Maybe<Role>;
   /** insert data into the table: "tenents" */
   insert_tenents?: Maybe<Tenents_Mutation_Response>;
   /** insert a single row into the table: "tenents" */
@@ -1643,10 +1478,6 @@ export type Mutation_Root = {
   insert_weighbridge?: Maybe<Weighbridge_Mutation_Response>;
   /** insert a single row into the table: "weighbridge" */
   insert_weighbridge_one?: Maybe<Weighbridge>;
-  /** update data of the table: "admin" */
-  update_admin?: Maybe<Admin_Mutation_Response>;
-  /** update single row of the table: "admin" */
-  update_admin_by_pk?: Maybe<Admin>;
   /** update data of the table: "bill" */
   update_bill?: Maybe<Bill_Mutation_Response>;
   /** update single row of the table: "bill" */
@@ -1659,6 +1490,14 @@ export type Mutation_Root = {
   update_material?: Maybe<Material_Mutation_Response>;
   /** update single row of the table: "material" */
   update_material_by_pk?: Maybe<Material>;
+  /** update data of the table: "paid_by" */
+  update_paid_by?: Maybe<Paid_By_Mutation_Response>;
+  /** update single row of the table: "paid_by" */
+  update_paid_by_by_pk?: Maybe<Paid_By>;
+  /** update data of the table: "role" */
+  update_role?: Maybe<Role_Mutation_Response>;
+  /** update single row of the table: "role" */
+  update_role_by_pk?: Maybe<Role>;
   /** update data of the table: "tenents" */
   update_tenents?: Maybe<Tenents_Mutation_Response>;
   /** update single row of the table: "tenents" */
@@ -1675,20 +1514,6 @@ export type Mutation_Root = {
   update_weighbridge?: Maybe<Weighbridge_Mutation_Response>;
   /** update single row of the table: "weighbridge" */
   update_weighbridge_by_pk?: Maybe<Weighbridge>;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_AdminArgs = {
-  where: Admin_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Admin_By_PkArgs = {
-  email: Scalars['String'];
-  id: Scalars['uuid'];
-  phone: Scalars['String'];
 };
 
 
@@ -1725,6 +1550,30 @@ export type Mutation_RootDelete_MaterialArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Material_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Paid_ByArgs = {
+  where: Paid_By_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Paid_By_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_RoleArgs = {
+  where: Role_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Role_By_PkArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -1777,20 +1626,6 @@ export type Mutation_RootDelete_Weighbridge_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_AdminArgs = {
-  objects: Array<Admin_Insert_Input>;
-  on_conflict?: InputMaybe<Admin_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Admin_OneArgs = {
-  object: Admin_Insert_Input;
-  on_conflict?: InputMaybe<Admin_On_Conflict>;
-};
-
-
-/** mutation root */
 export type Mutation_RootInsert_BillArgs = {
   objects: Array<Bill_Insert_Input>;
   on_conflict?: InputMaybe<Bill_On_Conflict>;
@@ -1829,6 +1664,34 @@ export type Mutation_RootInsert_MaterialArgs = {
 export type Mutation_RootInsert_Material_OneArgs = {
   object: Material_Insert_Input;
   on_conflict?: InputMaybe<Material_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Paid_ByArgs = {
+  objects: Array<Paid_By_Insert_Input>;
+  on_conflict?: InputMaybe<Paid_By_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Paid_By_OneArgs = {
+  object: Paid_By_Insert_Input;
+  on_conflict?: InputMaybe<Paid_By_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_RoleArgs = {
+  objects: Array<Role_Insert_Input>;
+  on_conflict?: InputMaybe<Role_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Role_OneArgs = {
+  object: Role_Insert_Input;
+  on_conflict?: InputMaybe<Role_On_Conflict>;
 };
 
 
@@ -1889,20 +1752,6 @@ export type Mutation_RootInsert_Weighbridge_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_AdminArgs = {
-  _set?: InputMaybe<Admin_Set_Input>;
-  where: Admin_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Admin_By_PkArgs = {
-  _set?: InputMaybe<Admin_Set_Input>;
-  pk_columns: Admin_Pk_Columns_Input;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdate_BillArgs = {
   _inc?: InputMaybe<Bill_Inc_Input>;
   _set?: InputMaybe<Bill_Set_Input>;
@@ -1949,6 +1798,34 @@ export type Mutation_RootUpdate_Material_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Paid_ByArgs = {
+  _set?: InputMaybe<Paid_By_Set_Input>;
+  where: Paid_By_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Paid_By_By_PkArgs = {
+  _set?: InputMaybe<Paid_By_Set_Input>;
+  pk_columns: Paid_By_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_RoleArgs = {
+  _set?: InputMaybe<Role_Set_Input>;
+  where: Role_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Role_By_PkArgs = {
+  _set?: InputMaybe<Role_Set_Input>;
+  pk_columns: Role_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_TenentsArgs = {
   _set?: InputMaybe<Tenents_Set_Input>;
   where: Tenents_Bool_Exp;
@@ -1978,7 +1855,6 @@ export type Mutation_RootUpdate_User_By_PkArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_VehicleArgs = {
-  _inc?: InputMaybe<Vehicle_Inc_Input>;
   _set?: InputMaybe<Vehicle_Set_Input>;
   where: Vehicle_Bool_Exp;
 };
@@ -1986,7 +1862,6 @@ export type Mutation_RootUpdate_VehicleArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Vehicle_By_PkArgs = {
-  _inc?: InputMaybe<Vehicle_Inc_Input>;
   _set?: InputMaybe<Vehicle_Set_Input>;
   pk_columns: Vehicle_Pk_Columns_Input;
 };
@@ -2021,14 +1896,145 @@ export enum Order_By {
   DescNullsLast = 'desc_nulls_last'
 }
 
+/** columns and relationships of "paid_by" */
+export type Paid_By = {
+  __typename?: 'paid_by';
+  comment: Scalars['String'];
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "paid_by" */
+export type Paid_By_Aggregate = {
+  __typename?: 'paid_by_aggregate';
+  aggregate?: Maybe<Paid_By_Aggregate_Fields>;
+  nodes: Array<Paid_By>;
+};
+
+/** aggregate fields of "paid_by" */
+export type Paid_By_Aggregate_Fields = {
+  __typename?: 'paid_by_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Paid_By_Max_Fields>;
+  min?: Maybe<Paid_By_Min_Fields>;
+};
+
+
+/** aggregate fields of "paid_by" */
+export type Paid_By_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Paid_By_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "paid_by". All fields are combined with a logical 'AND'. */
+export type Paid_By_Bool_Exp = {
+  _and?: InputMaybe<Array<Paid_By_Bool_Exp>>;
+  _not?: InputMaybe<Paid_By_Bool_Exp>;
+  _or?: InputMaybe<Array<Paid_By_Bool_Exp>>;
+  comment?: InputMaybe<String_Comparison_Exp>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "paid_by" */
+export enum Paid_By_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  PaidByPkey = 'paid_by_pkey'
+}
+
+export enum Paid_By_Enum {
+  /** buyer */
+  Buyer = 'buyer',
+  /** cash */
+  Cash = 'cash',
+  /** driver */
+  Driver = 'driver',
+  /** other */
+  Other = 'other',
+  /** seller */
+  Seller = 'seller',
+  /** trader */
+  Trader = 'trader'
+}
+
+/** Boolean expression to compare columns of type "paid_by_enum". All fields are combined with logical 'AND'. */
+export type Paid_By_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Paid_By_Enum>;
+  _in?: InputMaybe<Array<Paid_By_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Paid_By_Enum>;
+  _nin?: InputMaybe<Array<Paid_By_Enum>>;
+};
+
+/** input type for inserting data into table "paid_by" */
+export type Paid_By_Insert_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Paid_By_Max_Fields = {
+  __typename?: 'paid_by_max_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Paid_By_Min_Fields = {
+  __typename?: 'paid_by_min_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "paid_by" */
+export type Paid_By_Mutation_Response = {
+  __typename?: 'paid_by_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Paid_By>;
+};
+
+/** on_conflict condition type for table "paid_by" */
+export type Paid_By_On_Conflict = {
+  constraint: Paid_By_Constraint;
+  update_columns?: Array<Paid_By_Update_Column>;
+  where?: InputMaybe<Paid_By_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "paid_by". */
+export type Paid_By_Order_By = {
+  comment?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: paid_by */
+export type Paid_By_Pk_Columns_Input = {
+  value: Scalars['String'];
+};
+
+/** select columns of table "paid_by" */
+export enum Paid_By_Select_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "paid_by" */
+export type Paid_By_Set_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "paid_by" */
+export enum Paid_By_Update_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
 export type Query_Root = {
   __typename?: 'query_root';
-  /** fetch data from the table: "admin" */
-  admin: Array<Admin>;
-  /** fetch aggregated fields from the table: "admin" */
-  admin_aggregate: Admin_Aggregate;
-  /** fetch data from the table: "admin" using primary key columns */
-  admin_by_pk?: Maybe<Admin>;
   /** fetch data from the table: "bill" */
   bill: Array<Bill>;
   /** fetch aggregated fields from the table: "bill" */
@@ -2047,6 +2053,18 @@ export type Query_Root = {
   material_aggregate: Material_Aggregate;
   /** fetch data from the table: "material" using primary key columns */
   material_by_pk?: Maybe<Material>;
+  /** fetch data from the table: "paid_by" */
+  paid_by: Array<Paid_By>;
+  /** fetch aggregated fields from the table: "paid_by" */
+  paid_by_aggregate: Paid_By_Aggregate;
+  /** fetch data from the table: "paid_by" using primary key columns */
+  paid_by_by_pk?: Maybe<Paid_By>;
+  /** fetch data from the table: "role" */
+  role: Array<Role>;
+  /** fetch aggregated fields from the table: "role" */
+  role_aggregate: Role_Aggregate;
+  /** fetch data from the table: "role" using primary key columns */
+  role_by_pk?: Maybe<Role>;
   /** fetch data from the table: "tenents" */
   tenents: Array<Tenents>;
   /** fetch aggregated fields from the table: "tenents" */
@@ -2071,31 +2089,6 @@ export type Query_Root = {
   weighbridge_aggregate: Weighbridge_Aggregate;
   /** fetch data from the table: "weighbridge" using primary key columns */
   weighbridge_by_pk?: Maybe<Weighbridge>;
-};
-
-
-export type Query_RootAdminArgs = {
-  distinct_on?: InputMaybe<Array<Admin_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Admin_Order_By>>;
-  where?: InputMaybe<Admin_Bool_Exp>;
-};
-
-
-export type Query_RootAdmin_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Admin_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Admin_Order_By>>;
-  where?: InputMaybe<Admin_Bool_Exp>;
-};
-
-
-export type Query_RootAdmin_By_PkArgs = {
-  email: Scalars['String'];
-  id: Scalars['uuid'];
-  phone: Scalars['String'];
 };
 
 
@@ -2165,6 +2158,52 @@ export type Query_RootMaterial_AggregateArgs = {
 
 export type Query_RootMaterial_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+export type Query_RootPaid_ByArgs = {
+  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
+  where?: InputMaybe<Paid_By_Bool_Exp>;
+};
+
+
+export type Query_RootPaid_By_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
+  where?: InputMaybe<Paid_By_Bool_Exp>;
+};
+
+
+export type Query_RootPaid_By_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Query_RootRoleArgs = {
+  distinct_on?: InputMaybe<Array<Role_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Role_Order_By>>;
+  where?: InputMaybe<Role_Bool_Exp>;
+};
+
+
+export type Query_RootRole_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Role_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Role_Order_By>>;
+  where?: InputMaybe<Role_Bool_Exp>;
+};
+
+
+export type Query_RootRole_By_PkArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -2259,14 +2298,143 @@ export type Query_RootWeighbridge_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
+/** roles of users */
+export type Role = {
+  __typename?: 'role';
+  comment: Scalars['String'];
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "role" */
+export type Role_Aggregate = {
+  __typename?: 'role_aggregate';
+  aggregate?: Maybe<Role_Aggregate_Fields>;
+  nodes: Array<Role>;
+};
+
+/** aggregate fields of "role" */
+export type Role_Aggregate_Fields = {
+  __typename?: 'role_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Role_Max_Fields>;
+  min?: Maybe<Role_Min_Fields>;
+};
+
+
+/** aggregate fields of "role" */
+export type Role_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Role_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "role". All fields are combined with a logical 'AND'. */
+export type Role_Bool_Exp = {
+  _and?: InputMaybe<Array<Role_Bool_Exp>>;
+  _not?: InputMaybe<Role_Bool_Exp>;
+  _or?: InputMaybe<Array<Role_Bool_Exp>>;
+  comment?: InputMaybe<String_Comparison_Exp>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "role" */
+export enum Role_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  RolePkey = 'role_pkey'
+}
+
+export enum Role_Enum {
+  /** admin */
+  Admin = 'admin',
+  /** customer */
+  Customer = 'customer',
+  /** serviceEngineer */
+  ServiceEngineer = 'serviceEngineer',
+  /** tenantAdmin */
+  TenantAdmin = 'tenantAdmin',
+  /** terminal */
+  Terminal = 'terminal'
+}
+
+/** Boolean expression to compare columns of type "role_enum". All fields are combined with logical 'AND'. */
+export type Role_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Role_Enum>;
+  _in?: InputMaybe<Array<Role_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Role_Enum>;
+  _nin?: InputMaybe<Array<Role_Enum>>;
+};
+
+/** input type for inserting data into table "role" */
+export type Role_Insert_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Role_Max_Fields = {
+  __typename?: 'role_max_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Role_Min_Fields = {
+  __typename?: 'role_min_fields';
+  comment?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "role" */
+export type Role_Mutation_Response = {
+  __typename?: 'role_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Role>;
+};
+
+/** on_conflict condition type for table "role" */
+export type Role_On_Conflict = {
+  constraint: Role_Constraint;
+  update_columns?: Array<Role_Update_Column>;
+  where?: InputMaybe<Role_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "role". */
+export type Role_Order_By = {
+  comment?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: role */
+export type Role_Pk_Columns_Input = {
+  value: Scalars['String'];
+};
+
+/** select columns of table "role" */
+export enum Role_Select_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "role" */
+export type Role_Set_Input = {
+  comment?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "role" */
+export enum Role_Update_Column {
+  /** column name */
+  Comment = 'comment',
+  /** column name */
+  Value = 'value'
+}
+
 export type Subscription_Root = {
   __typename?: 'subscription_root';
-  /** fetch data from the table: "admin" */
-  admin: Array<Admin>;
-  /** fetch aggregated fields from the table: "admin" */
-  admin_aggregate: Admin_Aggregate;
-  /** fetch data from the table: "admin" using primary key columns */
-  admin_by_pk?: Maybe<Admin>;
   /** fetch data from the table: "bill" */
   bill: Array<Bill>;
   /** fetch aggregated fields from the table: "bill" */
@@ -2285,6 +2453,18 @@ export type Subscription_Root = {
   material_aggregate: Material_Aggregate;
   /** fetch data from the table: "material" using primary key columns */
   material_by_pk?: Maybe<Material>;
+  /** fetch data from the table: "paid_by" */
+  paid_by: Array<Paid_By>;
+  /** fetch aggregated fields from the table: "paid_by" */
+  paid_by_aggregate: Paid_By_Aggregate;
+  /** fetch data from the table: "paid_by" using primary key columns */
+  paid_by_by_pk?: Maybe<Paid_By>;
+  /** fetch data from the table: "role" */
+  role: Array<Role>;
+  /** fetch aggregated fields from the table: "role" */
+  role_aggregate: Role_Aggregate;
+  /** fetch data from the table: "role" using primary key columns */
+  role_by_pk?: Maybe<Role>;
   /** fetch data from the table: "tenents" */
   tenents: Array<Tenents>;
   /** fetch aggregated fields from the table: "tenents" */
@@ -2309,31 +2489,6 @@ export type Subscription_Root = {
   weighbridge_aggregate: Weighbridge_Aggregate;
   /** fetch data from the table: "weighbridge" using primary key columns */
   weighbridge_by_pk?: Maybe<Weighbridge>;
-};
-
-
-export type Subscription_RootAdminArgs = {
-  distinct_on?: InputMaybe<Array<Admin_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Admin_Order_By>>;
-  where?: InputMaybe<Admin_Bool_Exp>;
-};
-
-
-export type Subscription_RootAdmin_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Admin_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Admin_Order_By>>;
-  where?: InputMaybe<Admin_Bool_Exp>;
-};
-
-
-export type Subscription_RootAdmin_By_PkArgs = {
-  email: Scalars['String'];
-  id: Scalars['uuid'];
-  phone: Scalars['String'];
 };
 
 
@@ -2403,6 +2558,52 @@ export type Subscription_RootMaterial_AggregateArgs = {
 
 export type Subscription_RootMaterial_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootPaid_ByArgs = {
+  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
+  where?: InputMaybe<Paid_By_Bool_Exp>;
+};
+
+
+export type Subscription_RootPaid_By_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Paid_By_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Paid_By_Order_By>>;
+  where?: InputMaybe<Paid_By_Bool_Exp>;
+};
+
+
+export type Subscription_RootPaid_By_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootRoleArgs = {
+  distinct_on?: InputMaybe<Array<Role_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Role_Order_By>>;
+  where?: InputMaybe<Role_Bool_Exp>;
+};
+
+
+export type Subscription_RootRole_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Role_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Role_Order_By>>;
+  where?: InputMaybe<Role_Bool_Exp>;
+};
+
+
+export type Subscription_RootRole_By_PkArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -2655,11 +2856,11 @@ export type Tenents_Bool_Exp = {
 
 /** unique or primary key constraints on table "tenents" */
 export enum Tenents_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "email" */
   TenentsEmailKey = 'tenents_email_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   TenentsPkey = 'tenents_pkey',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "razorpay_id" */
   TenentsRazorpayIdKey = 'tenents_razorpay_id_key'
 }
 
@@ -2811,20 +3012,24 @@ export type Timestamptz_Comparison_Exp = {
 /** columns and relationships of "user" */
 export type User = {
   __typename?: 'user';
+  blocked?: Maybe<Scalars['Boolean']>;
   created_at: Scalars['timestamptz'];
   email: Scalars['String'];
+  email_verified?: Maybe<Scalars['Boolean']>;
+  forgot_password_token_hash?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   meta_data?: Maybe<Scalars['json']>;
+  password?: Maybe<Scalars['String']>;
   profile?: Maybe<Scalars['json']>;
-  role?: Maybe<Scalars['String']>;
-  synced?: Maybe<Scalars['Boolean']>;
+  refresh_token_hash?: Maybe<Scalars['String']>;
+  role?: Maybe<Role_Enum>;
   /** An object relationship */
-  tenent: Tenents;
-  tenent_id: Scalars['uuid'];
+  tenent?: Maybe<Tenents>;
+  tenent_id?: Maybe<Scalars['uuid']>;
   updated_at: Scalars['timestamptz'];
   /** An object relationship */
-  weighbridge: Weighbridge;
-  weighbridge_id: Scalars['uuid'];
+  weighbridge?: Maybe<Weighbridge>;
+  weighbridge_id?: Maybe<Scalars['uuid']>;
 };
 
 
@@ -2880,13 +3085,17 @@ export type User_Bool_Exp = {
   _and?: InputMaybe<Array<User_Bool_Exp>>;
   _not?: InputMaybe<User_Bool_Exp>;
   _or?: InputMaybe<Array<User_Bool_Exp>>;
+  blocked?: InputMaybe<Boolean_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
+  email_verified?: InputMaybe<Boolean_Comparison_Exp>;
+  forgot_password_token_hash?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   meta_data?: InputMaybe<Json_Comparison_Exp>;
+  password?: InputMaybe<String_Comparison_Exp>;
   profile?: InputMaybe<Json_Comparison_Exp>;
-  role?: InputMaybe<String_Comparison_Exp>;
-  synced?: InputMaybe<Boolean_Comparison_Exp>;
+  refresh_token_hash?: InputMaybe<String_Comparison_Exp>;
+  role?: InputMaybe<Role_Enum_Comparison_Exp>;
   tenent?: InputMaybe<Tenents_Bool_Exp>;
   tenent_id?: InputMaybe<Uuid_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -2896,21 +3105,25 @@ export type User_Bool_Exp = {
 
 /** unique or primary key constraints on table "user" */
 export enum User_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "email" */
   UserEmailKey = 'user_email_key',
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   UserPkey = 'user_pkey'
 }
 
 /** input type for inserting data into table "user" */
 export type User_Insert_Input = {
+  blocked?: InputMaybe<Scalars['Boolean']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   email?: InputMaybe<Scalars['String']>;
+  email_verified?: InputMaybe<Scalars['Boolean']>;
+  forgot_password_token_hash?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   meta_data?: InputMaybe<Scalars['json']>;
+  password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<Scalars['json']>;
-  role?: InputMaybe<Scalars['String']>;
-  synced?: InputMaybe<Scalars['Boolean']>;
+  refresh_token_hash?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<Role_Enum>;
   tenent?: InputMaybe<Tenents_Obj_Rel_Insert_Input>;
   tenent_id?: InputMaybe<Scalars['uuid']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
@@ -2923,8 +3136,10 @@ export type User_Max_Fields = {
   __typename?: 'user_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
+  forgot_password_token_hash?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
-  role?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  refresh_token_hash?: Maybe<Scalars['String']>;
   tenent_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   weighbridge_id?: Maybe<Scalars['uuid']>;
@@ -2934,8 +3149,10 @@ export type User_Max_Fields = {
 export type User_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
+  forgot_password_token_hash?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  role?: InputMaybe<Order_By>;
+  password?: InputMaybe<Order_By>;
+  refresh_token_hash?: InputMaybe<Order_By>;
   tenent_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   weighbridge_id?: InputMaybe<Order_By>;
@@ -2946,8 +3163,10 @@ export type User_Min_Fields = {
   __typename?: 'user_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
+  forgot_password_token_hash?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
-  role?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  refresh_token_hash?: Maybe<Scalars['String']>;
   tenent_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   weighbridge_id?: Maybe<Scalars['uuid']>;
@@ -2957,8 +3176,10 @@ export type User_Min_Fields = {
 export type User_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
+  forgot_password_token_hash?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  role?: InputMaybe<Order_By>;
+  password?: InputMaybe<Order_By>;
+  refresh_token_hash?: InputMaybe<Order_By>;
   tenent_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   weighbridge_id?: InputMaybe<Order_By>;
@@ -2982,13 +3203,17 @@ export type User_On_Conflict = {
 
 /** Ordering options when selecting data from "user". */
 export type User_Order_By = {
+  blocked?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
+  email_verified?: InputMaybe<Order_By>;
+  forgot_password_token_hash?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   meta_data?: InputMaybe<Order_By>;
+  password?: InputMaybe<Order_By>;
   profile?: InputMaybe<Order_By>;
+  refresh_token_hash?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
-  synced?: InputMaybe<Order_By>;
   tenent?: InputMaybe<Tenents_Order_By>;
   tenent_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -3004,19 +3229,27 @@ export type User_Pk_Columns_Input = {
 /** select columns of table "user" */
 export enum User_Select_Column {
   /** column name */
+  Blocked = 'blocked',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Email = 'email',
+  /** column name */
+  EmailVerified = 'email_verified',
+  /** column name */
+  ForgotPasswordTokenHash = 'forgot_password_token_hash',
   /** column name */
   Id = 'id',
   /** column name */
   MetaData = 'meta_data',
   /** column name */
+  Password = 'password',
+  /** column name */
   Profile = 'profile',
   /** column name */
-  Role = 'role',
+  RefreshTokenHash = 'refresh_token_hash',
   /** column name */
-  Synced = 'synced',
+  Role = 'role',
   /** column name */
   TenentId = 'tenent_id',
   /** column name */
@@ -3027,13 +3260,17 @@ export enum User_Select_Column {
 
 /** input type for updating data in table "user" */
 export type User_Set_Input = {
+  blocked?: InputMaybe<Scalars['Boolean']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   email?: InputMaybe<Scalars['String']>;
+  email_verified?: InputMaybe<Scalars['Boolean']>;
+  forgot_password_token_hash?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   meta_data?: InputMaybe<Scalars['json']>;
+  password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<Scalars['json']>;
-  role?: InputMaybe<Scalars['String']>;
-  synced?: InputMaybe<Scalars['Boolean']>;
+  refresh_token_hash?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<Role_Enum>;
   tenent_id?: InputMaybe<Scalars['uuid']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
   weighbridge_id?: InputMaybe<Scalars['uuid']>;
@@ -3042,19 +3279,27 @@ export type User_Set_Input = {
 /** update columns of table "user" */
 export enum User_Update_Column {
   /** column name */
+  Blocked = 'blocked',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Email = 'email',
+  /** column name */
+  EmailVerified = 'email_verified',
+  /** column name */
+  ForgotPasswordTokenHash = 'forgot_password_token_hash',
   /** column name */
   Id = 'id',
   /** column name */
   MetaData = 'meta_data',
   /** column name */
+  Password = 'password',
+  /** column name */
   Profile = 'profile',
   /** column name */
-  Role = 'role',
+  RefreshTokenHash = 'refresh_token_hash',
   /** column name */
-  Synced = 'synced',
+  Role = 'role',
   /** column name */
   TenentId = 'tenent_id',
   /** column name */
@@ -3083,16 +3328,10 @@ export type Vehicle = {
   bills: Array<Bill>;
   /** An aggregate relationship */
   bills_aggregate: Bill_Aggregate;
-  charges: Scalars['money'];
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
   manufacturer: Scalars['String'];
   name: Scalars['String'];
-  special_price_1?: Maybe<Scalars['money']>;
-  special_price_2?: Maybe<Scalars['money']>;
-  special_price_3?: Maybe<Scalars['money']>;
-  special_price_4?: Maybe<Scalars['money']>;
-  special_price_5?: Maybe<Scalars['money']>;
   updated_at: Scalars['timestamptz'];
 };
 
@@ -3126,17 +3365,9 @@ export type Vehicle_Aggregate = {
 /** aggregate fields of "vehicle" */
 export type Vehicle_Aggregate_Fields = {
   __typename?: 'vehicle_aggregate_fields';
-  avg?: Maybe<Vehicle_Avg_Fields>;
   count: Scalars['Int'];
   max?: Maybe<Vehicle_Max_Fields>;
   min?: Maybe<Vehicle_Min_Fields>;
-  stddev?: Maybe<Vehicle_Stddev_Fields>;
-  stddev_pop?: Maybe<Vehicle_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Vehicle_Stddev_Samp_Fields>;
-  sum?: Maybe<Vehicle_Sum_Fields>;
-  var_pop?: Maybe<Vehicle_Var_Pop_Fields>;
-  var_samp?: Maybe<Vehicle_Var_Samp_Fields>;
-  variance?: Maybe<Vehicle_Variance_Fields>;
 };
 
 
@@ -3146,97 +3377,52 @@ export type Vehicle_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
-/** aggregate avg on columns */
-export type Vehicle_Avg_Fields = {
-  __typename?: 'vehicle_avg_fields';
-  charges?: Maybe<Scalars['Float']>;
-  special_price_1?: Maybe<Scalars['Float']>;
-  special_price_2?: Maybe<Scalars['Float']>;
-  special_price_3?: Maybe<Scalars['Float']>;
-  special_price_4?: Maybe<Scalars['Float']>;
-  special_price_5?: Maybe<Scalars['Float']>;
-};
-
 /** Boolean expression to filter rows from the table "vehicle". All fields are combined with a logical 'AND'. */
 export type Vehicle_Bool_Exp = {
   _and?: InputMaybe<Array<Vehicle_Bool_Exp>>;
   _not?: InputMaybe<Vehicle_Bool_Exp>;
   _or?: InputMaybe<Array<Vehicle_Bool_Exp>>;
   bills?: InputMaybe<Bill_Bool_Exp>;
-  charges?: InputMaybe<Money_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   manufacturer?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
-  special_price_1?: InputMaybe<Money_Comparison_Exp>;
-  special_price_2?: InputMaybe<Money_Comparison_Exp>;
-  special_price_3?: InputMaybe<Money_Comparison_Exp>;
-  special_price_4?: InputMaybe<Money_Comparison_Exp>;
-  special_price_5?: InputMaybe<Money_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "vehicle" */
 export enum Vehicle_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   VehiclePkey = 'vehicle_pkey'
 }
-
-/** input type for incrementing numeric columns in table "vehicle" */
-export type Vehicle_Inc_Input = {
-  charges?: InputMaybe<Scalars['money']>;
-  special_price_1?: InputMaybe<Scalars['money']>;
-  special_price_2?: InputMaybe<Scalars['money']>;
-  special_price_3?: InputMaybe<Scalars['money']>;
-  special_price_4?: InputMaybe<Scalars['money']>;
-  special_price_5?: InputMaybe<Scalars['money']>;
-};
 
 /** input type for inserting data into table "vehicle" */
 export type Vehicle_Insert_Input = {
   bills?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
-  charges?: InputMaybe<Scalars['money']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['uuid']>;
   manufacturer?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
-  special_price_1?: InputMaybe<Scalars['money']>;
-  special_price_2?: InputMaybe<Scalars['money']>;
-  special_price_3?: InputMaybe<Scalars['money']>;
-  special_price_4?: InputMaybe<Scalars['money']>;
-  special_price_5?: InputMaybe<Scalars['money']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** aggregate max on columns */
 export type Vehicle_Max_Fields = {
   __typename?: 'vehicle_max_fields';
-  charges?: Maybe<Scalars['money']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   manufacturer?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  special_price_1?: Maybe<Scalars['money']>;
-  special_price_2?: Maybe<Scalars['money']>;
-  special_price_3?: Maybe<Scalars['money']>;
-  special_price_4?: Maybe<Scalars['money']>;
-  special_price_5?: Maybe<Scalars['money']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate min on columns */
 export type Vehicle_Min_Fields = {
   __typename?: 'vehicle_min_fields';
-  charges?: Maybe<Scalars['money']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   manufacturer?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  special_price_1?: Maybe<Scalars['money']>;
-  special_price_2?: Maybe<Scalars['money']>;
-  special_price_3?: Maybe<Scalars['money']>;
-  special_price_4?: Maybe<Scalars['money']>;
-  special_price_5?: Maybe<Scalars['money']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -3266,16 +3452,10 @@ export type Vehicle_On_Conflict = {
 /** Ordering options when selecting data from "vehicle". */
 export type Vehicle_Order_By = {
   bills_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
-  charges?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   manufacturer?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
-  special_price_1?: InputMaybe<Order_By>;
-  special_price_2?: InputMaybe<Order_By>;
-  special_price_3?: InputMaybe<Order_By>;
-  special_price_4?: InputMaybe<Order_By>;
-  special_price_5?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -3287,8 +3467,6 @@ export type Vehicle_Pk_Columns_Input = {
 /** select columns of table "vehicle" */
 export enum Vehicle_Select_Column {
   /** column name */
-  Charges = 'charges',
-  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
@@ -3296,83 +3474,21 @@ export enum Vehicle_Select_Column {
   Manufacturer = 'manufacturer',
   /** column name */
   Name = 'name',
-  /** column name */
-  SpecialPrice_1 = 'special_price_1',
-  /** column name */
-  SpecialPrice_2 = 'special_price_2',
-  /** column name */
-  SpecialPrice_3 = 'special_price_3',
-  /** column name */
-  SpecialPrice_4 = 'special_price_4',
-  /** column name */
-  SpecialPrice_5 = 'special_price_5',
   /** column name */
   UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "vehicle" */
 export type Vehicle_Set_Input = {
-  charges?: InputMaybe<Scalars['money']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   id?: InputMaybe<Scalars['uuid']>;
   manufacturer?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
-  special_price_1?: InputMaybe<Scalars['money']>;
-  special_price_2?: InputMaybe<Scalars['money']>;
-  special_price_3?: InputMaybe<Scalars['money']>;
-  special_price_4?: InputMaybe<Scalars['money']>;
-  special_price_5?: InputMaybe<Scalars['money']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
-};
-
-/** aggregate stddev on columns */
-export type Vehicle_Stddev_Fields = {
-  __typename?: 'vehicle_stddev_fields';
-  charges?: Maybe<Scalars['Float']>;
-  special_price_1?: Maybe<Scalars['Float']>;
-  special_price_2?: Maybe<Scalars['Float']>;
-  special_price_3?: Maybe<Scalars['Float']>;
-  special_price_4?: Maybe<Scalars['Float']>;
-  special_price_5?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Vehicle_Stddev_Pop_Fields = {
-  __typename?: 'vehicle_stddev_pop_fields';
-  charges?: Maybe<Scalars['Float']>;
-  special_price_1?: Maybe<Scalars['Float']>;
-  special_price_2?: Maybe<Scalars['Float']>;
-  special_price_3?: Maybe<Scalars['Float']>;
-  special_price_4?: Maybe<Scalars['Float']>;
-  special_price_5?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Vehicle_Stddev_Samp_Fields = {
-  __typename?: 'vehicle_stddev_samp_fields';
-  charges?: Maybe<Scalars['Float']>;
-  special_price_1?: Maybe<Scalars['Float']>;
-  special_price_2?: Maybe<Scalars['Float']>;
-  special_price_3?: Maybe<Scalars['Float']>;
-  special_price_4?: Maybe<Scalars['Float']>;
-  special_price_5?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate sum on columns */
-export type Vehicle_Sum_Fields = {
-  __typename?: 'vehicle_sum_fields';
-  charges?: Maybe<Scalars['money']>;
-  special_price_1?: Maybe<Scalars['money']>;
-  special_price_2?: Maybe<Scalars['money']>;
-  special_price_3?: Maybe<Scalars['money']>;
-  special_price_4?: Maybe<Scalars['money']>;
-  special_price_5?: Maybe<Scalars['money']>;
 };
 
 /** update columns of table "vehicle" */
 export enum Vehicle_Update_Column {
-  /** column name */
-  Charges = 'charges',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -3382,51 +3498,8 @@ export enum Vehicle_Update_Column {
   /** column name */
   Name = 'name',
   /** column name */
-  SpecialPrice_1 = 'special_price_1',
-  /** column name */
-  SpecialPrice_2 = 'special_price_2',
-  /** column name */
-  SpecialPrice_3 = 'special_price_3',
-  /** column name */
-  SpecialPrice_4 = 'special_price_4',
-  /** column name */
-  SpecialPrice_5 = 'special_price_5',
-  /** column name */
   UpdatedAt = 'updated_at'
 }
-
-/** aggregate var_pop on columns */
-export type Vehicle_Var_Pop_Fields = {
-  __typename?: 'vehicle_var_pop_fields';
-  charges?: Maybe<Scalars['Float']>;
-  special_price_1?: Maybe<Scalars['Float']>;
-  special_price_2?: Maybe<Scalars['Float']>;
-  special_price_3?: Maybe<Scalars['Float']>;
-  special_price_4?: Maybe<Scalars['Float']>;
-  special_price_5?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type Vehicle_Var_Samp_Fields = {
-  __typename?: 'vehicle_var_samp_fields';
-  charges?: Maybe<Scalars['Float']>;
-  special_price_1?: Maybe<Scalars['Float']>;
-  special_price_2?: Maybe<Scalars['Float']>;
-  special_price_3?: Maybe<Scalars['Float']>;
-  special_price_4?: Maybe<Scalars['Float']>;
-  special_price_5?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type Vehicle_Variance_Fields = {
-  __typename?: 'vehicle_variance_fields';
-  charges?: Maybe<Scalars['Float']>;
-  special_price_1?: Maybe<Scalars['Float']>;
-  special_price_2?: Maybe<Scalars['Float']>;
-  special_price_3?: Maybe<Scalars['Float']>;
-  special_price_4?: Maybe<Scalars['Float']>;
-  special_price_5?: Maybe<Scalars['Float']>;
-};
 
 /** columns and relationships of "weighbridge" */
 export type Weighbridge = {
@@ -3569,7 +3642,7 @@ export type Weighbridge_Bool_Exp = {
 
 /** unique or primary key constraints on table "weighbridge" */
 export enum Weighbridge_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   WeighbridgePkey = 'weighbridge_pkey'
 }
 
@@ -3836,7 +3909,7 @@ export type AddBillMutationVariables = Exact<{
 }>;
 
 
-export type AddBillMutation = { __typename?: 'mutation_root', insert_bill_one?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: string, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
+export type AddBillMutation = { __typename?: 'mutation_root', insert_bill_one?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
 
 export type GetTareWeightBillsQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
@@ -3884,14 +3957,14 @@ export type GetAllBillsSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: string, paid?: boolean | null, payment_initiated?: boolean | null, order_id?: string | null, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, customer?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, customer_3?: { __typename?: 'customer', id: any, name: string, email: string, phone: string } | null, customer_2?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, material: { __typename?: 'material', name: string } }> };
+export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: Paid_By_Enum, paid?: boolean | null, payment_initiated?: boolean | null, order_id?: string | null, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, customer?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, customer_3?: { __typename?: 'customer', id: any, name: string, email: string, phone: string } | null, customer_2?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, material: { __typename?: 'material', name: string } }> };
 
 export type GetBillForReceptQueryVariables = Exact<{
   billByPkId: Scalars['uuid'];
 }>;
 
 
-export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, photos?: any | null, nano_id: number, second_weight: boolean, tare_weight: number, order_id?: string | null, reference_bill_id?: any | null, paid_by: string, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
+export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, nano_id: number, second_weight: boolean, tare_weight: number, order_id?: string | null, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
 
 export type GetVehicleByCollectionsQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
@@ -3986,7 +4059,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, id: any, profile?: any | null, weighbridge_id: any, updated_at: any, role?: string | null, weighbridge: { __typename?: 'weighbridge', name: string, address: string } }> };
+export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, id: any, profile?: any | null, weighbridge_id?: any | null, updated_at: any, weighbridge?: { __typename?: 'weighbridge', name: string, address: string } | null }> };
 
 export type GetUserCountQueryVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
@@ -4003,7 +4076,7 @@ export type GetAllUsersSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetAllUsersSubscription = { __typename?: 'subscription_root', user: Array<{ __typename?: 'user', id: any, email: string, synced?: boolean | null, created_at: any, tenent: { __typename?: 'tenents', name: string }, weighbridge: { __typename?: 'weighbridge', name: string } }> };
+export type GetAllUsersSubscription = { __typename?: 'subscription_root', user: Array<{ __typename?: 'user', id: any, email: string, created_at: any, tenent?: { __typename?: 'tenents', name: string } | null, weighbridge?: { __typename?: 'weighbridge', name: string } | null }> };
 
 export type GetAllUsersCountSubscriptionVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
@@ -4363,7 +4436,6 @@ export const AddBillDocument = gql`
     created_at
     charges
     scale_weight
-    photos
     second_weight
     tare_weight
     reference_bill_id
@@ -4667,7 +4739,6 @@ export const GetBillForReceptDocument = gql`
     created_at
     charges
     scale_weight
-    photos
     nano_id
     second_weight
     tare_weight
@@ -5170,7 +5241,6 @@ export const GetUserDocument = gql`
       address
     }
     updated_at
-    role
   }
 }
     `;
@@ -5247,7 +5317,6 @@ export const GetAllUsersDocument = gql`
     tenent {
       name
     }
-    synced
     created_at
     weighbridge {
       name

@@ -1,13 +1,6 @@
 {
   "name": "hasura",
-  "private": true,
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
-  "devDependencies": {
-    "hasura-cli": "^2.8.3"
-  },
-  "dependencies": {
-    "hasura-cli": "^2.8.3"
-  }
+  "license": "MIT"
 }

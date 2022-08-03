@@ -5,14 +5,18 @@ name: apply hasura migrations for production deployment
     branches:
       - production
 jobs:
-  build:
+  hasura_migration:
+    name: Hasura migration
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: bahmutov/npm-install@v1
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Apply hasura migrations
+        uses: tibotiber/hasura-action@master
         with:
-          useLockFile: false
-          install-command: yarn install
-          working-directory: packages/terminal
-      - name: deployment to hasura
-        run: cd packages/hasura && yarn hasura deploy --admin-secret ${{secrets.ADMIN_SECRET}} --endpoint https://hasura.infraweigh.co
+          args: deploy
+        env:
+          HASURA_ENDPOINT: https://hasura.infraweigh.co
+          HASURA_ADMIN_SECRET: ${{secrets.ADMIN_SECRET}}
+          HASURA_WORKDIR: packages/hasura
+          HASURA_ENGINE_VERSION: v2.8.4

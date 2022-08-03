@@ -6,58 +6,85 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { BillWebhookModule } from './bill-webhook/bill-webhook.module';
-import { CustomerWebhookModule } from './customer-webhook/customer-webhook.module';
-import { MailerService } from './mailer/mailer.service';
 import { MessengerService } from './messenger/messenger.service';
 import { RazorPayWebhookModule } from './razor-pay-webhook/razor-pay-webhook.module';
-import { UserWebhookModule } from './user-webhook/user-webhook.module';
 import { TwilioModule } from 'nestjs-twilio';
+import { PrismaModule } from 'nestjs-prisma';
+import { BillModule } from './bill/bill.module';
+import { S3Service } from './s3/s3.service';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      validationSchema: Joi.object({
+        DATABASE_URL: Joi.string().uri().required(),
+        TWILIO_ACCOUNT_ID: Joi.string().required(),
+        TWILIO_AUTH_TOKEN: Joi.string().required(),
+        TWILIO_PHONE: Joi.string().required(),
+        BILL_BUCKET_NAME: Joi.string().required(),
+        FORGOT_PASSWORD_SECRET: Joi.string().required(),
+        AT_PRIVATE: Joi.string().required(),
+        AT_PUBLIC: Joi.string().required(),
+        RT_PRIVATE: Joi.string().required(),
+        RT_PUBLIC: Joi.string().required(),
+        RAZORPAY_WEBHOOK_SECRET: Joi.string().required(),
+        PORT: Joi.required(),
+        SMTP_CONFIG: Joi.required(),
+        AWS_SERVICE_CONFIG: Joi.required(),
+        FIREBASE_SERVICE: Joi.required(),
+        RAZORPAY_SERVICE: Joi.required(),
+        FRONTEND_URL: Joi.string().required(),
+      }),
     }),
     AuthModule,
-    UserWebhookModule,
-    CustomerWebhookModule,
     RazorPayWebhookModule,
-    BillWebhookModule,
+    PrismaModule.forRoot({
+      isGlobal: true,
+    }),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (config) => ({
-        transport: {
-          host: config.get('SMTP_HOST'),
-          secure: true,
-          auth: {
-            user: config.get('SMTP_USER'),
-            pass: config.get('SMTP_PASSWORD'),
+      useFactory: async (config) => {
+        const smtp_config = config.getOrThrow('SMTP_CONFIG');
+
+        return {
+          transport: {
+            host: smtp_config.host,
+            secure: true,
+            auth: {
+              user: smtp_config.user,
+              pass: smtp_config.password,
+            },
           },
-        },
-        defaults: {
-          from: config.get('SMTP_USER'),
-        },
-        template: {
-          dir: join(__dirname, './mailer/templates'),
-          adapter: new HandlebarsAdapter(),
-          options: {
-            strict: true,
+          defaults: {
+            from: `no-replay <${smtp_config.default_sender}>`,
           },
-        },
-      }),
+          template: {
+            dir: join(__dirname, './mailer/templates'),
+            adapter: new HandlebarsAdapter(),
+            options: {
+              strict: true,
+            },
+          },
+        };
+      },
       inject: [ConfigService],
     }),
     TwilioModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (config) => ({
-        accountSid: config.get('TWILIO_ACCOUNT_ID'),
-        authToken: config.get('TWILIO_AUTH_TOKEN'),
-      }),
+      useFactory: async (config) => {
+        return {
+          accountSid: config.getOrThrow('TWILIO_ACCOUNT_ID'),
+          authToken: config.getOrThrow('TWILIO_AUTH_TOKEN'),
+        };
+      },
       inject: [ConfigService],
     }),
+    MailerModule,
+    BillModule,
   ],
   controllers: [AppController],
-  providers: [AppService, MailerService, MessengerService],
+  providers: [AppService, MessengerService, S3Service],
 })
 export class AppModule {}

@@ -1,23 +1,24 @@
+import { Field, Form, Formik } from "formik";
+import { TextField } from "formik-mui";
+import MuiPhoneNumber from "material-ui-phone-number";
 import * as React from "react";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
+
+import { LinearProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Formik, Form, Field } from "formik";
-import { TextField } from "formik-mui";
-import { LinearProgress } from "@mui/material";
 import { Box } from "@mui/system";
-import * as Yup from "yup";
-import useRole from "../../hooks/role";
-import MuiPhoneNumber from "material-ui-phone-number";
 
+import AutoCompleteComponent from "../../components/autoComplete";
 import {
   useAddNewWeighbridgeMutation,
   useGetAllTenentsDropDownLazyQuery,
 } from "../../generated";
-import { toast } from "react-toastify";
-import AutoCompleteComponent from "../../components/autoComplete";
+import useRole from "../../hooks/role";
 
 export default function AddNewWeighBridge() {
   const [open, setOpen] = React.useState(false);

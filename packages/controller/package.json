@@ -1,0 +1,16 @@
+{
+  "name": "serial_server",
+  "private": "true",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "ffmpeg-static": "^5.0.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "serialport": "^10.4.0"
+  }
+}
