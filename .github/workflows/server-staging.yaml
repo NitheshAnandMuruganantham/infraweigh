@@ -17,7 +17,6 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: infraweigh-server
           appdir: packages/server
-          dockerfile_name: Dockerfile
           usedocker: true
           healthcheck: "https://infraweigh-server.herokuapp.com/healthz"
           checkstring: "ok"
