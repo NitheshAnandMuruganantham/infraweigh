@@ -13,7 +13,7 @@ jobs:
       - name: Build, Push and Release a staging Docker container to Heroku.
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          email: anand@infraweigh.co
+          heroku_email : anand@infraweigh.co
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: infraweigh-server
           appdir: packages/server
