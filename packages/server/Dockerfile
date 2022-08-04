@@ -16,8 +16,5 @@ FROM node:14
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
-
-ENV PORT=80
-
-EXPOSE 80
+EXPOSE $PORT
 CMD [ "npm", "run", "start:prod" ]
