@@ -18,4 +18,7 @@ jobs:
           heroku_app_name: infraweigh-server
           appdir: packages/server
           dockerfile_name: Dockerfile
-          usedocker: true          
+          usedocker: true
+          healthcheck: "https://infraweigh-server.herokuapp.com/healthz"
+          checkstring: "ok"
+   
