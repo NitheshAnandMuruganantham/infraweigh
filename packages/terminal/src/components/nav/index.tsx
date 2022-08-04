@@ -225,28 +225,9 @@ const NavBar: FunctionComponent<{
               <MenuItem
                 key={"logOut"}
                 onClick={async () => {
-                  // toast("Logging out...", {});
-                  await fetch(
-                    import.meta.env.VITE_SERVER_URL + "/auth/logout",
-                    {
-                      method: "POST",
-                      credentials: "include",
-                      headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${sessionStorage.getItem(
-                          "token"
-                        )}`,
-                      },
-                    }
-                  ).then((res) => {
-                    if (res.statusText === "OK") {
                       sessionStorage.removeItem("token");
                       navigate("/");
-                    } else {
-                      toast.error("Error logging out");
-                    }
-                  });
-                  // navigate("/", { replace: true, state: { from: "/" } });
+
                 }}
               >
                 <Typography textAlign="center">log out</Typography>

@@ -23,6 +23,8 @@ import * as Joi from 'joi';
         TWILIO_ACCOUNT_ID: Joi.string().required(),
         TWILIO_AUTH_TOKEN: Joi.string().required(),
         TWILIO_PHONE: Joi.string().required(),
+        ADMIN_SECRET: Joi.string().required(),
+        HASURA_URL: Joi.string().required(),
         BILL_BUCKET_NAME: Joi.string().required(),
         FORGOT_PASSWORD_SECRET: Joi.string().required(),
         AT_PRIVATE: Joi.string().required(),
