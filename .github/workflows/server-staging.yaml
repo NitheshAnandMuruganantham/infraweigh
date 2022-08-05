@@ -1,4 +1,4 @@
-name: build a server container for server
+name: Deploy staging server to heroku.
 
 "on":
   push:
@@ -10,32 +10,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Build, Push and Release a staging Docker container to Heroku.
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          aws-access-key-id: ${{ secrets.AWS_ECR_UPLOAD_ACCESS_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_ECR_UPLOAD_ACCESS_KEY }}
-          aws-region: ap-south-1
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
-          install-command: yarn install
-          working-directory: packages/server
-
-      - name: Build, tag, and push the image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.REPO_NAME_STAGING }}
-          IMAGE_TAG: latest
-        run: |
-          cd packages/server
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          heroku_email : anand@infraweigh.co
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: infraweigh-server
+          appdir: packages/server
+          usedocker: true
+          healthcheck: "https://infraweigh-server.herokuapp.com/healthz"
+          checkstring: "ok"
+  
