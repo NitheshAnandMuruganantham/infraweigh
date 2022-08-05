@@ -132,7 +132,7 @@ const NavBar: FunctionComponent<{
     {
       name: "Home",
       path: "/",
-      icon: Home,
+      icon: ArticleIcon,
       role: ["admin", "terminal", "tenantAdmin", "customer"],
       active: useMatch("/"),
     },
@@ -149,13 +149,6 @@ const NavBar: FunctionComponent<{
       icon: AddTaskIcon,
       role: ["terminal"],
       active: useMatch("/weigh"),
-    },
-    {
-      name: "Bills",
-      path: "/bills",
-      role: ["admin", "terminal", "tenantAdmin", "customer"],
-      icon: ArticleIcon,
-      active: useMatch("/bills"),
     },
     {
       name: "Weighbridges",

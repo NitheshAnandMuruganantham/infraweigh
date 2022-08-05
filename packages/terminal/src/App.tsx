@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/home";
 import Loading from "./components/loading";
 import RequireAuth from "./pages/auth/requireAuth";
 import SignInSide from "./pages/auth/logIn";
@@ -63,11 +62,10 @@ const App: React.FunctionComponent = () => {
     <Routes>
       <Route path="*" element={<NotFound />} />
       <Route element={<RequireAuth />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LazyBills />} />
         <Route path="/weighbridges" element={<LazyWeighbridges />} />
         <Route path="/users" element={<LazyUsers />} />
         <Route path="/weigh" element={<LazyWeigh />} />
-        <Route path="/bills" element={<LazyBills />} />
         <Route path="/tenants" element={<LazyTenants />} />
         <Route path="/clients" element={<LazyClients />} />
       </Route>
