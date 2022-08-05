@@ -19,10 +19,12 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        DATABASE_URL: Joi.string().uri().required(),
+        DATABASE_URL: Joi.string().required(),
         TWILIO_ACCOUNT_ID: Joi.string().required(),
         TWILIO_AUTH_TOKEN: Joi.string().required(),
         TWILIO_PHONE: Joi.string().required(),
+        ADMIN_SECRET: Joi.string().required(),
+        HASURA_URL: Joi.string().required(),
         BILL_BUCKET_NAME: Joi.string().required(),
         FORGOT_PASSWORD_SECRET: Joi.string().required(),
         AT_PRIVATE: Joi.string().required(),
