@@ -48,7 +48,7 @@ import * as Joi from 'joi';
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config) => {
-        const smtp_config = config.getOrThrow('SMTP_CONFIG');
+        const smtp_config = JSON.parse(config.getOrThrow('SMTP_CONFIG'));
 
         return {
           transport: {
