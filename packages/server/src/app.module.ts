@@ -19,7 +19,7 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        DATABASE_URL: Joi.string().uri().required(),
+        DATABASE_URL: Joi.string().required(),
         TWILIO_ACCOUNT_ID: Joi.string().required(),
         TWILIO_AUTH_TOKEN: Joi.string().required(),
         TWILIO_PHONE: Joi.string().required(),
@@ -48,7 +48,7 @@ import * as Joi from 'joi';
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config) => {
-        const smtp_config = config.getOrThrow('SMTP_CONFIG');
+        const smtp_config = JSON.parse(config.getOrThrow('SMTP_CONFIG'));
 
         return {
           transport: {
