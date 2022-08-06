@@ -102,7 +102,7 @@ export default function SignInSide() {
                   }
                 )
                   .then((res) => {
-                    if (res.ok) {
+                    if (res.status === 200) {
                       navigate("/login");
                       toast.success("Password has been reset");
                     } else {
@@ -145,7 +145,7 @@ export default function SignInSide() {
                       component={TextField}
                       margin="normal"
                       fullWidth
-                      name="ConfirmPassword"
+                      name="confirmPassword"
                       label="confirm password"
                       type="password"
                       autoComplete="off"

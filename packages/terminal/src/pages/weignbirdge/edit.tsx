@@ -166,7 +166,7 @@ const EditWeighBridge: React.FunctionComponent<{
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={submitForm}>confirm</Button>
+                <Button onClick={submitForm}>save</Button>
               </DialogActions>
             </>
           )}

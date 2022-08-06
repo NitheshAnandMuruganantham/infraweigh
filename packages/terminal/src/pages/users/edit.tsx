@@ -170,7 +170,7 @@ const EditUser: React.FunctionComponent<{
                     submitForm();
                   }}
                 >
-                  Add
+                  save
                 </Button>
               </DialogActions>
             </>

@@ -114,7 +114,6 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                 role: "tenantAdmin",
               };
             }
-            console.log(dt);
             addUser({
               variables: {
                 objects: [dt],

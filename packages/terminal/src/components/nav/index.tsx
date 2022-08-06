@@ -218,8 +218,8 @@ const NavBar: FunctionComponent<{
               <MenuItem
                 key={"logOut"}
                 onClick={async () => {
-                      sessionStorage.removeItem("token");
-                      navigate("/");
+                  sessionStorage.clear(); 
+                      navigate("/login");
 
                 }}
               >
