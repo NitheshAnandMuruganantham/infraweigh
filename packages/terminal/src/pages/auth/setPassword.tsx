@@ -102,7 +102,7 @@ export default function SignInSide() {
                   }
                 )
                   .then((res) => {
-                    if (res.ok) {
+                    if (res.status === 200) {
                       navigate("/login");
                       toast.success("Password has been reset");
                     } else {
@@ -119,7 +119,7 @@ export default function SignInSide() {
       "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
     ),
                 confirmPassword: Yup.string().oneOf(
-                  [Yup.ref("password"), null],
+                  [Yup.ref("password")],
                   "Passwords must match"
                 ),
               })}
@@ -128,7 +128,7 @@ export default function SignInSide() {
                 ConfirmPassword: "",
               }}
             >
-              {() => (
+              {({isValid}) => (
                 <Form>
                   <Box sx={{ mt: 1 }}>
                     <Field
@@ -145,12 +145,13 @@ export default function SignInSide() {
                       component={TextField}
                       margin="normal"
                       fullWidth
-                      name="ConfirmPassword"
+                      name="confirmPassword"
                       label="confirm password"
                       type="password"
                       autoComplete="off"
                     />
                     <Button
+                      disabled={!isValid}
                       type="submit"
                       fullWidth
                       variant="contained"
