@@ -98,10 +98,16 @@ export default function SignInSide() {
                     email,
                   }),
                 })
-                  .then(() =>
-                    toast.success(
-                      "Password reset link has been sent to your email"
-                    )
+                  .then((res) => {
+                    if (res.status === 200) {
+                    
+                      toast.success(
+                        "Password reset link has been sent to your email"
+                      )
+                    } else {
+                      toast.error("something went wrong")
+                    }
+                  }
                   )
 
                   .catch(() => toast.error("something went wrong"));

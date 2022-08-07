@@ -119,7 +119,7 @@ export default function SignInSide() {
       "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
     ),
                 confirmPassword: Yup.string().oneOf(
-                  [Yup.ref("password"), null],
+                  [Yup.ref("password")],
                   "Passwords must match"
                 ),
               })}
@@ -128,7 +128,7 @@ export default function SignInSide() {
                 ConfirmPassword: "",
               }}
             >
-              {() => (
+              {({isValid}) => (
                 <Form>
                   <Box sx={{ mt: 1 }}>
                     <Field
@@ -151,6 +151,7 @@ export default function SignInSide() {
                       autoComplete="off"
                     />
                     <Button
+                      disabled={!isValid}
                       type="submit"
                       fullWidth
                       variant="contained"
