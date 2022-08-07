@@ -20,8 +20,7 @@ import * as Joi from 'joi';
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
-        TWILIO_ACCOUNT_ID: Joi.string().required(),
-        TWILIO_AUTH_TOKEN: Joi.string().required(),
+        TWILIO_CONFIG: Joi.required(),
         TWILIO_PHONE: Joi.string().required(),
         ADMIN_SECRET: Joi.string().required(),
         HASURA_URL: Joi.string().required(),
