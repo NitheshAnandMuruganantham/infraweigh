@@ -88,14 +88,16 @@ export class BillService {
             },
           },
         }),
-        this.s3.uploadBillImages(file, id),
+        this.s3.uploadBillImages(file, id).catch(() => null),
       ]);
       let order_id = null;
       let payment_initiated = null;
       let paid = false;
       if (data[0].paid_by !== 'cash') {
         try {
-          const razorpay = new Razorpay(this.config.get('RAZORPAY_SERVICE'));
+          const razorpay = new Razorpay(
+            JSON.parse(this.config.get('RAZORPAY_SERVICE')),
+          );
 
           const order = await razorpay.orders.create({
             amount: parseInt(`${data[0].charges}`, 10) * 100,
