@@ -75,12 +75,7 @@ import * as Joi from 'joi';
     }),
     TwilioModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (config) => {
-        return {
-          accountSid: config.getOrThrow('TWILIO_ACCOUNT_ID'),
-          authToken: config.getOrThrow('TWILIO_AUTH_TOKEN'),
-        };
-      },
+      useFactory: (config) => JSON.parse(config.get('TWILIO_CONFIG')),
       inject: [ConfigService],
     }),
     MailerModule,
