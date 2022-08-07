@@ -5,15 +5,11 @@ import * as AWS from 'aws-sdk';
 @Injectable()
 export class S3Service {
   constructor(private config: ConfigService) {}
-  AWS_CONFIG = this.config.getOrThrow<{ id: string; key: string }>(
-    'AWS_SERVICE_CONFIG',
-  );
   AWS_S3_BUCKET = this.config.get<string>('BILL_BUCKET_NAME');
   s3 = new AWS.S3({
-    accessKeyId: this.AWS_CONFIG.id,
+    ...JSON.parse(this.config.getOrThrow('AWS_SERVICE_CONFIG')),
     signatureVersion: 'v4',
     region: 'ap-south-1',
-    secretAccessKey: this.AWS_CONFIG.key,
   });
 
   async uploadBillImages(files: Array<Express.Multer.File>, id: string) {
