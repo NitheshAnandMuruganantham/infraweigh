@@ -102,9 +102,9 @@ export default function SignInSide() {
                   }
                 )
                   .then((res) => {
-                    if (res.status === 200) {
-                      navigate("/login");
+                    if (res.ok) {
                       toast.success("Password has been reset");
+                      navigate("/login");
                     } else {
                       toast.error("something went wrong");
                     }
