@@ -82,7 +82,7 @@ const EditUser: React.FunctionComponent<{
                     })
                     .required()
                 } else {
-                  return null;
+                  return Yup.object().notRequired()
                 }
               }),
             });

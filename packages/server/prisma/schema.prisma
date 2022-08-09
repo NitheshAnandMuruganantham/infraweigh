@@ -50,8 +50,6 @@ model customer {
   company_address                   String
   gst_in                            String?
   blocked                           Boolean  @default(true)
-  credit                            Boolean? @default(false)
-  credit_limit                      Decimal? @default(dbgenerated("'$0.00'::money")) @db.Money
   created_at                        DateTime @default(now()) @db.Timestamptz(6)
   updated_at                        DateTime @default(now()) @db.Timestamptz(6)
   id                                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
