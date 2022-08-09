@@ -5,24 +5,27 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Formik, Form, Field } from "formik";
-import { Autocomplete, TextField } from "formik-mui";
+import { TextField } from "formik-mui";
 import { LinearProgress } from "@mui/material";
 import { Box } from "@mui/system";
 import * as Yup from "yup";
 import MuiPhoneNumber from "material-ui-phone-number";
 import {
   useGetUserLazyQuery,
-  useGetWeighbridgeLazyQuery,
+  useGetWeighbridgesDropDownLazyQuery,
   useUpdateUserMutation,
 } from "../../generated";
 import { toast } from "react-toastify";
 import AutoCompleteComponent from "../../components/autoComplete";
+import useRole from "../../hooks/role";
+import Loader from "../../components/loading";
 
 const EditUser: React.FunctionComponent<{
   id: string;
 }> = ({ id }) => {
   const [open, setOpen] = React.useState(false);
   const [updateUser, { loading: l2 }] = useUpdateUserMutation();
+  const [role, roleLoading] = useRole();
   const [poolInitialValues, { data, loading: l1 }] = useGetUserLazyQuery({
     variables: {
       where: {
@@ -51,6 +54,7 @@ const EditUser: React.FunctionComponent<{
       >
         Edit
       </Button>
+      <Loader open={roleLoading || l2 || l1} setOpen={() => null} />
       <Dialog fullWidth open={open} onClose={handleClose}>
         <DialogTitle>Edit user</DialogTitle>
         <Formik
@@ -60,9 +64,7 @@ const EditUser: React.FunctionComponent<{
             email: data?.user[0].email || "",
             phone: data?.user[0].profile.phone || "",
             branch: {
-              label:
-                `${data?.user[0].weighbridge?.name} - ${data?.user[0].weighbridge?.address}` ||
-                "",
+              label:data?.user[0].weighbridge?.name || "",
               value: data?.user[0].weighbridge_id || "",
             },
           }}
@@ -71,16 +73,22 @@ const EditUser: React.FunctionComponent<{
               name: Yup.string().required("Required"),
               address: Yup.string().required("Required"),
               phone: Yup.string().required("Required"),
-              branch: Yup.object()
-                .shape({
-                  label: Yup.string().required("Required"),
-                  value: Yup.string().required("Required"),
-                })
-                .required(),
+              branch: Yup.lazy(() => {
+                if (role !== 'admin') {
+                  return Yup.object()
+                    .shape({
+                      label: Yup.string().required("Required"),
+                      value: Yup.string().required("Required"),
+                    })
+                    .required()
+                } else {
+                  return null;
+                }
+              }),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
-            setSubmitting(true);
+            setSubmitting(true);            
             updateUser({
               variables: {
                 where: {
@@ -152,14 +160,18 @@ const EditUser: React.FunctionComponent<{
                       defaultCountry={"in"}
                       onChange={(e) => setFieldValue("phone", e.toString())}
                     />
-                    <AutoCompleteComponent
+                    {role !== 'admin' && <AutoCompleteComponent
                       name="branch"
-                      queryHook={useGetWeighbridgeLazyQuery}
+                      sx={{
+                          mt: 2,
+                          width: "100%",
+                        }}
+                      queryHook={useGetWeighbridgesDropDownLazyQuery}
                       serverName="weighbridge"
                       label="weighbridge"
                     />
-
-                    {(isSubmitting || l2 || l1) && <LinearProgress />}
+}
+                    {isSubmitting  && <LinearProgress />}
                   </Box>
                 </Form>
               </DialogContent>

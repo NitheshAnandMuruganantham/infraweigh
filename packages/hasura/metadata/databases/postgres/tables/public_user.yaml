@@ -21,11 +21,6 @@ insert_permissions:
           - weighbridge:
               tenent_id:
                 _eq: X-Hasura-tenent-Id
-          - _or:
-              - role:
-                  _eq: terminal
-              - role:
-                  _eq: tenantAdmin
       set:
         tenent_id: x-hasura-tenent-id
         role: terminal
@@ -55,6 +50,27 @@ select_permissions:
           - email:
               _neq: X-Hasura-user-email
       allow_aggregations: true
+update_permissions:
+  - role: tenantAdmin
+    permission:
+      columns:
+        - meta_data
+        - profile
+        - weighbridge_id
+      filter:
+        _and:
+          - tenent_id:
+              _eq: X-Hasura-tenent-Id
+          - weighbridge:
+              tenent_id:
+                _eq: X-Hasura-tenent-Id
+      check:
+        _and:
+          - tenent_id:
+              _eq: X-Hasura-tenent-Id
+          - weighbridge:
+              tenent_id:
+                _eq: X-Hasura-tenent-Id
 delete_permissions:
   - role: tenantAdmin
     permission:

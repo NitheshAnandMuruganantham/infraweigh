@@ -19,8 +19,6 @@ subscription getCustomers(
     email
     phone
     created_at
-    credit
-    credit_limit
     blocked
   }
 }
@@ -64,8 +62,6 @@ query getCustomer($customerByPkId: uuid!) {
     email
     phone
     created_at
-    credit
-    credit_limit
     gst_in
   }
 }
