@@ -1,0 +1,45 @@
+name: Build and Deploy landing page to CloudFront
+
+"on":
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    env:
+      BUCKET: www.infraweigh.co
+      DIST: packages/terminal/dist
+      REGION: ap-south-1
+      DIST_ID: EFXY8BOHUSUCW
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_FOR_HOSTING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_FOR_HOSTING }}
+          aws-region: us-east-1
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+          install-command: yarn install
+          working-directory: packages/terminal
+
+      - name: Build Static Website
+        run: yarn build
+
+      - name: Copy files to the production website with the AWS CLI
+        run: |
+          aws s3 sync --delete ${{ env.DIST }} s3://${{ env.BUCKET }}
+
+      - name: Copy files to the production website with the AWS CLI
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ env.DIST_ID }} \
+            --paths "/*"
