@@ -89,6 +89,25 @@ const EditUser: React.FunctionComponent<{
           }}
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);            
+            let submitData;
+            if (role === 'admin') {
+              submitData = {
+                  profile: {
+                    name: values.name,
+                    phone: values.phone,
+                    address: values.address,
+                  },
+              }
+            } else {
+              submitData = {
+                  weighbridge_id: values.branch.value,
+                  profile: {
+                    name: values.name,
+                    phone: values.phone,
+                    address: values.address,
+                  }
+              }
+            }
             updateUser({
               variables: {
                 where: {
@@ -96,14 +115,7 @@ const EditUser: React.FunctionComponent<{
                     _eq: id,
                   },
                 },
-                set: {
-                  weighbridge_id: values.branch.value,
-                  profile: {
-                    name: values.name,
-                    phone: values.phone,
-                    address: values.address,
-                  },
-                },
+                set: submitData
               },
             })
               .then((dat) => dat && toast.success("user updated successfully"))
