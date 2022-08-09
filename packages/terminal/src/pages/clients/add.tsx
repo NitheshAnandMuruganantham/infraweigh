@@ -39,8 +39,6 @@ const AddNewClient: React.FunctionComponent = () => {
             phone: "",
             gst_in: "",
             company_name: "",
-            credit: false,
-            credit_limit: 0,
             branch: {
               value: null,
               label: "",
@@ -53,7 +51,6 @@ const AddNewClient: React.FunctionComponent = () => {
               email: Yup.string().required("Required"),
               phone: Yup.string().required("Required"),
               company_name: Yup.string().required("Required"),
-              credit_limit: Yup.string(),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
@@ -68,8 +65,6 @@ const AddNewClient: React.FunctionComponent = () => {
                   blocked: false,
                   company_name: values.company_name,
                   company_address: values.address,
-                  credit: values.credit,
-                  credit_limit: values.credit_limit,
                 },
               },
             })
@@ -119,21 +114,6 @@ const AddNewClient: React.FunctionComponent = () => {
                       name="gst_in"
                       type="text"
                       label="gst number"
-                    />
-
-                    <Box>
-                      <FormLabel>credit facility</FormLabel>
-                      <Field component={Switch} type="checkbox" name="credit" />
-                    </Box>
-
-                    <Field
-                      component={TextField}
-                      type="text"
-                      label="credit limit"
-                      name="credit_limit"
-                      sx={{
-                        my: 1,
-                      }}
                     />
                     <Field
                       component={TextField}

@@ -1,52 +1,35 @@
-import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils';
-import crossFetch from 'cross-fetch';
-import { RazorPayWebhookMutation } from './graphqlRequest';
 
 @Injectable()
 export class RazorPayWebhookService {
-  constructor(private config: ConfigService) {}
+  constructor(private config: ConfigService, private prisma: PrismaService) {}
 
   async handleWebhook(body: any, headers: any) {
     try {
-      console.log('body', body);
-      console.log('headers', headers);
-
       const secret = this.config.get<string>('RAZORPAY_WEBHOOK_SECRET');
-      const admin_secret = this.config.get<string>('ADMIN_SECRET');
-      const hasura_url = this.config.get<string>('HASURA_URL');
+
       const isValid = await validateWebhookSignature(
         JSON.stringify(body),
         headers['x-razorpay-signature'],
         secret,
       );
       if (!isValid) {
-        throw new BadRequestException(
-          'Invalid webhook signature',
-          HttpStatus.BAD_REQUEST.toString(),
-        );
+        return {
+          status: 'error',
+          message: 'invalid webhook signiture',
+        };
       } else {
-        await crossFetch(`${hasura_url}/v1/graphql`, {
-          method: 'POST',
-          headers: {
-            'x-hasura-admin-secret': admin_secret,
-            'Content-Type': 'application/json',
+        await this.prisma.bill.update({
+          where: {
+            id: body.payload.order.entity.receipt,
           },
-          body: JSON.stringify({
-            query: RazorPayWebhookMutation,
-            variables: {
-              set: {
-                paid:
-                  body.payload.order.entity.status === 'paid' ? true : false,
-                payment_initiated: true,
-              },
-              pkColumns: {
-                id: body.payload.order.entity.receipt,
-              },
-            },
-          }),
-        }).then((res) => res.json());
+          data: {
+            paid: body.payload.order.entity.status === 'paid' ? true : false,
+          },
+        });
         return {
           status: 'ok',
         };

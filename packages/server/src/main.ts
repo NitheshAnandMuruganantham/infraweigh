@@ -4,7 +4,6 @@ import { AppModule } from './app.module';
 import { PrismaService } from 'nestjs-prisma';
 import { ValidationPipe } from '@nestjs/common';
 import * as admin from 'firebase-admin';
-import { ServiceAccount } from 'firebase-admin';
 import * as cokkieparser from 'cookie-parser';
 import helmet from 'helmet';
 

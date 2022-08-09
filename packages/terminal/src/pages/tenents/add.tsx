@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Formik, Form, Field } from "formik";
-import { Switch, TextField } from "formik-mui";
+import { TextField } from "formik-mui";
 import { FormLabel, LinearProgress } from "@mui/material";
 import { Box } from "@mui/system";
 import * as Yup from "yup";
@@ -39,7 +39,6 @@ const AddNewTenent: React.FunctionComponent = () => {
             email: "",
             phone: "",
             razorpay_id: "",
-            activate: true,
           }}
           validationSchema={() => {
             return Yup.object().shape({
@@ -48,7 +47,6 @@ const AddNewTenent: React.FunctionComponent = () => {
               address: Yup.string().required("Required"),
               email: Yup.string().required("Required"),
               phone: Yup.string().required("Required"),
-              activate: Yup.boolean().required("Required"),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
@@ -60,7 +58,6 @@ const AddNewTenent: React.FunctionComponent = () => {
                   razorpay_id: values.razorpay_id,
                   email: values.email,
                   phone: values.phone,
-                  activate: values.activate,
                   metadata: {
                     address: values.address,
                   },
@@ -93,15 +90,6 @@ const AddNewTenent: React.FunctionComponent = () => {
                       type="text"
                       label="name"
                     />
-
-                    <Box>
-                      <FormLabel>activate facility</FormLabel>
-                      <Field
-                        component={Switch}
-                        type="checkbox"
-                        name="activate"
-                      />
-                    </Box>
 
                     <Field
                       component={TextField}

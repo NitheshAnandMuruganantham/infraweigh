@@ -42,8 +42,6 @@ insert_permissions:
         - company_address
         - company_name
         - created_at
-        - credit
-        - credit_limit
         - email
         - gst_in
         - id
@@ -63,8 +61,6 @@ insert_permissions:
         - company_address
         - company_name
         - created_at
-        - credit
-        - credit_limit
         - email
         - gst_in
         - id
@@ -77,19 +73,17 @@ select_permissions:
     permission:
       columns:
         - blocked
-        - credit
-        - metadata
-        - credit_limit
         - company_address
         - company_name
+        - created_at
         - email
         - gst_in
+        - id
+        - metadata
         - name
         - phone
-        - created_at
-        - updated_at
-        - id
         - tenent_id
+        - updated_at
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id
@@ -98,19 +92,17 @@ select_permissions:
     permission:
       columns:
         - blocked
-        - credit
-        - metadata
-        - credit_limit
         - company_address
         - company_name
+        - created_at
         - email
         - gst_in
+        - id
+        - metadata
         - name
         - phone
-        - created_at
-        - updated_at
-        - id
         - tenent_id
+        - updated_at
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id
@@ -119,20 +111,13 @@ update_permissions:
   - role: tenantAdmin
     permission:
       columns:
-        - blocked
-        - credit
-        - metadata
-        - credit_limit
         - company_address
         - company_name
         - email
         - gst_in
+        - metadata
         - name
         - phone
-        - created_at
-        - updated_at
-        - id
-        - tenent_id
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id

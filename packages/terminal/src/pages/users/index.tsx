@@ -1,21 +1,24 @@
-import * as React from "react";
-import { Box } from "@mui/system";
-import { LinearProgress } from "@mui/material";
-import AddNewUser from "./add";
-import { TextField } from "@mui/material";
-import {
-  useGetAllUsersCountSubscription,
-  useGetAllUsersSubscription,
-} from "../../generated";
-import columns from "./columns";
-import DataGridComponent from "../../components/dataGrid";
+import * as React from 'react';
+
+import { LinearProgress, TextField } from '@mui/material';
+import { Box } from '@mui/system';
+
+import DataGridComponent from '../../components/dataGrid';
+import { useGetAllUsersCountSubscription, useGetAllUsersSubscription } from '../../generated';
+import useRole from '../../hooks/role';
+import AddNewUser from './add';
+import columns from './columns';
+
 const Users = () => {
   const [sort, SetSort] = React.useState([]);
   const [search, setSearch] = React.useState("");
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
+  const [role, loadingRole] = useRole();
 
-  const filter = {
+  let filter:any;
+  if (role !== 'admin') {
+    filter = {
     _and: [
       {
         _or: [
@@ -27,7 +30,26 @@ const Users = () => {
         ],
       },
     ],
-  };
+
+    }
+  } else {
+    filter = {
+          _and: [
+        {
+              role: {
+                _eq:'tenantAdmin'
+              },
+        _or: [
+          {
+            email: {
+              _like: `%${search}%`,
+            },
+          },
+        ],
+      },
+    ],
+    }
+  }
   const { data, loading } = useGetAllUsersSubscription({
     variables: {
       orderBy: sort,
@@ -43,6 +65,8 @@ const Users = () => {
         where: filter,
       },
     });
+  
+  
   return (
     <Box>
       <AddNewUser />
@@ -61,18 +85,27 @@ const Users = () => {
       <Box height={500} width={"100%"} textAlign="center">
         <LinearProgress
           sx={{
-            visibility: CountLoading || loading ? "visible" : "hidden",
+            visibility: CountLoading || loading || loadingRole ? "visible" : "hidden",
           }}
         />
         <DataGridComponent
-          loading={loading || CountLoading}
+          loading={loading || CountLoading || loadingRole}
           data={data?.user || []}
           pageSize={pageSize}
           setPage={setPage}
           setFilter={() => null}
           setPageSize={setPageSize}
           setSort={SetSort}
-          columns={columns}
+          columns={role === 'admin' ? columns : [
+            ...columns, {
+    field: "weighbridge",
+    headerName: "weighbridge",
+    sortable: false,
+    filterable: false,
+    width: 400,
+    valueGetter: (params) => params.row?.weighbridge?.name || "",
+  
+          }]}
           rowCount={Count?.user_aggregate?.aggregate?.count || 0}
         />
       </Box>

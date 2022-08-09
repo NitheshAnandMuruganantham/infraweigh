@@ -108,6 +108,8 @@ export type Bill = {
   nano_id: Scalars['Int'];
   order_id?: Maybe<Scalars['String']>;
   paid?: Maybe<Scalars['Boolean']>;
+  /** An object relationship */
+  paidByByPaidBy: Paid_By;
   paid_by: Paid_By_Enum;
   payment_initiated?: Maybe<Scalars['Boolean']>;
   reference_bill_id?: Maybe<Scalars['uuid']>;
@@ -239,6 +241,7 @@ export type Bill_Bool_Exp = {
   nano_id?: InputMaybe<Int_Comparison_Exp>;
   order_id?: InputMaybe<String_Comparison_Exp>;
   paid?: InputMaybe<Boolean_Comparison_Exp>;
+  paidByByPaidBy?: InputMaybe<Paid_By_Bool_Exp>;
   paid_by?: InputMaybe<Paid_By_Enum_Comparison_Exp>;
   payment_initiated?: InputMaybe<Boolean_Comparison_Exp>;
   reference_bill_id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -293,6 +296,7 @@ export type Bill_Insert_Input = {
   nano_id?: InputMaybe<Scalars['Int']>;
   order_id?: InputMaybe<Scalars['String']>;
   paid?: InputMaybe<Scalars['Boolean']>;
+  paidByByPaidBy?: InputMaybe<Paid_By_Obj_Rel_Insert_Input>;
   paid_by?: InputMaybe<Paid_By_Enum>;
   payment_initiated?: InputMaybe<Scalars['Boolean']>;
   reference_bill_id?: InputMaybe<Scalars['uuid']>;
@@ -442,6 +446,7 @@ export type Bill_Order_By = {
   nano_id?: InputMaybe<Order_By>;
   order_id?: InputMaybe<Order_By>;
   paid?: InputMaybe<Order_By>;
+  paidByByPaidBy?: InputMaybe<Paid_By_Order_By>;
   paid_by?: InputMaybe<Order_By>;
   payment_initiated?: InputMaybe<Order_By>;
   reference_bill_id?: InputMaybe<Order_By>;
@@ -1899,8 +1904,32 @@ export enum Order_By {
 /** columns and relationships of "paid_by" */
 export type Paid_By = {
   __typename?: 'paid_by';
+  /** An array relationship */
+  bills: Array<Bill>;
+  /** An aggregate relationship */
+  bills_aggregate: Bill_Aggregate;
   comment: Scalars['String'];
   value: Scalars['String'];
+};
+
+
+/** columns and relationships of "paid_by" */
+export type Paid_ByBillsArgs = {
+  distinct_on?: InputMaybe<Array<Bill_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Bill_Order_By>>;
+  where?: InputMaybe<Bill_Bool_Exp>;
+};
+
+
+/** columns and relationships of "paid_by" */
+export type Paid_ByBills_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Bill_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Bill_Order_By>>;
+  where?: InputMaybe<Bill_Bool_Exp>;
 };
 
 /** aggregated selection of "paid_by" */
@@ -1930,6 +1959,7 @@ export type Paid_By_Bool_Exp = {
   _and?: InputMaybe<Array<Paid_By_Bool_Exp>>;
   _not?: InputMaybe<Paid_By_Bool_Exp>;
   _or?: InputMaybe<Array<Paid_By_Bool_Exp>>;
+  bills?: InputMaybe<Bill_Bool_Exp>;
   comment?: InputMaybe<String_Comparison_Exp>;
   value?: InputMaybe<String_Comparison_Exp>;
 };
@@ -1966,6 +1996,7 @@ export type Paid_By_Enum_Comparison_Exp = {
 
 /** input type for inserting data into table "paid_by" */
 export type Paid_By_Insert_Input = {
+  bills?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
   comment?: InputMaybe<Scalars['String']>;
   value?: InputMaybe<Scalars['String']>;
 };
@@ -1993,6 +2024,13 @@ export type Paid_By_Mutation_Response = {
   returning: Array<Paid_By>;
 };
 
+/** input type for inserting object relation for remote table "paid_by" */
+export type Paid_By_Obj_Rel_Insert_Input = {
+  data: Paid_By_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Paid_By_On_Conflict>;
+};
+
 /** on_conflict condition type for table "paid_by" */
 export type Paid_By_On_Conflict = {
   constraint: Paid_By_Constraint;
@@ -2002,6 +2040,7 @@ export type Paid_By_On_Conflict = {
 
 /** Ordering options when selecting data from "paid_by". */
 export type Paid_By_Order_By = {
+  bills_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
   comment?: InputMaybe<Order_By>;
   value?: InputMaybe<Order_By>;
 };
@@ -2302,7 +2341,31 @@ export type Query_RootWeighbridge_By_PkArgs = {
 export type Role = {
   __typename?: 'role';
   comment: Scalars['String'];
+  /** An array relationship */
+  users: Array<User>;
+  /** An aggregate relationship */
+  users_aggregate: User_Aggregate;
   value: Scalars['String'];
+};
+
+
+/** roles of users */
+export type RoleUsersArgs = {
+  distinct_on?: InputMaybe<Array<User_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<User_Order_By>>;
+  where?: InputMaybe<User_Bool_Exp>;
+};
+
+
+/** roles of users */
+export type RoleUsers_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<User_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<User_Order_By>>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
 /** aggregated selection of "role" */
@@ -2333,6 +2396,7 @@ export type Role_Bool_Exp = {
   _not?: InputMaybe<Role_Bool_Exp>;
   _or?: InputMaybe<Array<Role_Bool_Exp>>;
   comment?: InputMaybe<String_Comparison_Exp>;
+  users?: InputMaybe<User_Bool_Exp>;
   value?: InputMaybe<String_Comparison_Exp>;
 };
 
@@ -2367,6 +2431,7 @@ export type Role_Enum_Comparison_Exp = {
 /** input type for inserting data into table "role" */
 export type Role_Insert_Input = {
   comment?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<User_Arr_Rel_Insert_Input>;
   value?: InputMaybe<Scalars['String']>;
 };
 
@@ -2393,6 +2458,13 @@ export type Role_Mutation_Response = {
   returning: Array<Role>;
 };
 
+/** input type for inserting object relation for remote table "role" */
+export type Role_Obj_Rel_Insert_Input = {
+  data: Role_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Role_On_Conflict>;
+};
+
 /** on_conflict condition type for table "role" */
 export type Role_On_Conflict = {
   constraint: Role_Constraint;
@@ -2403,6 +2475,7 @@ export type Role_On_Conflict = {
 /** Ordering options when selecting data from "role". */
 export type Role_Order_By = {
   comment?: InputMaybe<Order_By>;
+  users_aggregate?: InputMaybe<User_Aggregate_Order_By>;
   value?: InputMaybe<Order_By>;
 };
 
@@ -3024,6 +3097,8 @@ export type User = {
   refresh_token_hash?: Maybe<Scalars['String']>;
   role?: Maybe<Role_Enum>;
   /** An object relationship */
+  roleByRole?: Maybe<Role>;
+  /** An object relationship */
   tenent?: Maybe<Tenents>;
   tenent_id?: Maybe<Scalars['uuid']>;
   updated_at: Scalars['timestamptz'];
@@ -3096,6 +3171,7 @@ export type User_Bool_Exp = {
   profile?: InputMaybe<Json_Comparison_Exp>;
   refresh_token_hash?: InputMaybe<String_Comparison_Exp>;
   role?: InputMaybe<Role_Enum_Comparison_Exp>;
+  roleByRole?: InputMaybe<Role_Bool_Exp>;
   tenent?: InputMaybe<Tenents_Bool_Exp>;
   tenent_id?: InputMaybe<Uuid_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -3124,6 +3200,7 @@ export type User_Insert_Input = {
   profile?: InputMaybe<Scalars['json']>;
   refresh_token_hash?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<Role_Enum>;
+  roleByRole?: InputMaybe<Role_Obj_Rel_Insert_Input>;
   tenent?: InputMaybe<Tenents_Obj_Rel_Insert_Input>;
   tenent_id?: InputMaybe<Scalars['uuid']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
@@ -3214,6 +3291,7 @@ export type User_Order_By = {
   profile?: InputMaybe<Order_By>;
   refresh_token_hash?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
+  roleByRole?: InputMaybe<Role_Order_By>;
   tenent?: InputMaybe<Tenents_Order_By>;
   tenent_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -4004,7 +4082,7 @@ export type GetCustomersSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetCustomersSubscription = { __typename?: 'subscription_root', customer: Array<{ __typename?: 'customer', company_name: string, id: any, company_address: string, name: string, email: string, phone: string, created_at: any, credit?: boolean | null, credit_limit?: any | null, blocked: boolean }> };
+export type GetCustomersSubscription = { __typename?: 'subscription_root', customer: Array<{ __typename?: 'customer', company_name: string, id: any, company_address: string, name: string, email: string, phone: string, created_at: any, blocked: boolean }> };
 
 export type GetCustomersCountSubscriptionVariables = Exact<{
   where?: InputMaybe<Customer_Bool_Exp>;
@@ -4035,7 +4113,7 @@ export type GetCustomerQueryVariables = Exact<{
 }>;
 
 
-export type GetCustomerQuery = { __typename?: 'query_root', customer_by_pk?: { __typename?: 'customer', company_name: string, id: any, company_address: string, name: string, email: string, phone: string, created_at: any, credit?: boolean | null, credit_limit?: any | null, gst_in?: string | null } | null };
+export type GetCustomerQuery = { __typename?: 'query_root', customer_by_pk?: { __typename?: 'customer', company_name: string, id: any, company_address: string, name: string, email: string, phone: string, created_at: any, gst_in?: string | null } | null };
 
 export type UpdateClientMutationVariables = Exact<{
   pkColumns: Customer_Pk_Columns_Input;
@@ -4975,8 +5053,6 @@ export const GetCustomersDocument = gql`
     email
     phone
     created_at
-    credit
-    credit_limit
     blocked
   }
 }
@@ -5123,8 +5199,6 @@ export const GetCustomerDocument = gql`
     email
     phone
     created_at
-    credit
-    credit_limit
     gst_in
   }
 }

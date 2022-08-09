@@ -90,7 +90,7 @@ const Columns: GridColumns = [
     sortable: true,
     width: 110,
     valueGetter: (params: GridValueGetterParams) =>
-      params.value ? "scale weight" : "tare weight",
+      params.value ? "tare weight" : "scale weight",
   },
   {
     field: "scale_weight",
