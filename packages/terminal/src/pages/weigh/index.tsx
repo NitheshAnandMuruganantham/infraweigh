@@ -67,7 +67,6 @@ const Weigh: FunctionComponent = () => {
                 return image.blob();
               })
             );
-              console.log(values);
               
             const form = new FormData();
 
@@ -119,15 +118,17 @@ const Weigh: FunctionComponent = () => {
             setSubmitting(false);
             setLoading(false);
             toast.success("Bill Added Successfully");
+            SetBillRefId(null);
             resetForm();
           } catch (err) {
+            toast.error('something went wrong')
             setLoading(false);
             console.log(err);
           }
         }}
         onReset={() => {
           SetBillRefId(null);
-          setLoading(false);
+          setLoading(false);  
         }}
       >
         {({

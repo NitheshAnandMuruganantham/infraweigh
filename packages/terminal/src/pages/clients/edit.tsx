@@ -5,8 +5,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Formik, Form, Field } from "formik";
-import { Switch, TextField } from "formik-mui";
-import { FormLabel, LinearProgress } from "@mui/material";
+import {  TextField } from "formik-mui";
+import { LinearProgress } from "@mui/material";
 import { Box } from "@mui/system";
 import * as Yup from "yup";
 import MuiPhoneNumber from "material-ui-phone-number";
@@ -51,8 +51,6 @@ const EditClient: React.FunctionComponent<{
             phone: data?.customer_by_pk?.phone,
             gst_in: data?.customer_by_pk?.gst_in,
             company_name: data?.customer_by_pk?.company_name,
-            credit: data?.customer_by_pk?.credit,
-            credit_limit: data?.customer_by_pk?.credit_limit,
           }}
           validationSchema={() => {
             return Yup.object().shape({
@@ -61,7 +59,6 @@ const EditClient: React.FunctionComponent<{
               email: Yup.string().required("Required"),
               phone: Yup.string().required("Required"),
               company_name: Yup.string().required("Required"),
-              credit_limit: Yup.string(),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
@@ -78,9 +75,7 @@ const EditClient: React.FunctionComponent<{
                     gst_in: values.gst_in,
                     blocked: false,
                     company_name: values.company_name,
-                    company_address: values.address,
-                    credit: values.credit,
-                    credit_limit: values.credit_limit,
+                    company_address: values.address
                   },
                 },
               })
@@ -133,21 +128,6 @@ const EditClient: React.FunctionComponent<{
                       name="gst_in"
                       type="text"
                       label="gst number"
-                    />
-
-                    <Box>
-                      <FormLabel>credit facility</FormLabel>
-                      <Field component={Switch} type="checkbox" name="credit" />
-                    </Box>
-
-                    <Field
-                      component={TextField}
-                      type="text"
-                      label="credit limit"
-                      name="credit_limit"
-                      sx={{
-                        my: 1,
-                      }}
                     />
                     <Field
                       component={TextField}

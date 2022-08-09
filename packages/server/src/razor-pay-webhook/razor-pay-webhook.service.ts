@@ -9,9 +9,6 @@ export class RazorPayWebhookService {
 
   async handleWebhook(body: any, headers: any) {
     try {
-      console.log('body', body);
-      console.log('headers', headers);
-
       const secret = this.config.get<string>('RAZORPAY_WEBHOOK_SECRET');
 
       const isValid = await validateWebhookSignature(

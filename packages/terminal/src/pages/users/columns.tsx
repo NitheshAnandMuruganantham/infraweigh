@@ -16,14 +16,6 @@ const columns: GridColDef[] = [
     width: 400,
   },
   {
-    field: "weighbridge",
-    headerName: "weighbridge",
-    sortable: false,
-    filterable: false,
-    width: 400,
-    valueGetter: (params) => params.row?.weighbridge?.name || "",
-  },
-  {
     field: "edit",
     headerName: "Edit",
     width: 75,
