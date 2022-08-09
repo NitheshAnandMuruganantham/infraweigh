@@ -1,0 +1,34 @@
+name: Build and Deploy landing page to CloudFront
+
+"on":
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    env:
+      BUCKET: www.infraweigh.co
+      DIST: packages/landing
+      REGION: ap-south-1
+      DIST_ID: EFXY8BOHUSUCW
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Copy files to the production website with the AWS CLI
+        run: aws s3 sync --delete ${{ env.DIST }} s3://${{ env.BUCKET }}
+      
+      - name: invalidating cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ env.DIST_ID }} \
+            --paths "/*"
