@@ -38,7 +38,7 @@ jobs:
           working-directory: packages/clientPortal
 
       - name: Build Static Website
-        run: yarn build
+        run: yarn build:client
 
       - name: Copy files to the production website with the AWS CLI
         run: |
