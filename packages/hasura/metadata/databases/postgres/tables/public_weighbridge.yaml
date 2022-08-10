@@ -39,6 +39,25 @@ insert_permissions:
         - phone
         - pin_code
 select_permissions:
+  - role: customer
+    permission:
+      columns:
+        - address
+        - created_at
+        - display_name
+        - id
+        - logo
+        - mail
+        - metadata
+        - name
+        - phone
+        - pin_code
+        - updated_at
+      filter:
+        tenent:
+          customers:
+            email:
+              _eq: x-hasura-user-email
   - role: serviceEngineer
     permission:
       columns:
