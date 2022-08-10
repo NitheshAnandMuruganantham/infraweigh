@@ -1,4 +1,4 @@
-name: Build and Deploy React App to CloudFront
+name: Build and Deploy Customer React App to CloudFront
 
 "on":
   push:
@@ -44,7 +44,7 @@ jobs:
         run: |
           aws s3 sync --delete ${{ env.DIST }} s3://${{ env.BUCKET }}
 
-      - name: Copy files to the production website with the AWS CLI
+      - name: cache invalidation
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ env.DIST_ID }} \
