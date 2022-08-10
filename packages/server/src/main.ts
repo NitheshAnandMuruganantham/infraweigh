@@ -12,7 +12,10 @@ async function bootstrap() {
   const configService: ConfigService = app.get(ConfigService);
   app.use(cokkieparser());
   app.enableCors({
-    origin: [configService.getOrThrow<string>('FRONTEND_URL')],
+    origin: [
+      configService.getOrThrow<string>('FRONTEND_URL'),
+      configService.getOrThrow<string>('CUSTOMER_URL'),
+    ],
     credentials: true,
   });
 

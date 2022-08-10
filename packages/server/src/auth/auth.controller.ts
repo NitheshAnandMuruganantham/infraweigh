@@ -5,7 +5,9 @@ import {
   HttpStatus,
   Param,
   Post,
+  Req,
   Res,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 
@@ -14,6 +16,7 @@ import { RtGuard } from '../common/guards/rt-guard';
 import { AuthService } from './auth.service';
 import { AuthDto, ForgotAuthDto, PasswordDto } from './auth.dto';
 import { ConfigService } from '@nestjs/config';
+import { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -45,6 +48,19 @@ export class AuthController {
     @GetCurrentUser('refreshToken') refreshToken: string,
   ) {
     return this.authService.refreshTokens(userId, refreshToken);
+  }
+
+  @Public()
+  @Post('refresh/firebase')
+  @HttpCode(HttpStatus.OK)
+  async refreshTokensWithFirebase(@Req() req: Request) {
+    if (!req.headers.authorization) {
+      throw new UnauthorizedException();
+    } else {
+      return this.authService.refreshTokensWithFirebase(
+        req.headers.authorization,
+      );
+    }
   }
 
   @Public()

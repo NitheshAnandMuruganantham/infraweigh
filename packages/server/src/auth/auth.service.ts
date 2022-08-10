@@ -1,10 +1,15 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
 import { AuthDto } from './auth.dto';
 import { MailerService } from 'src/mailer/mailer.service';
 import { PrismaService } from 'nestjs-prisma';
+import { auth } from 'firebase-admin';
 @Injectable()
 export class AuthService {
   constructor(
@@ -231,5 +236,30 @@ export class AuthService {
       },
     });
     return 'ok';
+  }
+
+  async refreshTokensWithFirebase(token: string): Promise<string> {
+    try {
+      const tokenResult = await auth().verifyIdToken(token);
+      const jwtPayload = {
+        type: 'access_token',
+        sub: tokenResult.uid,
+        email: tokenResult.email,
+        'https://hasura.io/jwt/claims': {
+          'x-hasura-allowed-roles': ['customer'],
+          'x-hasura-default-role': 'customer',
+          'x-hasura-user-id': tokenResult.uid,
+          'x-hasura-user-email': tokenResult.email,
+        },
+      };
+      const accessToken = await this.jwtService.signAsync(jwtPayload, {
+        algorithm: 'RS256',
+        privateKey: this.config.get<string>('AT_PRIVATE'),
+        expiresIn: '3h',
+      });
+      return accessToken;
+    } catch {
+      throw new UnauthorizedException();
+    }
   }
 }
