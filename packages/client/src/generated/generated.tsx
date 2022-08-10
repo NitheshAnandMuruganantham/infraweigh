@@ -3805,6 +3805,16 @@ export type AddBillMutationVariables = Exact<{
 
 export type AddBillMutation = { __typename?: 'mutation_root', insert_bill_one?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
 
+export type GetTareWeightBillsQueryVariables = Exact<{
+  where?: InputMaybe<Bill_Bool_Exp>;
+  limit?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<Bill_Order_By> | Bill_Order_By>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetTareWeightBillsQuery = { __typename?: 'query_root', bill: Array<{ __typename?: 'bill', id: any, scale_weight: number, created_at: any }> };
+
 export type GetTareWeightCountQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -3842,6 +3852,27 @@ export type GetAllBillsSubscriptionVariables = Exact<{
 
 
 export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: Paid_By_Enum, paid?: boolean | null, payment_initiated?: boolean | null, order_id?: string | null, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, material: { __typename?: 'material', name: string } }> };
+
+export type GetBillForReceptQueryVariables = Exact<{
+  billByPkId: Scalars['uuid'];
+}>;
+
+
+export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, nano_id: number, second_weight: boolean, tare_weight: number, order_id?: string | null, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
+
+export type GetVehicleByCollectionsQueryVariables = Exact<{
+  where?: InputMaybe<Bill_Bool_Exp>;
+}>;
+
+
+export type GetVehicleByCollectionsQuery = { __typename?: 'query_root', vehicle_aggregate: { __typename?: 'vehicle_aggregate', nodes: Array<{ __typename?: 'vehicle', id: any, name: string, bills_aggregate: { __typename?: 'bill_aggregate', aggregate?: { __typename?: 'bill_aggregate_fields', sum?: { __typename?: 'bill_sum_fields', charges?: any | null } | null } | null } }> } };
+
+export type BillsByCustomerQueryVariables = Exact<{
+  where?: InputMaybe<Bill_Bool_Exp>;
+}>;
+
+
+export type BillsByCustomerQuery = { __typename?: 'query_root', customer_aggregate: { __typename?: 'customer_aggregate', nodes: Array<{ __typename?: 'customer', id: any, name: string, bills_id_aggregate: { __typename?: 'bill_aggregate', aggregate?: { __typename?: 'bill_aggregate_fields', sum?: { __typename?: 'bill_sum_fields', charges?: any | null } | null } | null } }> } };
 
 export type BillAggregateQueryVariables = Exact<{
   distinctOn?: InputMaybe<Array<Bill_Select_Column> | Bill_Select_Column>;
@@ -3945,6 +3976,46 @@ export function useAddBillMutation(baseOptions?: Apollo.MutationHookOptions<AddB
 export type AddBillMutationHookResult = ReturnType<typeof useAddBillMutation>;
 export type AddBillMutationResult = Apollo.MutationResult<AddBillMutation>;
 export type AddBillMutationOptions = Apollo.BaseMutationOptions<AddBillMutation, AddBillMutationVariables>;
+export const GetTareWeightBillsDocument = gql`
+    query getTareWeightBills($where: bill_bool_exp, $limit: Int, $orderBy: [bill_order_by!], $offset: Int) {
+  bill(where: $where, limit: $limit, order_by: $orderBy, offset: $offset) {
+    id
+    scale_weight
+    created_at
+  }
+}
+    `;
+
+/**
+ * __useGetTareWeightBillsQuery__
+ *
+ * To run a query within a React component, call `useGetTareWeightBillsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTareWeightBillsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTareWeightBillsQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      limit: // value for 'limit'
+ *      orderBy: // value for 'orderBy'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetTareWeightBillsQuery(baseOptions?: Apollo.QueryHookOptions<GetTareWeightBillsQuery, GetTareWeightBillsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTareWeightBillsQuery, GetTareWeightBillsQueryVariables>(GetTareWeightBillsDocument, options);
+      }
+export function useGetTareWeightBillsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTareWeightBillsQuery, GetTareWeightBillsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTareWeightBillsQuery, GetTareWeightBillsQueryVariables>(GetTareWeightBillsDocument, options);
+        }
+export type GetTareWeightBillsQueryHookResult = ReturnType<typeof useGetTareWeightBillsQuery>;
+export type GetTareWeightBillsLazyQueryHookResult = ReturnType<typeof useGetTareWeightBillsLazyQuery>;
+export type GetTareWeightBillsQueryResult = Apollo.QueryResult<GetTareWeightBillsQuery, GetTareWeightBillsQueryVariables>;
 export const GetTareWeightCountDocument = gql`
     query getTareWeightCount($where: bill_bool_exp, $limit: Int, $offset: Int, $orderBy: [bill_order_by!]) {
   bill_aggregate(
@@ -4129,6 +4200,165 @@ export function useGetAllBillsSubscription(baseOptions?: Apollo.SubscriptionHook
       }
 export type GetAllBillsSubscriptionHookResult = ReturnType<typeof useGetAllBillsSubscription>;
 export type GetAllBillsSubscriptionResult = Apollo.SubscriptionResult<GetAllBillsSubscription>;
+export const GetBillForReceptDocument = gql`
+    query getBillForRecept($billByPkId: uuid!) {
+  bill_by_pk(id: $billByPkId) {
+    id
+    vehicle_number
+    created_at
+    charges
+    scale_weight
+    nano_id
+    second_weight
+    tare_weight
+    order_id
+    reference_bill_id
+    vehicle {
+      name
+      id
+    }
+    customer {
+      id
+      name
+    }
+    material {
+      name
+      id
+    }
+    paid_by
+    weighbridge {
+      display_name
+      id
+      address
+      pin_code
+      phone
+      logo
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetBillForReceptQuery__
+ *
+ * To run a query within a React component, call `useGetBillForReceptQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBillForReceptQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBillForReceptQuery({
+ *   variables: {
+ *      billByPkId: // value for 'billByPkId'
+ *   },
+ * });
+ */
+export function useGetBillForReceptQuery(baseOptions: Apollo.QueryHookOptions<GetBillForReceptQuery, GetBillForReceptQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBillForReceptQuery, GetBillForReceptQueryVariables>(GetBillForReceptDocument, options);
+      }
+export function useGetBillForReceptLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBillForReceptQuery, GetBillForReceptQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBillForReceptQuery, GetBillForReceptQueryVariables>(GetBillForReceptDocument, options);
+        }
+export type GetBillForReceptQueryHookResult = ReturnType<typeof useGetBillForReceptQuery>;
+export type GetBillForReceptLazyQueryHookResult = ReturnType<typeof useGetBillForReceptLazyQuery>;
+export type GetBillForReceptQueryResult = Apollo.QueryResult<GetBillForReceptQuery, GetBillForReceptQueryVariables>;
+export const GetVehicleByCollectionsDocument = gql`
+    query getVehicleByCollections($where: bill_bool_exp) {
+  vehicle_aggregate {
+    nodes {
+      id
+      name
+    }
+    nodes {
+      bills_aggregate(where: $where) {
+        aggregate {
+          sum {
+            charges
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetVehicleByCollectionsQuery__
+ *
+ * To run a query within a React component, call `useGetVehicleByCollectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVehicleByCollectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVehicleByCollectionsQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetVehicleByCollectionsQuery(baseOptions?: Apollo.QueryHookOptions<GetVehicleByCollectionsQuery, GetVehicleByCollectionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetVehicleByCollectionsQuery, GetVehicleByCollectionsQueryVariables>(GetVehicleByCollectionsDocument, options);
+      }
+export function useGetVehicleByCollectionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVehicleByCollectionsQuery, GetVehicleByCollectionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetVehicleByCollectionsQuery, GetVehicleByCollectionsQueryVariables>(GetVehicleByCollectionsDocument, options);
+        }
+export type GetVehicleByCollectionsQueryHookResult = ReturnType<typeof useGetVehicleByCollectionsQuery>;
+export type GetVehicleByCollectionsLazyQueryHookResult = ReturnType<typeof useGetVehicleByCollectionsLazyQuery>;
+export type GetVehicleByCollectionsQueryResult = Apollo.QueryResult<GetVehicleByCollectionsQuery, GetVehicleByCollectionsQueryVariables>;
+export const BillsByCustomerDocument = gql`
+    query billsByCustomer($where: bill_bool_exp) {
+  customer_aggregate {
+    nodes {
+      id
+      name
+    }
+    nodes {
+      bills_id_aggregate(where: $where) {
+        aggregate {
+          sum {
+            charges
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useBillsByCustomerQuery__
+ *
+ * To run a query within a React component, call `useBillsByCustomerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBillsByCustomerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBillsByCustomerQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useBillsByCustomerQuery(baseOptions?: Apollo.QueryHookOptions<BillsByCustomerQuery, BillsByCustomerQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BillsByCustomerQuery, BillsByCustomerQueryVariables>(BillsByCustomerDocument, options);
+      }
+export function useBillsByCustomerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BillsByCustomerQuery, BillsByCustomerQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BillsByCustomerQuery, BillsByCustomerQueryVariables>(BillsByCustomerDocument, options);
+        }
+export type BillsByCustomerQueryHookResult = ReturnType<typeof useBillsByCustomerQuery>;
+export type BillsByCustomerLazyQueryHookResult = ReturnType<typeof useBillsByCustomerLazyQuery>;
+export type BillsByCustomerQueryResult = Apollo.QueryResult<BillsByCustomerQuery, BillsByCustomerQueryVariables>;
 export const BillAggregateDocument = gql`
     query BillAggregate($distinctOn: [bill_select_column!], $where: bill_bool_exp) {
   bill_aggregate(distinct_on: $distinctOn, where: $where) {

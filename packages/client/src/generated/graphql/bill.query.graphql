@@ -32,6 +32,19 @@ mutation addBill($object: bill_insert_input!) {
   }
 }
 
+query getTareWeightBills(
+  $where: bill_bool_exp
+  $limit: Int
+  $orderBy: [bill_order_by!]
+  $offset: Int
+) {
+  bill(where: $where, limit: $limit, order_by: $orderBy, offset: $offset) {
+    id
+    scale_weight
+    created_at
+  }
+}
+
 query getTareWeightCount(
   $where: bill_bool_exp
   $limit: Int
@@ -77,7 +90,6 @@ subscription getTotalBills(
     }
   }
 }
-
 subscription getAllBills(
   $where: bill_bool_exp
   $limit: Int
@@ -114,6 +126,78 @@ subscription getAllBills(
     second_weight
     scale_weight
     tare_weight
+  }
+}
+
+query getBillForRecept($billByPkId: uuid!) {
+  bill_by_pk(id: $billByPkId) {
+    id
+    vehicle_number
+    created_at
+    charges
+    scale_weight
+    nano_id
+    second_weight
+    tare_weight
+    order_id
+    reference_bill_id
+    vehicle {
+      name
+      id
+    }
+    customer {
+      id
+      name
+    }
+    material {
+      name
+      id
+    }
+    paid_by
+    weighbridge {
+      display_name
+      id
+      address
+      pin_code
+      phone
+      logo
+    }
+  }
+}
+
+query getVehicleByCollections($where: bill_bool_exp) {
+  vehicle_aggregate {
+    nodes {
+      id
+      name
+    }
+    nodes {
+      bills_aggregate(where: $where) {
+        aggregate {
+          sum {
+            charges
+          }
+        }
+      }
+    }
+  }
+}
+
+query billsByCustomer($where: bill_bool_exp) {
+  customer_aggregate {
+    nodes {
+      id
+      name
+    }
+    nodes {
+      bills_id_aggregate(where: $where) {
+        aggregate {
+          sum {
+            charges
+          }
+        }
+      }
+    }
   }
 }
 
