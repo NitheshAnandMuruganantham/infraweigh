@@ -258,7 +258,8 @@ export class AuthService {
         expiresIn: '3h',
       });
       return accessToken;
-    } catch {
+    } catch (err) {
+      console.log(err);
       throw new UnauthorizedException();
     }
   }
