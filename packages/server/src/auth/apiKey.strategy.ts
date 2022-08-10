@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 export class ApiKeyStrategy extends PassportStrategy(HeaderAPIKeyStrategy) {
   constructor(private authService: AuthService) {
     super({ header: 'apiKey', prefix: '' }, true, (apikey, done, req) => {
-      const checkKey = authService.validateApiKey(apikey);
+      const checkKey = this.authService.validateApiKey(apikey);
       if (!checkKey) {
         return done(false);
       }

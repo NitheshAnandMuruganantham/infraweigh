@@ -8,8 +8,6 @@ import { CreateBillDto } from './bill.dto';
 import { v4 as uuid } from 'uuid';
 import { MailerService } from 'src/mailer/mailer.service';
 import { MessengerService } from 'src/messenger/messenger.service';
-import * as admin from 'firebase-admin';
-import * as _ from 'lodash';
 
 @Injectable()
 export class BillService {
@@ -90,9 +88,6 @@ export class BillService {
         }),
         this.s3.uploadBillImages(file, id).catch(() => null),
       ]);
-      let order_id = null;
-      let payment_initiated = null;
-      let paid = false;
       if (data[0].paid_by !== 'cash') {
         try {
           const razorpay = new Razorpay(
@@ -116,8 +111,6 @@ export class BillService {
               },
             ],
           });
-          order_id = order.id;
-          payment_initiated = true;
           await this.prisma.bill.update({
             where: {
               id: data[0].id,
@@ -129,8 +122,6 @@ export class BillService {
           });
         } catch (er) {}
       } else {
-        paid = true;
-        payment_initiated = true;
       }
       await Promise.all([
         data[0].customer_2_id
@@ -174,20 +165,7 @@ export class BillService {
             )
           : null,
       ]);
-      const charges = `${data[0].charges}`;
-      await admin
-        .firestore()
-        .doc(`bill/${id}`)
-        .set({
-          ..._.omit(data[0], ['charges', 'order_id', 'paid']),
-          charges,
-          paid,
-          order_id,
-          payment_initiated,
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+
       return data;
     } catch (err) {
       console.log(err);

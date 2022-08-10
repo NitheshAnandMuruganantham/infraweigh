@@ -64,7 +64,7 @@ const EditUser: React.FunctionComponent<{
             email: data?.user[0].email || "",
             phone: data?.user[0].profile.phone || "",
             branch: {
-              label:data?.user[0].weighbridge?.name || "",
+              label: data?.user[0].weighbridge?.name || "",
               value: data?.user[0].weighbridge_id || "",
             },
           }}
@@ -74,39 +74,39 @@ const EditUser: React.FunctionComponent<{
               address: Yup.string().required("Required"),
               phone: Yup.string().required("Required"),
               branch: Yup.lazy(() => {
-                if (role !== 'admin') {
+                if (role !== "admin") {
                   return Yup.object()
                     .shape({
                       label: Yup.string().required("Required"),
                       value: Yup.string().required("Required"),
                     })
-                    .required()
+                    .required();
                 } else {
-                  return Yup.object().notRequired()
+                  return Yup.object().notRequired();
                 }
               }),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
-            setSubmitting(true);            
+            setSubmitting(true);
             let submitData;
-            if (role === 'admin') {
+            if (role === "admin") {
               submitData = {
-                  profile: {
-                    name: values.name,
-                    phone: values.phone,
-                    address: values.address,
-                  },
-              }
+                profile: {
+                  name: values.name,
+                  phone: values.phone,
+                  address: values.address,
+                },
+              };
             } else {
               submitData = {
-                  weighbridge_id: values.branch.value,
-                  profile: {
-                    name: values.name,
-                    phone: values.phone,
-                    address: values.address,
-                  }
-              }
+                weighbridge_id: values.branch.value,
+                profile: {
+                  name: values.name,
+                  phone: values.phone,
+                  address: values.address,
+                },
+              };
             }
             updateUser({
               variables: {
@@ -115,7 +115,7 @@ const EditUser: React.FunctionComponent<{
                     _eq: id,
                   },
                 },
-                set: submitData
+                set: submitData,
               },
             })
               .then((dat) => dat && toast.success("user updated successfully"))
@@ -172,18 +172,19 @@ const EditUser: React.FunctionComponent<{
                       defaultCountry={"in"}
                       onChange={(e) => setFieldValue("phone", e.toString())}
                     />
-                    {role !== 'admin' && <AutoCompleteComponent
-                      name="branch"
-                      sx={{
+                    {role !== "admin" && (
+                      <AutoCompleteComponent
+                        name="branch"
+                        sx={{
                           mt: 2,
                           width: "100%",
                         }}
-                      queryHook={useGetWeighbridgesDropDownLazyQuery}
-                      serverName="weighbridge"
-                      label="weighbridge"
-                    />
-}
-                    {isSubmitting  && <LinearProgress />}
+                        queryHook={useGetWeighbridgesDropDownLazyQuery}
+                        serverName="weighbridge"
+                        label="weighbridge"
+                      />
+                    )}
+                    {isSubmitting && <LinearProgress />}
                   </Box>
                 </Form>
               </DialogContent>
