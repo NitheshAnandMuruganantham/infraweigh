@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VITE_FIREBASE: ${{secrets.BASE_FIREBASE}}
-      VITE_BASE_URL: ${{secrets.BASE_URL}}
-      VITE_BASE_WS_URL: ${{secrets.BASE_WS_URL}}
+      VITE_BASE_URL: https://hasura.infraweigh.co
+      VITE_BASE_WS_URL: wss://hasura.infraweigh.co
       VITE_RAZORPAY_ID: ${{secrets.RAZORPAY_ID}}
-      VITE_SERVER_URL: ${{secrets.SERVER_URL}}
+      VITE_SERVER_URL: https://server.infraweigh.co
       VITE_ENV: production
       BUCKET: client.infraweigh.co
       DIST: packages/client/dist
