@@ -10,15 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VITE_BASE_FIREBASE: ${{secrets.BASE_FIREBASE}}
-      VITE_BASE_URL: ${{secrets.BASE_URL}}
-      VITE_BASE_WS_URL: ${{secrets.BASE_WS_URL}}
+      VITE_BASE_URL: https://hasura.infraweigh.co
+      VITE_BASE_WS_URL: wss://hasura.infraweigh.co
       VITE_RAZORPAY_ID: ${{secrets.RAZORPAY_ID}}
-      VITE_SERVER_URL: ${{secrets.SERVER_URL}}
+      VITE_SERVER_URL: https://server.infraweigh.co
       VITE_ENV: production
-      BUCKET: ${{ secrets.S3_BUCKET }}
+      BUCKET: terminal.infraweigh.co
       DIST: packages/terminal/dist
-      REGION: ${{ secrets.S3_BUCKET_REGION }}
-      DIST_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+      REGION: ap-south-1
+      DIST_ID: E11FX7T6Q6VRGG
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -26,8 +26,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_FOR_HOSTING }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_FOR_HOSTING }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
       - name: Install dependencies
