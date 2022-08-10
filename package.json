@@ -14,6 +14,7 @@
   "scripts": {
     "dev": "concurrently \"yarn dev:terminal\" \"yarn dev:server\"",
     "build": "yarn workspace terminal build",
+    "build:client": "yarn workspace client build",
     "dev:terminal": "yarn workspace terminal dev",
     "watch:server": "yarn workspace server watch",
     "dev:server": "yarn workspace server start:debug",
