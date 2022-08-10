@@ -16,7 +16,7 @@ jobs:
       VITE_SERVER_URL: ${{secrets.SERVER_URL}}
       VITE_ENV: production
       BUCKET: client.infraweigh.co
-      DIST: packages/clientPortal/dist
+      DIST: packages/client/dist
       REGION: ap-south-1
       DIST_ID: E3TUX13GYQOBAM
     steps:
@@ -35,7 +35,7 @@ jobs:
         with:
           useLockFile: false
           install-command: yarn install
-          working-directory: packages/clientPortal
+          working-directory: packages/client
 
       - name: Build Static Website
         run: yarn build:client
