@@ -26,13 +26,13 @@ const authLink = setContext(async (_, { headers }) => {
         {
           method: 'POST',
           headers: {
-            authorization: 'Bearer ' + sessionStorage.getItem('refresh_token'),
+            authorization: 'Bearer ' + localStorage.getItem('refresh_token'),
           },
         }
       );
       const tokenData = await data.json();
       sessionStorage.setItem('token', tokenData.access_token);
-      sessionStorage.setItem('refresh_token', tokenData.refresh_token);
+      localStorage.setItem('refresh_token', tokenData.refresh_token);
       return {
         headers: {
           ...headers,
@@ -48,6 +48,8 @@ const authLink = setContext(async (_, { headers }) => {
       };
     }
   } catch {
+    sessionStorage.clear();
+    localStorage.clear();
     window.location.replace('/login');
   }
 });
@@ -74,6 +76,7 @@ const errorLink = onError(
         switch (err.extensions.code) {
           case 'invalid-headers':
             sessionStorage.clear();
+            localStorage.clear();
             window.location.replace('/login');
             break;
         }
