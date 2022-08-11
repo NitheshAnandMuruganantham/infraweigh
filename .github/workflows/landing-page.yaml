@@ -3,7 +3,7 @@ name: Build and Deploy landing page to CloudFront
 "on":
   push:
     branches:
-      - master
+      - production
 jobs:
   build:
     name: Build and Deploy
