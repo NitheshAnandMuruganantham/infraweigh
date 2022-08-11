@@ -88,7 +88,10 @@ export class BillService {
         }),
         this.s3.uploadBillImages(file, id).catch(() => null),
       ]);
-      if (data[0].paid_by !== 'cash') {
+      if (
+        data[0].paid_by !== 'cash' &&
+        this.config.get('ENABLE_PAYMENTS') === 'true'
+      ) {
         try {
           const razorpay = new Razorpay(
             JSON.parse(this.config.get('RAZORPAY_SERVICE')),
@@ -121,7 +124,6 @@ export class BillService {
             },
           });
         } catch (er) {}
-      } else {
       }
       await Promise.all([
         data[0].customer_2_id

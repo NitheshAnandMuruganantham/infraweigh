@@ -1,30 +1,33 @@
-import * as React from "react";
+import { Field, Formik, FormikProps } from 'formik';
+import { TextField } from 'formik-mui';
+import * as React from 'react';
+
 import {
   Box,
   Button,
   Checkbox,
+  Chip,
   LinearProgress,
   TextField as TF,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
+import AutoComTextField from '../../components/autoComplete';
+import Grid from '../../components/dataGrid';
 import {
-  useGetCustomerDropdownOptionsLazyQuery,
   useGetAllBillsSubscription,
+  useGetCustomerDropdownOptionsLazyQuery,
   useGetMaterialDropDownListLazyQuery,
   useGetTotalBillsSubscription,
   useGetVehiclesDropDownListLazyQuery,
   useGetWeighbridgesDropDownLazyQuery,
-} from "../../generated";
-import { Formik, Field, FormikProps } from "formik";
-import { TextField } from "formik-mui";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import useRole from "../../hooks/role";
-import Grid from "../../components/dataGrid";
-import AutoComTextField from "../../components/autoComplete";
-
-import Columns from "./columns";
+} from '../../generated';
+import useRole from '../../hooks/role';
+import { displayRazorpay } from '../../utils/razorPay';
+import Columns from './columns';
 
 const Bills = () => {
   const [pageSize, setPageSize] = React.useState(10);
@@ -39,7 +42,7 @@ const Bills = () => {
       orderBy: [
         ...sort,
         {
-          created_at: "desc",
+          created_at: 'desc',
         },
       ],
       where: {
@@ -55,7 +58,7 @@ const Bills = () => {
         orderBy: [
           ...sort,
           {
-            created_at: "desc",
+            created_at: 'desc',
           },
         ],
         where: {
@@ -68,20 +71,20 @@ const Bills = () => {
 
   React.useEffect(() => {
     if (!filterByDateTime) {
-      FormikRef.current?.setFieldValue("from", "", false);
-      FormikRef.current?.setFieldValue("to", "", false);
+      FormikRef.current?.setFieldValue('from', '', false);
+      FormikRef.current?.setFieldValue('to', '', false);
     }
   }, [filterByDateTime]);
 
   return (
     <Box>
-      <Box height={600} width={"100%"} textAlign="center">
+      <Box height={600} width={'100%'} textAlign="center">
         <LinearProgress
           sx={{
             visibility:
               totalRowsLoading || loading || totalRowsLoading
-                ? "visible"
-                : "hidden",
+                ? 'visible'
+                : 'hidden',
           }}
         />
         <Formik
@@ -118,7 +121,7 @@ const Bills = () => {
               ];
             }
             if (
-              role !== "terminal" &&
+              role !== 'terminal' &&
               values.weighbridge &&
               values.weighbridge.value &&
               values.weighbridge.value.length > 0
@@ -167,30 +170,30 @@ const Bills = () => {
             setFilter(dat);
           }}
           initialValues={{
-            vehicle_number: "",
+            vehicle_number: '',
             material: null,
             weighbridge: null,
             vehicle: null,
-            from: "",
-            to: "",
+            from: '',
+            to: '',
           }}
         >
           {({ handleSubmit, handleReset, setFieldValue, values }) => (
             <form onSubmit={handleSubmit} onReset={handleReset}>
-              <Box display="flex" flexDirection={"row"}>
+              <Box display="flex" flexDirection={'row'}>
                 <Field
                   component={TextField}
                   name="vehicle_number"
                   onChange={(e: any) =>
                     setFieldValue(
-                      "vehicle_number",
-                      e.target.value.replace(" ", "").toUpperCase()
+                      'vehicle_number',
+                      e.target.value.replace(' ', '').toUpperCase()
                     )
                   }
                   label="vehicle number"
                   sx={{
                     margin: 2,
-                    width: "40%",
+                    width: '40%',
                   }}
                 />
                 <AutoComTextField
@@ -211,7 +214,7 @@ const Bills = () => {
                   name="vehicle"
                   queryHook={useGetVehiclesDropDownListLazyQuery}
                 />
-                {role !== "terminal" && (
+                {role !== 'terminal' && (
                   <AutoComTextField
                     label="weighbridge"
                     serverName="weighbridge"
@@ -225,14 +228,14 @@ const Bills = () => {
                   checked={filterByDateTime}
                   onChange={(e) => setFilterByDateTime(e.target.checked)}
                 />
-                <Typography variant="body2" sx={{ ml: 1, my: "auto" }}>
+                <Typography variant="body2" sx={{ ml: 1, my: 'auto' }}>
                   filter by time
                 </Typography>
               </Box>
               {filterByDateTime && (
                 <Box
                   display="flex"
-                  gap={"10px"}
+                  gap={'10px'}
                   sx={{ mt: 2, ml: 2 }}
                   flexDirection="row"
                 >
@@ -243,7 +246,7 @@ const Bills = () => {
                       label="from date"
                       value={new Date(values.from)}
                       onChange={(newValue) => {
-                        setFieldValue("from", newValue?.toISOString() || "");
+                        setFieldValue('from', newValue?.toISOString() || '');
                       }}
                     />
                   </LocalizationProvider>
@@ -255,7 +258,7 @@ const Bills = () => {
                       disableFuture
                       value={values.to}
                       onChange={(newValue) => {
-                        setFieldValue("to", newValue?.toISOString() || "");
+                        setFieldValue('to', newValue?.toISOString() || '');
                       }}
                     />
                   </LocalizationProvider>
@@ -278,25 +281,67 @@ const Bills = () => {
           setPageSize={setPageSize}
           loading={totalRowsLoading || loading || loadingRole}
           columns={
-            role === "admin" || role === "tenantAdmin"
+            role === 'admin' || role === 'tenantAdmin'
               ? [
-                  ...Columns,
                   {
-                    field: "weighbridge",
-                    headerName: "weighbridge",
+                    field: 'weighbridge',
+                    headerName: 'weighbridge',
                     width: 150,
                     sortable: false,
                     filterable: false,
                     editable: false,
                     valueGetter: (params) => params.value.name,
                   },
+                  ...Columns,
+                  ...GetCols(),
                 ]
-              : Columns
+              : [...Columns, ...GetCols()]
           }
         />
       </Box>
     </Box>
   );
+};
+
+const GetCols = () => {
+  if (import.meta.env['VITE_ENABLE_PAYMENTS'] === 'true') {
+    return [
+      {
+        field: 'paid',
+        headerName: 'status',
+        sortable: true,
+        width: 120,
+        renderCell: (params: any) =>
+          params.value ? (
+            <Chip color="success" label="paid" />
+          ) : (
+            <Chip color="error" label="on due" />
+          ),
+      },
+      {
+        field: 'pay now',
+        headerName: 'pay now',
+        sortable: false,
+        width: 120,
+        renderCell: (params: any) => (
+          <Button
+            disabled={!params.row.order_id || params.row.paid ? true : false}
+            onClick={() => {
+              displayRazorpay({
+                amount: parseInt(`${params.row.charges}`.split('$')[1]) * 100,
+                currency: 'INR',
+                order_id: params.row.order_id || '',
+              });
+            }}
+          >
+            Pay now
+          </Button>
+        ),
+      },
+    ];
+  } else {
+    return [];
+  }
 };
 
 export default Bills;
