@@ -1,56 +1,106 @@
-import * as React from "react";
-import { GridColDef } from "@mui/x-data-grid";
-import { Box } from "@mui/system";
-import "react-confirm-alert/src/react-confirm-alert.css";
-import EditClient from "./edit";
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
+import * as React from 'react';
+import { confirmAlert } from 'react-confirm-alert';
+import { toast } from 'react-toastify';
+
+import { Button, TextField } from '@mui/material';
+import { Box } from '@mui/system';
+import { GridColDef } from '@mui/x-data-grid';
+
+import DataGridComponent from '../../components/dataGrid';
 import {
+  DeleteTenantDocument,
   useGetAllTenantsSubscription,
   useGetTenantsCountSubscription,
-} from "../../generated";
-import AddNewTenent from "./add";
-import DataGridComponent from "../../components/dataGrid";
-import { TextField } from "@mui/material";
+} from '../../generated';
+import gqlClient from '../../utils/client';
+import AddNewTenent from './add';
+import EditClient from './edit';
 
 const columns: GridColDef[] = [
   {
-    field: "name",
-    headerName: "name",
+    field: 'name',
+    headerName: 'name',
     width: 300,
     editable: false,
     sortable: true,
   },
 
   {
-    field: "email",
-    headerName: "e-mail id",
+    field: 'email',
+    headerName: 'e-mail id',
     sortable: false,
     width: 400,
   },
 
   {
-    field: "phone",
-    headerName: "phone",
+    field: 'phone',
+    headerName: 'phone',
     sortable: false,
     width: 150,
   },
   {
-    field: "activate",
-    headerName: "active",
-    sortable: false,
-    width: 150,
-    valueGetter: (params) => (params.value ? "active" : "in-active"),
-  },
-  {
-    field: "edit",
-    headerName: "Edit",
+    field: 'edit',
+    headerName: 'Edit',
     width: 130,
     sortable: false,
     filterable: false,
     renderCell: (params) => <EditClient id={params.row.id} />,
   },
+  {
+    field: 'delete',
+    headerName: 'Delete',
+    width: 75,
+    sortable: false,
+    filterable: false,
+    renderCell: (params) => {
+      return (
+        <Button
+          variant="contained"
+          color="error"
+          size="small"
+          onClick={() => {
+            confirmAlert({
+              title: 'Confirm to Delete',
+              message: 'Are you sure want to delete this.',
+              buttons: [
+                {
+                  label: 'Yes',
+                  onClick: () => {
+                    gqlClient
+                      .mutate({
+                        mutation: DeleteTenantDocument,
+                        variables: {
+                          deleteCustomerByPkId: params.row.id,
+                        },
+                      })
+                      .catch(() => {
+                        toast.error('bills are linked to this client');
+                      })
+                      .then((dat) => {
+                        dat &&
+                          dat.data &&
+                          toast.success('client deleted successfully');
+                      });
+                  },
+                },
+                {
+                  label: 'No',
+                  onClick: () => null,
+                },
+              ],
+            });
+          }}
+        >
+          Delete
+        </Button>
+      );
+    },
+  },
 ];
 const Clients = () => {
-  const [search, setSearch] = React.useState("");
+  const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [sort, SetSort] = React.useState([]);
   const [pageSize, setPageSize] = React.useState(1);
@@ -107,13 +157,13 @@ const Clients = () => {
           setSearch(e.target.value);
         }}
         sx={{
-          width: "100%",
+          width: '100%',
           my: 2,
         }}
         name="search"
         label="Search"
       />
-      <Box height={500} width={"100%"} textAlign="center">
+      <Box height={500} width={'100%'} textAlign="center">
         <DataGridComponent
           data={data?.tenents || []}
           pageSize={pageSize}

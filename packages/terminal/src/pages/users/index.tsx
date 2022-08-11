@@ -4,51 +4,53 @@ import { LinearProgress, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 
 import DataGridComponent from '../../components/dataGrid';
-import { useGetAllUsersCountSubscription, useGetAllUsersSubscription } from '../../generated';
+import {
+  useGetAllUsersCountSubscription,
+  useGetAllUsersSubscription,
+} from '../../generated';
 import useRole from '../../hooks/role';
 import AddNewUser from './add';
 import columns from './columns';
 
 const Users = () => {
   const [sort, SetSort] = React.useState([]);
-  const [search, setSearch] = React.useState("");
+  const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
   const [role, loadingRole] = useRole();
 
-  let filter:any;
+  let filter: any;
   if (role !== 'admin') {
     filter = {
-    _and: [
-      {
-        _or: [
-          {
-            email: {
-              _like: `%${search}%`,
+      _and: [
+        {
+          _or: [
+            {
+              email: {
+                _like: `%${search}%`,
+              },
             },
-          },
-        ],
-      },
-    ],
-
-    }
+          ],
+        },
+      ],
+    };
   } else {
     filter = {
-          _and: [
+      _and: [
         {
-              role: {
-                _eq:'tenantAdmin'
-              },
-        _or: [
-          {
-            email: {
-              _like: `%${search}%`,
-            },
+          role: {
+            _eq: 'tenantAdmin',
           },
-        ],
-      },
-    ],
-    }
+          _or: [
+            {
+              email: {
+                _like: `%${search}%`,
+              },
+            },
+          ],
+        },
+      ],
+    };
   }
   const { data, loading } = useGetAllUsersSubscription({
     variables: {
@@ -65,8 +67,7 @@ const Users = () => {
         where: filter,
       },
     });
-  
-  
+
   return (
     <Box>
       <AddNewUser />
@@ -76,16 +77,17 @@ const Users = () => {
           setSearch(e.target.value);
         }}
         sx={{
-          width: "90%",
+          width: '90%',
           my: 2,
         }}
         name="search"
         label="Search"
       />
-      <Box height={500} width={"100%"} textAlign="center">
+      <Box height={500} width={'100%'} textAlign="center">
         <LinearProgress
           sx={{
-            visibility: CountLoading || loading || loadingRole ? "visible" : "hidden",
+            visibility:
+              CountLoading || loading || loadingRole ? 'visible' : 'hidden',
           }}
         />
         <DataGridComponent
@@ -96,16 +98,22 @@ const Users = () => {
           setFilter={() => null}
           setPageSize={setPageSize}
           setSort={SetSort}
-          columns={role === 'admin' ? columns : [
-            ...columns, {
-    field: "weighbridge",
-    headerName: "weighbridge",
-    sortable: false,
-    filterable: false,
-    width: 400,
-    valueGetter: (params) => params.row?.weighbridge?.name || "",
-  
-          }]}
+          columns={
+            role === 'admin'
+              ? columns
+              : [
+                  {
+                    field: 'weighbridge',
+                    headerName: 'weighbridge',
+                    sortable: false,
+                    filterable: false,
+                    width: 400,
+                    valueGetter: (params) =>
+                      params.row?.weighbridge?.name || '',
+                  },
+                  ...columns,
+                ]
+          }
           rowCount={Count?.user_aggregate?.aggregate?.count || 0}
         />
       </Box>

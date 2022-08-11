@@ -75,7 +75,7 @@ model tenents {
   name            String
   email           String        @unique
   phone           String
-  activate        Boolean
+  activate        Boolean       @default(true)
   metadata        Json          @default(dbgenerated("json_build_object()")) @db.Json
   payment_pending Boolean       @default(false)
   razorpay_id     String        @unique
