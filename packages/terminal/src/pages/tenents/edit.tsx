@@ -1,17 +1,17 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import { Formik, Form, Field } from "formik";
-import { Switch, TextField } from "formik-mui";
-import { LinearProgress } from "@mui/material";
-import { Box } from "@mui/system";
-import * as Yup from "yup";
-import MuiPhoneNumber from "material-ui-phone-number";
-import { useGetTenetLazyQuery, EditTenentDocument } from "../../generated";
-import gqlClient from "../../utils/client";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-mui';
+import { LinearProgress } from '@mui/material';
+import { Box } from '@mui/system';
+import * as Yup from 'yup';
+import MuiPhoneNumber from 'material-ui-phone-number';
+import { useGetTenetLazyQuery, EditTenentDocument } from '../../generated';
+import gqlClient from '../../utils/client';
 
 const EditClient: React.FunctionComponent<{
   id: string;
@@ -45,18 +45,16 @@ const EditClient: React.FunctionComponent<{
         <Formik
           initialValues={{
             name: data?.tenents_by_pk?.name,
-            address: data?.tenents_by_pk?.metadata?.address || "",
+            address: data?.tenents_by_pk?.metadata?.address || '',
             email: data?.tenents_by_pk?.email,
             phone: data?.tenents_by_pk?.phone,
-            active: data?.tenents_by_pk?.activate,
           }}
           validationSchema={() => {
             return Yup.object().shape({
-              name: Yup.string().required("Required"),
-              address: Yup.string().required("Required"),
-              email: Yup.string().required("Required"),
-              phone: Yup.string().required("Required"),
-              active: Yup.bool().required("required"),
+              name: Yup.string().required('Required'),
+              address: Yup.string().required('Required'),
+              email: Yup.string().required('Required'),
+              phone: Yup.string().required('Required'),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
@@ -76,13 +74,12 @@ const EditClient: React.FunctionComponent<{
                     metadata: {
                       address: values.address,
                     },
-                    activate: values.active,
                   },
                 },
               })
               .catch(() => {
                 alert(
-                  "realted resourses exists delete those resource to continue"
+                  'realted resourses exists delete those resource to continue'
                 );
               });
             setSubmitting(true);
@@ -101,8 +98,8 @@ const EditClient: React.FunctionComponent<{
                 <Form>
                   <Box
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
+                      display: 'flex',
+                      flexDirection: 'column',
                     }}
                   >
                     <Field
@@ -133,16 +130,6 @@ const EditClient: React.FunctionComponent<{
                         my: 1,
                       }}
                     />
-                    <Field
-                      component={Switch}
-                      type="checkbox"
-                      label="active"
-                      name="active"
-                      sx={{
-                        my: 1,
-                      }}
-                    />
-
                     <MuiPhoneNumber
                       label="phone"
                       variant="outlined"
@@ -151,8 +138,8 @@ const EditClient: React.FunctionComponent<{
                       sx={{
                         my: 1,
                       }}
-                      defaultCountry={"in"}
-                      onChange={(e) => setFieldValue("phone", e.toString())}
+                      defaultCountry={'in'}
+                      onChange={(e) => setFieldValue('phone', e.toString())}
                     />
 
                     {isSubmitting && <LinearProgress />}

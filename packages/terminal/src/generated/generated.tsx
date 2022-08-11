@@ -728,8 +728,6 @@ export type Customer = {
   company_address: Scalars['String'];
   company_name: Scalars['String'];
   created_at: Scalars['timestamptz'];
-  credit?: Maybe<Scalars['Boolean']>;
-  credit_limit?: Maybe<Scalars['money']>;
   email: Scalars['String'];
   gst_in?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
@@ -818,17 +816,9 @@ export type Customer_Aggregate = {
 /** aggregate fields of "customer" */
 export type Customer_Aggregate_Fields = {
   __typename?: 'customer_aggregate_fields';
-  avg?: Maybe<Customer_Avg_Fields>;
   count: Scalars['Int'];
   max?: Maybe<Customer_Max_Fields>;
   min?: Maybe<Customer_Min_Fields>;
-  stddev?: Maybe<Customer_Stddev_Fields>;
-  stddev_pop?: Maybe<Customer_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Customer_Stddev_Samp_Fields>;
-  sum?: Maybe<Customer_Sum_Fields>;
-  var_pop?: Maybe<Customer_Var_Pop_Fields>;
-  var_samp?: Maybe<Customer_Var_Samp_Fields>;
-  variance?: Maybe<Customer_Variance_Fields>;
 };
 
 
@@ -840,17 +830,9 @@ export type Customer_Aggregate_FieldsCountArgs = {
 
 /** order by aggregate values of table "customer" */
 export type Customer_Aggregate_Order_By = {
-  avg?: InputMaybe<Customer_Avg_Order_By>;
   count?: InputMaybe<Order_By>;
   max?: InputMaybe<Customer_Max_Order_By>;
   min?: InputMaybe<Customer_Min_Order_By>;
-  stddev?: InputMaybe<Customer_Stddev_Order_By>;
-  stddev_pop?: InputMaybe<Customer_Stddev_Pop_Order_By>;
-  stddev_samp?: InputMaybe<Customer_Stddev_Samp_Order_By>;
-  sum?: InputMaybe<Customer_Sum_Order_By>;
-  var_pop?: InputMaybe<Customer_Var_Pop_Order_By>;
-  var_samp?: InputMaybe<Customer_Var_Samp_Order_By>;
-  variance?: InputMaybe<Customer_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "customer" */
@@ -858,17 +840,6 @@ export type Customer_Arr_Rel_Insert_Input = {
   data: Array<Customer_Insert_Input>;
   /** upsert condition */
   on_conflict?: InputMaybe<Customer_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type Customer_Avg_Fields = {
-  __typename?: 'customer_avg_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "customer" */
-export type Customer_Avg_Order_By = {
-  credit_limit?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "customer". All fields are combined with a logical 'AND'. */
@@ -883,8 +854,6 @@ export type Customer_Bool_Exp = {
   company_address?: InputMaybe<String_Comparison_Exp>;
   company_name?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  credit?: InputMaybe<Boolean_Comparison_Exp>;
-  credit_limit?: InputMaybe<Money_Comparison_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
   gst_in?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -902,11 +871,6 @@ export enum Customer_Constraint {
   CustomerPkey = 'customer_pkey'
 }
 
-/** input type for incrementing numeric columns in table "customer" */
-export type Customer_Inc_Input = {
-  credit_limit?: InputMaybe<Scalars['money']>;
-};
-
 /** input type for inserting data into table "customer" */
 export type Customer_Insert_Input = {
   bills_2?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
@@ -916,8 +880,6 @@ export type Customer_Insert_Input = {
   company_address?: InputMaybe<Scalars['String']>;
   company_name?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
-  credit?: InputMaybe<Scalars['Boolean']>;
-  credit_limit?: InputMaybe<Scalars['money']>;
   email?: InputMaybe<Scalars['String']>;
   gst_in?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
@@ -935,7 +897,6 @@ export type Customer_Max_Fields = {
   company_address?: Maybe<Scalars['String']>;
   company_name?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  credit_limit?: Maybe<Scalars['money']>;
   email?: Maybe<Scalars['String']>;
   gst_in?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
@@ -950,7 +911,6 @@ export type Customer_Max_Order_By = {
   company_address?: InputMaybe<Order_By>;
   company_name?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
-  credit_limit?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   gst_in?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -966,7 +926,6 @@ export type Customer_Min_Fields = {
   company_address?: Maybe<Scalars['String']>;
   company_name?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  credit_limit?: Maybe<Scalars['money']>;
   email?: Maybe<Scalars['String']>;
   gst_in?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
@@ -981,7 +940,6 @@ export type Customer_Min_Order_By = {
   company_address?: InputMaybe<Order_By>;
   company_name?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
-  credit_limit?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   gst_in?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -1023,8 +981,6 @@ export type Customer_Order_By = {
   company_address?: InputMaybe<Order_By>;
   company_name?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
-  credit?: InputMaybe<Order_By>;
-  credit_limit?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   gst_in?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -1052,10 +1008,6 @@ export enum Customer_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
-  Credit = 'credit',
-  /** column name */
-  CreditLimit = 'credit_limit',
-  /** column name */
   Email = 'email',
   /** column name */
   GstIn = 'gst_in',
@@ -1079,8 +1031,6 @@ export type Customer_Set_Input = {
   company_address?: InputMaybe<Scalars['String']>;
   company_name?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
-  credit?: InputMaybe<Scalars['Boolean']>;
-  credit_limit?: InputMaybe<Scalars['money']>;
   email?: InputMaybe<Scalars['String']>;
   gst_in?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
@@ -1089,50 +1039,6 @@ export type Customer_Set_Input = {
   phone?: InputMaybe<Scalars['String']>;
   tenent_id?: InputMaybe<Scalars['uuid']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
-};
-
-/** aggregate stddev on columns */
-export type Customer_Stddev_Fields = {
-  __typename?: 'customer_stddev_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "customer" */
-export type Customer_Stddev_Order_By = {
-  credit_limit?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Customer_Stddev_Pop_Fields = {
-  __typename?: 'customer_stddev_pop_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "customer" */
-export type Customer_Stddev_Pop_Order_By = {
-  credit_limit?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Customer_Stddev_Samp_Fields = {
-  __typename?: 'customer_stddev_samp_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "customer" */
-export type Customer_Stddev_Samp_Order_By = {
-  credit_limit?: InputMaybe<Order_By>;
-};
-
-/** aggregate sum on columns */
-export type Customer_Sum_Fields = {
-  __typename?: 'customer_sum_fields';
-  credit_limit?: Maybe<Scalars['money']>;
-};
-
-/** order by sum() on columns of table "customer" */
-export type Customer_Sum_Order_By = {
-  credit_limit?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "customer" */
@@ -1145,10 +1051,6 @@ export enum Customer_Update_Column {
   CompanyName = 'company_name',
   /** column name */
   CreatedAt = 'created_at',
-  /** column name */
-  Credit = 'credit',
-  /** column name */
-  CreditLimit = 'credit_limit',
   /** column name */
   Email = 'email',
   /** column name */
@@ -1166,39 +1068,6 @@ export enum Customer_Update_Column {
   /** column name */
   UpdatedAt = 'updated_at'
 }
-
-/** aggregate var_pop on columns */
-export type Customer_Var_Pop_Fields = {
-  __typename?: 'customer_var_pop_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "customer" */
-export type Customer_Var_Pop_Order_By = {
-  credit_limit?: InputMaybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type Customer_Var_Samp_Fields = {
-  __typename?: 'customer_var_samp_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "customer" */
-export type Customer_Var_Samp_Order_By = {
-  credit_limit?: InputMaybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type Customer_Variance_Fields = {
-  __typename?: 'customer_variance_fields';
-  credit_limit?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "customer" */
-export type Customer_Variance_Order_By = {
-  credit_limit?: InputMaybe<Order_By>;
-};
 
 /** Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'. */
 export type Json_Comparison_Exp = {
@@ -1774,7 +1643,6 @@ export type Mutation_RootUpdate_Bill_By_PkArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_CustomerArgs = {
-  _inc?: InputMaybe<Customer_Inc_Input>;
   _set?: InputMaybe<Customer_Set_Input>;
   where: Customer_Bool_Exp;
 };
@@ -1782,7 +1650,6 @@ export type Mutation_RootUpdate_CustomerArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Customer_By_PkArgs = {
-  _inc?: InputMaybe<Customer_Inc_Input>;
   _set?: InputMaybe<Customer_Set_Input>;
   pk_columns: Customer_Pk_Columns_Input;
 };
@@ -3938,6 +3805,13 @@ export type AddTenentMutationVariables = Exact<{
 
 export type AddTenentMutation = { __typename?: 'mutation_root', insert_tenents_one?: { __typename?: 'tenents', id: any } | null };
 
+export type DeleteTenantMutationVariables = Exact<{
+  deleteTenentsByPkId: Scalars['uuid'];
+}>;
+
+
+export type DeleteTenantMutation = { __typename?: 'mutation_root', delete_tenents_by_pk?: { __typename?: 'tenents', id: any } | null };
+
 export type GetAllTenantsSubscriptionVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -4314,6 +4188,39 @@ export function useAddTenentMutation(baseOptions?: Apollo.MutationHookOptions<Ad
 export type AddTenentMutationHookResult = ReturnType<typeof useAddTenentMutation>;
 export type AddTenentMutationResult = Apollo.MutationResult<AddTenentMutation>;
 export type AddTenentMutationOptions = Apollo.BaseMutationOptions<AddTenentMutation, AddTenentMutationVariables>;
+export const DeleteTenantDocument = gql`
+    mutation deleteTenant($deleteTenentsByPkId: uuid!) {
+  delete_tenents_by_pk(id: $deleteTenentsByPkId) {
+    id
+  }
+}
+    `;
+export type DeleteTenantMutationFn = Apollo.MutationFunction<DeleteTenantMutation, DeleteTenantMutationVariables>;
+
+/**
+ * __useDeleteTenantMutation__
+ *
+ * To run a mutation, you first call `useDeleteTenantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTenantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTenantMutation, { data, loading, error }] = useDeleteTenantMutation({
+ *   variables: {
+ *      deleteTenentsByPkId: // value for 'deleteTenentsByPkId'
+ *   },
+ * });
+ */
+export function useDeleteTenantMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTenantMutation, DeleteTenantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTenantMutation, DeleteTenantMutationVariables>(DeleteTenantDocument, options);
+      }
+export type DeleteTenantMutationHookResult = ReturnType<typeof useDeleteTenantMutation>;
+export type DeleteTenantMutationResult = Apollo.MutationResult<DeleteTenantMutation>;
+export type DeleteTenantMutationOptions = Apollo.BaseMutationOptions<DeleteTenantMutation, DeleteTenantMutationVariables>;
 export const GetAllTenantsDocument = gql`
     subscription getAllTenants($limit: Int, $offset: Int, $orderBy: [tenents_order_by!], $where: tenents_bool_exp) {
   tenents(limit: $limit, offset: $offset, order_by: $orderBy, where: $where) {
