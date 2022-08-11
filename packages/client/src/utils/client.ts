@@ -5,6 +5,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
 import { setContext } from '@apollo/client/link/context';
 import decode from 'jwt-decode';
+import { auth } from './firebase';
 
 function getHeaders() {
   const headers: any = {};
@@ -21,19 +22,23 @@ const authLink = setContext(async (_, { headers }) => {
 
     if (expired) {
       console.log('called');
+      const idToken: any = await auth.currentUser?.getIdToken();
+
       const data = await fetch(
-        import.meta.env['VITE_SERVER_URL'] + '/auth/refresh',
+        import.meta.env['VITE_SERVER_URL'] + '/auth/refresh/firebase',
         {
+          headers: {
+            authorization: idToken,
+          },
           method: 'POST',
-          credentials: 'include',
         }
       );
-      const tokenData = await data.json();
-      sessionStorage.setItem('token', tokenData.access_token);
+      const tokenData = await data.text();
+      sessionStorage.setItem('token', tokenData);
       return {
         headers: {
           ...headers,
-          Authorization: `Bearer ${tokenData.access_token}`,
+          Authorization: `Bearer ${tokenData}`,
         },
       };
     } else {
@@ -45,6 +50,8 @@ const authLink = setContext(async (_, { headers }) => {
       };
     }
   } catch {
+    sessionStorage.clear();
+    await auth.signOut().catch();
     window.location.replace('/login');
   }
 });

@@ -1,17 +1,17 @@
-import * as React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import Loading from "./components/loading";
-import RequireAuth from "./pages/auth/requireAuth";
-import SignInSide from "./pages/auth/logIn";
-
-const ForgetPassword = React.lazy(() => import("./pages/auth/forgetPassword"));
-const SetNewPassword = React.lazy(() => import("./pages/auth/setPassword"));
-const Bills = React.lazy(() => import("./pages/bills"));
-const Clients = React.lazy(() => import("./pages/clients"));
-const Weigh = React.lazy(() => import("./pages/weigh"));
-const Users = React.lazy(() => import("./pages/users"));
-const Tenants = React.lazy(() => import("./pages/tenents"));
-const Weighbridges = React.lazy(() => import("./pages/weignbirdge"));
+import * as React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Loading from './components/loading';
+import RequireAuth from './pages/auth/requireAuth';
+import SignInSide from './pages/auth/logIn';
+import NotRequireAuth from './pages/auth/notRequireAuth';
+const ForgetPassword = React.lazy(() => import('./pages/auth/forgetPassword'));
+const SetNewPassword = React.lazy(() => import('./pages/auth/setPassword'));
+const Bills = React.lazy(() => import('./pages/bills'));
+const Clients = React.lazy(() => import('./pages/clients'));
+const Weigh = React.lazy(() => import('./pages/weigh'));
+const Users = React.lazy(() => import('./pages/users'));
+const Tenants = React.lazy(() => import('./pages/tenents'));
+const Weighbridges = React.lazy(() => import('./pages/weignbirdge'));
 
 const LazyLoader = () => <Loading open={true} setOpen={() => null} />;
 
@@ -69,9 +69,11 @@ const App: React.FunctionComponent = () => {
         <Route path="/tenants" element={<LazyTenants />} />
         <Route path="/clients" element={<LazyClients />} />
       </Route>
-      <Route path="/login" element={<SignInSide />} />
-      <Route path="/forgetPassword" element={<LazyForgetPassword />} />
-      <Route path="/reset-password" element={<LazySetNewPassword />} />
+      <Route element={<NotRequireAuth />}>
+        <Route path="/login" element={<SignInSide />} />
+        <Route path="/forgetPassword" element={<LazyForgetPassword />} />
+        <Route path="/reset-password" element={<LazySetNewPassword />} />
+      </Route>
     </Routes>
   );
 };

@@ -12,9 +12,10 @@
   "repository": "https://github.com/NitheshAnanadMuruganandham/infraweigh.git",
   "author": "nithesh  anand <anand252825@gmail.com>",
   "scripts": {
-    "dev": "concurrently \"yarn dev:terminal\" \"yarn dev:server\"",
+    "dev": "concurrently \"yarn dev:terminal\" \"yarn dev:client\" \"yarn dev:server\"",
     "build": "yarn workspace terminal build",
     "build:client": "yarn workspace client build",
+    "dev:client": "yarn workspace client dev",
     "dev:terminal": "yarn workspace terminal dev",
     "watch:server": "yarn workspace server watch",
     "dev:server": "yarn workspace server start:debug",
