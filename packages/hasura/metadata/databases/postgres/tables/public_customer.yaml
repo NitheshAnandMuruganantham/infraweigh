@@ -111,6 +111,7 @@ update_permissions:
   - role: tenantAdmin
     permission:
       columns:
+        - blocked
         - company_address
         - company_name
         - email

@@ -1,6 +1,4 @@
-import { Button, Chip } from '@mui/material';
 import { GridColumns, GridValueGetterParams } from '@mui/x-data-grid';
-import { displayRazorpay } from '../../utils/razorPay';
 import BillInfo from './billInfo';
 
 const Columns: GridColumns = [
@@ -91,38 +89,6 @@ const Columns: GridColumns = [
         parseInt(`${params.row.scale_weight}`, 10) -
           parseInt(`${params.row.tare_weight}` || '0', 10) || 0
       ),
-  },
-  {
-    field: 'paid',
-    headerName: 'status',
-    sortable: true,
-    width: 120,
-    renderCell: (params) =>
-      params.value ? (
-        <Chip color="success" label="paid" />
-      ) : (
-        <Chip color="error" label="on due" />
-      ),
-  },
-  {
-    field: 'pay now',
-    headerName: 'pay now',
-    sortable: false,
-    width: 120,
-    renderCell: (params) => (
-      <Button
-        disabled={!params.row.order_id || params.row.paid ? true : false}
-        onClick={() => {
-          displayRazorpay({
-            amount: parseInt(`${params.row.charges}`.split('$')[1]) * 100,
-            currency: 'INR',
-            order_id: params.row.order_id || '',
-          });
-        }}
-      >
-        Pay now
-      </Button>
-    ),
   },
   {
     field: 'info',
