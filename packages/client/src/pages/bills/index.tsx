@@ -1,12 +1,22 @@
+import { Field, Formik, FormikProps } from 'formik';
+import { TextField } from 'formik-mui';
 import * as React from 'react';
+
 import {
   Box,
   Button,
   Checkbox,
+  Chip,
   LinearProgress,
   TextField as TF,
   Typography,
 } from '@mui/material';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
+import AutoComTextField from '../../components/autoComplete';
+import Grid from '../../components/dataGrid';
 import {
   useGetAllBillsSubscription,
   useGetMaterialDropDownListLazyQuery,
@@ -14,14 +24,7 @@ import {
   useGetVehiclesDropDownListLazyQuery,
   useGetWeighbridgesDropDownLazyQuery,
 } from '../../generated';
-import { Formik, Field, FormikProps } from 'formik';
-import { TextField } from 'formik-mui';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import Grid from '../../components/dataGrid';
-import AutoComTextField from '../../components/autoComplete';
-
+import { displayRazorpay } from '../../utils/razorPay';
 import Columns from './columns';
 
 const Bills = () => {
@@ -266,7 +269,7 @@ const Bills = () => {
           setFilter={() => null}
           setPageSize={setPageSize}
           loading={totalRowsLoading || loading}
-          columns={Columns}
+          columns={[...Columns, ...GetCols()]}
         />
       </Box>
     </Box>
@@ -274,3 +277,44 @@ const Bills = () => {
 };
 
 export default Bills;
+
+const GetCols = () => {
+  if (import.meta.env['VITE_ENABLE_PAYMENTS'] === 'true') {
+    return [
+      {
+        field: 'paid',
+        headerName: 'status',
+        sortable: true,
+        width: 120,
+        renderCell: (params: any) =>
+          params.value ? (
+            <Chip color="success" label="paid" />
+          ) : (
+            <Chip color="error" label="on due" />
+          ),
+      },
+      {
+        field: 'pay now',
+        headerName: 'pay now',
+        sortable: false,
+        width: 120,
+        renderCell: (params: any) => (
+          <Button
+            disabled={!params.row.order_id || params.row.paid ? true : false}
+            onClick={() => {
+              displayRazorpay({
+                amount: parseInt(`${params.row.charges}`.split('$')[1]) * 100,
+                currency: 'INR',
+                order_id: params.row.order_id || '',
+              });
+            }}
+          >
+            Pay now
+          </Button>
+        ),
+      },
+    ];
+  } else {
+    return [];
+  }
+};
