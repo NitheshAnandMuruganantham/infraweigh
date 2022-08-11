@@ -1,13 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# GitHub recommends pinning actions to a commit SHA.
-# To get a newer version, you will need to update the SHA.
-# You can also reference a tag or branch, but the action may change without warning.
-
-name: Deploy to Amazon ECS
+name: Deploy Production server to Amazon ECS
 
 on:
   push:
@@ -15,12 +6,12 @@ on:
       - production
 
 env:
-  AWS_REGION: ap-south-1                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: infraweigh-production-server           # set this to your Amazon ECR repository name
-  ECS_SERVICE: server                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: server                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: .aws/server/task-definition.json # set this to the path to your Amazon ECS task definition
-  CONTAINER_NAME: server           # set this to the name of the container in the
+  AWS_REGION: ap-south-1
+  ECR_REPOSITORY: infraweigh-production-server     
+  ECS_SERVICE: server
+  ECS_CLUSTER: server
+  ECS_TASK_DEFINITION: .aws/server/task-definition.json
+  CONTAINER_NAME: server
 
 jobs:
   deploy:
