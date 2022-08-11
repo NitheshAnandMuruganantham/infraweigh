@@ -1,21 +1,21 @@
-import { Field, Form, Formik } from "formik";
-import { TextField } from "formik-mui";
-import * as React from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import * as Yup from "yup";
+import { Field, Form, Formik } from 'formik';
+import { TextField } from 'formik-mui';
+import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import Loader from "../../components/loading";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Loader from '../../components/loading';
 
 function Copyright(props: any) {
   return (
@@ -25,12 +25,12 @@ function Copyright(props: any) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
+      {'Copyright © '}
       <Link color="inherit" href="https://infraweigh.co/">
         infraweigh.co
-      </Link>{" "}
+      </Link>{' '}
       {new Date().getFullYear()}
-      {"."}
+      {'.'}
     </Typography>
   );
 }
@@ -40,15 +40,11 @@ const theme = createTheme();
 export default function SignInSide() {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
-  React.useEffect(() => {
-    if (sessionStorage.getItem("token")) {
-      navigate("/");
-    }
-  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Loader open={loading} setOpen={() => null} />
-      <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
           item
@@ -56,14 +52,14 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
-            backgroundRepeat: "no-repeat",
+            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
-              t.palette.mode === "light"
+              t.palette.mode === 'light'
                 ? t.palette.grey[50]
                 : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -72,39 +68,48 @@ export default function SignInSide() {
               setLoading(true);
               toast.clearWaitingQueue();
               const dat = await fetch(
-                import.meta.env.VITE_SERVER_URL + "/auth/signin",
+                import.meta.env.VITE_SERVER_URL + '/auth/signin',
                 {
-                  method: "POST",
+                  method: 'POST',
                   headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                   },
-                  credentials: "include",
+                  credentials: 'include',
                   body: JSON.stringify({
                     email,
                     password,
                   }),
                 }
-              ).then((res) =>
-                res.json().then((data) => {
-                  if (res.ok) {
-                    sessionStorage.setItem("refresh_token", data.refresh_token);
-                    navigate("/", { replace: true });
-                  } else {
-                    setFieldError("password", "Invalid email or password");
-                  }
-                })
-              );
+              )
+                .then((res) =>
+                  res.json().then((data) => {
+                    if (res.ok) {
+                      localStorage.setItem('refresh_token', data.refresh_token);
+                      sessionStorage.setItem('token', data.access_token);
+                      navigate('/', { replace: true });
+                    } else {
+                      sessionStorage.clear();
+                      localStorage.clear();
+                      setFieldError('password', 'Invalid email or password');
+                    }
+                  })
+                )
+                .catch((err) => {
+                  sessionStorage.clear();
+                  localStorage.clear();
+                  setFieldError('password', 'Invalid email or password');
+                });
               setLoading(false);
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string()
-                .email("Invalid email address")
-                .required("Email is required"),
-              password: Yup.string().required("Password is required"),
+                .email('Invalid email address')
+                .required('Email is required'),
+              password: Yup.string().required('Password is required'),
             })}
             initialValues={{
-              email: "",
-              password: "",
+              email: '',
+              password: '',
             }}
           >
             {() => (
@@ -113,12 +118,12 @@ export default function SignInSide() {
                   sx={{
                     my: 8,
                     mx: 4,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                   }}
                 >
-                  <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                  <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                     <LockOutlinedIcon />
                   </Avatar>
                   <Typography component="h1" variant="h5">

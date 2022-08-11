@@ -24,30 +24,32 @@ function useUser(): [RootObject | null, boolean] {
     const getUser = async () => {
       try {
         setLoading(true);
-        if (!sessionStorage.getItem('refresh_token')) {
+        if (!localStorage.getItem('refresh_token')) {
           throw new Error('no token exists');
-        }
-        const dat = await fetch(
-          import.meta.env['VITE_SERVER_URL'] + '/auth/refresh',
-          {
-            headers: {
-              authorization:
-                'Bearer ' + sessionStorage.getItem('refresh_token'),
-            },
-            method: 'post',
+        } else {
+          const dat = await fetch(
+            import.meta.env['VITE_SERVER_URL'] + '/auth/refresh',
+            {
+              headers: {
+                authorization:
+                  'Bearer ' + localStorage.getItem('refresh_token'),
+              },
+              method: 'post',
+            }
+          );
+          if (!dat.ok) {
+            throw new Error('Error');
           }
-        );
-        if (!dat.ok) {
-          throw new Error('Error');
+          const data = await dat.json();
+          sessionStorage.setItem('token', data.access_token);
+          localStorage.setItem('refresh_token', data.refresh_token);
+          setUser(data);
+          setLoading(false);
         }
-        const data = await dat.json();
-        sessionStorage.setItem('token', data.access_token);
-        sessionStorage.setItem('refresh_token', data.refresh_token);
-        setUser(data);
-        setLoading(false);
       } catch (error) {
         setLoading(false);
-        // sessionStorage.clear();
+        sessionStorage.clear();
+        localStorage.clear();
         navigate('/login', { replace: true });
         return;
       }
