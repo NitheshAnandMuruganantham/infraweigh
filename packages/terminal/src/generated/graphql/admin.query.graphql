@@ -4,6 +4,12 @@ mutation addTenent($object: tenents_insert_input!) {
   }
 }
 
+mutation deleteTenant($deleteTenentsByPkId: uuid!) {
+  delete_tenents_by_pk(id: $deleteTenentsByPkId) {
+    id
+  }
+}
+
 subscription getAllTenants(
   $limit: Int
   $offset: Int

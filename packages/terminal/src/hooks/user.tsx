@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import * as React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 export interface User {
   id: string;
   email: string;
@@ -24,31 +24,31 @@ function useUser(): [RootObject | null, boolean] {
     const getUser = async () => {
       try {
         setLoading(true);
-        if (!sessionStorage.getItem("refresh_token")) {
-          throw new Error("no token exists");
+        if (!sessionStorage.getItem('refresh_token')) {
+          throw new Error('no token exists');
         }
         const dat = await fetch(
-          import.meta.env["VITE_SERVER_URL"] + "/auth/refresh",
+          import.meta.env['VITE_SERVER_URL'] + '/auth/refresh',
           {
             headers: {
               authorization:
-                "Bearer " + sessionStorage.getItem("refresh_token"),
+                'Bearer ' + sessionStorage.getItem('refresh_token'),
             },
-            method: "post",
+            method: 'post',
           }
         );
         if (!dat.ok) {
-          throw new Error("Error");
+          throw new Error('Error');
         }
         const data = await dat.json();
-        sessionStorage.setItem("token", data.access_token);
-        sessionStorage.setItem("refresh_token", data.refresh_token);
+        sessionStorage.setItem('token', data.access_token);
+        sessionStorage.setItem('refresh_token', data.refresh_token);
         setUser(data);
         setLoading(false);
       } catch (error) {
         setLoading(false);
         // sessionStorage.clear();
-        navigate("/login", { replace: true });
+        navigate('/login', { replace: true });
         return;
       }
     };
