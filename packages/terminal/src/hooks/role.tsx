@@ -1,7 +1,7 @@
-import * as React from "react";
-import jwt_decode from "jwt-decode";
-import { useLocation } from "react-router-dom";
-type roles = "admin" | "terminal" | "customer" | "tenantAdmin" | null | "guest";
+import * as React from 'react';
+import jwt_decode from 'jwt-decode';
+import { useLocation } from 'react-router-dom';
+type roles = 'admin' | 'terminal' | 'tenantAdmin' | null | 'maintainer';
 
 function useRoles(): [roles, boolean] {
   const [loading, setLoading] = React.useState(true);
@@ -12,10 +12,10 @@ function useRoles(): [roles, boolean] {
     const loadRole = async () => {
       setLoading(true);
       const idTokenResult: any = await jwt_decode(
-        sessionStorage.getItem("token") || ""
+        sessionStorage.getItem('token') || ''
       );
-      const claims: any = idTokenResult["https://hasura.io/jwt/claims"];
-      setRole(claims ? claims["x-hasura-default-role"] : "guest");
+      const claims: any = idTokenResult['https://hasura.io/jwt/claims'];
+      setRole(claims ? claims['x-hasura-default-role'] : 'guest');
       setLoading(false);
     };
     loadRole();

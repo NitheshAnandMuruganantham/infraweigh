@@ -1,23 +1,23 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import { Formik, Form, Field } from "formik";
-import { TextField } from "formik-mui";
-import { LinearProgress } from "@mui/material";
-import { Box } from "@mui/system";
-import * as Yup from "yup";
-import { useGetAllTenentsDropDownLazyQuery } from "../../generated";
-import MuiPhoneNumber from "material-ui-phone-number";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-mui';
+import { LinearProgress } from '@mui/material';
+import { Box } from '@mui/system';
+import * as Yup from 'yup';
+import { useGetAllTenentsDropDownLazyQuery } from '../../generated';
+import MuiPhoneNumber from 'material-ui-phone-number';
 import {
   useAddUsersMutation,
   useGetWeighbridgesDropDownLazyQuery,
-} from "../../generated";
-import { toast } from "react-toastify";
-import useRole from "../../hooks/role";
-import AutoCompleteComponent from "../../components/autoComplete";
+} from '../../generated';
+import { toast } from 'react-toastify';
+import useRole from '../../hooks/role';
+import AutoCompleteComponent from '../../components/autoComplete';
 
 const AddNewWeighBridge: React.FunctionComponent = () => {
   const [open, setOpen] = React.useState(false);
@@ -41,46 +41,45 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
         <DialogTitle>New User</DialogTitle>
         <Formik
           initialValues={{
-            name: "",
-            address: "",
-            email: "",
-            phone: "",
+            name: '',
+            address: '',
+            email: '',
+            phone: '',
             branch: {
-              label: "",
+              label: '',
               value: null,
             },
             tenent: {
-              label: "",
+              label: '',
               value: null,
             },
-            role: "terminal",
           }}
           validationSchema={() => {
             return Yup.object().shape({
-              name: Yup.string().required("Required"),
-              address: Yup.string().required("Required"),
-              email: Yup.string().required("Required"),
-              phone: Yup.string().required("Required"),
+              name: Yup.string().required('Required'),
+              address: Yup.string().required('Required'),
+              email: Yup.string().required('Required'),
+              phone: Yup.string().required('Required'),
               branch: Yup.lazy(() => {
-                if (role !== "admin" && role !== null) {
+                if (role === 'tenantAdmin' && role !== null) {
                   return Yup.object()
                     .shape({
-                      label: Yup.string().required("Required"),
-                      value: Yup.string().required("Required"),
+                      label: Yup.string().required('Required'),
+                      value: Yup.string().required('Required'),
                     })
-                    .required("Required");
+                    .required('Required');
                 } else {
                   return Yup.object().notRequired();
                 }
               }),
               tenent: Yup.lazy(() => {
-                if (role === "admin" && role !== null) {
+                if (role !== 'tenantAdmin' && role !== null) {
                   return Yup.object()
                     .shape({
-                      label: Yup.string().required("Required"),
-                      value: Yup.string().required("Required"),
+                      label: Yup.string().required('Required'),
+                      value: Yup.string().required('Required'),
                     })
-                    .required("Required");
+                    .required('Required');
                 } else {
                   return Yup.object().notRequired();
                 }
@@ -91,7 +90,7 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
             setSubmitting(true);
             let dt = {};
             console.log(role);
-            if (role !== "admin") {
+            if (role === 'tenantAdmin') {
               dt = {
                 email: values.email,
                 weighbridge_id: values.branch.value,
@@ -101,8 +100,7 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                   address: values.address,
                 },
               };
-            }
-            else {
+            } else {
               dt = {
                 tenent_id: values.tenent.value,
                 email: values.email,
@@ -111,7 +109,7 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                   phone: values.phone,
                   address: values.address,
                 },
-                role: "tenantAdmin",
+                role: 'tenantAdmin',
               };
             }
             addUser({
@@ -120,12 +118,12 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
               },
             })
               .then(() => {
-                toast.success("user created successfully exist");
+                toast.success('user created successfully exist');
                 setSubmitting(false);
                 handleClose();
               })
               .catch(() => {
-                toast.error("user already exist");
+                toast.error('user already exist');
                 handleClose();
                 setSubmitting(false);
               });
@@ -137,8 +135,8 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                 <Form>
                   <Box
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
+                      display: 'flex',
+                      flexDirection: 'column',
                     }}
                   >
                     <Field
@@ -174,28 +172,27 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                       sx={{
                         my: 1,
                       }}
-                      defaultCountry={"in"}
-                      onChange={(e) => setFieldValue("phone", e.toString())}
+                      defaultCountry={'in'}
+                      onChange={(e) => setFieldValue('phone', e.toString())}
                     />
-                    {role === "admin" && role !== null ? (
+                    {role !== 'tenantAdmin' && role !== null ? (
                       <>
                         <AutoCompleteComponent
                           sx={{
                             mt: 1,
-                            width: "100%",
+                            width: '100%',
                           }}
                           name="tenent"
                           label="teneant"
                           serverName="tenents"
                           queryHook={useGetAllTenentsDropDownLazyQuery}
                         />
-         
                       </>
                     ) : (
                       <AutoCompleteComponent
                         sx={{
                           mt: 2,
-                          width: "100%",
+                          width: '100%',
                         }}
                         name="branch"
                         label="branch"

@@ -1,12 +1,13 @@
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import { useField } from "formik";
-import * as React from "react";
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import { useField } from 'formik';
+import * as React from 'react';
 
 interface TextFieldProps {
   name: string;
   sx?: any;
   queryVariables?: any;
+  ServerFilters?: any;
   filterOptions?: (options: any[], { inputValue }: any) => any[];
   label: string;
   serverName: string;
@@ -33,6 +34,7 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
       onOpen={() =>
         loadData({
           variables: {
+            where: props.ServerFilters,
             limit: 3000,
           },
         })
@@ -41,9 +43,14 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
         loadData({
           variables: {
             where: {
-              name: {
-                _like: `%${v}%`,
-              },
+              and: [
+                props.ServerFilters,
+                {
+                  name: {
+                    _like: `%${v}%`,
+                  },
+                },
+              ],
             },
             limit: 3000,
           },
@@ -61,7 +68,7 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
           ? props.sx
           : {
               margin: 2,
-              width: "90%",
+              width: '90%',
             }
       }
     />

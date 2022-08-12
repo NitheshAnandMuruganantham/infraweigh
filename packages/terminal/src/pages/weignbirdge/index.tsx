@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Box } from "@mui/system";
-import AddNewWeighBridge from "./add";
+import * as React from 'react';
+import { Box } from '@mui/system';
+import AddNewWeighBridge from './add';
 import {
   useGetAllWeighbridgeRealtimeSubscription,
   useWeighbridgesCountSubscription,
-} from "../../generated";
-import columns from "./columns";
-import DataGridComponent from "../../components/dataGrid";
+} from '../../generated';
+import columns from './columns';
+import DataGridComponent from '../../components/dataGrid';
 
 const Weighbridges: React.FunctionComponent = () => {
   const [sort, SetSort] = React.useState([]);
@@ -28,7 +28,7 @@ const Weighbridges: React.FunctionComponent = () => {
   return (
     <Box>
       <AddNewWeighBridge />
-      <Box height={500} width={"100%"} textAlign="center">
+      <Box width={'100%'} textAlign="center">
         <DataGridComponent
           loading={loading || countLoading}
           data={data?.weighbridge || []}

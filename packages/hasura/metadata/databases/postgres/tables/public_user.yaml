@@ -11,7 +11,35 @@ object_relationships:
   - name: weighbridge
     using:
       foreign_key_constraint_on: weighbridge_id
+array_relationships:
+  - name: maintainee
+    using:
+      foreign_key_constraint_on:
+        column: maintainer_id
+        table:
+          schema: public
+          name: tenents
 insert_permissions:
+  - role: maintainer
+    permission:
+      check:
+        _and:
+          - role:
+              _in:
+                - terminal
+                - tenantAdmin
+          - tenent:
+              maintainer_id:
+                _eq: X-Hasura-User-Id
+      columns:
+        - blocked
+        - email
+        - email_verified
+        - meta_data
+        - password
+        - profile
+        - role
+        - weighbridge_id
   - role: tenantAdmin
     permission:
       check:
@@ -31,6 +59,28 @@ insert_permissions:
         - profile
         - weighbridge_id
 select_permissions:
+  - role: maintainer
+    permission:
+      columns:
+        - blocked
+        - created_at
+        - email
+        - email_verified
+        - id
+        - meta_data
+        - profile
+        - role
+        - tenent_id
+        - updated_at
+        - weighbridge_id
+      filter:
+        _and:
+          - tenent:
+              maintainer_id:
+                _eq: X-Hasura-User-Id
+          - id:
+              _ne: X-Hasura-User-Id
+      allow_aggregations: true
   - role: tenantAdmin
     permission:
       columns:
@@ -51,6 +101,35 @@ select_permissions:
               _neq: X-Hasura-user-email
       allow_aggregations: true
 update_permissions:
+  - role: maintainer
+    permission:
+      columns:
+        - blocked
+        - email
+        - email_verified
+        - meta_data
+        - password
+        - profile
+        - role
+        - weighbridge_id
+      filter:
+        _and:
+          - role:
+              _in:
+                - terminal
+                - tenantAdmin
+          - tenent:
+              maintainer_id:
+                _eq: X-Hasura-User-Id
+      check:
+        _and:
+          - role:
+              _in:
+                - terminal
+                - tenantAdmin
+          - tenent:
+              maintainer_id:
+                _eq: X-Hasura-User-Id
   - role: tenantAdmin
     permission:
       columns:
@@ -72,6 +151,18 @@ update_permissions:
               tenent_id:
                 _eq: X-Hasura-tenent-Id
 delete_permissions:
+  - role: maintainer
+    permission:
+      backend_only: false
+      filter:
+        _and:
+          - role:
+              _in:
+                - terminal
+                - tenantAdmin
+          - tenent:
+              maintainer_id:
+                _eq: X-Hasura-User-Id
   - role: tenantAdmin
     permission:
       backend_only: false

@@ -1,6 +1,10 @@
 table:
   schema: public
   name: tenents
+object_relationships:
+  - name: maintainer
+    using:
+      foreign_key_constraint_on: maintainer_id
 array_relationships:
   - name: bills
     using:
@@ -53,6 +57,20 @@ select_permissions:
                 email:
                   _eq: x-hasura-email
       limit: 2000
+  - role: maintainer
+    permission:
+      columns:
+        - activate
+        - email
+        - id
+        - metadata
+        - name
+        - payment_pending
+        - phone
+      filter:
+        maintainer_id:
+          _eq: X-Hasura-User-Id
+      allow_aggregations: true
   - role: tenantAdmin
     permission:
       columns:
@@ -79,3 +97,21 @@ select_permissions:
       filter:
         id:
           _eq: x-hasura-tenent-id
+update_permissions:
+  - role: maintainer
+    permission:
+      columns:
+        - activate
+        - email
+        - id
+        - metadata
+        - name
+        - payment_pending
+        - phone
+        - razorpay_id
+      filter:
+        maintainer_id:
+          _eq: X-Hasura-User-Id
+      check:
+        maintainer_id:
+          _eq: X-Hasura-User-Id

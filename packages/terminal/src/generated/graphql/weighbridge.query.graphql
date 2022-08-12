@@ -129,6 +129,7 @@ query getWeighbridge($where: weighbridge_bool_exp, $limit: Int) {
     id
     address
     created_at
+    config
     name
     metadata
     phone

@@ -30,6 +30,22 @@ array_relationships:
           schema: public
           name: bill
 insert_permissions:
+  - role: maintainer
+    permission:
+      check:
+        tenent:
+          maintainer_id:
+            _eq: X-Hasura-User-Id
+      columns:
+        - blocked
+        - company_address
+        - company_name
+        - email
+        - gst_in
+        - metadata
+        - name
+        - phone
+        - tenent_id
   - role: tenantAdmin
     permission:
       check:
@@ -69,6 +85,42 @@ insert_permissions:
         - phone
         - updated_at
 select_permissions:
+  - role: customer
+    permission:
+      columns:
+        - blocked
+        - metadata
+        - company_address
+        - company_name
+        - email
+        - gst_in
+        - name
+        - phone
+        - created_at
+        - updated_at
+        - id
+        - tenent_id
+      filter:
+        tenent:
+          maintainer_id:
+            _eq: x-hasura-user-id
+  - role: maintainer
+    permission:
+      columns:
+        - blocked
+        - company_address
+        - company_name
+        - created_at
+        - email
+        - gst_in
+        - id
+        - metadata
+        - name
+        - phone
+        - tenent_id
+        - updated_at
+      filter: {}
+      allow_aggregations: true
   - role: tenantAdmin
     permission:
       columns:
@@ -108,6 +160,25 @@ select_permissions:
           _eq: X-Hasura-tenent-Id
       allow_aggregations: true
 update_permissions:
+  - role: maintainer
+    permission:
+      columns:
+        - blocked
+        - company_address
+        - company_name
+        - email
+        - gst_in
+        - metadata
+        - name
+        - phone
+      filter:
+        tenent:
+          maintainer_id:
+            _eq: X-Hasura-User-Id
+      check:
+        tenent:
+          maintainer_id:
+            _eq: X-Hasura-User-Id
   - role: tenantAdmin
     permission:
       columns:
@@ -124,6 +195,13 @@ update_permissions:
           _eq: X-Hasura-tenent-Id
       check: null
 delete_permissions:
+  - role: maintainer
+    permission:
+      backend_only: false
+      filter:
+        tenent:
+          maintainer_id:
+            _eq: X-Hasura-User-Id
   - role: tenantAdmin
     permission:
       backend_only: false

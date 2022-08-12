@@ -3,13 +3,27 @@ query getUser($where: user_bool_exp) {
     email
     id
     profile
+    maintainee {
+      name
+    }
     weighbridge_id
     weighbridge {
       name
       address
     }
     updated_at
-    
+  }
+}
+
+query getUserDropDown(
+  $where: user_bool_exp
+  $offset: Int
+  $limit: Int
+  $orderBy: [user_order_by!]
+) {
+  user(where: $where, offset: $offset, limit: $limit, order_by: $orderBy) {
+    label: email
+    value: id
   }
 }
 
@@ -21,7 +35,6 @@ query getUserCount($where: user_bool_exp) {
   }
 }
 
-
 subscription getAllUsers(
   $where: user_bool_exp
   $limit: Int
@@ -32,6 +45,9 @@ subscription getAllUsers(
     id
     email
     tenent {
+      name
+    }
+    maintainee {
       name
     }
     created_at

@@ -21,6 +21,23 @@ array_relationships:
           schema: public
           name: user
 insert_permissions:
+  - role: maintainer
+    permission:
+      check:
+        tenent:
+          maintainer_id:
+            _eq: X-Hasura-User-Id
+      columns:
+        - address
+        - config
+        - display_name
+        - logo
+        - mail
+        - metadata
+        - name
+        - phone
+        - pin_code
+        - tenent_id
   - role: tenantAdmin
     permission:
       check:
@@ -30,6 +47,7 @@ insert_permissions:
         tenent_id: x-hasura-tenent-id
       columns:
         - address
+        - config
         - display_name
         - id
         - logo
@@ -58,11 +76,26 @@ select_permissions:
           customers:
             email:
               _eq: x-hasura-user-email
-  - role: serviceEngineer
+  - role: maintainer
     permission:
       columns:
         - config
-      filter: {}
+        - metadata
+        - address
+        - display_name
+        - logo
+        - mail
+        - name
+        - phone
+        - pin_code
+        - created_at
+        - updated_at
+        - id
+        - tenent_id
+      filter:
+        tenent:
+          maintainer_id:
+            _eq: x-hasura-user-id
   - role: tenantAdmin
     permission:
       columns:
@@ -106,16 +139,31 @@ select_permissions:
           - id:
               _eq: X-Hasura-Weighbridge-Id
 update_permissions:
-  - role: serviceEngineer
+  - role: maintainer
     permission:
       columns:
+        - address
         - config
-      filter: {}
-      check: null
+        - display_name
+        - logo
+        - mail
+        - metadata
+        - name
+        - phone
+        - pin_code
+      filter:
+        tenent:
+          maintainer_id:
+            _eq: X-Hasura-User-Id
+      check:
+        tenent:
+          maintainer_id:
+            _eq: X-Hasura-User-Id
   - role: tenantAdmin
     permission:
       columns:
         - address
+        - config
         - display_name
         - logo
         - mail
@@ -128,6 +176,13 @@ update_permissions:
           _eq: X-Hasura-tenent-Id
       check: null
 delete_permissions:
+  - role: maintainer
+    permission:
+      backend_only: false
+      filter:
+        tenent:
+          maintainer_id:
+            _eq: X-Hasura-User-Id
   - role: tenantAdmin
     permission:
       backend_only: false

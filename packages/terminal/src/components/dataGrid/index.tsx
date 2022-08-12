@@ -1,5 +1,5 @@
-import { DataGrid, GridColumns } from "@mui/x-data-grid";
-import * as React from "react";
+import { DataGrid, GridColumns } from '@mui/x-data-grid';
+import * as React from 'react';
 
 interface DataGridProps {
   loading: boolean;
@@ -19,8 +19,9 @@ const Grid: React.FunctionComponent<DataGridProps> = (props) => {
       filterMode="server"
       sortingMode="server"
       paginationMode="server"
-      autoPageSize
+      autoHeight
       disableSelectionOnClick
+      rowsPerPageOptions={[10, 20, 50, 100]}
       disableColumnFilter
       disableColumnMenu
       disableColumnSelector

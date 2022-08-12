@@ -1,24 +1,24 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import { Formik, Form, Field } from "formik";
-import { TextField } from "formik-mui";
-import { LinearProgress } from "@mui/material";
-import { Box } from "@mui/system";
-import * as Yup from "yup";
-import MuiPhoneNumber from "material-ui-phone-number";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-mui';
+import { LinearProgress } from '@mui/material';
+import { Box } from '@mui/system';
+import * as Yup from 'yup';
+import MuiPhoneNumber from 'material-ui-phone-number';
 import {
   useGetUserLazyQuery,
   useGetWeighbridgesDropDownLazyQuery,
   useUpdateUserMutation,
-} from "../../generated";
-import { toast } from "react-toastify";
-import AutoCompleteComponent from "../../components/autoComplete";
-import useRole from "../../hooks/role";
-import Loader from "../../components/loading";
+} from '../../generated';
+import { toast } from 'react-toastify';
+import AutoCompleteComponent from '../../components/autoComplete';
+import useRole from '../../hooks/role';
+import Loader from '../../components/loading';
 
 const EditUser: React.FunctionComponent<{
   id: string;
@@ -59,26 +59,26 @@ const EditUser: React.FunctionComponent<{
         <DialogTitle>Edit user</DialogTitle>
         <Formik
           initialValues={{
-            name: data?.user[0].profile.name || "",
-            address: data?.user[0].profile.address || "",
-            email: data?.user[0].email || "",
-            phone: data?.user[0].profile.phone || "",
+            name: data?.user[0].profile.name || '',
+            address: data?.user[0].profile.address || '',
+            email: data?.user[0].email || '',
+            phone: data?.user[0].profile.phone || '',
             branch: {
-              label: data?.user[0].weighbridge?.name || "",
-              value: data?.user[0].weighbridge_id || "",
+              label: data?.user[0].weighbridge?.name || '',
+              value: data?.user[0].weighbridge_id || '',
             },
           }}
           validationSchema={() => {
             return Yup.object().shape({
-              name: Yup.string().required("Required"),
-              address: Yup.string().required("Required"),
-              phone: Yup.string().required("Required"),
+              name: Yup.string().required('Required'),
+              address: Yup.string().required('Required'),
+              phone: Yup.string().required('Required'),
               branch: Yup.lazy(() => {
-                if (role !== "admin") {
+                if (role === 'tenantAdmin') {
                   return Yup.object()
                     .shape({
-                      label: Yup.string().required("Required"),
-                      value: Yup.string().required("Required"),
+                      label: Yup.string().required('Required'),
+                      value: Yup.string().required('Required'),
                     })
                     .required();
                 } else {
@@ -90,7 +90,7 @@ const EditUser: React.FunctionComponent<{
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
             let submitData;
-            if (role === "admin") {
+            if (role !== 'tenantAdmin') {
               submitData = {
                 profile: {
                   name: values.name,
@@ -118,8 +118,8 @@ const EditUser: React.FunctionComponent<{
                 set: submitData,
               },
             })
-              .then((dat) => dat && toast.success("user updated successfully"))
-              .catch(() => toast.error("user already exist"));
+              .then((dat) => dat && toast.success('user updated successfully'))
+              .catch(() => toast.error('user already exist'));
             setSubmitting(true);
             handleClose();
           }}
@@ -130,8 +130,8 @@ const EditUser: React.FunctionComponent<{
                 <Form>
                   <Box
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
+                      display: 'flex',
+                      flexDirection: 'column',
                     }}
                   >
                     <Field
@@ -169,15 +169,15 @@ const EditUser: React.FunctionComponent<{
                       sx={{
                         my: 1,
                       }}
-                      defaultCountry={"in"}
-                      onChange={(e) => setFieldValue("phone", e.toString())}
+                      defaultCountry={'in'}
+                      onChange={(e) => setFieldValue('phone', e.toString())}
                     />
-                    {role !== "admin" && (
+                    {role === 'tenantAdmin' && (
                       <AutoCompleteComponent
                         name="branch"
                         sx={{
                           mt: 2,
-                          width: "100%",
+                          width: '100%',
                         }}
                         queryHook={useGetWeighbridgesDropDownLazyQuery}
                         serverName="weighbridge"

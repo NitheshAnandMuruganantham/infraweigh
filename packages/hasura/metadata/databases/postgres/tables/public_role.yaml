@@ -10,3 +10,10 @@ array_relationships:
         table:
           schema: public
           name: user
+select_permissions:
+  - role: maintainer
+    permission:
+      columns:
+        - comment
+        - value
+      filter: {}
