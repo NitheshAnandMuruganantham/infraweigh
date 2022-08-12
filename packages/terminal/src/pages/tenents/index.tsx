@@ -23,7 +23,7 @@ const Clients = () => {
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [sort, SetSort] = React.useState([]);
-  const [pageSize, setPageSize] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(10);
   const [role] = useRoles();
   const columns: GridColDef[] = [
     {
@@ -174,7 +174,7 @@ const Clients = () => {
         name="search"
         label="Search"
       />
-      <Box height={500} width={'100%'} textAlign="center">
+      <Box width={'100%'} textAlign="center">
         <DataGridComponent
           data={data?.tenents || []}
           pageSize={pageSize}

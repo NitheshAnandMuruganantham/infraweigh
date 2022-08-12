@@ -19,7 +19,7 @@ const Users = () => {
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
   const [role, loadingRole] = useRole();
-  const [user, userLoading] = useUser();
+  const [user] = useUser();
   let filter: any;
   if (role === 'tenantAdmin') {
     filter = {
@@ -104,13 +104,12 @@ const Users = () => {
           setSearch(e.target.value);
         }}
         sx={{
-          width: '90%',
           my: 2,
         }}
         name="search"
         label="Search"
       />
-      <Box height={500} width={'100%'} textAlign="center">
+      <Box width={'100%'} textAlign="center">
         <LinearProgress
           sx={{
             visibility:

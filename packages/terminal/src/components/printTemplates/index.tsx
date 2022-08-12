@@ -1,69 +1,72 @@
-import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
-import TableHead from "@mui/material/TableHead";
-import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
-import Barcode from "./barcode";
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import TableHead from '@mui/material/TableHead';
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
+import Barcode from './barcode';
+import { createTheme, ThemeProvider } from '@mui/material';
 const Bill: React.FunctionComponent<{
   data: any;
 }> = (props) => {
+  const theme = createTheme({
+    palette: {
+      mode: 'light',
+    },
+  });
   return (
-    <Box
-      sx={{
-        mx: "auto",
-        width: "20cm",
-        height: "14.5cm",
-      }}
-    >
+    <ThemeProvider theme={theme}>
       <Box
         sx={{
-          position: "relative",
-          width: "98%",
-          height: "98%",
-          borderRadius: "10px",
-          marginTop: "1%",
-          marginX: "auto",
-          border: "1px solid black",
+          position: 'relative',
+          width: '20cm',
+          backgroundColor: 'white',
+          color: 'black',
+          scale: '90%',
+          height: '14.5cm',
+          borderRadius: '10px',
+          marginTop: '1%',
+          marginX: 'auto',
+          border: '1px solid black',
         }}
       >
         <Box
           sx={{
-            width: "100%",
-            height: "15%",
-            textAlign: "center",
+            width: '100%',
+            height: '15%',
+            textAlign: 'center',
           }}
         >
           <div
             style={{
-              fontSize: "30px",
-              fontFamily: "Oswald",
+              fontSize: '30px',
+              fontFamily: 'Oswald',
             }}
           >
             {props.data?.weighbridge?.display_name}
           </div>
           <div
             style={{
-              fontSize: "15px",
-              fontFamily: "Oswald",
-              marginBottom: "3%",
+              fontSize: '15px',
+              fontFamily: 'Oswald',
+              marginBottom: '3%',
             }}
           >
             {props.data?.weighbridge?.address}
           </div>
           <TableContainer component={Paper}>
-            <Table sx={{ width: "100%", height: "20%" }}>
+            <Table sx={{ width: '100%', height: '20%' }}>
               <TableHead>
                 <TableRow>
                   <TableCell
                     align="center"
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
                     }}
                   >
                     VEHICLE NUMBER
@@ -71,7 +74,7 @@ const Bill: React.FunctionComponent<{
                   <TableCell
                     align="center"
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
                     }}
                   >
                     MATERIAL
@@ -79,7 +82,7 @@ const Bill: React.FunctionComponent<{
                   <TableCell
                     align="center"
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
                     }}
                   >
                     DATE TIME
@@ -88,7 +91,7 @@ const Bill: React.FunctionComponent<{
                   <TableCell
                     align="center"
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
                     }}
                   >
                     CHARGES
@@ -96,7 +99,7 @@ const Bill: React.FunctionComponent<{
                   <TableCell
                     align="center"
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
                     }}
                   >
                     CUSTOMER
@@ -116,19 +119,24 @@ const Bill: React.FunctionComponent<{
                   </TableCell>
                   <TableCell align="center">{props.data.charges}</TableCell>
                   <TableCell align="center">
-                    {props.data.customer_bill_customer_idTocustomer?.company_name || props.data.customer_bill_customer_3_idTocustomer?.company_name || props.data.customer_bill_customer_2_idTocustomer?.company_name}
+                    {props.data.customer_bill_customer_idTocustomer
+                      ?.company_name ||
+                      props.data.customer_bill_customer_3_idTocustomer
+                        ?.company_name ||
+                      props.data.customer_bill_customer_2_idTocustomer
+                        ?.company_name}
                   </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
           <TableContainer component={Paper}>
-            <Table sx={{ width: "100%", height: "20%", mt: "2%" }}>
+            <Table sx={{ width: '100%', height: '20%', mt: '2%' }}>
               <TableHead>
                 <TableRow>
                   <TableCell
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
                     }}
                   >
                     SCALE WEIGHT
@@ -136,7 +144,7 @@ const Bill: React.FunctionComponent<{
                   <TableCell
                     align="center"
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
                     }}
                   >
                     TARE WEIGHT
@@ -144,7 +152,7 @@ const Bill: React.FunctionComponent<{
                   <TableCell
                     align="center"
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
                     }}
                   >
                     NET WEIGHT
@@ -152,7 +160,7 @@ const Bill: React.FunctionComponent<{
                   <TableCell
                     align="center"
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
                     }}
                   >
                     VERIFIED TARE WEIGHT
@@ -165,20 +173,20 @@ const Bill: React.FunctionComponent<{
                     {props.data.scale_weight}
                   </TableCell>
                   <TableCell align="center">
-                    {props.data.second_weight ? props.data.tare_weight : ""}
+                    {props.data.second_weight ? props.data.tare_weight : ''}
                   </TableCell>
                   <TableCell align="center">
                     {props.data.second_weight
                       ? Math.abs(
                           props.data.scale_weight - props.data.tare_weight
-                        ) || ""
-                      : ""}
+                        ) || ''
+                      : ''}
                   </TableCell>
                   {props.data.second_weight ? (
                     <TableCell align="center">
                       {props.data.reference_bill_id || !props.data.second_weight
-                        ? "VERIFIED"
-                        : "GENERIC"}
+                        ? 'VERIFIED'
+                        : 'GENERIC'}
                     </TableCell>
                   ) : (
                     <TableCell align="center">--</TableCell>
@@ -189,36 +197,37 @@ const Bill: React.FunctionComponent<{
           </TableContainer>
           <div
             style={{
-              display: "flex",
-              flexDirection: "row",
-              height: "160px",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "10px",
+              display: 'flex',
+              flexDirection: 'row',
+              height: '160px',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
             }}
           >
-            { props?.data?.photos && props.data.photos.map((photo: string, index: number) => {
-              if (index > 3) {
-                return null;
-              } else
-                return ( 
-                  <img
-                    key={index}
-                    src={photo} 
-                    alt=""
-                    style={{
-                      width: "135px",
-                      height: "135px",
-                    }}
-                  />
-                );
-            })}
+            {props?.data?.photos &&
+              props.data.photos.map((photo: string, index: number) => {
+                if (index > 3) {
+                  return null;
+                } else
+                  return (
+                    <img
+                      key={index}
+                      src={photo}
+                      alt=""
+                      style={{
+                        width: '135px',
+                        height: '135px',
+                      }}
+                    />
+                  );
+              })}
           </div>
           <Chip
             sx={{
-              position: "absolute",
-              right: "10px",
-              bottom: "10px",
+              position: 'absolute',
+              right: '10px',
+              bottom: '10px',
             }}
             label="infra weigh secure"
             size="small"
@@ -229,7 +238,7 @@ const Bill: React.FunctionComponent<{
           <Barcode value={`INF-${props.data.nano_id}`} />
         </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 };
 

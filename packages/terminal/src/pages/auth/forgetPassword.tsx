@@ -14,7 +14,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 import Loading from '../../components/loading';
@@ -37,14 +36,12 @@ function Copyright(props: any) {
   );
 }
 
-const theme = createTheme();
-
 export default function SignInSide() {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Loading open={loading} setOpen={() => null} />
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
@@ -54,7 +51,7 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundImage: 'url(https://source.unsplash.com/random/?office)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light'
@@ -78,7 +75,7 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              change of password
+              password reset request
             </Typography>
             <Formik
               onSubmit={async ({ email }) => {
@@ -154,6 +151,6 @@ export default function SignInSide() {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </>
   );
 }

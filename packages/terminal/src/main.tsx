@@ -12,7 +12,7 @@ import { ApolloProvider } from '@apollo/client';
 import App from './App';
 import client from './utils/client';
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const theme = ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <ToastContainer />

@@ -38,14 +38,12 @@ function Copyright(props: any) {
   );
 }
 
-const theme = createTheme();
-
 export default function SignInSide() {
   const [user, userLoading] = useAuthState(auth);
   if (!userLoading) {
     if (!user) {
       return (
-        <ThemeProvider theme={theme}>
+        <>
           <Grid container component="main" sx={{ height: '100vh' }}>
             <CssBaseline />
             <Grid
@@ -55,7 +53,7 @@ export default function SignInSide() {
               md={7}
               sx={{
                 backgroundImage:
-                  'url(https://source.unsplash.com/random/?office,company)',
+                  'url(https://source.unsplash.com/random/?industry)',
                 backgroundRepeat: 'no-repeat',
                 backgroundColor: (t) =>
                   t.palette.mode === 'light'
@@ -96,7 +94,7 @@ export default function SignInSide() {
               </Box>
             </Grid>
           </Grid>
-        </ThemeProvider>
+        </>
       );
     } else {
       return <Navigate to="/" replace />;

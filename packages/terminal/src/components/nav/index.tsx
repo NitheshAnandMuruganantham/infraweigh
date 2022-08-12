@@ -1,7 +1,6 @@
 import decode from 'jwt-decode';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import ArticleIcon from '@mui/icons-material/Article';
@@ -33,8 +32,13 @@ import ListItemText from '@mui/material/ListItemText';
 import { CSSObject, styled, Theme, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 import useRole from '../../hooks/role';
+import GetHeaderNames from './getRoutes';
+
+import { createTheme, ThemeProvider } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -122,8 +126,25 @@ const NavBar: FunctionComponent<{
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  const theme = useTheme();
+  const [mode, setMode] = React.useState<'light' | 'dark'>(
+    (new Date().getHours() > 18 || new Date().getHours()) < 7 ? 'dark' : 'light'
+  );
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    []
+  );
+  const theme = createTheme({
+    palette: {
+      mode,
+    },
+    typography: {
+      fontFamily: 'Poppins',
+    },
+  });
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -186,149 +207,180 @@ const NavBar: FunctionComponent<{
     },
   ];
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            INFRA WEIGH
-          </Typography>
-          <Box
-            sx={{
-              marginLeft: 'auto',
-              flexGrow: 0,
-            }}
-          >
-            <Menu
-              sx={{ mt: '50px' }}
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: 'none' }),
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              <MenuItem
-                disabled={loading}
-                key={'logOut'}
-                onClick={async () => {
-                  setLoading(true);
-                  await fetch(
-                    import.meta.env['VITE_SERVER_URL'] + '/auth/logout',
-                    {
-                      headers: {
-                        Authorization: `Bearer ${sessionStorage.getItem(
-                          'token'
-                        )}`,
-                      },
-                      method: 'post',
-                    }
-                  ).catch();
-                  sessionStorage.clear();
-                  localStorage.clear();
-                  setLoading(false);
-                  navigate('/login');
+              <MenuIcon />
+            </IconButton>
+            <img
+              style={{
+                height: '40px',
+                backgroundColor: 'white',
+                paddingTop: '3px',
+                border: '1px solid black',
+                paddingBottom: '3px',
+                paddingRight: '10px',
+                paddingLeft: '10px',
+                borderRadius: '20px',
+              }}
+              src="https://infraweigh.co/assets/logo.png"
+            />
+            <Typography variant="h6" sx={{ mx: '10px' }} component="div">
+              |
+            </Typography>
+            {<GetHeaderNames />}
+            <Box
+              sx={{
+                marginLeft: 'auto',
+                flexGrow: 0,
+              }}
+            >
+              <Menu
+                sx={{ mt: '50px' }}
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
               >
-                <Typography textAlign="center">
-                  {!loading ? (
-                    'log out'
-                  ) : (
-                    <CircularProgress color="success" size={25} />
-                  )}
-                </Typography>
-              </MenuItem>
-            </Menu>
-            <Tooltip title={`${user?.email || ''}`}>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  src={`https://avatars.dicebear.com/api/initials/${
-                    user?.email || 'infraweigh'
-                  }.svg`}
-                />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        {!RoleLoading && (
-          <List>
-            {links
-              .filter((dt) => role && dt.role.includes(role))
-              .map((data, index) => (
-                <ListItemButton
-                  key={index}
-                  onClick={() => navigate(data.path)}
-                  sx={{
-                    ':hover': {
-                      backgroundColor: data.active ? 'slategray' : 'whitesmoke',
-                    },
-                    backgroundColor: data.active ? 'gray' : 'inherit',
-                    backgroundOpacity: 50,
-                    margin: 1,
-                    borderRadius: '5px',
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
+                <MenuItem
+                  disabled={loading}
+                  key={'logOut'}
+                  onClick={async () => {
+                    setLoading(true);
+                    await fetch(
+                      import.meta.env['VITE_SERVER_URL'] + '/auth/logout',
+                      {
+                        headers: {
+                          Authorization: `Bearer ${sessionStorage.getItem(
+                            'token'
+                          )}`,
+                        },
+                        method: 'post',
+                      }
+                    ).catch();
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    setLoading(false);
+                    navigate('/login');
                   }}
                 >
-                  <ListItemIcon
+                  <Typography textAlign="center">
+                    {!loading ? (
+                      'log out'
+                    ) : (
+                      <CircularProgress color="success" size={25} />
+                    )}
+                  </Typography>
+                </MenuItem>
+              </Menu>
+              <Typography variant="overline" sx={{ mr: '10px' }}>
+                <IconButton
+                  sx={{ ml: 1 }}
+                  onClick={colorMode.toggleColorMode}
+                  color="inherit"
+                >
+                  {theme.palette.mode === 'dark' ? (
+                    <Brightness7Icon />
+                  ) : (
+                    <Brightness4Icon />
+                  )}
+                </IconButton>
+              </Typography>
+              <Tooltip title={`${user?.email || ''}`}>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    src={`https://avatars.dicebear.com/api/initials/${
+                      user?.email || 'infraweigh'
+                    }.svg`}
+                  />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          {!RoleLoading && (
+            <List>
+              {links
+                .filter((dt) => role && dt.role.includes(role))
+                .map((data, index) => (
+                  <ListItemButton
+                    key={index}
+                    onClick={() => navigate(data.path)}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
+                      ':hover': {
+                        backgroundColor: data.active
+                          ? 'slategray'
+                          : 'whitesmoke',
+                      },
+                      backgroundColor: data.active ? 'gray' : 'inherit',
+                      backgroundOpacity: 50,
+                      margin: 1,
+                      borderRadius: '5px',
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
                     }}
                   >
-                    <data.icon htmlColor={data.active ? 'white' : 'gray'} />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={data.name}
-                    sx={{
-                      color: data.active ? 'white' : 'inherit',
-                      opacity: open ? 1 : 0,
-                    }}
-                  />
-                </ListItemButton>
-              ))}
-          </List>
-        )}
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 7 }}>
-        {children}
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : 'auto',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <data.icon htmlColor={data.active ? 'white' : 'gray'} />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={data.name}
+                      sx={{
+                        color: data.active ? 'white' : 'inherit',
+                        opacity: open ? 1 : 0,
+                      }}
+                    />
+                  </ListItemButton>
+                ))}
+            </List>
+          )}
+        </Drawer>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 7 }}>
+          {children}
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 };
 

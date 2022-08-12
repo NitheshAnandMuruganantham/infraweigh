@@ -91,13 +91,12 @@ const Maintainers = () => {
           setSearch(e.target.value);
         }}
         sx={{
-          width: '90%',
           my: 2,
         }}
         name="search"
         label="Search"
       />
-      <Box height={500} width={'100%'} textAlign="center">
+      <Box width={'100%'} textAlign="center">
         <LinearProgress
           sx={{
             visibility:

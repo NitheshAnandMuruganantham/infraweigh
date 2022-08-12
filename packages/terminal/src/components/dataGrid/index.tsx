@@ -21,6 +21,7 @@ const Grid: React.FunctionComponent<DataGridProps> = (props) => {
       paginationMode="server"
       autoHeight
       disableSelectionOnClick
+      rowsPerPageOptions={[10, 20, 50, 100]}
       disableColumnFilter
       disableColumnMenu
       disableColumnSelector

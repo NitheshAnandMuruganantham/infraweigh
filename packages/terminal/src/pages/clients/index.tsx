@@ -82,7 +82,7 @@ const Clients = () => {
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [sort, SetSort] = React.useState([]);
-  const [pageSize, setPageSize] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(10);
   const searchParsed = [
     {
       name: {
@@ -133,13 +133,12 @@ const Clients = () => {
           setSearch(e.target.value);
         }}
         sx={{
-          width: '90%',
           my: 2,
         }}
         name="search"
         label="Search"
       />
-      <Box height={500} width={'100%'} textAlign="center">
+      <Box width={'100%'} textAlign="center">
         <LinearProgress
           sx={{
             visibility: customerCountLoading || loading ? 'visible' : 'hidden',

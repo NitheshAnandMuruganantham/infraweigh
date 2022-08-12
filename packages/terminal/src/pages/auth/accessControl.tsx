@@ -21,7 +21,7 @@ const AccessControl: React.FunctionComponent<AccessControlProps> = ({
     return <>{children}</>;
   } else {
     alert('You are not authorized to access this page');
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace />;
   }
 };
 

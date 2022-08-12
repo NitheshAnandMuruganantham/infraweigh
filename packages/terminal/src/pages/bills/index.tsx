@@ -78,7 +78,7 @@ const Bills = () => {
 
   return (
     <Box>
-      <Box height={600} width={'100%'} textAlign="center">
+      <Box width={'100%'} textAlign="center">
         <LinearProgress
           sx={{
             visibility:
