@@ -78,7 +78,7 @@ const Bills = () => {
 
   return (
     <Box>
-      <Box height={600} width={'100%'} textAlign="center">
+      <Box width={'100%'} textAlign="center">
         <LinearProgress
           sx={{
             visibility:
@@ -281,7 +281,7 @@ const Bills = () => {
           setPageSize={setPageSize}
           loading={totalRowsLoading || loading || loadingRole}
           columns={
-            role === 'admin' || role === 'tenantAdmin'
+            role !== 'terminal'
               ? [
                   {
                     field: 'weighbridge',

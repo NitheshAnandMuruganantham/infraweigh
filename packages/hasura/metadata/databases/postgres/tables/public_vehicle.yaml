@@ -19,6 +19,15 @@ select_permissions:
         - name
         - updated_at
       filter: {}
+  - role: maintainer
+    permission:
+      columns:
+        - manufacturer
+        - name
+        - created_at
+        - updated_at
+        - id
+      filter: {}
   - role: tenantAdmin
     permission:
       columns:

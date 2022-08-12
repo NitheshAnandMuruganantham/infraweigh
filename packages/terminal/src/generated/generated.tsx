@@ -2278,8 +2278,8 @@ export enum Role_Enum {
   Admin = 'admin',
   /** customer */
   Customer = 'customer',
-  /** serviceEngineer */
-  ServiceEngineer = 'serviceEngineer',
+  /** maintainer */
+  Maintainer = 'maintainer',
   /** tenantAdmin */
   TenantAdmin = 'tenantAdmin',
   /** terminal */
@@ -2652,6 +2652,9 @@ export type Tenents = {
   customers_aggregate: Customer_Aggregate;
   email: Scalars['String'];
   id: Scalars['uuid'];
+  /** An object relationship */
+  maintainer?: Maybe<User>;
+  maintainer_id?: Maybe<Scalars['uuid']>;
   metadata: Scalars['json'];
   name: Scalars['String'];
   payment_pending: Scalars['Boolean'];
@@ -2775,6 +2778,20 @@ export type Tenents_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "tenents" */
+export type Tenents_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Tenents_Max_Order_By>;
+  min?: InputMaybe<Tenents_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "tenents" */
+export type Tenents_Arr_Rel_Insert_Input = {
+  data: Array<Tenents_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Tenents_On_Conflict>;
+};
+
 /** Boolean expression to filter rows from the table "tenents". All fields are combined with a logical 'AND'. */
 export type Tenents_Bool_Exp = {
   _and?: InputMaybe<Array<Tenents_Bool_Exp>>;
@@ -2785,6 +2802,8 @@ export type Tenents_Bool_Exp = {
   customers?: InputMaybe<Customer_Bool_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  maintainer?: InputMaybe<User_Bool_Exp>;
+  maintainer_id?: InputMaybe<Uuid_Comparison_Exp>;
   metadata?: InputMaybe<Json_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   payment_pending?: InputMaybe<Boolean_Comparison_Exp>;
@@ -2811,6 +2830,8 @@ export type Tenents_Insert_Input = {
   customers?: InputMaybe<Customer_Arr_Rel_Insert_Input>;
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  maintainer?: InputMaybe<User_Obj_Rel_Insert_Input>;
+  maintainer_id?: InputMaybe<Scalars['uuid']>;
   metadata?: InputMaybe<Scalars['json']>;
   name?: InputMaybe<Scalars['String']>;
   payment_pending?: InputMaybe<Scalars['Boolean']>;
@@ -2825,9 +2846,20 @@ export type Tenents_Max_Fields = {
   __typename?: 'tenents_max_fields';
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  maintainer_id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   razorpay_id?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "tenents" */
+export type Tenents_Max_Order_By = {
+  email?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  maintainer_id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  phone?: InputMaybe<Order_By>;
+  razorpay_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -2835,9 +2867,20 @@ export type Tenents_Min_Fields = {
   __typename?: 'tenents_min_fields';
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  maintainer_id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   razorpay_id?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "tenents" */
+export type Tenents_Min_Order_By = {
+  email?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  maintainer_id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  phone?: InputMaybe<Order_By>;
+  razorpay_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "tenents" */
@@ -2870,6 +2913,8 @@ export type Tenents_Order_By = {
   customers_aggregate?: InputMaybe<Customer_Aggregate_Order_By>;
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  maintainer?: InputMaybe<User_Order_By>;
+  maintainer_id?: InputMaybe<Order_By>;
   metadata?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   payment_pending?: InputMaybe<Order_By>;
@@ -2893,6 +2938,8 @@ export enum Tenents_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  MaintainerId = 'maintainer_id',
+  /** column name */
   Metadata = 'metadata',
   /** column name */
   Name = 'name',
@@ -2909,6 +2956,7 @@ export type Tenents_Set_Input = {
   activate?: InputMaybe<Scalars['Boolean']>;
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  maintainer_id?: InputMaybe<Scalars['uuid']>;
   metadata?: InputMaybe<Scalars['json']>;
   name?: InputMaybe<Scalars['String']>;
   payment_pending?: InputMaybe<Scalars['Boolean']>;
@@ -2924,6 +2972,8 @@ export enum Tenents_Update_Column {
   Email = 'email',
   /** column name */
   Id = 'id',
+  /** column name */
+  MaintainerId = 'maintainer_id',
   /** column name */
   Metadata = 'metadata',
   /** column name */
@@ -2958,6 +3008,10 @@ export type User = {
   email_verified?: Maybe<Scalars['Boolean']>;
   forgot_password_token_hash?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
+  /** An array relationship */
+  maintainee: Array<Tenents>;
+  /** An aggregate relationship */
+  maintainee_aggregate: Tenents_Aggregate;
   meta_data?: Maybe<Scalars['json']>;
   password?: Maybe<Scalars['String']>;
   profile?: Maybe<Scalars['json']>;
@@ -2972,6 +3026,26 @@ export type User = {
   /** An object relationship */
   weighbridge?: Maybe<Weighbridge>;
   weighbridge_id?: Maybe<Scalars['uuid']>;
+};
+
+
+/** columns and relationships of "user" */
+export type UserMaintaineeArgs = {
+  distinct_on?: InputMaybe<Array<Tenents_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Tenents_Order_By>>;
+  where?: InputMaybe<Tenents_Bool_Exp>;
+};
+
+
+/** columns and relationships of "user" */
+export type UserMaintainee_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Tenents_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Tenents_Order_By>>;
+  where?: InputMaybe<Tenents_Bool_Exp>;
 };
 
 
@@ -3033,6 +3107,7 @@ export type User_Bool_Exp = {
   email_verified?: InputMaybe<Boolean_Comparison_Exp>;
   forgot_password_token_hash?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  maintainee?: InputMaybe<Tenents_Bool_Exp>;
   meta_data?: InputMaybe<Json_Comparison_Exp>;
   password?: InputMaybe<String_Comparison_Exp>;
   profile?: InputMaybe<Json_Comparison_Exp>;
@@ -3062,6 +3137,7 @@ export type User_Insert_Input = {
   email_verified?: InputMaybe<Scalars['Boolean']>;
   forgot_password_token_hash?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  maintainee?: InputMaybe<Tenents_Arr_Rel_Insert_Input>;
   meta_data?: InputMaybe<Scalars['json']>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<Scalars['json']>;
@@ -3138,6 +3214,13 @@ export type User_Mutation_Response = {
   returning: Array<User>;
 };
 
+/** input type for inserting object relation for remote table "user" */
+export type User_Obj_Rel_Insert_Input = {
+  data: User_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<User_On_Conflict>;
+};
+
 /** on_conflict condition type for table "user" */
 export type User_On_Conflict = {
   constraint: User_Constraint;
@@ -3153,6 +3236,7 @@ export type User_Order_By = {
   email_verified?: InputMaybe<Order_By>;
   forgot_password_token_hash?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  maintainee_aggregate?: InputMaybe<Tenents_Aggregate_Order_By>;
   meta_data?: InputMaybe<Order_By>;
   password?: InputMaybe<Order_By>;
   profile?: InputMaybe<Order_By>;
@@ -3820,7 +3904,7 @@ export type GetAllTenantsSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetAllTenantsSubscription = { __typename?: 'subscription_root', tenents: Array<{ __typename?: 'tenents', email: string, name: string, activate: boolean, id: any, phone: string, metadata: any, payment_pending: boolean }> };
+export type GetAllTenantsSubscription = { __typename?: 'subscription_root', tenents: Array<{ __typename?: 'tenents', email: string, name: string, activate: boolean, id: any, phone: string, metadata: any, payment_pending: boolean, maintainer?: { __typename?: 'user', id: any, email: string } | null }> };
 
 export type GetTenantsCountSubscriptionVariables = Exact<{
   where?: InputMaybe<Tenents_Bool_Exp>;
@@ -3854,7 +3938,12 @@ export type GetTenetQueryVariables = Exact<{
 }>;
 
 
-export type GetTenetQuery = { __typename?: 'query_root', tenents_by_pk?: { __typename?: 'tenents', email: string, id: any, activate: boolean, name: string, metadata: any, phone: string, payment_pending: boolean } | null };
+export type GetTenetQuery = { __typename?: 'query_root', tenents_by_pk?: { __typename?: 'tenents', email: string, id: any, activate: boolean, name: string, metadata: any, phone: string, payment_pending: boolean, maintainer?: { __typename?: 'user', id: any, email: string } | null } | null };
+
+export type GetRoleDropdownOptionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetRoleDropdownOptionsQuery = { __typename?: 'query_root', role: Array<{ __typename?: 'role', value: string, label: string }> };
 
 export type AddBillMutationVariables = Exact<{
   object: Bill_Insert_Input;
@@ -4011,7 +4100,17 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, id: any, profile?: any | null, weighbridge_id?: any | null, updated_at: any, weighbridge?: { __typename?: 'weighbridge', name: string, address: string } | null }> };
+export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, id: any, profile?: any | null, weighbridge_id?: any | null, updated_at: any, maintainee: Array<{ __typename?: 'tenents', name: string }>, weighbridge?: { __typename?: 'weighbridge', name: string, address: string } | null }> };
+
+export type GetUserDropDownQueryVariables = Exact<{
+  where?: InputMaybe<User_Bool_Exp>;
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<User_Order_By> | User_Order_By>;
+}>;
+
+
+export type GetUserDropDownQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', label: string, value: any }> };
 
 export type GetUserCountQueryVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
@@ -4028,7 +4127,7 @@ export type GetAllUsersSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetAllUsersSubscription = { __typename?: 'subscription_root', user: Array<{ __typename?: 'user', id: any, email: string, created_at: any, tenent?: { __typename?: 'tenents', name: string } | null, weighbridge?: { __typename?: 'weighbridge', name: string } | null }> };
+export type GetAllUsersSubscription = { __typename?: 'subscription_root', user: Array<{ __typename?: 'user', id: any, email: string, created_at: any, tenent?: { __typename?: 'tenents', name: string } | null, maintainee: Array<{ __typename?: 'tenents', name: string }>, weighbridge?: { __typename?: 'weighbridge', name: string } | null }> };
 
 export type GetAllUsersCountSubscriptionVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
@@ -4139,7 +4238,7 @@ export type GetWeighbridgeQueryVariables = Exact<{
 }>;
 
 
-export type GetWeighbridgeQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', display_name: string, id: any, address: string, created_at: any, name: string, metadata: any, phone: string, pin_code: string, mail: string, logo?: string | null }> };
+export type GetWeighbridgeQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', display_name: string, id: any, address: string, created_at: any, config?: any | null, name: string, metadata: any, phone: string, pin_code: string, mail: string, logo?: string | null }> };
 
 export type UpdateWeighBridgeMutationVariables = Exact<{
   pkColumns: Weighbridge_Pk_Columns_Input;
@@ -4227,6 +4326,10 @@ export const GetAllTenantsDocument = gql`
     email
     name
     activate
+    maintainer {
+      id
+      email
+    }
     id
     phone
     metadata
@@ -4377,6 +4480,10 @@ export const GetTenetDocument = gql`
   tenents_by_pk(id: $tenentsByPkId) {
     email
     id
+    maintainer {
+      id
+      email
+    }
     activate
     name
     metadata
@@ -4413,6 +4520,41 @@ export function useGetTenetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetTenetQueryHookResult = ReturnType<typeof useGetTenetQuery>;
 export type GetTenetLazyQueryHookResult = ReturnType<typeof useGetTenetLazyQuery>;
 export type GetTenetQueryResult = Apollo.QueryResult<GetTenetQuery, GetTenetQueryVariables>;
+export const GetRoleDropdownOptionsDocument = gql`
+    query getRoleDropdownOptions {
+  role {
+    value: value
+    label: value
+  }
+}
+    `;
+
+/**
+ * __useGetRoleDropdownOptionsQuery__
+ *
+ * To run a query within a React component, call `useGetRoleDropdownOptionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRoleDropdownOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRoleDropdownOptionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetRoleDropdownOptionsQuery(baseOptions?: Apollo.QueryHookOptions<GetRoleDropdownOptionsQuery, GetRoleDropdownOptionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRoleDropdownOptionsQuery, GetRoleDropdownOptionsQueryVariables>(GetRoleDropdownOptionsDocument, options);
+      }
+export function useGetRoleDropdownOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRoleDropdownOptionsQuery, GetRoleDropdownOptionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRoleDropdownOptionsQuery, GetRoleDropdownOptionsQueryVariables>(GetRoleDropdownOptionsDocument, options);
+        }
+export type GetRoleDropdownOptionsQueryHookResult = ReturnType<typeof useGetRoleDropdownOptionsQuery>;
+export type GetRoleDropdownOptionsLazyQueryHookResult = ReturnType<typeof useGetRoleDropdownOptionsLazyQuery>;
+export type GetRoleDropdownOptionsQueryResult = Apollo.QueryResult<GetRoleDropdownOptionsQuery, GetRoleDropdownOptionsQueryVariables>;
 export const AddBillDocument = gql`
     mutation addBill($object: bill_insert_input!) {
   insert_bill_one(object: $object) {
@@ -5216,6 +5358,9 @@ export const GetUserDocument = gql`
     email
     id
     profile
+    maintainee {
+      name
+    }
     weighbridge_id
     weighbridge {
       name
@@ -5253,6 +5398,45 @@ export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
 export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const GetUserDropDownDocument = gql`
+    query getUserDropDown($where: user_bool_exp, $offset: Int, $limit: Int, $orderBy: [user_order_by!]) {
+  user(where: $where, offset: $offset, limit: $limit, order_by: $orderBy) {
+    label: email
+    value: id
+  }
+}
+    `;
+
+/**
+ * __useGetUserDropDownQuery__
+ *
+ * To run a query within a React component, call `useGetUserDropDownQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserDropDownQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserDropDownQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
+ *      orderBy: // value for 'orderBy'
+ *   },
+ * });
+ */
+export function useGetUserDropDownQuery(baseOptions?: Apollo.QueryHookOptions<GetUserDropDownQuery, GetUserDropDownQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserDropDownQuery, GetUserDropDownQueryVariables>(GetUserDropDownDocument, options);
+      }
+export function useGetUserDropDownLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserDropDownQuery, GetUserDropDownQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserDropDownQuery, GetUserDropDownQueryVariables>(GetUserDropDownDocument, options);
+        }
+export type GetUserDropDownQueryHookResult = ReturnType<typeof useGetUserDropDownQuery>;
+export type GetUserDropDownLazyQueryHookResult = ReturnType<typeof useGetUserDropDownLazyQuery>;
+export type GetUserDropDownQueryResult = Apollo.QueryResult<GetUserDropDownQuery, GetUserDropDownQueryVariables>;
 export const GetUserCountDocument = gql`
     query getUserCount($where: user_bool_exp) {
   user_aggregate(where: $where) {
@@ -5296,6 +5480,9 @@ export const GetAllUsersDocument = gql`
     id
     email
     tenent {
+      name
+    }
+    maintainee {
       name
     }
     created_at
@@ -5832,6 +6019,7 @@ export const GetWeighbridgeDocument = gql`
     id
     address
     created_at
+    config
     name
     metadata
     phone

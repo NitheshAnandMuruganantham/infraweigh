@@ -11,43 +11,6 @@ const RequireAuth: FunctionComponent = () => {
   const [user, AuthLoading] = useUser();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const refresh = () => {
-      setTimeout(async () => {
-        try {
-          if (!sessionStorage.getItem('refresh_token')) {
-            throw new Error('no tokens exists in not req auth');
-          } else {
-            const request = await fetch(
-              import.meta.env['VITE_SERVER_URL'] + '/auth/refresh',
-              {
-                headers: {
-                  authorization:
-                    'Bearer ' + sessionStorage.getItem('refresh_token'),
-                },
-                method: 'post',
-              }
-            );
-            if (request.ok) {
-              const data = await request.json();
-              sessionStorage.setItem('token', data.access_token);
-              sessionStorage.setItem('refresh_token', data.refresh_token);
-            } else {
-              throw new Error('un authorized');
-            }
-          }
-        } catch (err) {
-          console.log(err);
-          sessionStorage.clear();
-          navigate('/login');
-        }
-        refresh();
-      }, 50000);
-    };
-    refresh();
-    return;
-  }, []);
-
   return AuthLoading ? (
     <Loading open={AuthLoading} setOpen={() => null} />
   ) : !AuthLoading && user ? (

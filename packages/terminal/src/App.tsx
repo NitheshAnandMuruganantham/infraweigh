@@ -12,6 +12,7 @@ const Weigh = React.lazy(() => import('./pages/weigh'));
 const Users = React.lazy(() => import('./pages/users'));
 const Tenants = React.lazy(() => import('./pages/tenents'));
 const Weighbridges = React.lazy(() => import('./pages/weignbirdge'));
+const Maintainers = React.lazy(() => import('./pages/maintainers'));
 
 const LazyLoader = () => <Loading open={true} setOpen={() => null} />;
 
@@ -56,6 +57,11 @@ const LazyWeighbridges = () => (
     <Weighbridges />
   </React.Suspense>
 );
+const LazyMaintainers = () => (
+  <React.Suspense fallback={<LazyLoader />}>
+    <Maintainers />
+  </React.Suspense>
+);
 
 const App: React.FunctionComponent = () => {
   return (
@@ -68,6 +74,7 @@ const App: React.FunctionComponent = () => {
         <Route path="/weigh" element={<LazyWeigh />} />
         <Route path="/tenants" element={<LazyTenants />} />
         <Route path="/clients" element={<LazyClients />} />
+        <Route path="/maintainers" element={<LazyMaintainers />} />
       </Route>
       <Route element={<NotRequireAuth />}>
         <Route path="/login" element={<SignInSide />} />

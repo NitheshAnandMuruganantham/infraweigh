@@ -35,14 +35,12 @@ function Copyright(props: any) {
   );
 }
 
-const theme = createTheme();
-
 export default function SignInSide() {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Loader open={loading} setOpen={() => null} />
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
@@ -52,7 +50,7 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundImage: 'url(https://source.unsplash.com/random/?office)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light'
@@ -163,9 +161,6 @@ export default function SignInSide() {
                           Forgot password?
                         </Link>
                       </Grid>
-                      <Grid item>
-                        <Link href="#" variant="body2"></Link>
-                      </Grid>
                     </Grid>
                     <Copyright sx={{ mt: 5 }} />
                   </Box>
@@ -175,6 +170,6 @@ export default function SignInSide() {
           </Formik>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </>
   );
 }

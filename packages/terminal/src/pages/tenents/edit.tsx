@@ -10,8 +10,15 @@ import { LinearProgress } from '@mui/material';
 import { Box } from '@mui/system';
 import * as Yup from 'yup';
 import MuiPhoneNumber from 'material-ui-phone-number';
-import { useGetTenetLazyQuery, EditTenentDocument } from '../../generated';
+import AutoCompleteComponent from '../../components/autoComplete';
+
+import {
+  useGetTenetLazyQuery,
+  EditTenentDocument,
+  useGetUserDropDownLazyQuery,
+} from '../../generated';
 import gqlClient from '../../utils/client';
+import { toast } from 'react-toastify';
 
 const EditClient: React.FunctionComponent<{
   id: string;
@@ -48,6 +55,10 @@ const EditClient: React.FunctionComponent<{
             address: data?.tenents_by_pk?.metadata?.address || '',
             email: data?.tenents_by_pk?.email,
             phone: data?.tenents_by_pk?.phone,
+            maintainer: {
+              label: data?.tenents_by_pk?.maintainer?.email,
+              value: data?.tenents_by_pk?.maintainer?.id,
+            },
           }}
           validationSchema={() => {
             return Yup.object().shape({
@@ -69,6 +80,7 @@ const EditClient: React.FunctionComponent<{
                   },
                   set: {
                     name: values.name,
+                    maintainer_id: values?.maintainer?.value || '',
                     email: values.email,
                     phone: values.phone,
                     metadata: {
@@ -78,10 +90,9 @@ const EditClient: React.FunctionComponent<{
                 },
               })
               .catch(() => {
-                alert(
-                  'realted resourses exists delete those resource to continue'
-                );
+                toast.error('something went wrong');
               });
+            toast.success('tenant updated');
             setSubmitting(true);
             handleClose();
           }}
@@ -130,6 +141,22 @@ const EditClient: React.FunctionComponent<{
                         my: 1,
                       }}
                     />
+                    {
+                      <AutoCompleteComponent
+                        sx={{
+                          width: '100%',
+                        }}
+                        name="maintainer"
+                        label="maintainer"
+                        ServerFilters={{
+                          role: {
+                            _eq: 'maintainer',
+                          },
+                        }}
+                        serverName="user"
+                        queryHook={useGetUserDropDownLazyQuery}
+                      />
+                    }
                     <MuiPhoneNumber
                       label="phone"
                       variant="outlined"

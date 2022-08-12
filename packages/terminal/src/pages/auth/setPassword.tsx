@@ -1,22 +1,22 @@
-import { Field, Form, Formik } from "formik";
-import { TextField } from "formik-mui";
-import * as React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import * as Yup from "yup";
+import { Field, Form, Formik } from 'formik';
+import { TextField } from 'formik-mui';
+import * as React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-import Loader from "../../components/loading";
+import Loader from '../../components/loading';
 
 function Copyright(props: any) {
   return (
@@ -26,30 +26,28 @@ function Copyright(props: any) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
+      {'Copyright © '}
       <Link color="inherit" href="https://infraweigh.co/">
         infraweigh.co
-      </Link>{" "}
+      </Link>{' '}
       {new Date().getFullYear()}
-      {"."}
+      {'.'}
     </Typography>
   );
 }
 
-const theme = createTheme();
-
 export default function SignInSide() {
   const navigate = useNavigate();
   React.useEffect(
-    () => (!window.location.search.slice(7) ? () => navigate("/") : () => {}),
+    () => (!window.location.search.slice(7) ? () => navigate('/') : () => {}),
     []
   );
   const [loading, setLoading] = React.useState(false);
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Loader open={loading} setOpen={() => null} />
-      <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
           item
@@ -57,14 +55,14 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
-            backgroundRepeat: "no-repeat",
+            backgroundImage: 'url(https://source.unsplash.com/random/?office)',
+            backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
-              t.palette.mode === "light"
+              t.palette.mode === 'light'
                 ? t.palette.grey[50]
                 : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -72,12 +70,12 @@ export default function SignInSide() {
             sx={{
               my: 8,
               mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -88,14 +86,14 @@ export default function SignInSide() {
                 setLoading(true);
                 await fetch(
                   import.meta.env.VITE_SERVER_URL +
-                    "/auth/forgot/" +
+                    '/auth/forgot/' +
                     window.location.search.slice(7),
                   {
-                    method: "POST",
+                    method: 'POST',
                     headers: {
-                      "Content-Type": "application/json",
+                      'Content-Type': 'application/json',
                     },
-                    credentials: "include",
+                    credentials: 'include',
                     body: JSON.stringify({
                       password,
                     }),
@@ -103,34 +101,33 @@ export default function SignInSide() {
                 )
                   .then((res) => {
                     if (res.ok) {
-                      toast.success("Password has been reset");
-                      navigate("/login");
+                      toast.success('Password has been reset');
+                      navigate('/login');
                     } else {
-                      toast.error("something went wrong");
+                      toast.error('something went wrong');
                     }
                   })
-                  .catch(() => toast.error("something went wrong"));
+                  .catch(() => toast.error('something went wrong'));
 
                 setLoading(false);
               }}
               validationSchema={Yup.object().shape({
-                password: Yup.string().required("Password is required").matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-    ),
+                password: Yup.string()
+                  .required('Password is required')
+                  .matches(
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+                    'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                  ),
                 confirmPassword: Yup.string()
                   .required('Please retype your password.')
-                  .oneOf(
-                  [Yup.ref("password")],
-                  "Passwords must match"
-                ),
+                  .oneOf([Yup.ref('password')], 'Passwords must match'),
               })}
               initialValues={{
-                password: "",
-                ConfirmPassword: "",
+                password: '',
+                ConfirmPassword: '',
               }}
             >
-              {({isValid}) => (
+              {({ isValid }) => (
                 <Form>
                   <Box sx={{ mt: 1 }}>
                     <Field
@@ -179,6 +176,6 @@ export default function SignInSide() {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </>
   );
 }

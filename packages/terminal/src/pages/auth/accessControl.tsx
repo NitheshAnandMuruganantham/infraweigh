@@ -21,30 +21,34 @@ const AccessControl: React.FunctionComponent<AccessControlProps> = ({
     return <>{children}</>;
   } else {
     alert('You are not authorized to access this page');
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace />;
   }
 };
 
 const acc = [
   {
     path: '/clients',
-    role: ['terminal', 'tenantAdmin'],
+    role: ['terminal', 'tenantAdmin', 'maintainer'],
   },
   {
     path: '/tenants',
-    role: ['admin'],
+    role: ['admin', 'maintainer'],
   },
   {
     path: '/weigh',
     role: ['terminal'],
   },
   {
+    path: '/maintainers',
+    role: ['admin'],
+  },
+  {
     path: '/weighbridges',
-    role: ['admin', 'tenantAdmin'],
+    role: ['admin', 'tenantAdmin', 'maintainer'],
   },
   {
     path: '/users',
-    role: ['admin', 'tenantAdmin'],
+    role: ['admin', 'tenantAdmin', 'maintainer'],
   },
 ];
 

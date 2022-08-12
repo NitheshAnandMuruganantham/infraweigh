@@ -1,3 +1,4 @@
+import { createTheme, ThemeProvider } from '@mui/material';
 import * as React from 'react';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import Loading from '../../components/loading';
@@ -43,10 +44,21 @@ export default function SignInSide() {
     refreshToken();
   }, []);
 
+  const theme = createTheme({
+    palette: {
+      mode:
+        (new Date().getHours() > 18 || new Date().getHours()) < 7
+          ? 'dark'
+          : 'light',
+    },
+  });
+
   return loading ? (
     <Loading open={loading} setOpen={setLoading} />
   ) : !loading && !isLogedIn ? (
-    <Outlet />
+    <ThemeProvider theme={theme}>
+      <Outlet />
+    </ThemeProvider>
   ) : (
     <Navigate
       to={'/'}
