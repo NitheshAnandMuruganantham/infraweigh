@@ -281,7 +281,7 @@ const Bills = () => {
           setPageSize={setPageSize}
           loading={totalRowsLoading || loading || loadingRole}
           columns={
-            role === 'admin' || role === 'tenantAdmin'
+            role !== 'terminal'
               ? [
                   {
                     field: 'weighbridge',

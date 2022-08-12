@@ -28,11 +28,11 @@ const AccessControl: React.FunctionComponent<AccessControlProps> = ({
 const acc = [
   {
     path: '/clients',
-    role: ['terminal', 'tenantAdmin'],
+    role: ['terminal', 'tenantAdmin', 'maintainer'],
   },
   {
     path: '/tenants',
-    role: ['admin'],
+    role: ['admin', 'maintainer'],
   },
   {
     path: '/weigh',
@@ -40,11 +40,11 @@ const acc = [
   },
   {
     path: '/weighbridges',
-    role: ['admin', 'tenantAdmin'],
+    role: ['admin', 'tenantAdmin', 'maintainer'],
   },
   {
     path: '/users',
-    role: ['admin', 'tenantAdmin'],
+    role: ['admin', 'tenantAdmin', 'maintainer'],
   },
 ];
 

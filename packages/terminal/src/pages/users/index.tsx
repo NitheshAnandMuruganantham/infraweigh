@@ -11,6 +11,7 @@ import {
 import useRole from '../../hooks/role';
 import AddNewUser from './add';
 import columns from './columns';
+import useUser from '../../hooks/user';
 
 const Users = () => {
   const [sort, SetSort] = React.useState([]);
@@ -18,11 +19,30 @@ const Users = () => {
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
   const [role, loadingRole] = useRole();
-
+  const [user, userLoading] = useUser();
   let filter: any;
-  if (role !== 'admin') {
+  if (role === 'tenantAdmin') {
     filter = {
       _and: [
+        {
+          _or: [
+            {
+              email: {
+                _like: `%${search}%`,
+              },
+            },
+          ],
+        },
+      ],
+    };
+  } else if (role === 'maintainer') {
+    filter = {
+      _and: [
+        {
+          role: {
+            _eq: 'tenantAdmin',
+          },
+        },
         {
           _or: [
             {
@@ -41,6 +61,13 @@ const Users = () => {
           role: {
             _eq: 'tenantAdmin',
           },
+        },
+        {
+          email: {
+            _neq: user?.user.email,
+          },
+        },
+        {
           _or: [
             {
               email: {
@@ -99,7 +126,7 @@ const Users = () => {
           setPageSize={setPageSize}
           setSort={SetSort}
           columns={
-            role === 'admin'
+            role === 'terminal'
               ? columns
               : [
                   {

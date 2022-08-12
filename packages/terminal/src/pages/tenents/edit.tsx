@@ -12,6 +12,7 @@ import * as Yup from 'yup';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import { useGetTenetLazyQuery, EditTenentDocument } from '../../generated';
 import gqlClient from '../../utils/client';
+import { toast } from 'react-toastify';
 
 const EditClient: React.FunctionComponent<{
   id: string;
@@ -78,10 +79,9 @@ const EditClient: React.FunctionComponent<{
                 },
               })
               .catch(() => {
-                alert(
-                  'realted resourses exists delete those resource to continue'
-                );
+                toast.error('something went wrong');
               });
+            toast.success('tenant updated');
             setSubmitting(true);
             handleClose();
           }}

@@ -75,3 +75,10 @@ query getTenet($tenentsByPkId: uuid!) {
     payment_pending
   }
 }
+
+query getRoleDropdownOptions {
+  role {
+    value: value
+    label: value
+  }
+}

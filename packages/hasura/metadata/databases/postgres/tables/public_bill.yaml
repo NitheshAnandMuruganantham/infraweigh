@@ -84,6 +84,36 @@ select_permissions:
               email:
                 _eq: x-hasura-user-email
       allow_aggregations: true
+  - role: maintainer
+    permission:
+      columns:
+        - paid
+        - payment_initiated
+        - second_weight
+        - nano_id
+        - scale_weight
+        - tare_weight
+        - charges
+        - driver_phone
+        - order_id
+        - paid_by
+        - vehicle_number
+        - created_at
+        - updated_at
+        - customer_2_id
+        - customer_3_id
+        - customer_id
+        - id
+        - material_id
+        - reference_bill_id
+        - tenent_id
+        - vehicle_id
+        - weighbridge_id
+      filter:
+        tenent:
+          maintainer_id:
+            _eq: X-Hasura-User-Id
+      allow_aggregations: true
   - role: tenantAdmin
     permission:
       columns:

@@ -1,34 +1,34 @@
-import * as React from "react";
-import { GridColDef } from "@mui/x-data-grid";
-import useRole from "../../hooks/role";
-import { Box } from "@mui/system";
-import { Button, LinearProgress, TextField } from "@mui/material";
-import AddNewClient from "./add";
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
-import EditClient from "./edit";
+import * as React from 'react';
+import { GridColDef } from '@mui/x-data-grid';
+import useRole from '../../hooks/role';
+import { Box } from '@mui/system';
+import { Button, LinearProgress, TextField } from '@mui/material';
+import AddNewClient from './add';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import EditClient from './edit';
 import {
   DeleteCustomerDocument,
   useGetCustomersCountSubscription,
   useGetCustomersSubscription,
-} from "../../generated";
-import gqlClient from "../../utils/client";
-import { toast } from "react-toastify";
-import columns from "./columns";
-import DataGridComponent from "../../components/dataGrid";
+} from '../../generated';
+import gqlClient from '../../utils/client';
+import { toast } from 'react-toastify';
+import columns from './columns';
+import DataGridComponent from '../../components/dataGrid';
 
 const TenentAdminColumns: GridColDef[] = [
   {
-    field: "edit",
-    headerName: "Edit",
+    field: 'edit',
+    headerName: 'Edit',
     width: 75,
     sortable: false,
     filterable: false,
     renderCell: (params) => <EditClient id={params.row.id} />,
   },
   {
-    field: "delete",
-    headerName: "Delete",
+    field: 'delete',
+    headerName: 'Delete',
     width: 75,
     sortable: false,
     filterable: false,
@@ -40,11 +40,11 @@ const TenentAdminColumns: GridColDef[] = [
           size="small"
           onClick={() => {
             confirmAlert({
-              title: "Confirm to Delete",
-              message: "Are you sure want to delete this.",
+              title: 'Confirm to Delete',
+              message: 'Are you sure want to delete this.',
               buttons: [
                 {
-                  label: "Yes",
+                  label: 'Yes',
                   onClick: () => {
                     gqlClient
                       .mutate({
@@ -54,17 +54,17 @@ const TenentAdminColumns: GridColDef[] = [
                         },
                       })
                       .catch(() => {
-                        toast.error("bills are linked to this client");
+                        toast.error('bills are linked to this client');
                       })
                       .then((dat) => {
                         dat &&
                           dat.data &&
-                          toast.success("client deleted successfully");
+                          toast.success('client deleted successfully');
                       });
                   },
                 },
                 {
-                  label: "No",
+                  label: 'No',
                   onClick: () => null,
                 },
               ],
@@ -79,7 +79,7 @@ const TenentAdminColumns: GridColDef[] = [
 ];
 const Clients = () => {
   const [role, loadingRole] = useRole();
-  const [search, setSearch] = React.useState("");
+  const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [sort, SetSort] = React.useState([]);
   const [pageSize, setPageSize] = React.useState(1);
@@ -133,16 +133,16 @@ const Clients = () => {
           setSearch(e.target.value);
         }}
         sx={{
-          width: "90%",
+          width: '90%',
           my: 2,
         }}
         name="search"
         label="Search"
       />
-      <Box height={500} width={"100%"} textAlign="center">
+      <Box height={500} width={'100%'} textAlign="center">
         <LinearProgress
           sx={{
-            visibility: customerCountLoading || loading ? "visible" : "hidden",
+            visibility: customerCountLoading || loading ? 'visible' : 'hidden',
           }}
         />
         <DataGridComponent
@@ -155,7 +155,7 @@ const Clients = () => {
           loading={loading || customerCountLoading || loadingRole}
           rowCount={customerCountData?.customer_aggregate.aggregate?.count || 0}
           columns={
-            role === "terminal" ? columns : [...columns, ...TenentAdminColumns]
+            role === 'terminal' ? columns : [...columns, ...TenentAdminColumns]
           }
         />
       </Box>

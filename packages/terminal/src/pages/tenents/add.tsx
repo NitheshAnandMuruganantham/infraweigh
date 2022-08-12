@@ -1,17 +1,18 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import { Formik, Form, Field } from "formik";
-import { TextField } from "formik-mui";
-import { FormLabel, LinearProgress } from "@mui/material";
-import { Box } from "@mui/system";
-import * as Yup from "yup";
-import MuiPhoneNumber from "material-ui-phone-number";
-import { useAddTenentMutation } from "../../generated";
-import Loading from "../../components/loading";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-mui';
+import { FormLabel, LinearProgress } from '@mui/material';
+import { Box } from '@mui/system';
+import * as Yup from 'yup';
+import MuiPhoneNumber from 'material-ui-phone-number';
+import { useAddTenentMutation } from '../../generated';
+import Loading from '../../components/loading';
+import { toast } from 'react-toastify';
 
 const AddNewTenent: React.FunctionComponent = () => {
   const [open, setOpen] = React.useState(false);
@@ -34,19 +35,19 @@ const AddNewTenent: React.FunctionComponent = () => {
         <DialogTitle>New Client</DialogTitle>
         <Formik
           initialValues={{
-            name: "",
-            address: "",
-            email: "",
-            phone: "",
-            razorpay_id: "",
+            name: '',
+            address: '',
+            email: '',
+            phone: '',
+            razorpay_id: '',
           }}
           validationSchema={() => {
             return Yup.object().shape({
-              name: Yup.string().required("Required"),
-              razorpay_id: Yup.string().required("Required"),
-              address: Yup.string().required("Required"),
-              email: Yup.string().required("Required"),
-              phone: Yup.string().required("Required"),
+              name: Yup.string().required('Required'),
+              razorpay_id: Yup.string().required('Required'),
+              address: Yup.string().required('Required'),
+              email: Yup.string().required('Required'),
+              phone: Yup.string().required('Required'),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
@@ -64,9 +65,10 @@ const AddNewTenent: React.FunctionComponent = () => {
                 },
               },
             }).catch(() => {
-              alert("can not create new client");
+              toast.error('something went wrong');
               setSubmitting(false);
             });
+            toast.success('tenant added successfully');
             setSubmitting(false);
             handleClose();
           }}
@@ -77,8 +79,8 @@ const AddNewTenent: React.FunctionComponent = () => {
                 <Form>
                   <Box
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
+                      display: 'flex',
+                      flexDirection: 'column',
                     }}
                   >
                     <Field
@@ -127,8 +129,8 @@ const AddNewTenent: React.FunctionComponent = () => {
                       sx={{
                         my: 1,
                       }}
-                      defaultCountry={"in"}
-                      onChange={(e) => setFieldValue("phone", e.toString())}
+                      defaultCountry={'in'}
+                      onChange={(e) => setFieldValue('phone', e.toString())}
                     />
 
                     {isSubmitting && <LinearProgress />}

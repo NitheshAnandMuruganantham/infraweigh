@@ -1,24 +1,24 @@
-import { Field, Form, Formik } from "formik";
-import { TextField } from "formik-mui";
-import MuiPhoneNumber from "material-ui-phone-number";
-import * as React from "react";
-import { toast } from "react-toastify";
-import * as Yup from "yup";
+import { Field, Form, Formik } from 'formik';
+import { TextField } from 'formik-mui';
+import MuiPhoneNumber from 'material-ui-phone-number';
+import * as React from 'react';
+import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
-import { LinearProgress } from "@mui/material";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import { Box } from "@mui/system";
+import { LinearProgress } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Box } from '@mui/system';
 
-import AutoCompleteComponent from "../../components/autoComplete";
+import AutoCompleteComponent from '../../components/autoComplete';
 import {
   useAddNewWeighbridgeMutation,
   useGetAllTenentsDropDownLazyQuery,
-} from "../../generated";
-import useRole from "../../hooks/role";
+} from '../../generated';
+import useRole from '../../hooks/role';
 
 export default function AddNewWeighBridge() {
   const [open, setOpen] = React.useState(false);
@@ -40,43 +40,43 @@ export default function AddNewWeighBridge() {
         <DialogTitle>New WeighBridge</DialogTitle>
         <Formik
           initialValues={{
-            name: "",
-            address: "",
-            display_name: "",
+            name: '',
+            address: '',
+            display_name: '',
             tenant: {
-              label: "",
+              label: '',
               value: null,
             },
-            pin_code: "",
-            phone: "",
-            mail: "",
+            pin_code: '',
+            phone: '',
+            mail: '',
           }}
           validationSchema={() => {
             return Yup.object().shape({
-              name: Yup.string().required("Required"),
-              address: Yup.string().required("Required"),
+              name: Yup.string().required('Required'),
+              address: Yup.string().required('Required'),
               tenant: Yup.lazy(() => {
-                if (role !== "admin") {
+                if (role === 'tenantAdmin') {
                   return Yup.object().notRequired();
                 } else {
                   return Yup.object()
                     .shape({
-                      label: Yup.string().required("Required"),
-                      value: Yup.string().required("Required"),
+                      label: Yup.string().required('Required'),
+                      value: Yup.string().required('Required'),
                     })
-                    .required("Required");
+                    .required('Required');
                 }
               }),
-              display_name: Yup.string().required("Required"),
-              pin_code: Yup.string().required("Required"),
-              phone: Yup.string().required("Required"),
-              mail: Yup.string().required("Required"),
+              display_name: Yup.string().required('Required'),
+              pin_code: Yup.string().required('Required'),
+              phone: Yup.string().required('Required'),
+              mail: Yup.string().required('Required'),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
             let dt = {};
-            if (role !== "admin") {
+            if (role === 'tenantAdmin') {
               dt = {
                 address: values.address,
                 display_name: values.display_name,
@@ -102,10 +102,10 @@ export default function AddNewWeighBridge() {
               },
             })
               .catch((e) => {
-                toast.error("can not add new WeighBridge");
+                toast.error('can not add new WeighBridge');
               })
               .then(
-                (d) => d && toast.success("WeighBridge added successfully")
+                (d) => d && toast.success('WeighBridge added successfully')
               );
             setSubmitting(true);
             handleClose();
@@ -117,8 +117,8 @@ export default function AddNewWeighBridge() {
                 <Form>
                   <Box
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
+                      display: 'flex',
+                      flexDirection: 'column',
                     }}
                   >
                     <Field
@@ -172,13 +172,13 @@ export default function AddNewWeighBridge() {
                       sx={{
                         my: 1,
                       }}
-                      defaultCountry={"in"}
-                      onChange={(e) => setFieldValue("phone", e.toString())}
+                      defaultCountry={'in'}
+                      onChange={(e) => setFieldValue('phone', e.toString())}
                     />
-                    {role === "admin" && role !== null && (
+                    {role !== 'tenantAdmin' && role !== null && (
                       <AutoCompleteComponent
                         sx={{
-                          width: "100%",
+                          width: '100%',
                         }}
                         name="tenant"
                         label="tenant"
