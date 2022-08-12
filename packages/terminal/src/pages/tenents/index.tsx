@@ -33,14 +33,6 @@ const Clients = () => {
       editable: false,
       sortable: true,
     },
-    {
-      field: 'maintainer',
-      headerName: 'name',
-      width: 300,
-      editable: false,
-      sortable: true,
-      valueGetter: (params) => params.value.email,
-    },
 
     {
       field: 'email',
@@ -184,7 +176,21 @@ const Clients = () => {
           setSort={SetSort}
           loading={loading || countLoading}
           rowCount={count?.tenents_aggregate.aggregate?.count || 0}
-          columns={columns}
+          columns={
+            role === 'admin'
+              ? columns
+              : [
+                  {
+                    field: 'maintainer',
+                    headerName: 'maintainer',
+                    width: 300,
+                    editable: false,
+                    sortable: true,
+                    valueGetter: (params) => params?.value?.email || '',
+                  },
+                  ...columns,
+                ]
+          }
         />
       </Box>
     </Box>
