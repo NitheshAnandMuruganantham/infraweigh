@@ -9,7 +9,7 @@ import { TextField } from 'formik-mui';
 import { LinearProgress } from '@mui/material';
 import { Box } from '@mui/system';
 import * as Yup from 'yup';
-import { useGetAllTenentsDropDownLazyQuery } from '../../generated';
+import { Role_Enum, useGetAllTenentsDropDownLazyQuery } from '../../generated';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import {
   useAddUsersMutation,
@@ -34,7 +34,7 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
   return (
     <div>
       <Button variant="outlined" sx={{ m: 1 }} onClick={handleClickOpen}>
-        NEW STAFF
+        new maintainer
       </Button>
       <Dialog fullWidth open={open} onClose={handleClose}>
         {(loading || RoleLoading) && <LinearProgress />}
@@ -45,14 +45,6 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
             address: '',
             email: '',
             phone: '',
-            branch: {
-              label: '',
-              value: null,
-            },
-            tenent: {
-              label: '',
-              value: null,
-            },
           }}
           validationSchema={() => {
             return Yup.object().shape({
@@ -60,61 +52,24 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
               address: Yup.string().required('Required'),
               email: Yup.string().required('Required'),
               phone: Yup.string().required('Required'),
-              branch: Yup.lazy(() => {
-                if (role === 'tenantAdmin' && role !== null) {
-                  return Yup.object()
-                    .shape({
-                      label: Yup.string().required('Required'),
-                      value: Yup.string().required('Required'),
-                    })
-                    .required('Required');
-                } else {
-                  return Yup.object().notRequired();
-                }
-              }),
-              tenent: Yup.lazy(() => {
-                if (role !== 'tenantAdmin' && role !== null) {
-                  return Yup.object()
-                    .shape({
-                      label: Yup.string().required('Required'),
-                      value: Yup.string().required('Required'),
-                    })
-                    .required('Required');
-                } else {
-                  return Yup.object().notRequired();
-                }
-              }),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
-            let dt = {};
-            console.log(role);
-            if (role === 'tenantAdmin') {
-              dt = {
-                email: values.email,
-                weighbridge_id: values.branch.value,
-                profile: {
-                  name: values.name,
-                  phone: values.phone,
-                  address: values.address,
-                },
-              };
-            } else {
-              dt = {
-                tenent_id: values.tenent.value,
-                email: values.email,
-                profile: {
-                  name: values.name,
-                  phone: values.phone,
-                  address: values.address,
-                },
-                role: 'tenantAdmin',
-              };
-            }
+
             addUser({
               variables: {
-                objects: [dt],
+                objects: [
+                  {
+                    role: Role_Enum.Maintainer,
+                    email: values.email,
+                    profile: {
+                      name: values.name,
+                      phone: values.phone,
+                      address: values.address,
+                    },
+                  },
+                ],
               },
             })
               .then(() => {
@@ -175,31 +130,6 @@ const AddNewWeighBridge: React.FunctionComponent = () => {
                       defaultCountry={'in'}
                       onChange={(e) => setFieldValue('phone', e.toString())}
                     />
-                    {role !== 'tenantAdmin' && role !== null ? (
-                      <>
-                        <AutoCompleteComponent
-                          sx={{
-                            mt: 1,
-                            width: '100%',
-                          }}
-                          name="tenent"
-                          label="teneant"
-                          serverName="tenents"
-                          queryHook={useGetAllTenentsDropDownLazyQuery}
-                        />
-                      </>
-                    ) : (
-                      <AutoCompleteComponent
-                        sx={{
-                          mt: 2,
-                          width: '100%',
-                        }}
-                        name="branch"
-                        label="branch"
-                        serverName="weighbridge"
-                        queryHook={useGetWeighbridgesDropDownLazyQuery}
-                      />
-                    )}
 
                     {isSubmitting && <LinearProgress />}
                   </Box>

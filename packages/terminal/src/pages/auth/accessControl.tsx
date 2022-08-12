@@ -39,6 +39,10 @@ const acc = [
     role: ['terminal'],
   },
   {
+    path: '/maintainers',
+    role: ['admin'],
+  },
+  {
     path: '/weighbridges',
     role: ['admin', 'tenantAdmin', 'maintainer'],
   },

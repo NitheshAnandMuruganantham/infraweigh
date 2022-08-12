@@ -10,26 +10,33 @@ import { LinearProgress } from '@mui/material';
 import { Box } from '@mui/system';
 import * as Yup from 'yup';
 import MuiPhoneNumber from 'material-ui-phone-number';
-import AutoCompleteComponent from '../../components/autoComplete';
-
 import {
-  useGetTenetLazyQuery,
-  EditTenentDocument,
-  useGetUserDropDownLazyQuery,
+  useGetUserLazyQuery,
+  useGetWeighbridgesDropDownLazyQuery,
+  useUpdateUserMutation,
 } from '../../generated';
-import gqlClient from '../../utils/client';
 import { toast } from 'react-toastify';
+import AutoCompleteComponent from '../../components/autoComplete';
+import useRole from '../../hooks/role';
+import Loader from '../../components/loading';
 
-const EditClient: React.FunctionComponent<{
+const EditUser: React.FunctionComponent<{
   id: string;
 }> = ({ id }) => {
   const [open, setOpen] = React.useState(false);
-  const [getData, { data }] = useGetTenetLazyQuery({
-    variables: { tenentsByPkId: id },
+  const [updateUser, { loading: l2 }] = useUpdateUserMutation();
+  const [role, roleLoading] = useRole();
+  const [poolInitialValues, { data, loading: l1 }] = useGetUserLazyQuery({
+    variables: {
+      where: {
+        id: {
+          _eq: id,
+        },
+      },
+    },
   });
-
   const handleClickOpen = async () => {
-    await getData();
+    await poolInitialValues();
     setOpen(true);
   };
 
@@ -47,63 +54,48 @@ const EditClient: React.FunctionComponent<{
       >
         Edit
       </Button>
+      <Loader open={roleLoading || l2 || l1} setOpen={() => null} />
       <Dialog fullWidth open={open} onClose={handleClose}>
-        <DialogTitle>Edit Request</DialogTitle>
+        <DialogTitle>Edit user</DialogTitle>
         <Formik
           initialValues={{
-            name: data?.tenents_by_pk?.name,
-            address: data?.tenents_by_pk?.metadata?.address || '',
-            email: data?.tenents_by_pk?.email,
-            phone: data?.tenents_by_pk?.phone,
-            maintainer: {
-              label: data?.tenents_by_pk?.maintainer?.email,
-              value: data?.tenents_by_pk?.maintainer?.id,
-            },
+            name: data?.user[0].profile.name || '',
+            address: data?.user[0].profile.address || '',
+            email: data?.user[0].email || '',
+            phone: data?.user[0].profile.phone || '',
           }}
           validationSchema={() => {
             return Yup.object().shape({
               name: Yup.string().required('Required'),
               address: Yup.string().required('Required'),
-              email: Yup.string().required('Required'),
               phone: Yup.string().required('Required'),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
-            console.log(id);
-            await gqlClient
-              .mutate({
-                mutation: EditTenentDocument,
-                variables: {
-                  pkColumns: {
-                    id,
-                  },
-                  set: {
-                    name: values.name,
-                    maintainer_id: values?.maintainer?.value || '',
-                    email: values.email,
-                    phone: values.phone,
-                    metadata: {
-                      address: values.address,
-                    },
+            updateUser({
+              variables: {
+                where: {
+                  id: {
+                    _eq: id,
                   },
                 },
-              })
-              .catch(() => {
-                toast.error('something went wrong');
-              });
-            toast.success('tenant updated');
+                set: {
+                  profile: {
+                    name: values.name,
+                    phone: values.phone,
+                    address: values.address,
+                  },
+                },
+              },
+            })
+              .then((dat) => dat && toast.success('user updated successfully'))
+              .catch(() => toast.error('user already exist'));
             setSubmitting(true);
             handleClose();
           }}
         >
-          {({
-            submitForm,
-            isSubmitting,
-            setFieldValue,
-            setSubmitting,
-            values,
-          }) => (
+          {({ submitForm, isSubmitting, setFieldValue, values }) => (
             <>
               <DialogContent>
                 <Form>
@@ -122,9 +114,18 @@ const EditClient: React.FunctionComponent<{
                       type="text"
                       label="name"
                     />
-
                     <Field
                       component={TextField}
+                      sx={{
+                        my: 1,
+                      }}
+                      name="address"
+                      type="text"
+                      label="address"
+                    />
+                    <Field
+                      component={TextField}
+                      disabled
                       type="email"
                       label="email"
                       name="email"
@@ -132,43 +133,16 @@ const EditClient: React.FunctionComponent<{
                         my: 1,
                       }}
                     />
-                    <Field
-                      component={TextField}
-                      type="text"
-                      label="address"
-                      name="address"
-                      sx={{
-                        my: 1,
-                      }}
-                    />
-                    {
-                      <AutoCompleteComponent
-                        sx={{
-                          width: '100%',
-                        }}
-                        name="maintainer"
-                        label="maintainer"
-                        ServerFilters={{
-                          role: {
-                            _eq: 'maintainer',
-                          },
-                        }}
-                        serverName="user"
-                        queryHook={useGetUserDropDownLazyQuery}
-                      />
-                    }
                     <MuiPhoneNumber
                       label="phone"
-                      variant="outlined"
                       value={values.phone}
-                      countryCodeEditable={false}
+                      variant="outlined"
                       sx={{
                         my: 1,
                       }}
                       defaultCountry={'in'}
                       onChange={(e) => setFieldValue('phone', e.toString())}
                     />
-
                     {isSubmitting && <LinearProgress />}
                   </Box>
                 </Form>
@@ -177,12 +151,10 @@ const EditClient: React.FunctionComponent<{
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button
                   onClick={() => {
-                    submitForm().then(() => {
-                      setSubmitting(false);
-                    });
+                    submitForm();
                   }}
                 >
-                  Add
+                  save
                 </Button>
               </DialogActions>
             </>
@@ -193,4 +165,4 @@ const EditClient: React.FunctionComponent<{
   );
 };
 
-export default EditClient;
+export default EditUser;

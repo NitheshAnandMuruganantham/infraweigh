@@ -1,20 +1,20 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import { Formik, Form, Field } from "formik";
-import { TextField } from "formik-mui";
-import { LinearProgress } from "@mui/material";
-import { Box } from "@mui/system";
-import * as Yup from "yup";
-import MuiPhoneNumber from "material-ui-phone-number";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-mui';
+import { LinearProgress } from '@mui/material';
+import { Box } from '@mui/system';
+import * as Yup from 'yup';
+import MuiPhoneNumber from 'material-ui-phone-number';
 import {
   useGetWeighbridgeLazyQuery,
   useUpdateWeighBridgeMutation,
-} from "../../generated";
-import { toast } from "react-toastify";
+} from '../../generated';
+import { toast } from 'react-toastify';
 const EditWeighBridge: React.FunctionComponent<{
   id: string;
 }> = ({ id }) => {
@@ -52,21 +52,26 @@ const EditWeighBridge: React.FunctionComponent<{
         <DialogTitle>Edit WeighBridge</DialogTitle>
         <Formik
           initialValues={{
-            name: data?.weighbridge[0].name || "",
-            address: data?.weighbridge[0].address || "",
-            display_name: data?.weighbridge[0].display_name || "",
-            pin_code: data?.weighbridge[0].pin_code || "",
-            phone: data?.weighbridge[0].phone || "",
-            mail: data?.weighbridge[0].mail || "",
+            name: data?.weighbridge[0].name || '',
+            address: data?.weighbridge[0].address || '',
+            display_name: data?.weighbridge[0].display_name || '',
+            pin_code: data?.weighbridge[0].pin_code || '',
+            phone: data?.weighbridge[0].phone || '',
+            mail: data?.weighbridge[0].mail || '',
+            url: data?.weighbridge[0]?.config?.url || '',
+            camera_url_1: data?.weighbridge[0]?.config?.camera[0] || '',
+            camera_url_2: data?.weighbridge[0]?.config?.camera[1] || '',
+            camera_url_3: data?.weighbridge[0]?.config?.camera[2] || '',
+            camera_url_4: data?.weighbridge[0]?.config?.camera[3] || '',
           }}
           validationSchema={() => {
             return Yup.object().shape({
-              name: Yup.string().required("Required"),
-              address: Yup.string().required("Required"),
-              display_name: Yup.string().required("Required"),
-              pin_code: Yup.string().required("Required"),
-              phone: Yup.string().required("Required"),
-              mail: Yup.string().required("Required"),
+              name: Yup.string().required('Required'),
+              address: Yup.string().required('Required'),
+              display_name: Yup.string().required('Required'),
+              pin_code: Yup.string().required('Required'),
+              phone: Yup.string().required('Required'),
+              mail: Yup.string().required('Required'),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
@@ -83,12 +88,21 @@ const EditWeighBridge: React.FunctionComponent<{
                   name: values.name,
                   phone: values.phone,
                   mail: values.mail,
+                  config: {
+                    url: values.url,
+                    camera: [
+                      values.camera_url_1,
+                      values.camera_url_2,
+                      values.camera_url_3,
+                      values.camera_url_4,
+                    ],
+                  },
                 },
               },
             })
-              .catch(() => toast.error("Something went wrong"))
+              .catch(() => toast.error('Something went wrong'))
               .then(
-                (d) => d && toast.success("WeighBridge updated successfully")
+                (d) => d && toast.success('WeighBridge updated successfully')
               );
             setSubmitting(true);
             handleClose();
@@ -100,8 +114,8 @@ const EditWeighBridge: React.FunctionComponent<{
                 <Form>
                   <Box
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
+                      display: 'flex',
+                      flexDirection: 'column',
                     }}
                   >
                     <Field
@@ -156,10 +170,55 @@ const EditWeighBridge: React.FunctionComponent<{
                       sx={{
                         my: 1,
                       }}
-                      defaultCountry={"in"}
-                      onChange={(e) => setFieldValue("phone", e.toString())}
+                      defaultCountry={'in'}
+                      onChange={(e) => setFieldValue('phone', e.toString())}
                     />
 
+                    <Field
+                      component={TextField}
+                      sx={{
+                        my: 1,
+                      }}
+                      name="url"
+                      type="text"
+                      label="local server url"
+                    />
+                    <Field
+                      component={TextField}
+                      sx={{
+                        my: 1,
+                      }}
+                      name="camera_url_1"
+                      type="text"
+                      label="camera url 1"
+                    />
+                    <Field
+                      component={TextField}
+                      sx={{
+                        my: 1,
+                      }}
+                      name="camera_url_2"
+                      type="text"
+                      label="camera url 2"
+                    />
+                    <Field
+                      component={TextField}
+                      sx={{
+                        my: 1,
+                      }}
+                      name="camera_url_3"
+                      type="text"
+                      label="camera url 3"
+                    />
+                    <Field
+                      component={TextField}
+                      sx={{
+                        my: 1,
+                      }}
+                      name="camera_url_4"
+                      type="text"
+                      label="camera url 4"
+                    />
                     {(isSubmitting || l1 || l2) && <LinearProgress />}
                   </Box>
                 </Form>

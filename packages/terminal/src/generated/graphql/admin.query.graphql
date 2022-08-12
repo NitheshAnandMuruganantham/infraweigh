@@ -20,6 +20,10 @@ subscription getAllTenants(
     email
     name
     activate
+    maintainer {
+      id
+      email
+    }
     id
     phone
     metadata
@@ -68,6 +72,10 @@ query getTenet($tenentsByPkId: uuid!) {
   tenents_by_pk(id: $tenentsByPkId) {
     email
     id
+    maintainer {
+      id
+      email
+    }
     activate
     name
     metadata

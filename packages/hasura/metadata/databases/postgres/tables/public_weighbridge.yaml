@@ -47,6 +47,7 @@ insert_permissions:
         tenent_id: x-hasura-tenent-id
       columns:
         - address
+        - config
         - display_name
         - id
         - logo
@@ -162,6 +163,7 @@ update_permissions:
     permission:
       columns:
         - address
+        - config
         - display_name
         - logo
         - mail

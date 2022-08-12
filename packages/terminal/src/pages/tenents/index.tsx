@@ -33,6 +33,14 @@ const Clients = () => {
       editable: false,
       sortable: true,
     },
+    {
+      field: 'maintainer',
+      headerName: 'name',
+      width: 300,
+      editable: false,
+      sortable: true,
+      valueGetter: (params) => params.value.email,
+    },
 
     {
       field: 'email',

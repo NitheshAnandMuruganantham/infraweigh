@@ -50,6 +50,11 @@ export default function AddNewWeighBridge() {
             pin_code: '',
             phone: '',
             mail: '',
+            url: '',
+            camera_url_1: '',
+            camera_url_2: '',
+            camera_url_3: '',
+            camera_url_4: '',
           }}
           validationSchema={() => {
             return Yup.object().shape({
@@ -76,39 +81,43 @@ export default function AddNewWeighBridge() {
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
             let dt = {};
-            if (role === 'tenantAdmin') {
-              dt = {
-                address: values.address,
-                display_name: values.display_name,
-                pin_code: values.pin_code,
-                name: values.name,
-                phone: values.phone,
-                mail: values.mail,
-              };
-            } else {
-              dt = {
-                tenent_id: values.tenant.value,
-                address: values.address,
-                display_name: values.display_name,
-                pin_code: values.pin_code,
-                name: values.name,
-                phone: values.phone,
-                mail: values.mail,
-              };
-            }
-            await addNewWeighbridge({
-              variables: {
-                object: dt,
-              },
-            })
-              .catch((e) => {
-                toast.error('can not add new WeighBridge');
+            if (role !== 'tenantAdmin') {
+              {
+                dt = {
+                  tenent_id: values.tenant.value,
+                };
+              }
+              await addNewWeighbridge({
+                variables: {
+                  object: {
+                    ...dt,
+                    config: {
+                      url: values.url,
+                      camera: [
+                        values.camera_url_1,
+                        values.camera_url_2,
+                        values.camera_url_3,
+                        values.camera_url_4,
+                      ],
+                    },
+                    address: values.address,
+                    display_name: values.display_name,
+                    pin_code: values.pin_code,
+                    name: values.name,
+                    phone: values.phone,
+                    mail: values.mail,
+                  },
+                },
               })
-              .then(
-                (d) => d && toast.success('WeighBridge added successfully')
-              );
-            setSubmitting(true);
-            handleClose();
+                .catch((e) => {
+                  toast.error('can not add new WeighBridge');
+                })
+                .then(
+                  (d) => d && toast.success('WeighBridge added successfully')
+                );
+              setSubmitting(true);
+              handleClose();
+            }
           }}
         >
           {({ submitForm, isSubmitting, setFieldValue }) => (
@@ -186,6 +195,51 @@ export default function AddNewWeighBridge() {
                         queryHook={useGetAllTenentsDropDownLazyQuery}
                       />
                     )}
+                    <Field
+                      component={TextField}
+                      sx={{
+                        my: 1,
+                      }}
+                      name="url"
+                      type="text"
+                      label="local server url"
+                    />
+                    <Field
+                      component={TextField}
+                      sx={{
+                        my: 1,
+                      }}
+                      name="camera_url_1"
+                      type="text"
+                      label="camera url 1"
+                    />
+                    <Field
+                      component={TextField}
+                      sx={{
+                        my: 1,
+                      }}
+                      name="camera_url_2"
+                      type="text"
+                      label="camera url 2"
+                    />
+                    <Field
+                      component={TextField}
+                      sx={{
+                        my: 1,
+                      }}
+                      name="camera_url_3"
+                      type="text"
+                      label="camera url 3"
+                    />
+                    <Field
+                      component={TextField}
+                      sx={{
+                        my: 1,
+                      }}
+                      name="camera_url_4"
+                      type="text"
+                      label="camera url 4"
+                    />
                     {(isSubmitting || loading) && <LinearProgress />}
                   </Box>
                 </Form>

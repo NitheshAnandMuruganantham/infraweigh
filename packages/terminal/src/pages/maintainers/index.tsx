@@ -5,6 +5,7 @@ import { Box } from '@mui/system';
 
 import DataGridComponent from '../../components/dataGrid';
 import {
+  Role_Enum,
   useGetAllUsersCountSubscription,
   useGetAllUsersSubscription,
 } from '../../generated';
@@ -13,76 +14,40 @@ import AddNewUser from './add';
 import columns from './columns';
 import useUser from '../../hooks/user';
 
-const Users = () => {
+const Maintainers = () => {
   const [sort, SetSort] = React.useState([]);
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
   const [role, loadingRole] = useRole();
   const [user, userLoading] = useUser();
-  let filter: any;
-  if (role === 'tenantAdmin') {
-    filter = {
-      _and: [
-        {
-          _or: [
-            {
-              email: {
-                _like: `%${search}%`,
-              },
-            },
-          ],
-        },
-      ],
-    };
-  } else if (role === 'maintainer') {
-    filter = {
-      _and: [
-        {
-          role: {
-            _eq: 'tenantAdmin',
-          },
-        },
-        {
-          _or: [
-            {
-              email: {
-                _like: `%${search}%`,
-              },
-            },
-          ],
-        },
-      ],
-    };
-  } else {
-    filter = {
-      _and: [
-        {
-          role: {
-            _eq: 'tenantAdmin',
-          },
-        },
-        {
-          email: {
-            _neq: user?.user.email,
-          },
-        },
-        {
-          _or: [
-            {
-              email: {
-                _like: `%${search}%`,
-              },
-            },
-          ],
-        },
-      ],
-    };
-  }
+
   const { data, loading } = useGetAllUsersSubscription({
     variables: {
       orderBy: sort,
-      where: filter,
+      where: {
+        _and: [
+          {
+            role: {
+              _eq: Role_Enum.Maintainer as any,
+            },
+          },
+          {
+            email: {
+              _neq: user?.user.email,
+            },
+          },
+          {
+            _or: [
+              {
+                email: {
+                  _like: `%${search}%`,
+                },
+              },
+            ],
+          },
+        ],
+      },
       offset: (page - 1) * pageSize,
       limit: pageSize,
     },
@@ -91,7 +56,29 @@ const Users = () => {
     useGetAllUsersCountSubscription({
       variables: {
         orderBy: sort,
-        where: filter,
+        where: {
+          _and: [
+            {
+              role: {
+                _eq: Role_Enum.Maintainer as any,
+              },
+            },
+            {
+              email: {
+                _neq: user?.user.email,
+              },
+            },
+            {
+              _or: [
+                {
+                  email: {
+                    _like: `%${search}%`,
+                  },
+                },
+              ],
+            },
+          ],
+        },
       },
     });
 
@@ -125,22 +112,7 @@ const Users = () => {
           setFilter={() => null}
           setPageSize={setPageSize}
           setSort={SetSort}
-          columns={
-            role === 'tenantAdmin'
-              ? columns
-              : [
-                  {
-                    field: 'weighbridge',
-                    headerName: 'weighbridge',
-                    sortable: false,
-                    filterable: false,
-                    width: 400,
-                    valueGetter: (params) =>
-                      params.row?.weighbridge?.name || '',
-                  },
-                  ...columns,
-                ]
-          }
+          columns={columns}
           rowCount={Count?.user_aggregate?.aggregate?.count || 0}
         />
       </Box>
@@ -148,4 +120,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Maintainers;

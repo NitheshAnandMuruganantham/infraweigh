@@ -33,15 +33,12 @@ insert_permissions:
                 _eq: X-Hasura-User-Id
       columns:
         - blocked
-        - created_at
         - email
         - email_verified
-        - id
         - meta_data
+        - password
         - profile
         - role
-        - tenent_id
-        - updated_at
         - weighbridge_id
   - role: tenantAdmin
     permission:

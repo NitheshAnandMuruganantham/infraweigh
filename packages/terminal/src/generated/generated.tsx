@@ -3904,7 +3904,7 @@ export type GetAllTenantsSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetAllTenantsSubscription = { __typename?: 'subscription_root', tenents: Array<{ __typename?: 'tenents', email: string, name: string, activate: boolean, id: any, phone: string, metadata: any, payment_pending: boolean }> };
+export type GetAllTenantsSubscription = { __typename?: 'subscription_root', tenents: Array<{ __typename?: 'tenents', email: string, name: string, activate: boolean, id: any, phone: string, metadata: any, payment_pending: boolean, maintainer?: { __typename?: 'user', id: any, email: string } | null }> };
 
 export type GetTenantsCountSubscriptionVariables = Exact<{
   where?: InputMaybe<Tenents_Bool_Exp>;
@@ -3938,7 +3938,7 @@ export type GetTenetQueryVariables = Exact<{
 }>;
 
 
-export type GetTenetQuery = { __typename?: 'query_root', tenents_by_pk?: { __typename?: 'tenents', email: string, id: any, activate: boolean, name: string, metadata: any, phone: string, payment_pending: boolean } | null };
+export type GetTenetQuery = { __typename?: 'query_root', tenents_by_pk?: { __typename?: 'tenents', email: string, id: any, activate: boolean, name: string, metadata: any, phone: string, payment_pending: boolean, maintainer?: { __typename?: 'user', id: any, email: string } | null } | null };
 
 export type GetRoleDropdownOptionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4100,7 +4100,17 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, id: any, profile?: any | null, weighbridge_id?: any | null, updated_at: any, weighbridge?: { __typename?: 'weighbridge', name: string, address: string } | null }> };
+export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, id: any, profile?: any | null, weighbridge_id?: any | null, updated_at: any, maintainee: Array<{ __typename?: 'tenents', name: string }>, weighbridge?: { __typename?: 'weighbridge', name: string, address: string } | null }> };
+
+export type GetUserDropDownQueryVariables = Exact<{
+  where?: InputMaybe<User_Bool_Exp>;
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<User_Order_By> | User_Order_By>;
+}>;
+
+
+export type GetUserDropDownQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', label: string, value: any }> };
 
 export type GetUserCountQueryVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
@@ -4117,7 +4127,7 @@ export type GetAllUsersSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetAllUsersSubscription = { __typename?: 'subscription_root', user: Array<{ __typename?: 'user', id: any, email: string, created_at: any, tenent?: { __typename?: 'tenents', name: string } | null, weighbridge?: { __typename?: 'weighbridge', name: string } | null }> };
+export type GetAllUsersSubscription = { __typename?: 'subscription_root', user: Array<{ __typename?: 'user', id: any, email: string, created_at: any, tenent?: { __typename?: 'tenents', name: string } | null, maintainee: Array<{ __typename?: 'tenents', name: string }>, weighbridge?: { __typename?: 'weighbridge', name: string } | null }> };
 
 export type GetAllUsersCountSubscriptionVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
@@ -4228,7 +4238,7 @@ export type GetWeighbridgeQueryVariables = Exact<{
 }>;
 
 
-export type GetWeighbridgeQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', display_name: string, id: any, address: string, created_at: any, name: string, metadata: any, phone: string, pin_code: string, mail: string, logo?: string | null }> };
+export type GetWeighbridgeQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', display_name: string, id: any, address: string, created_at: any, config?: any | null, name: string, metadata: any, phone: string, pin_code: string, mail: string, logo?: string | null }> };
 
 export type UpdateWeighBridgeMutationVariables = Exact<{
   pkColumns: Weighbridge_Pk_Columns_Input;
@@ -4316,6 +4326,10 @@ export const GetAllTenantsDocument = gql`
     email
     name
     activate
+    maintainer {
+      id
+      email
+    }
     id
     phone
     metadata
@@ -4466,6 +4480,10 @@ export const GetTenetDocument = gql`
   tenents_by_pk(id: $tenentsByPkId) {
     email
     id
+    maintainer {
+      id
+      email
+    }
     activate
     name
     metadata
@@ -5340,6 +5358,9 @@ export const GetUserDocument = gql`
     email
     id
     profile
+    maintainee {
+      name
+    }
     weighbridge_id
     weighbridge {
       name
@@ -5377,6 +5398,45 @@ export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
 export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const GetUserDropDownDocument = gql`
+    query getUserDropDown($where: user_bool_exp, $offset: Int, $limit: Int, $orderBy: [user_order_by!]) {
+  user(where: $where, offset: $offset, limit: $limit, order_by: $orderBy) {
+    label: email
+    value: id
+  }
+}
+    `;
+
+/**
+ * __useGetUserDropDownQuery__
+ *
+ * To run a query within a React component, call `useGetUserDropDownQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserDropDownQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserDropDownQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
+ *      orderBy: // value for 'orderBy'
+ *   },
+ * });
+ */
+export function useGetUserDropDownQuery(baseOptions?: Apollo.QueryHookOptions<GetUserDropDownQuery, GetUserDropDownQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserDropDownQuery, GetUserDropDownQueryVariables>(GetUserDropDownDocument, options);
+      }
+export function useGetUserDropDownLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserDropDownQuery, GetUserDropDownQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserDropDownQuery, GetUserDropDownQueryVariables>(GetUserDropDownDocument, options);
+        }
+export type GetUserDropDownQueryHookResult = ReturnType<typeof useGetUserDropDownQuery>;
+export type GetUserDropDownLazyQueryHookResult = ReturnType<typeof useGetUserDropDownLazyQuery>;
+export type GetUserDropDownQueryResult = Apollo.QueryResult<GetUserDropDownQuery, GetUserDropDownQueryVariables>;
 export const GetUserCountDocument = gql`
     query getUserCount($where: user_bool_exp) {
   user_aggregate(where: $where) {
@@ -5420,6 +5480,9 @@ export const GetAllUsersDocument = gql`
     id
     email
     tenent {
+      name
+    }
+    maintainee {
       name
     }
     created_at
@@ -5956,6 +6019,7 @@ export const GetWeighbridgeDocument = gql`
     id
     address
     created_at
+    config
     name
     metadata
     phone

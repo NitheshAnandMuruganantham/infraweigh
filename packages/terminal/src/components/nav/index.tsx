@@ -1,20 +1,18 @@
-import React, { useEffect } from 'react';
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import decode from 'jwt-decode';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { useMatch, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import AddTaskIcon from '@mui/icons-material/AddTask';
+import ArticleIcon from '@mui/icons-material/Article';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import Home from '@mui/icons-material/Home';
+import MenuIcon from '@mui/icons-material/Menu';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import {
   Avatar,
   CircularProgress,
@@ -22,19 +20,21 @@ import {
   MenuItem,
   Tooltip,
 } from '@mui/material';
-import { useState } from 'react';
-import { FunctionComponent } from 'react';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import MuiDrawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { CSSObject, styled, Theme, useTheme } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+
 import useRole from '../../hooks/role';
-import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
-import Home from '@mui/icons-material/Home';
-import ArticleIcon from '@mui/icons-material/Article';
-import AddTaskIcon from '@mui/icons-material/AddTask';
-import { useMatch } from 'react-router-dom';
-import decode from 'jwt-decode';
 
 const drawerWidth = 240;
 
@@ -148,6 +148,13 @@ const NavBar: FunctionComponent<{
       role: ['admin', 'maintainer'],
       icon: PersonOutlineIcon,
       active: useMatch('/tenants'),
+    },
+    {
+      name: 'maintainers',
+      path: '/maintainers',
+      icon: EngineeringIcon,
+      role: ['admin'],
+      active: useMatch('/maintainers'),
     },
     {
       name: 'weighbridge entry',
