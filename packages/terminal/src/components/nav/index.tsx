@@ -232,7 +232,6 @@ const NavBar: FunctionComponent<{
                 height: '40px',
                 backgroundColor: 'white',
                 paddingTop: '3px',
-                border: '1px solid black',
                 paddingBottom: '3px',
                 paddingRight: '10px',
                 paddingLeft: '10px',

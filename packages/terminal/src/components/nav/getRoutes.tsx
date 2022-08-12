@@ -25,6 +25,10 @@ const locationNames = [
     name: 'Manage Bills',
   },
   {
+    path: '/weighbridges',
+    name: 'Manage Weighbridges',
+  },
+  {
     path: '/weigh',
     name: 'Weighment Terminal',
   },
