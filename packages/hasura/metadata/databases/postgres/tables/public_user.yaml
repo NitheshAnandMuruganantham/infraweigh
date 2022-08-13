@@ -39,6 +39,7 @@ insert_permissions:
         - password
         - profile
         - role
+        - tenent_id
         - weighbridge_id
   - role: tenantAdmin
     permission:

@@ -29,6 +29,7 @@ const Grid: React.FunctionComponent<DataGridProps> = (props) => {
       onPageSizeChange={(s) => props.setPageSize(s)}
       rows={props.data || []}
       rowCount={props.rowCount || 0}
+      rowsPerPageOptions={[10, 20, 50, 100]}
       columns={props.columns}
       pageSize={props.pageSize}
       // onFilterModelChange={(f) => props.setFilter(f)}

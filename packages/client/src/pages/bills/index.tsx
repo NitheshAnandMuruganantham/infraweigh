@@ -2,15 +2,19 @@ import { Field, Formik, FormikProps } from 'formik';
 import { TextField } from 'formik-mui';
 import * as React from 'react';
 
+import CloseIcon from '@mui/icons-material/Close';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   Box,
   Button,
   Checkbox,
   Chip,
+  IconButton,
   LinearProgress,
   TextField as TF,
   Typography,
 } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -72,10 +76,16 @@ const Bills = () => {
       FormikRef.current?.setFieldValue('to', '', false);
     }
   }, [filterByDateTime]);
-
+  const [colapse, setColapse] = React.useState(true);
+  const mobileMedia = useMediaQuery((theme: any) => theme.breakpoints.up('sm'));
   return (
     <Box>
       <Box height={600} width={'100%'} textAlign="center">
+        {!mobileMedia && (
+          <IconButton onClick={() => setColapse((state) => !state)}>
+            {colapse ? <MenuIcon /> : <CloseIcon />}
+          </IconButton>
+        )}
         <LinearProgress
           sx={{
             visibility:
@@ -175,8 +185,21 @@ const Bills = () => {
           }}
         >
           {({ handleSubmit, handleReset, setFieldValue, values }) => (
-            <form onSubmit={handleSubmit} onReset={handleReset}>
-              <Box display="flex" flexDirection={'row'}>
+            <form
+              style={{
+                display: !mobileMedia
+                  ? colapse
+                    ? 'none'
+                    : 'inherit'
+                  : 'inherit',
+              }}
+              onSubmit={handleSubmit}
+              onReset={handleReset}
+            >
+              <Box
+                display="flex"
+                flexDirection={mobileMedia ? 'row' : 'column'}
+              >
                 <Field
                   component={TextField}
                   name="vehicle_number"
@@ -189,7 +212,7 @@ const Bills = () => {
                   label="vehicle number"
                   sx={{
                     margin: 2,
-                    width: '40%',
+                    width: '90%',
                   }}
                 />
                 <AutoComTextField
@@ -225,8 +248,8 @@ const Bills = () => {
                 <Box
                   display="flex"
                   gap={'10px'}
-                  sx={{ mt: 2, ml: 2 }}
-                  flexDirection="row"
+                  sx={{ mt: 2, ml: 2, width: '90%' }}
+                  flexDirection={mobileMedia ? 'row' : 'column'}
                 >
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
