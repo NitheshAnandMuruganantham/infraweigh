@@ -1,29 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import { Avatar, Menu, MenuItem, Tooltip } from '@mui/material';
 import { useState } from 'react';
 import { FunctionComponent } from 'react';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
-import Home from '@mui/icons-material/Home';
-import ArticleIcon from '@mui/icons-material/Article';
-import { useMatch } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../utils/firebase';
 
@@ -113,22 +100,6 @@ const NavBar: FunctionComponent<{
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  const links = [
-    {
-      name: 'Home',
-      path: '/',
-      icon: ArticleIcon,
-      active: useMatch('/'),
-    },
-  ];
   const navigate = useNavigate();
 
   return (
@@ -136,18 +107,6 @@ const NavBar: FunctionComponent<{
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography variant="h6" noWrap component="div">
             INFRA WEIGH
           </Typography>
@@ -197,56 +156,6 @@ const NavBar: FunctionComponent<{
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-
-        <List>
-          {links.map((data, index) => (
-            <ListItemButton
-              key={index}
-              onClick={() => navigate(data.path)}
-              sx={{
-                ':hover': {
-                  backgroundColor: data.active ? 'slategray' : 'whitesmoke',
-                },
-                backgroundColor: data.active ? 'gray' : 'inherit',
-                backgroundOpacity: 50,
-                margin: 1,
-                borderRadius: '5px',
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                <data.icon htmlColor={data.active ? 'white' : 'gray'} />
-              </ListItemIcon>
-              <ListItemText
-                primary={data.name}
-                sx={{
-                  color: data.active ? 'white' : 'inherit',
-                  opacity: open ? 1 : 0,
-                }}
-              />
-            </ListItemButton>
-          ))}
-        </List>
-      </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 7 }}>
         {children}
       </Box>

@@ -13,6 +13,9 @@ function App() {
           ? 'dark'
           : 'light',
     },
+    typography: {
+      fontFamily: 'Poppins',
+    },
   });
   return (
     <ThemeProvider theme={theme}>
