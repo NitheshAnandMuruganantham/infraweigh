@@ -1,6 +1,0 @@
-query getVehiclesDropDownList($where: vehicle_bool_exp, $limit: Int) {
-  vehicle(where: $where, limit: $limit) {
-    value: id
-    label: name
-  }
-}
