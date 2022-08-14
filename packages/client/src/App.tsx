@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 
 import Bills from './pages/bills';
 import RequireAuth from './pages/requireAuth';
+import NoInternet from './pages/NoInternet';
 
 const Login = React.lazy(() => import('./pages/login'));
 
@@ -36,7 +37,7 @@ const App: FunctionComponent = () => {
   if (offline) {
     return (
       <>
-        <h1>you are offline now hit f5 to refresh.</h1>
+        <NoInternet />
       </>
     );
   } else {
