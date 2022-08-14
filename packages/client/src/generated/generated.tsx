@@ -3892,6 +3892,13 @@ export type GetTotalBillsSubscriptionVariables = Exact<{
 
 export type GetTotalBillsSubscription = { __typename?: 'subscription_root', bill_aggregate: { __typename?: 'bill_aggregate', aggregate?: { __typename?: 'bill_aggregate_fields', count: number } | null } };
 
+export type GetBillForReceptQueryVariables = Exact<{
+  billByPkId: Scalars['uuid'];
+}>;
+
+
+export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, nano_id: number, second_weight: boolean, tare_weight: number, order_id?: string | null, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
+
 export type GetAllBillsSubscriptionVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -3984,6 +3991,71 @@ export function useGetTotalBillsSubscription(baseOptions?: Apollo.SubscriptionHo
       }
 export type GetTotalBillsSubscriptionHookResult = ReturnType<typeof useGetTotalBillsSubscription>;
 export type GetTotalBillsSubscriptionResult = Apollo.SubscriptionResult<GetTotalBillsSubscription>;
+export const GetBillForReceptDocument = gql`
+    query getBillForRecept($billByPkId: uuid!) {
+  bill_by_pk(id: $billByPkId) {
+    id
+    vehicle_number
+    created_at
+    charges
+    scale_weight
+    nano_id
+    second_weight
+    tare_weight
+    order_id
+    reference_bill_id
+    vehicle {
+      name
+      id
+    }
+    customer {
+      id
+      name
+    }
+    material {
+      name
+      id
+    }
+    paid_by
+    weighbridge {
+      display_name
+      id
+      address
+      pin_code
+      phone
+      logo
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetBillForReceptQuery__
+ *
+ * To run a query within a React component, call `useGetBillForReceptQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBillForReceptQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBillForReceptQuery({
+ *   variables: {
+ *      billByPkId: // value for 'billByPkId'
+ *   },
+ * });
+ */
+export function useGetBillForReceptQuery(baseOptions: Apollo.QueryHookOptions<GetBillForReceptQuery, GetBillForReceptQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBillForReceptQuery, GetBillForReceptQueryVariables>(GetBillForReceptDocument, options);
+      }
+export function useGetBillForReceptLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBillForReceptQuery, GetBillForReceptQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBillForReceptQuery, GetBillForReceptQueryVariables>(GetBillForReceptDocument, options);
+        }
+export type GetBillForReceptQueryHookResult = ReturnType<typeof useGetBillForReceptQuery>;
+export type GetBillForReceptLazyQueryHookResult = ReturnType<typeof useGetBillForReceptLazyQuery>;
+export type GetBillForReceptQueryResult = Apollo.QueryResult<GetBillForReceptQuery, GetBillForReceptQueryVariables>;
 export const GetAllBillsDocument = gql`
     subscription getAllBills($where: bill_bool_exp, $limit: Int, $offset: Int, $orderBy: [bill_order_by!], $distinctOn: [bill_select_column!]) {
   bill(
