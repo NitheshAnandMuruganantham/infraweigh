@@ -15,6 +15,43 @@ subscription getTotalBills(
     }
   }
 }
+
+query getBillForRecept($billByPkId: uuid!) {
+  bill_by_pk(id: $billByPkId) {
+    id
+    vehicle_number
+    created_at
+    charges
+    scale_weight
+    nano_id
+    second_weight
+    tare_weight
+    order_id
+    reference_bill_id
+    vehicle {
+      name
+      id
+    }
+    customer {
+      id
+      name
+    }
+    material {
+      name
+      id
+    }
+    paid_by
+    weighbridge {
+      display_name
+      id
+      address
+      pin_code
+      phone
+      logo
+    }
+  }
+}
+
 subscription getAllBills(
   $where: bill_bool_exp
   $limit: Int
