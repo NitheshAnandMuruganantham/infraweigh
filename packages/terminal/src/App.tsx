@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
+
 import Loading from './components/loading';
-import RequireAuth from './pages/auth/requireAuth';
 import SignInSide from './pages/auth/logIn';
 import NotRequireAuth from './pages/auth/notRequireAuth';
+import RequireAuth from './pages/auth/requireAuth';
+import NoInternet from './pages/NoInternet';
+
 const ForgetPassword = React.lazy(() => import('./pages/auth/forgetPassword'));
 const SetNewPassword = React.lazy(() => import('./pages/auth/setPassword'));
 const Bills = React.lazy(() => import('./pages/bills'));
@@ -64,25 +67,44 @@ const LazyMaintainers = () => (
 );
 
 const App: React.FunctionComponent = () => {
-  return (
-    <Routes>
-      <Route path="*" element={<NotFound />} />
-      <Route element={<RequireAuth />}>
-        <Route path="/" element={<LazyBills />} />
-        <Route path="/weighbridges" element={<LazyWeighbridges />} />
-        <Route path="/users" element={<LazyUsers />} />
-        <Route path="/weigh" element={<LazyWeigh />} />
-        <Route path="/tenants" element={<LazyTenants />} />
-        <Route path="/clients" element={<LazyClients />} />
-        <Route path="/maintainers" element={<LazyMaintainers />} />
-      </Route>
-      <Route element={<NotRequireAuth />}>
-        <Route path="/login" element={<SignInSide />} />
-        <Route path="/forgetPassword" element={<LazyForgetPassword />} />
-        <Route path="/reset-password" element={<LazySetNewPassword />} />
-      </Route>
-    </Routes>
-  );
+  const [offline, SetOffline] = React.useState(!navigator.onLine);
+
+  React.useEffect(() => {
+    window.addEventListener('online', () => SetOffline(false));
+    window.addEventListener('offline', () => SetOffline(true));
+
+    return () => {
+      window.removeEventListener('online', () => SetOffline(false));
+      window.removeEventListener('offline', () => SetOffline(true));
+    };
+  }, []);
+  if (offline) {
+    return (
+      <>
+        <NoInternet />
+      </>
+    );
+  } else {
+    return (
+      <Routes>
+        <Route path="*" element={<NotFound />} />
+        <Route element={<RequireAuth />}>
+          <Route path="/" element={<LazyBills />} />
+          <Route path="/weighbridges" element={<LazyWeighbridges />} />
+          <Route path="/users" element={<LazyUsers />} />
+          <Route path="/weigh" element={<LazyWeigh />} />
+          <Route path="/tenants" element={<LazyTenants />} />
+          <Route path="/clients" element={<LazyClients />} />
+          <Route path="/maintainers" element={<LazyMaintainers />} />
+        </Route>
+        <Route element={<NotRequireAuth />}>
+          <Route path="/login" element={<SignInSide />} />
+          <Route path="/forgetPassword" element={<LazyForgetPassword />} />
+          <Route path="/reset-password" element={<LazySetNewPassword />} />
+        </Route>
+      </Routes>
+    );
+  }
 };
 
 export default App;
