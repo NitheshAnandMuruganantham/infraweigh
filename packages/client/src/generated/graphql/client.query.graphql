@@ -1,0 +1,95 @@
+subscription getTotalBills(
+  $where: bill_bool_exp
+  $offset: Int
+  $orderBy: [bill_order_by!]
+  $limit: Int
+) {
+  bill_aggregate(
+    where: $where
+    offset: $offset
+    order_by: $orderBy
+    limit: $limit
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+subscription getAllBills(
+  $where: bill_bool_exp
+  $limit: Int
+  $offset: Int
+  $orderBy: [bill_order_by!]
+  $distinctOn: [bill_select_column!]
+) {
+  bill(
+    where: $where
+    limit: $limit
+    offset: $offset
+    order_by: $orderBy
+    distinct_on: $distinctOn
+  ) {
+    id
+    weighbridge {
+      name
+      id
+    }
+
+    vehicle_number
+    vehicle {
+      name
+    }
+    charges
+    created_at
+    material {
+      name
+    }
+    paid_by
+    paid
+    payment_initiated
+    order_id
+    second_weight
+    scale_weight
+    tare_weight
+  }
+}
+
+query getCustomerDropdownOptions($where: customer_bool_exp, $limit: Int) {
+  customer(where: $where, limit: $limit) {
+    value: id
+    label: name
+  }
+}
+
+query getMaterialDropDownList(
+  $where: material_bool_exp
+  $limit: Int
+  $offset: Int
+) {
+  material(where: $where, limit: $limit, offset: $offset) {
+    value: id
+    label: name
+  }
+}
+
+query getVehiclesDropDownList($where: vehicle_bool_exp, $limit: Int) {
+  vehicle(where: $where, limit: $limit) {
+    value: id
+    label: name
+  }
+}
+
+query getWeighbridgesDropDown($where: weighbridge_bool_exp) {
+  weighbridge(where: $where) {
+    label: name
+    value: id
+  }
+}
+
+query BillAggregate($distinctOn: [bill_select_column!], $where: bill_bool_exp) {
+  bill_aggregate(distinct_on: $distinctOn, where: $where) {
+    aggregate {
+      count
+    }
+  }
+}

@@ -1,9 +1,15 @@
-import { createTheme, ThemeProvider } from '@mui/material';
-import { Route, Routes } from 'react-router-dom';
 import './App.css';
+
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+
+import { createTheme, ThemeProvider } from '@mui/material';
+
+import Loading from './components/loading';
 import Bills from './pages/bills';
-import Login from './pages/login';
 import RequireAuth from './pages/requireAuth';
+
+const Login = React.lazy(() => import('./pages/login'));
 
 function App() {
   const theme = createTheme({
@@ -17,14 +23,19 @@ function App() {
       fontFamily: 'Poppins',
     },
   });
+
   return (
     <ThemeProvider theme={theme}>
-      <Routes>
-        <Route element={<RequireAuth />}>
-          <Route path="/" element={<Bills />} />
-        </Route>
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      {window.ononline ? (
+        <Routes>
+          <Route element={<RequireAuth />}>
+            <Route path="/" element={<Bills />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      ) : (
+        <h1>offile</h1>
+      )}
     </ThemeProvider>
   );
 }
