@@ -1,17 +1,27 @@
 import './App.css';
 
-import React from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { createTheme, ThemeProvider } from '@mui/material';
 
-import Loading from './components/loading';
 import Bills from './pages/bills';
 import RequireAuth from './pages/requireAuth';
 
 const Login = React.lazy(() => import('./pages/login'));
 
-function App() {
+const App: FunctionComponent = () => {
+  const [offline, SetOffline] = useState(!navigator.onLine);
+
+  useEffect(() => {
+    window.addEventListener('online', () => SetOffline(false));
+    window.addEventListener('offline', () => SetOffline(true));
+
+    return () => {
+      window.removeEventListener('online', () => SetOffline(false));
+      window.removeEventListener('offline', () => SetOffline(true));
+    };
+  }, []);
   const theme = createTheme({
     palette: {
       mode:
@@ -23,21 +33,24 @@ function App() {
       fontFamily: 'Poppins',
     },
   });
-
-  return (
-    <ThemeProvider theme={theme}>
-      {window.ononline ? (
+  if (offline) {
+    return (
+      <>
+        <h1>you are offline now hit f5 to refresh.</h1>
+      </>
+    );
+  } else {
+    return (
+      <ThemeProvider theme={theme}>
         <Routes>
           <Route element={<RequireAuth />}>
             <Route path="/" element={<Bills />} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>
-      ) : (
-        <h1>offile</h1>
-      )}
-    </ThemeProvider>
-  );
-}
+      </ThemeProvider>
+    );
+  }
+};
 
 export default App;
