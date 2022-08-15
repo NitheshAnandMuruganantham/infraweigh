@@ -177,7 +177,7 @@ const Clients = () => {
           loading={loading || countLoading}
           rowCount={count?.tenents_aggregate.aggregate?.count || 0}
           columns={
-            role === 'admin'
+            role === 'maintainer'
               ? columns
               : [
                   {

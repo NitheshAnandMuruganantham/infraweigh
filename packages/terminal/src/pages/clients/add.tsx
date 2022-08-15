@@ -1,18 +1,20 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import { Formik, Form, Field } from "formik";
-import { Switch, TextField } from "formik-mui";
-import { FormLabel, LinearProgress } from "@mui/material";
-import { Box } from "@mui/system";
-import * as Yup from "yup";
-import MuiPhoneNumber from "material-ui-phone-number";
-import { useCreateCustomerMutation } from "../../generated";
-import { toast } from "react-toastify";
-
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Formik, Form, Field } from 'formik';
+import { Switch, TextField } from 'formik-mui';
+import { FormLabel, LinearProgress } from '@mui/material';
+import { Box } from '@mui/system';
+import * as Yup from 'yup';
+import MuiPhoneNumber from 'material-ui-phone-number';
+import { useCreateCustomerMutation } from '../../generated';
+import { toast } from 'react-toastify';
+import AutoCompleteComponent from '../../components/autoComplete';
+import { useGetAllTenentsDropDownLazyQuery } from '../../generated';
+import useRole from '../../hooks/role';
 const AddNewClient: React.FunctionComponent = () => {
   const [open, setOpen] = React.useState(false);
 
@@ -23,6 +25,7 @@ const AddNewClient: React.FunctionComponent = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const [role] = useRole();
   const [addNewClient, { loading }] = useCreateCustomerMutation();
   return (
     <div>
@@ -33,46 +36,66 @@ const AddNewClient: React.FunctionComponent = () => {
         <DialogTitle>New Client</DialogTitle>
         <Formik
           initialValues={{
-            name: "",
-            address: "",
-            email: "",
-            phone: "",
-            gst_in: "",
-            company_name: "",
-            branch: {
+            name: '',
+            address: '',
+            email: '',
+            phone: '',
+            gst_in: '',
+            company_name: '',
+            tenant: {
+              label: '',
               value: null,
-              label: "",
             },
           }}
           validationSchema={() => {
             return Yup.object().shape({
-              name: Yup.string().required("Required"),
-              address: Yup.string().required("Required"),
-              email: Yup.string().required("Required"),
-              phone: Yup.string().required("Required"),
-              company_name: Yup.string().required("Required"),
+              name: Yup.string().required('Required'),
+              address: Yup.string().required('Required'),
+              email: Yup.string().required('Required'),
+              phone: Yup.string().required('Required'),
+              tenant: Yup.lazy(() => {
+                if (role !== 'maintainer') {
+                  return Yup.object().notRequired();
+                } else {
+                  return Yup.object()
+                    .shape({
+                      label: Yup.string().required('Required'),
+                      value: Yup.string().required('Required'),
+                    })
+                    .required('Required');
+                }
+              }),
+              company_name: Yup.string().required('Required'),
             });
           }}
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
+            let additionalKeys = {};
+            if (role === 'maintainer') {
+              additionalKeys = {
+                tenent_id: values?.tenant?.value || '',
+              };
+            }
             addNewClient({
               variables: {
                 object: {
                   name: values.name,
                   email: values.email,
                   phone: values.phone,
+                  ...additionalKeys,
                   gst_in: values.gst_in,
                   blocked: false,
+
                   company_name: values.company_name,
                   company_address: values.address,
                 },
               },
             })
               .catch(() => {
-                toast.error("can not create new client");
+                toast.error('can not create new client');
               })
               .then((dt) => {
-                dt && dt.data && toast.success("client created successfully");
+                dt && dt.data && toast.success('client created successfully');
                 setSubmitting(false);
                 handleClose();
               });
@@ -84,8 +107,8 @@ const AddNewClient: React.FunctionComponent = () => {
                 <Form>
                   <Box
                     sx={{
-                      display: "flex",
-                      flexDirection: "column",
+                      display: 'flex',
+                      flexDirection: 'column',
                     }}
                   >
                     <Field
@@ -142,10 +165,20 @@ const AddNewClient: React.FunctionComponent = () => {
                       sx={{
                         my: 1,
                       }}
-                      defaultCountry={"in"}
-                      onChange={(e) => setFieldValue("phone", e.toString())}
+                      defaultCountry={'in'}
+                      onChange={(e) => setFieldValue('phone', e.toString())}
                     />
-
+                    {role !== 'tenantAdmin' && role !== null && (
+                      <AutoCompleteComponent
+                        sx={{
+                          width: '100%',
+                        }}
+                        name="tenant"
+                        label="tenant"
+                        serverName="tenents"
+                        queryHook={useGetAllTenentsDropDownLazyQuery}
+                      />
+                    )}
                     {(isSubmitting || loading) && <LinearProgress />}
                   </Box>
                 </Form>

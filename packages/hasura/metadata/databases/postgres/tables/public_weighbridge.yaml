@@ -29,8 +29,12 @@ insert_permissions:
             _eq: X-Hasura-User-Id
       columns:
         - address
-        - config
+        - camera_url_1
+        - camera_url_2
+        - camera_url_3
+        - camera_url_4
         - display_name
+        - local_server_url
         - logo
         - mail
         - metadata
@@ -47,9 +51,13 @@ insert_permissions:
         tenent_id: x-hasura-tenent-id
       columns:
         - address
-        - config
+        - camera_url_1
+        - camera_url_2
+        - camera_url_3
+        - camera_url_4
         - display_name
         - id
+        - local_server_url
         - logo
         - mail
         - metadata
@@ -70,6 +78,7 @@ select_permissions:
         - name
         - phone
         - pin_code
+        - tenent_id
         - updated_at
       filter:
         tenent:
@@ -79,19 +88,23 @@ select_permissions:
   - role: maintainer
     permission:
       columns:
-        - config
-        - metadata
         - address
+        - camera_url_1
+        - camera_url_2
+        - camera_url_3
+        - camera_url_4
+        - created_at
         - display_name
+        - id
+        - local_server_url
         - logo
         - mail
+        - metadata
         - name
         - phone
         - pin_code
-        - created_at
-        - updated_at
-        - id
         - tenent_id
+        - updated_at
       filter:
         tenent:
           maintainer_id:
@@ -100,10 +113,14 @@ select_permissions:
     permission:
       columns:
         - address
-        - config
+        - camera_url_1
+        - camera_url_2
+        - camera_url_3
+        - camera_url_4
         - created_at
         - display_name
         - id
+        - local_server_url
         - logo
         - mail
         - metadata
@@ -120,10 +137,14 @@ select_permissions:
     permission:
       columns:
         - address
-        - config
+        - camera_url_1
+        - camera_url_2
+        - camera_url_3
+        - camera_url_4
         - created_at
         - display_name
         - id
+        - local_server_url
         - logo
         - mail
         - metadata
@@ -142,15 +163,23 @@ update_permissions:
   - role: maintainer
     permission:
       columns:
-        - address
-        - config
-        - display_name
-        - logo
-        - mail
-        - metadata
         - name
-        - phone
+        - address
         - pin_code
+        - logo
+        - display_name
+        - id
+        - created_at
+        - updated_at
+        - metadata
+        - mail
+        - phone
+        - tenent_id
+        - camera_url_1
+        - camera_url_2
+        - camera_url_3
+        - camera_url_4
+        - local_server_url
       filter:
         tenent:
           maintainer_id:
@@ -162,15 +191,23 @@ update_permissions:
   - role: tenantAdmin
     permission:
       columns:
+        - metadata
         - address
-        - config
+        - camera_url_1
+        - camera_url_2
+        - camera_url_3
+        - camera_url_4
         - display_name
+        - local_server_url
         - logo
         - mail
-        - metadata
         - name
         - phone
         - pin_code
+        - created_at
+        - updated_at
+        - id
+        - tenent_id
       filter:
         tenent_id:
           _eq: X-Hasura-tenent-Id
