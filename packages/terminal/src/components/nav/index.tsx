@@ -237,7 +237,7 @@ const NavBar: FunctionComponent<{
                 paddingLeft: '10px',
                 borderRadius: '20px',
               }}
-              src="https://infraweigh.co/assets/logo.png"
+              src="/logo.png"
             />
             <Typography variant="h6" sx={{ mx: '10px' }} component="div">
               |

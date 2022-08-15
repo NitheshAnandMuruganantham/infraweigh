@@ -125,7 +125,7 @@ const Users = () => {
           setPageSize={setPageSize}
           setSort={SetSort}
           columns={
-            role === 'tenantAdmin'
+            role !== 'admin'
               ? columns
               : [
                   {

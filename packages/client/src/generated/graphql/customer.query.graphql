@@ -1,6 +1,0 @@
-query getCustomerDropdownOptions($where: customer_bool_exp, $limit: Int) {
-  customer(where: $where, limit: $limit) {
-    value: id
-    label: name
-  }
-}

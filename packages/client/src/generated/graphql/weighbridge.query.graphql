@@ -1,6 +1,0 @@
-query getWeighbridgesDropDown($where: weighbridge_bool_exp) {
-  weighbridge(where: $where) {
-    label: name
-    value: id
-  }
-}
