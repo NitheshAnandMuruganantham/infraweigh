@@ -19,6 +19,7 @@ import {
 } from '../../generated';
 import gqlClient from '../../utils/client';
 import { toast } from 'react-toastify';
+import useRoles from '../../hooks/role';
 
 const EditClient: React.FunctionComponent<{
   id: string;
@@ -36,7 +37,7 @@ const EditClient: React.FunctionComponent<{
   const handleClose = () => {
     setOpen(false);
   };
-
+  const [role] = useRoles();
   return (
     <>
       <Button
@@ -71,6 +72,12 @@ const EditClient: React.FunctionComponent<{
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
             console.log(id);
+            let addCols;
+            if (role !== 'maintainer') {
+              addCols = {
+                maintainer_id: values?.maintainer?.value || null,
+              };
+            }
             await gqlClient
               .mutate({
                 mutation: EditTenentDocument,
@@ -80,7 +87,7 @@ const EditClient: React.FunctionComponent<{
                   },
                   set: {
                     name: values.name,
-                    maintainer_id: values?.maintainer?.value || '',
+                    ...addCols,
                     email: values.email,
                     phone: values.phone,
                     metadata: {
@@ -89,10 +96,12 @@ const EditClient: React.FunctionComponent<{
                   },
                 },
               })
+              .then(() => {
+                toast.success('tenant updated');
+              })
               .catch(() => {
                 toast.error('something went wrong');
               });
-            toast.success('tenant updated');
             setSubmitting(true);
             handleClose();
           }}
@@ -141,7 +150,7 @@ const EditClient: React.FunctionComponent<{
                         my: 1,
                       }}
                     />
-                    {
+                    {role === 'admin' && (
                       <AutoCompleteComponent
                         sx={{
                           width: '100%',
@@ -156,7 +165,7 @@ const EditClient: React.FunctionComponent<{
                         serverName="user"
                         queryHook={useGetUserDropDownLazyQuery}
                       />
-                    }
+                    )}
                     <MuiPhoneNumber
                       label="phone"
                       variant="outlined"
@@ -182,7 +191,7 @@ const EditClient: React.FunctionComponent<{
                     });
                   }}
                 >
-                  Add
+                  save
                 </Button>
               </DialogActions>
             </>
