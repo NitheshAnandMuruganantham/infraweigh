@@ -62,15 +62,15 @@ export default function AddNewWeighBridge() {
               name: Yup.string().required('Required'),
               address: Yup.string().required('Required'),
               tenant: Yup.lazy(() => {
-                if (role === 'tenantAdmin') {
-                  return Yup.object().notRequired();
-                } else {
+                if (role !== 'tenantAdmin') {
                   return Yup.object()
                     .shape({
                       label: Yup.string().required('Required'),
                       value: Yup.string().required('Required'),
                     })
                     .required('Required');
+                } else {
+                  return Yup.object().notRequired();
                 }
               }),
               display_name: Yup.string().required('Required'),
@@ -83,38 +83,31 @@ export default function AddNewWeighBridge() {
             setSubmitting(true);
             let dt = {};
             if (role !== 'tenantAdmin') {
-              {
-                dt = {
-                  tenent_id: values.tenant.value,
-                };
-              }
-              await addNewWeighbridge({
-                variables: {
-                  object: {
-                    ...dt,
-                    address: values.address,
-                    display_name: values.display_name,
-                    pin_code: values.pin_code,
-                    name: values.name,
-                    phone: values.phone,
-                    mail: values.mail,
-                    camera_url_1: values.camera_url_1,
-                    camera_url_2: values.camera_url_2,
-                    camera_url_3: values.camera_url_3,
-                    camera_url_4: values.camera_url_4,
-                    local_server_url: values.local_server_url,
-                  },
-                },
-              })
-                .catch((e) => {
-                  toast.error('can not add new WeighBridge');
-                })
-                .then(
-                  (d) => d && toast.success('WeighBridge added successfully')
-                );
-              setSubmitting(true);
-              handleClose();
+              dt = {
+                tenent_id: values.tenant.value,
+              };
             }
+            await addNewWeighbridge({
+              variables: {
+                object: {
+                  ...dt,
+                  address: values.address,
+                  display_name: values.display_name,
+                  pin_code: values.pin_code,
+                  name: values.name,
+                  phone: values.phone,
+                  mail: values.mail,
+                },
+              },
+            })
+              .then(() => {
+                toast.success('WeighBridge added successfully');
+              })
+              .catch(() => {
+                toast.error('can not add new WeighBridge');
+              });
+            setSubmitting(true);
+            handleClose();
           }}
         >
           {({ submitForm, isSubmitting, setFieldValue }) => (
@@ -181,7 +174,7 @@ export default function AddNewWeighBridge() {
                       defaultCountry={'in'}
                       onChange={(e) => setFieldValue('phone', e.toString())}
                     />
-                    {role !== 'tenantAdmin' && role !== null && (
+                    {role !== 'tenantAdmin' && (
                       <AutoCompleteComponent
                         sx={{
                           width: '100%',
