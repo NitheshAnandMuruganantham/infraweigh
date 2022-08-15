@@ -58,11 +58,11 @@ const EditWeighBridge: React.FunctionComponent<{
             pin_code: data?.weighbridge[0].pin_code || '',
             phone: data?.weighbridge[0].phone || '',
             mail: data?.weighbridge[0].mail || '',
-            url: data?.weighbridge[0]?.config?.url || '',
-            camera_url_1: data?.weighbridge[0]?.config?.camera[0] || '',
-            camera_url_2: data?.weighbridge[0]?.config?.camera[1] || '',
-            camera_url_3: data?.weighbridge[0]?.config?.camera[2] || '',
-            camera_url_4: data?.weighbridge[0]?.config?.camera[3] || '',
+            url: data?.weighbridge[0]?.local_server_url || '',
+            camera_url_1: data?.weighbridge[0]?.camera_url_1 || '',
+            camera_url_2: data?.weighbridge[0]?.camera_url_2 || '',
+            camera_url_3: data?.weighbridge[0]?.camera_url_3 || '',
+            camera_url_4: data?.weighbridge[0]?.camera_url_4 || '',
           }}
           validationSchema={() => {
             return Yup.object().shape({
@@ -88,15 +88,11 @@ const EditWeighBridge: React.FunctionComponent<{
                   name: values.name,
                   phone: values.phone,
                   mail: values.mail,
-                  config: {
-                    url: values.url,
-                    camera: [
-                      values.camera_url_1,
-                      values.camera_url_2,
-                      values.camera_url_3,
-                      values.camera_url_4,
-                    ],
-                  },
+                  local_server_url: values.url,
+                  camera_url_1: values.camera_url_1,
+                  camera_url_2: values.camera_url_2,
+                  camera_url_3: values.camera_url_3,
+                  camera_url_4: values.camera_url_4,
                 },
               },
             })

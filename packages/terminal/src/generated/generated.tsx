@@ -3538,10 +3538,14 @@ export type Weighbridge = {
   bills: Array<Bill>;
   /** An aggregate relationship */
   bills_aggregate: Bill_Aggregate;
-  config?: Maybe<Scalars['json']>;
+  camera_url_1?: Maybe<Scalars['String']>;
+  camera_url_2?: Maybe<Scalars['String']>;
+  camera_url_3?: Maybe<Scalars['String']>;
+  camera_url_4?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   display_name: Scalars['String'];
   id: Scalars['uuid'];
+  local_server_url?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   mail: Scalars['String'];
   metadata: Scalars['json'];
@@ -3576,12 +3580,6 @@ export type WeighbridgeBills_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Bill_Order_By>>;
   where?: InputMaybe<Bill_Bool_Exp>;
-};
-
-
-/** columns and relationships of "weighbridge" */
-export type WeighbridgeConfigArgs = {
-  path?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -3653,10 +3651,14 @@ export type Weighbridge_Bool_Exp = {
   _or?: InputMaybe<Array<Weighbridge_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
   bills?: InputMaybe<Bill_Bool_Exp>;
-  config?: InputMaybe<Json_Comparison_Exp>;
+  camera_url_1?: InputMaybe<String_Comparison_Exp>;
+  camera_url_2?: InputMaybe<String_Comparison_Exp>;
+  camera_url_3?: InputMaybe<String_Comparison_Exp>;
+  camera_url_4?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   display_name?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  local_server_url?: InputMaybe<String_Comparison_Exp>;
   logo?: InputMaybe<String_Comparison_Exp>;
   mail?: InputMaybe<String_Comparison_Exp>;
   metadata?: InputMaybe<Json_Comparison_Exp>;
@@ -3679,10 +3681,14 @@ export enum Weighbridge_Constraint {
 export type Weighbridge_Insert_Input = {
   address?: InputMaybe<Scalars['String']>;
   bills?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
-  config?: InputMaybe<Scalars['json']>;
+  camera_url_1?: InputMaybe<Scalars['String']>;
+  camera_url_2?: InputMaybe<Scalars['String']>;
+  camera_url_3?: InputMaybe<Scalars['String']>;
+  camera_url_4?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   display_name?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  local_server_url?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   mail?: InputMaybe<Scalars['String']>;
   metadata?: InputMaybe<Scalars['json']>;
@@ -3699,9 +3705,14 @@ export type Weighbridge_Insert_Input = {
 export type Weighbridge_Max_Fields = {
   __typename?: 'weighbridge_max_fields';
   address?: Maybe<Scalars['String']>;
+  camera_url_1?: Maybe<Scalars['String']>;
+  camera_url_2?: Maybe<Scalars['String']>;
+  camera_url_3?: Maybe<Scalars['String']>;
+  camera_url_4?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   display_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  local_server_url?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   mail?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -3714,9 +3725,14 @@ export type Weighbridge_Max_Fields = {
 /** order by max() on columns of table "weighbridge" */
 export type Weighbridge_Max_Order_By = {
   address?: InputMaybe<Order_By>;
+  camera_url_1?: InputMaybe<Order_By>;
+  camera_url_2?: InputMaybe<Order_By>;
+  camera_url_3?: InputMaybe<Order_By>;
+  camera_url_4?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   display_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  local_server_url?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   mail?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
@@ -3730,9 +3746,14 @@ export type Weighbridge_Max_Order_By = {
 export type Weighbridge_Min_Fields = {
   __typename?: 'weighbridge_min_fields';
   address?: Maybe<Scalars['String']>;
+  camera_url_1?: Maybe<Scalars['String']>;
+  camera_url_2?: Maybe<Scalars['String']>;
+  camera_url_3?: Maybe<Scalars['String']>;
+  camera_url_4?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   display_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  local_server_url?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   mail?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -3745,9 +3766,14 @@ export type Weighbridge_Min_Fields = {
 /** order by min() on columns of table "weighbridge" */
 export type Weighbridge_Min_Order_By = {
   address?: InputMaybe<Order_By>;
+  camera_url_1?: InputMaybe<Order_By>;
+  camera_url_2?: InputMaybe<Order_By>;
+  camera_url_3?: InputMaybe<Order_By>;
+  camera_url_4?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   display_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  local_server_url?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   mail?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
@@ -3784,10 +3810,14 @@ export type Weighbridge_On_Conflict = {
 export type Weighbridge_Order_By = {
   address?: InputMaybe<Order_By>;
   bills_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
-  config?: InputMaybe<Order_By>;
+  camera_url_1?: InputMaybe<Order_By>;
+  camera_url_2?: InputMaybe<Order_By>;
+  camera_url_3?: InputMaybe<Order_By>;
+  camera_url_4?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   display_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  local_server_url?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   mail?: InputMaybe<Order_By>;
   metadata?: InputMaybe<Order_By>;
@@ -3810,13 +3840,21 @@ export enum Weighbridge_Select_Column {
   /** column name */
   Address = 'address',
   /** column name */
-  Config = 'config',
+  CameraUrl_1 = 'camera_url_1',
+  /** column name */
+  CameraUrl_2 = 'camera_url_2',
+  /** column name */
+  CameraUrl_3 = 'camera_url_3',
+  /** column name */
+  CameraUrl_4 = 'camera_url_4',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
   DisplayName = 'display_name',
   /** column name */
   Id = 'id',
+  /** column name */
+  LocalServerUrl = 'local_server_url',
   /** column name */
   Logo = 'logo',
   /** column name */
@@ -3838,10 +3876,14 @@ export enum Weighbridge_Select_Column {
 /** input type for updating data in table "weighbridge" */
 export type Weighbridge_Set_Input = {
   address?: InputMaybe<Scalars['String']>;
-  config?: InputMaybe<Scalars['json']>;
+  camera_url_1?: InputMaybe<Scalars['String']>;
+  camera_url_2?: InputMaybe<Scalars['String']>;
+  camera_url_3?: InputMaybe<Scalars['String']>;
+  camera_url_4?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   display_name?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  local_server_url?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   mail?: InputMaybe<Scalars['String']>;
   metadata?: InputMaybe<Scalars['json']>;
@@ -3857,13 +3899,21 @@ export enum Weighbridge_Update_Column {
   /** column name */
   Address = 'address',
   /** column name */
-  Config = 'config',
+  CameraUrl_1 = 'camera_url_1',
+  /** column name */
+  CameraUrl_2 = 'camera_url_2',
+  /** column name */
+  CameraUrl_3 = 'camera_url_3',
+  /** column name */
+  CameraUrl_4 = 'camera_url_4',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
   DisplayName = 'display_name',
   /** column name */
   Id = 'id',
+  /** column name */
+  LocalServerUrl = 'local_server_url',
   /** column name */
   Logo = 'logo',
   /** column name */
@@ -4238,7 +4288,7 @@ export type GetWeighbridgeQueryVariables = Exact<{
 }>;
 
 
-export type GetWeighbridgeQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', display_name: string, id: any, address: string, created_at: any, config?: any | null, name: string, metadata: any, phone: string, pin_code: string, mail: string, logo?: string | null }> };
+export type GetWeighbridgeQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', display_name: string, id: any, address: string, created_at: any, camera_url_1?: string | null, camera_url_2?: string | null, camera_url_3?: string | null, camera_url_4?: string | null, local_server_url?: string | null, name: string, metadata: any, phone: string, pin_code: string, mail: string, logo?: string | null }> };
 
 export type UpdateWeighBridgeMutationVariables = Exact<{
   pkColumns: Weighbridge_Pk_Columns_Input;
@@ -4251,7 +4301,7 @@ export type UpdateWeighBridgeMutation = { __typename?: 'mutation_root', update_w
 export type GetConfigrationQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetConfigrationQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', config?: any | null }> };
+export type GetConfigrationQuery = { __typename?: 'query_root', weighbridge: Array<{ __typename?: 'weighbridge', camera_url_1?: string | null, camera_url_2?: string | null, camera_url_3?: string | null, camera_url_4?: string | null, local_server_url?: string | null }> };
 
 
 export const AddTenentDocument = gql`
@@ -6019,7 +6069,11 @@ export const GetWeighbridgeDocument = gql`
     id
     address
     created_at
-    config
+    camera_url_1
+    camera_url_2
+    camera_url_3
+    camera_url_4
+    local_server_url
     name
     metadata
     phone
@@ -6095,7 +6149,11 @@ export type UpdateWeighBridgeMutationOptions = Apollo.BaseMutationOptions<Update
 export const GetConfigrationDocument = gql`
     query getConfigration {
   weighbridge {
-    config
+    camera_url_1
+    camera_url_2
+    camera_url_3
+    camera_url_4
+    local_server_url
   }
 }
     `;

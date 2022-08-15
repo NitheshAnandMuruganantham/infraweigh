@@ -71,38 +71,41 @@ model material {
 }
 
 model tenents {
-  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name            String
-  email           String        @unique
-  phone           String
-  activate        Boolean       @default(true)
-  metadata        Json          @default(dbgenerated("json_build_object()")) @db.Json
-  payment_pending Boolean       @default(false)
-  razorpay_id     String        @unique
-  bill            bill[]
-  customer        customer[]
-  user            user[]
-  weighbridge     weighbridge[]
+  id                               String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                             String
+  email                            String        @unique
+  phone                            String
+  activate                         Boolean       @default(true)
+  metadata                         Json          @default(dbgenerated("json_build_object()")) @db.Json
+  payment_pending                  Boolean       @default(false)
+  razorpay_id                      String        @unique
+  maintainer_id                    String?       @db.Uuid
+  user_tenents_maintainer_idTouser user?         @relation("tenents_maintainer_idTouser", fields: [maintainer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  bill                             bill[]
+  customer                         customer[]
+  user                             user[]
+  weighbridge                      weighbridge[]
 }
 
 model user {
-  id                         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at                 DateTime     @default(now()) @db.Timestamptz(6)
-  updated_at                 DateTime     @default(now()) @db.Timestamptz(6)
-  profile                    Json?        @default(dbgenerated("json_build_object()")) @db.Json
-  meta_data                  Json?        @default(dbgenerated("json_build_object()")) @db.Json
-  weighbridge_id             String?      @db.Uuid
-  tenent_id                  String?      @db.Uuid
-  email                      String       @unique
-  role                       String?
-  password                   String?      @default(dbgenerated("gen_random_uuid()"))
-  blocked                    Boolean?     @default(false)
-  email_verified             Boolean?     @default(false)
-  refresh_token_hash         String?
-  forgot_password_token_hash String?
-  role_roleTouser            role?        @relation(fields: [role], references: [value], onDelete: Restrict, onUpdate: Restrict)
-  tenents                    tenents?     @relation(fields: [tenent_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  weighbridge                weighbridge? @relation(fields: [weighbridge_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_weighbridge_id_fkey2")
+  id                                  String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                          DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at                          DateTime     @default(now()) @db.Timestamptz(6)
+  profile                             Json?        @default(dbgenerated("json_build_object()")) @db.Json
+  meta_data                           Json?        @default(dbgenerated("json_build_object()")) @db.Json
+  weighbridge_id                      String?      @db.Uuid
+  tenent_id                           String?      @db.Uuid
+  email                               String       @unique
+  role                                String?
+  password                            String?      @default(dbgenerated("gen_random_uuid()"))
+  blocked                             Boolean?     @default(false)
+  email_verified                      Boolean?     @default(false)
+  refresh_token_hash                  String?
+  forgot_password_token_hash          String?
+  role_roleTouser                     role?        @relation(fields: [role], references: [value], onDelete: Restrict, onUpdate: Restrict)
+  tenents                             tenents?     @relation(fields: [tenent_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  weighbridge                         weighbridge? @relation(fields: [weighbridge_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_weighbridge_id_fkey2")
+  tenents_tenents_maintainer_idTouser tenents[]    @relation("tenents_maintainer_idTouser")
 }
 
 model vehicle {
@@ -115,22 +118,26 @@ model vehicle {
 }
 
 model weighbridge {
-  name         String
-  address      String
-  pin_code     String
-  logo         String?
-  display_name String
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at   DateTime @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime @default(now()) @db.Timestamptz(6)
-  metadata     Json     @default(dbgenerated("json_build_object()")) @db.Json
-  mail         String
-  phone        String
-  tenent_id    String   @db.Uuid
-  config       Json?    @default(dbgenerated("json_build_object()")) @db.Json
-  tenents      tenents  @relation(fields: [tenent_id], references: [id], onUpdate: Restrict)
-  bill         bill[]
-  user         user[]
+  name             String
+  address          String
+  pin_code         String
+  logo             String?
+  display_name     String
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime @default(now()) @db.Timestamptz(6)
+  metadata         Json     @default(dbgenerated("json_build_object()")) @db.Json
+  mail             String
+  phone            String
+  tenent_id        String   @db.Uuid
+  camera_url_1     String?
+  camera_url_2     String?
+  camera_url_3     String?
+  camera_url_4     String?
+  local_server_url String?
+  tenents          tenents  @relation(fields: [tenent_id], references: [id], onUpdate: Restrict)
+  bill             bill[]
+  user             user[]
 }
 
 model role {

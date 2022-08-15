@@ -129,7 +129,11 @@ query getWeighbridge($where: weighbridge_bool_exp, $limit: Int) {
     id
     address
     created_at
-    config
+    camera_url_1
+    camera_url_2
+    camera_url_3
+    camera_url_4
+    local_server_url
     name
     metadata
     phone
@@ -150,6 +154,10 @@ mutation updateWeighBridge(
 
 query getConfigration {
   weighbridge {
-    config
+    camera_url_1
+    camera_url_2
+    camera_url_3
+    camera_url_4
+    local_server_url
   }
 }

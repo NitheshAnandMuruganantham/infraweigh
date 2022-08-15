@@ -55,6 +55,7 @@ export default function AddNewWeighBridge() {
             camera_url_2: '',
             camera_url_3: '',
             camera_url_4: '',
+            local_server_url: '',
           }}
           validationSchema={() => {
             return Yup.object().shape({
@@ -91,21 +92,17 @@ export default function AddNewWeighBridge() {
                 variables: {
                   object: {
                     ...dt,
-                    config: {
-                      url: values.url,
-                      camera: [
-                        values.camera_url_1,
-                        values.camera_url_2,
-                        values.camera_url_3,
-                        values.camera_url_4,
-                      ],
-                    },
                     address: values.address,
                     display_name: values.display_name,
                     pin_code: values.pin_code,
                     name: values.name,
                     phone: values.phone,
                     mail: values.mail,
+                    camera_url_1: values.camera_url_1,
+                    camera_url_2: values.camera_url_2,
+                    camera_url_3: values.camera_url_3,
+                    camera_url_4: values.camera_url_4,
+                    local_server_url: values.local_server_url,
                   },
                 },
               })
