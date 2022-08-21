@@ -41,7 +41,7 @@ const Maintainers = () => {
             _or: [
               {
                 email: {
-                  _like: `%${search}%`,
+                  _ilike: `%${search}%`,
                 },
               },
             ],
@@ -72,7 +72,7 @@ const Maintainers = () => {
               _or: [
                 {
                   email: {
-                    _like: `%${search}%`,
+                    _ilike: `%${search}%`,
                   },
                 },
               ],

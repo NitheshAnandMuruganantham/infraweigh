@@ -137,12 +137,12 @@ const Clients = () => {
           _or: [
             {
               name: {
-                _like: `%${search}%`,
+                _ilike: `%${search}%`,
               },
             },
             {
               email: {
-                _like: `%${search}%`,
+                _ilike: `%${search}%`,
               },
             },
           ],

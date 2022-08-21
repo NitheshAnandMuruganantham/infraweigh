@@ -86,22 +86,22 @@ const Clients = () => {
   const searchParsed = [
     {
       name: {
-        _like: `%${search}%`,
+        _ilike: `%${search}%`,
       },
     },
     {
       phone: {
-        _like: `%${search}%`,
+        _ilike: `%${search}%`,
       },
     },
     {
       email: {
-        _like: `%${search}%`,
+        _ilike: `%${search}%`,
       },
     },
     {
       company_name: {
-        _like: `%${search}%`,
+        _ilike: `%${search}%`,
       },
     },
   ];
