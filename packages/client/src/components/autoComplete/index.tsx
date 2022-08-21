@@ -39,12 +39,12 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
       }
       onInputChange={(_: any, v: string) => {
         let where = {};
-        if (typeof v === 'string' && v.length <= 0) {
+        if (typeof v === 'string' && v.length > 0) {
           where = {
             _and: [
               {
                 name: {
-                  _like: `%${v}%`,
+                  _ilike: `%${v}%`,
                 },
               },
             ],
