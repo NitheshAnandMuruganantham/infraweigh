@@ -1,7 +1,7 @@
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import { useField } from "formik";
-import * as React from "react";
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import { useField } from 'formik';
+import * as React from 'react';
 
 interface TextFieldProps {
   name: string;
@@ -37,14 +37,23 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
           },
         })
       }
-      onInputChange={(_: any, v: any) => {
+      onInputChange={(_: any, v: string) => {
+        let where = {};
+        if (typeof v === 'string' && v.length <= 0) {
+          where = {
+            _and: [
+              {
+                name: {
+                  _like: `%${v}%`,
+                },
+              },
+            ],
+          };
+        }
+
         loadData({
           variables: {
-            where: {
-              name: {
-                _like: `%${v}%`,
-              },
-            },
+            where,
             limit: 3000,
           },
         });
@@ -61,7 +70,7 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
           ? props.sx
           : {
               margin: 2,
-              width: "90%",
+              width: '90%',
             }
       }
     />

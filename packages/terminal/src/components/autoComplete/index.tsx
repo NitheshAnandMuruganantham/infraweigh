@@ -7,7 +7,6 @@ interface TextFieldProps {
   name: string;
   sx?: any;
   queryVariables?: any;
-  ServerFilters?: any;
   filterOptions?: (options: any[], { inputValue }: any) => any[];
   label: string;
   serverName: string;
@@ -34,24 +33,27 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
       onOpen={() =>
         loadData({
           variables: {
-            where: props.ServerFilters,
             limit: 3000,
           },
         })
       }
-      onInputChange={(_: any, v: any) => {
+      onInputChange={(_: any, v: string) => {
+        let where = {};
+        if (typeof v === 'string' && v.length > 0) {
+          where = {
+            _and: [
+              {
+                name: {
+                  _ilike: `%${v}%`,
+                },
+              },
+            ],
+          };
+        }
+
         loadData({
           variables: {
-            where: {
-              and: [
-                props.ServerFilters,
-                {
-                  name: {
-                    _like: `%${v}%`,
-                  },
-                },
-              ],
-            },
+            where,
             limit: 3000,
           },
         });
