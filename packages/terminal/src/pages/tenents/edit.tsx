@@ -157,7 +157,7 @@ const EditClient: React.FunctionComponent<{
                         }}
                         name="maintainer"
                         label="maintainer"
-                        ServerFilters={{
+                        queryVariables={{
                           role: {
                             _eq: 'maintainer',
                           },

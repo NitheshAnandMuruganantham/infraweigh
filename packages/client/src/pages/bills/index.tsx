@@ -108,7 +108,7 @@ const Bills = () => {
                 ...dat,
                 {
                   vehicle_number: {
-                    _like: `%${values.vehicle_number}%`,
+                    _ilike: `%${values.vehicle_number}%`,
                   },
                 },
               ];

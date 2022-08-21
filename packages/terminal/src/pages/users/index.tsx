@@ -28,7 +28,7 @@ const Users = () => {
           _or: [
             {
               email: {
-                _like: `%${search}%`,
+                _ilike: `%${search}%`,
               },
             },
           ],
@@ -47,7 +47,7 @@ const Users = () => {
           _or: [
             {
               email: {
-                _like: `%${search}%`,
+                _ilike: `%${search}%`,
               },
             },
           ],
@@ -71,7 +71,7 @@ const Users = () => {
           _or: [
             {
               email: {
-                _like: `%${search}%`,
+                _ilike: `%${search}%`,
               },
             },
           ],
