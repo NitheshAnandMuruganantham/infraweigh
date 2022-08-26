@@ -1,12 +1,43 @@
 import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
+import SignalWifiBadIcon from '@mui/icons-material/SignalWifiBad';
 
 const NoInternet = () => {
   return (
-    <div className="no-internet">
-      <i className="material-icons">wifi_off</i>
-      <div id="headingone">Your Connection was Offline.</div>
-      Please check your Wifi Connection.
+    <Box
+      sx={{
+        backgroundColor: '#221a24',
+        color: 'white',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <SignalWifiBadIcon
+        sx={{
+          height: '300px',
+          width: '300px',
+        }}
+      />
+      <Box
+        sx={{
+          fontSize: '40px',
+          fontFamily: 'Josefin Sans',
+        }}
+      >
+        Your Connection was Offline.
+      </Box>
+      <Box
+        sx={{
+          marginTop: '10px',
+          fontSize: '20px',
+          fontFamily: 'Josefin Sans',
+        }}
+      >
+        Please check your internet Connection.
+      </Box>
       <div>
         <Button
           variant="contained"
@@ -16,7 +47,7 @@ const NoInternet = () => {
           refresh now
         </Button>
       </div>
-    </div>
+    </Box>
   );
 };
 

@@ -62,6 +62,7 @@ export default function SignInSide() {
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Formik
+            validateOnChange
             onSubmit={async ({ email, password }, { setFieldError }) => {
               setLoading(true);
               toast.clearWaitingQueue();

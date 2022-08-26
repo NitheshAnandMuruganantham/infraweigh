@@ -4,6 +4,8 @@ import { useMatch, useNavigate } from 'react-router-dom';
 
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import ArticleIcon from '@mui/icons-material/Article';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import EngineeringIcon from '@mui/icons-material/Engineering';
@@ -15,8 +17,10 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import {
   Avatar,
   CircularProgress,
+  createTheme,
   Menu,
   MenuItem,
+  ThemeProvider,
   Tooltip,
 } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -32,13 +36,10 @@ import ListItemText from '@mui/material/ListItemText';
 import { CSSObject, styled, Theme, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 
+import { ColorModeContext } from '../../context/colorMode';
 import useRole from '../../hooks/role';
 import GetHeaderNames from './getRoutes';
-
-import { createTheme, ThemeProvider } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -126,13 +127,13 @@ const NavBar: FunctionComponent<{
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const [mode, setMode] = React.useState<'light' | 'dark'>(
-    (new Date().getHours() > 18 || new Date().getHours()) < 7 ? 'dark' : 'light'
-  );
+
+  const [mode, setMode] = React.useContext<any>(ColorModeContext);
+
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        setMode((prevMode: any) => (prevMode === 'light' ? 'dark' : 'light'));
       },
     }),
     []

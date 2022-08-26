@@ -11,14 +11,17 @@ import { ApolloProvider } from '@apollo/client';
 
 import App from './App';
 import client from './utils/client';
+import ColorModeWrapper from './context/colorMode';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ToastContainer />
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
-    </BrowserRouter>
+    <ColorModeWrapper>
+      <BrowserRouter>
+        <ToastContainer />
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
+      </BrowserRouter>
+    </ColorModeWrapper>
   </React.StrictMode>
 );

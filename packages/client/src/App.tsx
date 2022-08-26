@@ -24,12 +24,6 @@ const App: FunctionComponent = () => {
     };
   }, []);
   const theme = createTheme({
-    palette: {
-      mode:
-        (new Date().getHours() > 18 || new Date().getHours()) < 7
-          ? 'dark'
-          : 'light',
-    },
     typography: {
       fontFamily: 'Poppins',
     },
