@@ -3,6 +3,7 @@ mutation addBill($object: bill_insert_input!) {
     id
     vehicle_number
     created_at
+    box_number
     charges
     scale_weight
     second_weight
@@ -139,6 +140,7 @@ subscription getAllBills(
     }
     paid_by
     paid
+    box_number
     payment_initiated
     order_id
     second_weight
@@ -154,6 +156,7 @@ query getBillForRecept($billByPkId: uuid!) {
     created_at
     charges
     scale_weight
+    box_number
     nano_id
     second_weight
     tare_weight

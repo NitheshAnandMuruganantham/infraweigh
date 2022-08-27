@@ -33,6 +33,7 @@ const Weigh: FunctionComponent = () => {
       <Formik
         initialValues={{
           vehicleNumber: '',
+          box_number: '',
           material: null,
           vehicle: null,
           buyer: null,
@@ -93,6 +94,10 @@ const Weigh: FunctionComponent = () => {
 
             if (values?.buyer?.value) {
               form.append('customer_id', values.buyer.value);
+            }
+
+            if (values?.box_number) {
+              form.append('box_number', values.box_number);
             }
 
             if (values.seller) {
@@ -352,6 +357,22 @@ const Weigh: FunctionComponent = () => {
                 value={values.driver_phone}
                 onChange={(e) => setFieldValue('driver_phone', e.toString())}
                 name="driver_phone"
+                sx={{
+                  margin: 2,
+                  width: '90%',
+                }}
+              />
+              <Field
+                component={TextField}
+                autoFocus
+                name="box_number"
+                onChange={(e: any) =>
+                  setFieldValue(
+                    'box_number',
+                    e.target.value.replace(' ', '').toUpperCase()
+                  )
+                }
+                label="container box number"
                 sx={{
                   margin: 2,
                   width: '90%',

@@ -11,6 +11,9 @@ export class CreateBillDto {
   @IsNotEmpty()
   vehicle_number: string;
 
+  @IsString()
+  box_number: string;
+
   @IsUUID()
   @IsNotEmpty()
   material_id: string;
