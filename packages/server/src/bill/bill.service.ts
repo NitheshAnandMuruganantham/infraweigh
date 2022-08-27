@@ -37,6 +37,7 @@ export class BillService {
             customer_id: body.customer_id,
             driver_phone: body.driver_phone,
             charges: body.charges,
+            box_number: body.box_number,
             reference_bill_id: !!body.tare_weight
               ? body.reference_bill_id
               : null,
