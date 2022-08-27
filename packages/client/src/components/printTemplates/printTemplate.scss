@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+
+.printBody {
+  position: 'relative';
+  width: 20cm;
+  background-color: white;
+  color: black;
+  scale: 90%;
+  height: 14.5cm;
+  text-transform: uppercase;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1%;
+  margin: auto;
+  border: 1px solid #3498db;
+  position: relative;
+}
+
+.printHeader {
+  width: 100%;
+  font-family: 'Righteous';
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 125px;
+  color: white;
+  background-color: #3498db;
+}
+
+.addressBar {
+  text-align: center;
+  font-size: 16px;
+  font-family: 'poppins';
+  font-weight: bold;
+}
+
+.contactBar {
+  text-align: center;
+  font-size: 15px;
+  font-family: 'roboto';
+  width: 85%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: auto;
+  margin-left: auto;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.cotantBarItem {
+  display: flex;
+}
+
+.contactText {
+  margin-left: 7px;
+  color: white;
+}
+
+.dateTimeHeader {
+  display: flex;
+  width: 98%;
+  font-family: 'poppins';
+  margin-left: auto;
+  margin-right: auto;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+  color: black;
+}
+
+.primaryTable {
+  margin-top: 10px;
+  width: 98%;
+  color: black;
+  font-size: 13px;
+  font-family: 'poppins';
+  margin-left: auto;
+  margin-right: auto;
+}
+
+td,
+th {
+  text-align: center;
+  padding: 6px;
+  border: 1px solid rgb(135, 135, 135);
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.PrintFooter {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 10px;
+  align-items: center;
+  height: 35px;
+  background-color: #3498db;
+}
+
+.footerDisclimer {
+  color: white;
+}

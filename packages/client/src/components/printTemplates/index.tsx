@@ -1,244 +1,165 @@
-import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import TableHead from '@mui/material/TableHead';
-import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import './printTemplate.scss';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import EmailIcon from '@mui/icons-material/Email';
 import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
-import Barcode from './barcode';
-import { createTheme, ThemeProvider } from '@mui/material';
+import { Chip } from '@mui/material';
+import QRCode from 'react-qr-code';
+
+function truncateString(str: string, num: number) {
+  if (str.length > num) {
+    return str.slice(0, num) + '...';
+  } else {
+    return str;
+  }
+}
+
 const Bill: React.FunctionComponent<{
   data: any;
 }> = (props) => {
-  const theme = createTheme({
-    palette: {
-      mode: 'light',
-    },
-  });
   return (
-    <ThemeProvider theme={theme}>
-      <Box
-        sx={{
-          position: 'relative',
-          width: '20cm',
-          backgroundColor: 'white',
-          color: 'black',
-          scale: '90%',
-          height: '14.5cm',
-          borderRadius: '10px',
-          marginTop: '1%',
-          marginX: 'auto',
-          border: '1px solid black',
-        }}
-      >
-        <Box
-          sx={{
-            width: '100%',
-            height: '15%',
+    <div className="printBody">
+      <div className="printHeader">
+        <div
+          style={{
             textAlign: 'center',
+            fontSize: '40px',
+            fontWeight: 'bold',
           }}
         >
-          <div
-            style={{
-              fontSize: '30px',
-              fontFamily: 'Oswald',
-            }}
-          >
-            {props.data?.weighbridge?.display_name}
+          {props.data?.weighbridge?.display_name}
+        </div>
+        <div
+          style={{
+            width: '90%',
+            marginRight: 'auto',
+            marginLeft: 'auto',
+            borderTop: '2px solid white',
+          }}
+        />
+        <div className="addressBar">{props.data?.weighbridge?.address}</div>
+        <div className="contactBar">
+          <div className="cotantBarItem">
+            <LocalPhoneIcon />
+            <span className="contactText">
+              {props.data?.weighbridge?.phone}
+            </span>
           </div>
-          <div
-            style={{
-              fontSize: '15px',
-              fontFamily: 'Oswald',
-              marginBottom: '3%',
-            }}
-          >
-            {props.data?.weighbridge?.address}
+          <div className="cotantBarItem">
+            <EmailIcon />
+            <span className="contactText">{props.data?.weighbridge?.mail}</span>
           </div>
-          <TableContainer component={Paper}>
-            <Table sx={{ width: '100%', height: '20%' }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    VEHICLE NUMBER
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    MATERIAL
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    DATE TIME
-                  </TableCell>
-
-                  <TableCell
-                    align="center"
-                    sx={{
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    CHARGES
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    CUSTOMER
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell align="center">
-                    {props.data.vehicle_number}
-                  </TableCell>
-                  <TableCell align="center">
-                    {props.data.material.name}
-                  </TableCell>
-                  <TableCell align="center">
-                    {new Date(props.data.created_at).toLocaleString()}
-                  </TableCell>
-                  <TableCell align="center">{props.data.charges}</TableCell>
-                  <TableCell align="center">
-                    {props.data.customer_bill_customer_idTocustomer
+        </div>
+        <div className="dateTimeHeader">
+          <div>
+            DATE TIME : {new Date(props.data.created_at).toLocaleString()}
+          </div>
+          <div>BILL ID : {props?.data?.nano_id}</div>
+        </div>
+        <table className="primaryTable">
+          <thead>
+            <th>VEHICLE NUMBER</th>
+            <th>MATERIAL</th>
+            <th>CUSTOMER</th>
+            <th>VEHICLE</th>
+            <th>COTNAINER NO</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{props.data.vehicle_number}</td>
+              <td> {truncateString(props.data.material.name, 6)}</td>
+              <td>
+                {truncateString(
+                  props.data.customer_bill_customer_idTocustomer
+                    ?.company_name ||
+                    props.data.customer_bill_customer_3_idTocustomer
                       ?.company_name ||
-                      props.data.customer_bill_customer_3_idTocustomer
-                        ?.company_name ||
-                      props.data.customer_bill_customer_2_idTocustomer
-                        ?.company_name}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TableContainer component={Paper}>
-            <Table sx={{ width: '100%', height: '20%', mt: '2%' }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    sx={{
-                      fontWeight: 'bold',
+                    props.data.customer_bill_customer_2_idTocustomer
+                      ?.company_name,
+                  15
+                )}
+              </td>
+              <td> {truncateString(props.data.vehicle.name, 8)}</td>
+              <td>{props?.data?.box_number}</td>
+            </tr>
+          </tbody>
+        </table>
+        <table style={{ marginTop: '20px' }} className="primaryTable">
+          <thead>
+            <th>SCALE WEIGHT</th>
+            <th>TARE WEIGHT</th>
+            <th>NET WEIGHT</th>
+            <th>CHARGES</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{props.data.scale_weight} kg</td>
+              <td>
+                {props.data.second_weight ? props.data.tare_weight : ''} kg
+              </td>
+              <td>
+                {props.data.second_weight
+                  ? Math.abs(
+                      props.data.scale_weight - props.data.tare_weight
+                    ) || ''
+                  : ''}{' '}
+                kg
+              </td>
+              <td>₹ {props.data.charges}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            height: '160px',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+          }}
+        >
+          {props?.data?.photos &&
+            props.data.photos.map((photo: string, index: number) => {
+              if (index > 3) {
+                return null;
+              } else
+                return (
+                  <img
+                    key={index}
+                    src={photo}
+                    alt=""
+                    style={{
+                      width: '135px',
+                      height: '135px',
                     }}
-                  >
-                    SCALE WEIGHT
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    TARE WEIGHT
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    NET WEIGHT
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    VERIFIED TARE WEIGHT
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell align="center">
-                    {props.data.scale_weight}
-                  </TableCell>
-                  <TableCell align="center">
-                    {props.data.second_weight ? props.data.tare_weight : ''}
-                  </TableCell>
-                  <TableCell align="center">
-                    {props.data.second_weight
-                      ? Math.abs(
-                          props.data.scale_weight - props.data.tare_weight
-                        ) || ''
-                      : ''}
-                  </TableCell>
-                  {props.data.second_weight ? (
-                    <TableCell align="center">
-                      {props.data.reference_bill_id || !props.data.second_weight
-                        ? 'VERIFIED'
-                        : 'GENERIC'}
-                    </TableCell>
-                  ) : (
-                    <TableCell align="center">--</TableCell>
-                  )}
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
+                  />
+                );
+            })}
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'row',
-              height: '160px',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
+              height: '135px',
+              width: '135px',
             }}
           >
-            {props?.data?.photos &&
-              props.data.photos.map((photo: string, index: number) => {
-                if (index > 3) {
-                  return null;
-                } else
-                  return (
-                    <img
-                      key={index}
-                      src={photo}
-                      alt=""
-                      style={{
-                        width: '135px',
-                        height: '135px',
-                      }}
-                    />
-                  );
-              })}
+            <QRCode
+              size={135}
+              value={
+                'https://client.infraweigh.co/billInfo?id=' + props.data.id
+              }
+            />
           </div>
-          <Chip
-            sx={{
-              position: 'absolute',
-              right: '10px',
-              bottom: '10px',
-            }}
-            label="infra weigh secure"
-            size="small"
-            icon={<VerifiedUserOutlinedIcon />}
-            color="primary"
-          />
-
-          <Barcode value={`INF-${props.data.nano_id}`} />
-        </Box>
-      </Box>
-    </ThemeProvider>
+        </div>
+      </div>
+      <div className="PrintFooter">
+        <span className="footerDisclimer">check the weight before leaving</span>
+        <Chip
+          label="infra weigh secure"
+          size="small"
+          icon={<VerifiedUserOutlinedIcon />}
+          color="primary"
+        />
+      </div>
+    </div>
   );
 };
 
