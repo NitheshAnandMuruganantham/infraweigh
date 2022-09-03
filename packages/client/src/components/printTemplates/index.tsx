@@ -143,9 +143,7 @@ const Bill: React.FunctionComponent<{
           >
             <QRCode
               size={135}
-              value={
-                'https://client.infraweigh.co/billInfo?id=' + props.data.id
-              }
+              value={'https://server.infraweigh.co/bill/slip/' + props.data.id}
             />
           </div>
         </div>

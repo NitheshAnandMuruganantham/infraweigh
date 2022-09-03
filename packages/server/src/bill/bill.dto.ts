@@ -12,6 +12,7 @@ export class CreateBillDto {
   vehicle_number: string;
 
   @IsString()
+  @IsOptional()
   box_number: string;
 
   @IsUUID()
