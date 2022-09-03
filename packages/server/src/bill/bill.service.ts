@@ -8,6 +8,10 @@ import { CreateBillDto } from './bill.dto';
 import { v4 as uuid } from 'uuid';
 import { MailerService } from 'src/mailer/mailer.service';
 import { MessengerService } from 'src/messenger/messenger.service';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import * as pdf from 'html-pdf';
+import { compile } from 'handlebars';
 
 @Injectable()
 export class BillService {
@@ -18,6 +22,19 @@ export class BillService {
     private messenger: MessengerService,
     private config: ConfigService,
   ) {}
+
+  truncateString(str: string, num: number) {
+    if (typeof str === 'string') {
+      if (str.length > num) {
+        return str.slice(0, num) + '...';
+      } else {
+        return str;
+      }
+    } else {
+      return '';
+    }
+  }
+
   async create(
     claims: HttpsHasuraIoJwtClaims,
     body: CreateBillDto,
@@ -89,6 +106,54 @@ export class BillService {
         }),
         this.s3.uploadBillImages(file, id).catch(() => null),
       ]);
+
+      const HbsFile = readFileSync(
+        join(__dirname, './templates/bill.hbs'),
+        'utf-8',
+      );
+      const generatedHtml = await compile(HbsFile)({
+        display_name: data[0].weighbridge.display_name,
+        weighbridgeAddress: data[0].weighbridge.address,
+        weighbridgePhone: data[0].weighbridge.phone,
+        weighbridgeMail: data[0].weighbridge.mail,
+        created_at: new Date(data[0].created_at).toLocaleString(),
+        nano_id: data[0].nano_id,
+        vehicle_number: data[0].vehicle_number,
+        material: data[0].material.name,
+        customer: this.truncateString(
+          data[0].customer_id
+            ? data[0].customer_bill_customer_idTocustomer.company_name
+            : data[0].customer_2_id
+            ? data[0].customer_bill_customer_2_idTocustomer.company_name
+            : data[0].customer_3_id
+            ? data[0].customer_bill_customer_3_idTocustomer.company_name
+            : '',
+          15,
+        ),
+        vehicle: this.truncateString(data[0].vehicle.name, 7),
+        box_number: data[0].box_number,
+        scale_weight: data[0].scale_weight,
+        tare_weight: data[0].tare_weight,
+        net_weight: data[0].second_weight
+          ? Math.abs(data[0].scale_weight - data[0].tare_weight) || ''
+          : '',
+        charges: data[0].charges,
+        photo1: data[1][0],
+        photo2: data[1][1],
+        photo3: data[1][2],
+        photo4: data[1][3],
+        photo5: `https://chart.googleapis.com/chart?cht=qr&chs=135x135&chl=https://server.infraweigh.co/bill/slip/${data[0].id}`,
+      });
+
+      pdf
+        .create(generatedHtml, {
+          format: 'A5',
+          orientation: 'landscape',
+        })
+        .toBuffer((err, file) => {
+          this.s3.uploadBillPdf(file, data[0].id);
+        });
+
       if (
         data[0].paid_by !== 'cash' &&
         this.config.get('ENABLE_PAYMENTS') === 'true'
@@ -213,5 +278,8 @@ export class BillService {
       ...data,
       photos: bucketUrl,
     };
+  }
+  getBillUrl(id: string) {
+    return this.s3.getBillUrl(id);
   }
 }

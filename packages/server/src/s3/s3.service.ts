@@ -30,6 +30,14 @@ export class S3Service {
       file.mimetype,
     );
   }
+  async uploadBillPdf(buffer: Buffer, id: string) {
+    return await this.s3_upload(
+      buffer,
+      this.AWS_S3_BUCKET + `/invoices/${id}`,
+      'invoice',
+      'application/pdf',
+    );
+  }
 
   async s3_upload(
     file: Buffer,
@@ -74,5 +82,12 @@ export class S3Service {
       Expires: 60 * 60 * 12,
     });
     return [ur1, ur2, ur3, ur4];
+  }
+  getBillUrl(id: string) {
+    return this.s3.getSignedUrl('getObject', {
+      Bucket: this.AWS_S3_BUCKET + `/invoices/${id}`,
+      Key: 'invoice',
+      Expires: 60 * 60 * 12,
+    });
   }
 }
