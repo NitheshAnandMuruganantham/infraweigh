@@ -53,18 +53,20 @@ const Weigh: FunctionComponent = () => {
             setSubmitting(true);
             const local_server: any = await configQuery.data?.weighbridge[0]
               .local_server_url;
-            const camera = Promise.all([
+            const camera = [
               configQuery.data?.weighbridge[0].camera_url_1,
               configQuery.data?.weighbridge[0].camera_url_2,
               configQuery.data?.weighbridge[0].camera_url_3,
               configQuery.data?.weighbridge[0].camera_url_4,
-            ]);
+            ];
             const config: any = {
               url: local_server,
               camera,
             };
+            console.log(camera);
             const getLocalData = await Promise.all([
               fetch(`${config.url}/weight`),
+
               Promise.all(
                 config.camera.map((camera: any) => {
                   return fetch(`${config.url}/?url=${camera}`);
@@ -96,7 +98,10 @@ const Weigh: FunctionComponent = () => {
               form.append('customer_id', values.buyer.value);
             }
 
-            if (values?.box_number) {
+            if (
+              typeof values?.box_number === 'string' &&
+              values?.box_number.length > 0
+            ) {
               form.append('box_number', values.box_number);
             }
 
@@ -138,6 +143,8 @@ const Weigh: FunctionComponent = () => {
             SetBillRefId(null);
             resetForm();
           } catch (err) {
+            console.log(err);
+
             toast.error('something went wrong');
             setLoading(false);
             console.log(err);
