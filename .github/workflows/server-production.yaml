@@ -3,7 +3,8 @@ name: Deploy Production server to Amazon ECS
 on:
   push:
     branches:
-      - production
+      - production/packages/server/**
+    
 
 env:
   AWS_REGION: ap-south-1
