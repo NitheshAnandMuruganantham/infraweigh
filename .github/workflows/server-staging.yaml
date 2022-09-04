@@ -3,7 +3,8 @@ name: Deploy staging server to heroku.
 "on":
   push:
     branches:
-      - staging/packages/server/**jobs:
+      - staging
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
