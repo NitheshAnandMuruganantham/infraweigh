@@ -3,7 +3,7 @@ name: Deploy Production server to Amazon ECS
 on:
   push:
     branches:
-      - production/packages/server/**
+      - production
     
 
 env:
