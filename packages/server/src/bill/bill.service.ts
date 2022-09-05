@@ -149,6 +149,8 @@ export class BillService {
           .create(generatedHtml, {
             format: 'A5',
             orientation: 'landscape',
+            localUrlAccess: false,
+            directory: '/tmp',
           })
           .toBuffer(async (err, file) => {
             await this.s3.uploadBillPdf(file, data[0].id);
