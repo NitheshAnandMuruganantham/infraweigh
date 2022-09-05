@@ -111,7 +111,7 @@ export class BillService {
         join(__dirname, './templates/bill.hbs'),
         'utf-8',
       );
-      const generatedHtml = await compile(HbsFile)({
+      const generatedHtml = compile(HbsFile)({
         display_name: data[0].weighbridge.display_name,
         weighbridgeAddress: data[0].weighbridge.address,
         weighbridgePhone: data[0].weighbridge.phone,
@@ -145,13 +145,13 @@ export class BillService {
         photo5: `https://chart.googleapis.com/chart?cht=qr&chs=135x135&chl=https://server.infraweigh.co/bill/slip/${data[0].id}`,
       });
 
-      pdf
+      await pdf
         .create(generatedHtml, {
           format: 'A5',
           orientation: 'landscape',
         })
-        .toBuffer((err, file) => {
-          this.s3.uploadBillPdf(file, data[0].id);
+        .toBuffer(async (err, file) => {
+          await this.s3.uploadBillPdf(file, data[0].id);
         });
 
       if (
