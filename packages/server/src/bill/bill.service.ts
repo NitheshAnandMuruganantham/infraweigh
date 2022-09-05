@@ -144,16 +144,16 @@ export class BillService {
         photo4: data[1][3],
         photo5: `https://chart.googleapis.com/chart?cht=qr&chs=135x135&chl=https://server.infraweigh.co/bill/slip/${data[0].id}`,
       });
-
-      await pdf
-        .create(generatedHtml, {
-          format: 'A5',
-          orientation: 'landscape',
-        })
-        .toBuffer(async (err, file) => {
-          await this.s3.uploadBillPdf(file, data[0].id);
-        });
-
+      try {
+        await pdf
+          .create(generatedHtml, {
+            format: 'A5',
+            orientation: 'landscape',
+          })
+          .toBuffer(async (err, file) => {
+            await this.s3.uploadBillPdf(file, data[0].id);
+          });
+      } catch {}
       if (
         data[0].paid_by !== 'cash' &&
         this.config.get('ENABLE_PAYMENTS') === 'true'
