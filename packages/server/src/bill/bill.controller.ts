@@ -3,13 +3,11 @@ import {
   Body,
   Controller,
   Get,
-  Header,
   Param,
   Post,
   UnauthorizedException,
   UploadedFiles,
   UseInterceptors,
-  Res,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { BillService } from './bill.service';
@@ -18,11 +16,6 @@ import { CreateBillDto } from './bill.dto';
 import { GetCurrentUserHasuraClaims } from 'src/common/decorators/get-hasura-claims.decorator';
 import { HttpsHasuraIoJwtClaims } from 'src/auth/types';
 import { Public } from 'src/common/decorators';
-import { readFileSync } from 'fs';
-import { compile } from 'handlebars';
-import { join } from 'path';
-import { Response } from 'express';
-import * as pdf from 'html-pdf';
 
 @Controller('bill')
 export class BillController {
@@ -74,15 +67,11 @@ export class BillController {
 
   @Public()
   @Get('/slip/:id')
-  async getBill(
-    @Param() params: any,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  async getBill(@Param() params: any) {
     if (!params?.id) {
       throw new BadGatewayException();
     } else {
-      const url = this.billService.getBillUrl(params?.id);
-      res.redirect(url);
+      return this.billService.getBillUrl(params?.id);
     }
   }
 }
