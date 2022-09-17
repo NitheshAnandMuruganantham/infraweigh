@@ -3,13 +3,11 @@ import {
   Body,
   Controller,
   Get,
-  Header,
   Param,
   Post,
   UnauthorizedException,
   UploadedFiles,
   UseInterceptors,
-  Res,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { BillService } from './bill.service';
