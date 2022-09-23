@@ -74,7 +74,9 @@ import * as Joi from 'joi';
     }),
     TwilioModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (config) => JSON.parse(config.get('TWILIO_CONFIG')),
+      useFactory: (config) => {
+        return JSON.parse(config.get('TWILIO_CONFIG'));
+      },
       inject: [ConfigService],
     }),
     MailerModule,
