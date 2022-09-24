@@ -15,6 +15,7 @@ import { MessengerService } from 'src/messenger/messenger.service';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { compile } from 'handlebars';
+import fetch from 'cross-fetch';
 
 @Injectable()
 export class BillService {
@@ -257,6 +258,7 @@ export class BillService {
         'utf-8',
       );
       const imgs = await this.s3.getBillImageUrls(id);
+
       return compile(HbsFile)({
         display_name: data.weighbridge.display_name,
         weighbridgeAddress: data.weighbridge.address,
