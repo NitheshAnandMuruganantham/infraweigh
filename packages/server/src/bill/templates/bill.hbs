@@ -3,13 +3,6 @@
   <head>
     <meta charset='UTF-8' />
     <meta http-equiv='X-UA-Compatible' content='IE=edge' />
-    <meta
-      http-equiv='Content-Security-Policy'
-      content="default-src *;
-   img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;
-   style-src  'self' 'unsafe-inline' *"
-    />
-
     <link
       href='https://fonts.googleapis.com/icon?family=Material+Icons'
       rel='stylesheet'
@@ -129,13 +122,29 @@
       </table>
       <div class='imageFlex'>
 
-        <img src='{{{photo1}}}' alt='' style='width:135px;height:135px;' />
+        <img
+          src='data:image/jpeg;base64,{{{photo1}}}'
+          alt=''
+          style='width:135px;height:135px;'
+        />
 
-        <img src='{{{photo2}}}' alt='' style='width:135px;height:135px;' />
+        <img
+          src='data:image/jpeg;base64,{{{photo2}}}'
+          alt=''
+          style='width:135px;height:135px;'
+        />
 
-        <img src='{{{photo3}}}' alt='' style='width:135px;height:135px;' />
+        <img
+          src='data:image/jpeg;base64,{{{photo3}}}'
+          alt=''
+          style='width:135px;height:135px;'
+        />
 
-        <img src='{{{photo4}}}' alt='' style='width:135px;height:135px;' />
+        <img
+          src='data:image/jpeg;base64,{{{photo4}}}'
+          alt=''
+          style='width:135px;height:135px;'
+        />
         <img src='{{{photo5}}}' alt='' style='width:135px;height:135px;' />
       </div>
       <div style='text-align: center;margin-top: 40px;color: red;'>*** this Is
