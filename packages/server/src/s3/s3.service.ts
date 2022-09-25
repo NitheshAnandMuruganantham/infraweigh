@@ -75,4 +75,26 @@ export class S3Service {
     });
     return [ur1, ur2, ur3, ur4];
   }
+  getImage(name: string, id: string) {
+    try {
+      return this.s3
+        .getObject({
+          Bucket: this.AWS_S3_BUCKET + `/bills/${id}`,
+          Key: name,
+        })
+        .promise()
+        .then((dat) => dat.Body.toString('base64'));
+    } catch {
+      return null;
+    }
+  }
+
+  async getBillImages(id: string) {
+    return Promise.all([
+      this.getImage('0.jpg', id),
+      this.getImage('1.jpg', id),
+      this.getImage('2.jpg', id),
+      this.getImage('3.jpg', id),
+    ]);
+  }
 }
