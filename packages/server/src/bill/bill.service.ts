@@ -257,7 +257,7 @@ export class BillService {
         join(__dirname, './templates/bill.hbs'),
         'utf-8',
       );
-      const imgs = await this.s3.getBillImageUrls(id);
+      const imgs = await this.s3.getBillImages(id);
 
       return compile(HbsFile)({
         display_name: data.weighbridge.display_name,
@@ -290,7 +290,6 @@ export class BillService {
         photo2: imgs[1],
         photo3: imgs[2],
         photo4: imgs[3],
-        photo5: `https://chart.googleapis.com/chart?cht=qr&chs=135x135&chl=https://server.infraweigh.co/bill/slip/${data.id}`,
       });
     } catch {
       throw new ForbiddenException();
