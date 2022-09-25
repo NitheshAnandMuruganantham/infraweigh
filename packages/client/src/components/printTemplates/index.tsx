@@ -61,11 +61,13 @@ const Bill: React.FunctionComponent<{
         </div>
         <table className="primaryTable">
           <thead>
-            <th>VEHICLE NUMBER</th>
-            <th>MATERIAL</th>
-            <th>CUSTOMER</th>
-            <th>VEHICLE</th>
-            <th>COTNAINER NO</th>
+            <tr>
+              <th>VEHICLE NUMBER</th>
+              <th>MATERIAL</th>
+              <th>CUSTOMER</th>
+              <th>VEHICLE</th>
+              <th>COTNAINER NO</th>
+            </tr>
           </thead>
           <tbody>
             <tr>
@@ -89,10 +91,12 @@ const Bill: React.FunctionComponent<{
         </table>
         <table style={{ marginTop: '20px' }} className="primaryTable">
           <thead>
-            <th>SCALE WEIGHT</th>
-            <th>TARE WEIGHT</th>
-            <th>NET WEIGHT</th>
-            <th>CHARGES</th>
+            <tr>
+              <th>SCALE WEIGHT</th>
+              <th>TARE WEIGHT</th>
+              <th>NET WEIGHT</th>
+              <th>CHARGES</th>
+            </tr>
           </thead>
           <tbody>
             <tr>
