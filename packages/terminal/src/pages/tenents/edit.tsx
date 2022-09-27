@@ -57,8 +57,12 @@ const EditClient: React.FunctionComponent<{
             email: data?.tenents_by_pk?.email,
             phone: data?.tenents_by_pk?.phone,
             maintainer: {
-              label: data?.tenents_by_pk?.maintainer?.email,
-              value: data?.tenents_by_pk?.maintainer?.id,
+              label: data?.tenents_by_pk?.maintainer?.id
+                ? data?.tenents_by_pk?.maintainer?.email
+                : '',
+              value:
+                data?.tenents_by_pk?.maintainer?.id ||
+                data?.tenents_by_pk?.maintainer?.id,
             },
           }}
           validationSchema={() => {
@@ -158,8 +162,10 @@ const EditClient: React.FunctionComponent<{
                         name="maintainer"
                         label="maintainer"
                         queryVariables={{
-                          role: {
-                            _eq: 'maintainer',
+                          where: {
+                            role: {
+                              _eq: 'maintainer',
+                            },
                           },
                         }}
                         serverName="user"

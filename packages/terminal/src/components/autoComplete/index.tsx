@@ -15,8 +15,9 @@ interface TextFieldProps {
 
 const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
   const [field, _, helpers] = useField(props.name);
+  const QueryVarbales = props?.queryVariables || {};
   const [loadData, { data, loading }] = props.queryHook({
-    variables: props?.queryVariables || {},
+    variables: QueryVarbales,
   });
   return (
     <Autocomplete
@@ -33,6 +34,7 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
       onOpen={() =>
         loadData({
           variables: {
+            ...QueryVarbales,
             limit: 3000,
           },
         })
@@ -54,6 +56,7 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
         loadData({
           variables: {
             where,
+            ...QueryVarbales,
             limit: 3000,
           },
         });

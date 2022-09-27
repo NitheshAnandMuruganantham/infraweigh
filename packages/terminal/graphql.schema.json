@@ -1694,6 +1694,18 @@
             "deprecationReason": null
           },
           {
+            "name": "box_number",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "charges",
             "description": null,
             "args": [],
@@ -2765,6 +2777,18 @@
             "deprecationReason": null
           },
           {
+            "name": "box_number",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "charges",
             "description": null,
             "type": {
@@ -3260,6 +3284,18 @@
             "deprecationReason": null
           },
           {
+            "name": "box_number",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "charges",
             "description": null,
             "type": {
@@ -3642,6 +3678,18 @@
         "description": "aggregate max on columns",
         "fields": [
           {
+            "name": "box_number",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "charges",
             "description": null,
             "args": [],
@@ -3870,6 +3918,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "box_number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "charges",
             "description": null,
             "type": {
@@ -4095,6 +4155,18 @@
         "name": "bill_min_fields",
         "description": "aggregate min on columns",
         "fields": [
+          {
+            "name": "box_number",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "charges",
             "description": null,
@@ -4323,6 +4395,18 @@
         "description": "order by min() on columns of table \"bill\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "box_number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "charges",
             "description": null,
@@ -4721,6 +4805,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "bill_aggregate_order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "box_number",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -5140,6 +5236,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "box_number",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "charges",
             "description": "column name",
             "isDeprecated": false,
@@ -5280,6 +5382,18 @@
         "description": "input type for updating data in table \"bill\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "box_number",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "charges",
             "description": null,
@@ -6029,6 +6143,12 @@
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
+          {
+            "name": "box_number",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "charges",
             "description": "column name",
@@ -16481,6 +16601,12 @@
             "deprecationReason": null
           },
           {
+            "name": "serviceEngineer",
+            "description": "serviceEngineer",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tenantAdmin",
             "description": "tenantAdmin",
             "isDeprecated": false,
@@ -25889,6 +26015,18 @@
             "deprecationReason": null
           },
           {
+            "name": "maintainer_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "metadata",
             "description": null,
             "args": [
@@ -26641,6 +26779,18 @@
             "deprecationReason": null
           },
           {
+            "name": "maintainer_id",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "metadata",
             "description": null,
             "type": {
@@ -26909,6 +27059,18 @@
             "deprecationReason": null
           },
           {
+            "name": "maintainer_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "metadata",
             "description": null,
             "type": {
@@ -27147,6 +27309,18 @@
             "deprecationReason": null
           },
           {
+            "name": "maintainer_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "name",
             "description": null,
             "args": [],
@@ -27340,6 +27514,18 @@
           },
           {
             "name": "mail",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "maintainer_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -27553,6 +27739,18 @@
             "deprecationReason": null
           },
           {
+            "name": "maintainer_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "name",
             "description": null,
             "args": [],
@@ -27746,6 +27944,18 @@
           },
           {
             "name": "mail",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "maintainer_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -28125,6 +28335,18 @@
             "deprecationReason": null
           },
           {
+            "name": "maintainer_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "metadata",
             "description": null,
             "type": {
@@ -28327,6 +28549,12 @@
             "deprecationReason": null
           },
           {
+            "name": "maintainer_id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "metadata",
             "description": "column name",
             "isDeprecated": false,
@@ -28504,6 +28732,18 @@
             "deprecationReason": null
           },
           {
+            "name": "maintainer_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "metadata",
             "description": null,
             "type": {
@@ -28650,6 +28890,12 @@
           },
           {
             "name": "mail",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "maintainer_id",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
