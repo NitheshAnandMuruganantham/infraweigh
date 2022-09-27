@@ -87,6 +87,7 @@ export type Bill = {
   billsByReferenceBillId: Array<Bill>;
   /** An aggregate relationship */
   billsByReferenceBillId_aggregate: Bill_Aggregate;
+  box_number?: Maybe<Scalars['String']>;
   charges: Scalars['money'];
   created_at: Scalars['timestamptz'];
   /** An object relationship */
@@ -225,6 +226,7 @@ export type Bill_Bool_Exp = {
   _or?: InputMaybe<Array<Bill_Bool_Exp>>;
   billByReferenceBillId?: InputMaybe<Bill_Bool_Exp>;
   billsByReferenceBillId?: InputMaybe<Bill_Bool_Exp>;
+  box_number?: InputMaybe<String_Comparison_Exp>;
   charges?: InputMaybe<Money_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   customer?: InputMaybe<Customer_Bool_Exp>;
@@ -280,6 +282,7 @@ export type Bill_Inc_Input = {
 export type Bill_Insert_Input = {
   billByReferenceBillId?: InputMaybe<Bill_Obj_Rel_Insert_Input>;
   billsByReferenceBillId?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
+  box_number?: InputMaybe<Scalars['String']>;
   charges?: InputMaybe<Scalars['money']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   customer?: InputMaybe<Customer_Obj_Rel_Insert_Input>;
@@ -316,6 +319,7 @@ export type Bill_Insert_Input = {
 /** aggregate max on columns */
 export type Bill_Max_Fields = {
   __typename?: 'bill_max_fields';
+  box_number?: Maybe<Scalars['String']>;
   charges?: Maybe<Scalars['money']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   customer_2_id?: Maybe<Scalars['uuid']>;
@@ -338,6 +342,7 @@ export type Bill_Max_Fields = {
 
 /** order by max() on columns of table "bill" */
 export type Bill_Max_Order_By = {
+  box_number?: InputMaybe<Order_By>;
   charges?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   customer_2_id?: InputMaybe<Order_By>;
@@ -361,6 +366,7 @@ export type Bill_Max_Order_By = {
 /** aggregate min on columns */
 export type Bill_Min_Fields = {
   __typename?: 'bill_min_fields';
+  box_number?: Maybe<Scalars['String']>;
   charges?: Maybe<Scalars['money']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   customer_2_id?: Maybe<Scalars['uuid']>;
@@ -383,6 +389,7 @@ export type Bill_Min_Fields = {
 
 /** order by min() on columns of table "bill" */
 export type Bill_Min_Order_By = {
+  box_number?: InputMaybe<Order_By>;
   charges?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   customer_2_id?: InputMaybe<Order_By>;
@@ -430,6 +437,7 @@ export type Bill_On_Conflict = {
 export type Bill_Order_By = {
   billByReferenceBillId?: InputMaybe<Bill_Order_By>;
   billsByReferenceBillId_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
+  box_number?: InputMaybe<Order_By>;
   charges?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   customer?: InputMaybe<Customer_Order_By>;
@@ -470,6 +478,8 @@ export type Bill_Pk_Columns_Input = {
 
 /** select columns of table "bill" */
 export enum Bill_Select_Column {
+  /** column name */
+  BoxNumber = 'box_number',
   /** column name */
   Charges = 'charges',
   /** column name */
@@ -518,6 +528,7 @@ export enum Bill_Select_Column {
 
 /** input type for updating data in table "bill" */
 export type Bill_Set_Input = {
+  box_number?: InputMaybe<Scalars['String']>;
   charges?: InputMaybe<Scalars['money']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   customer_2_id?: InputMaybe<Scalars['uuid']>;
@@ -612,6 +623,8 @@ export type Bill_Sum_Order_By = {
 
 /** update columns of table "bill" */
 export enum Bill_Update_Column {
+  /** column name */
+  BoxNumber = 'box_number',
   /** column name */
   Charges = 'charges',
   /** column name */
@@ -2280,6 +2293,8 @@ export enum Role_Enum {
   Customer = 'customer',
   /** maintainer */
   Maintainer = 'maintainer',
+  /** serviceEngineer */
+  ServiceEngineer = 'serviceEngineer',
   /** tenantAdmin */
   TenantAdmin = 'tenantAdmin',
   /** terminal */
@@ -3548,6 +3563,7 @@ export type Weighbridge = {
   local_server_url?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   mail: Scalars['String'];
+  maintainer_id?: Maybe<Scalars['String']>;
   metadata: Scalars['json'];
   name: Scalars['String'];
   phone: Scalars['String'];
@@ -3661,6 +3677,7 @@ export type Weighbridge_Bool_Exp = {
   local_server_url?: InputMaybe<String_Comparison_Exp>;
   logo?: InputMaybe<String_Comparison_Exp>;
   mail?: InputMaybe<String_Comparison_Exp>;
+  maintainer_id?: InputMaybe<String_Comparison_Exp>;
   metadata?: InputMaybe<Json_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   phone?: InputMaybe<String_Comparison_Exp>;
@@ -3691,6 +3708,7 @@ export type Weighbridge_Insert_Input = {
   local_server_url?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   mail?: InputMaybe<Scalars['String']>;
+  maintainer_id?: InputMaybe<Scalars['String']>;
   metadata?: InputMaybe<Scalars['json']>;
   name?: InputMaybe<Scalars['String']>;
   phone?: InputMaybe<Scalars['String']>;
@@ -3715,6 +3733,7 @@ export type Weighbridge_Max_Fields = {
   local_server_url?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   mail?: Maybe<Scalars['String']>;
+  maintainer_id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   pin_code?: Maybe<Scalars['String']>;
@@ -3735,6 +3754,7 @@ export type Weighbridge_Max_Order_By = {
   local_server_url?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   mail?: InputMaybe<Order_By>;
+  maintainer_id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   pin_code?: InputMaybe<Order_By>;
@@ -3756,6 +3776,7 @@ export type Weighbridge_Min_Fields = {
   local_server_url?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   mail?: Maybe<Scalars['String']>;
+  maintainer_id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   pin_code?: Maybe<Scalars['String']>;
@@ -3776,6 +3797,7 @@ export type Weighbridge_Min_Order_By = {
   local_server_url?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   mail?: InputMaybe<Order_By>;
+  maintainer_id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   pin_code?: InputMaybe<Order_By>;
@@ -3820,6 +3842,7 @@ export type Weighbridge_Order_By = {
   local_server_url?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   mail?: InputMaybe<Order_By>;
+  maintainer_id?: InputMaybe<Order_By>;
   metadata?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
@@ -3860,6 +3883,8 @@ export enum Weighbridge_Select_Column {
   /** column name */
   Mail = 'mail',
   /** column name */
+  MaintainerId = 'maintainer_id',
+  /** column name */
   Metadata = 'metadata',
   /** column name */
   Name = 'name',
@@ -3886,6 +3911,7 @@ export type Weighbridge_Set_Input = {
   local_server_url?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   mail?: InputMaybe<Scalars['String']>;
+  maintainer_id?: InputMaybe<Scalars['String']>;
   metadata?: InputMaybe<Scalars['json']>;
   name?: InputMaybe<Scalars['String']>;
   phone?: InputMaybe<Scalars['String']>;
@@ -3918,6 +3944,8 @@ export enum Weighbridge_Update_Column {
   Logo = 'logo',
   /** column name */
   Mail = 'mail',
+  /** column name */
+  MaintainerId = 'maintainer_id',
   /** column name */
   Metadata = 'metadata',
   /** column name */
@@ -4000,7 +4028,7 @@ export type AddBillMutationVariables = Exact<{
 }>;
 
 
-export type AddBillMutation = { __typename?: 'mutation_root', insert_bill_one?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
+export type AddBillMutation = { __typename?: 'mutation_root', insert_bill_one?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, box_number?: string | null, charges: any, scale_weight: number, second_weight: boolean, tare_weight: number, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
 
 export type GetTareWeightBillsQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
@@ -4048,14 +4076,14 @@ export type GetAllBillsSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: Paid_By_Enum, paid?: boolean | null, payment_initiated?: boolean | null, order_id?: string | null, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, customer?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, customer_3?: { __typename?: 'customer', id: any, name: string, email: string, phone: string } | null, customer_2?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, material: { __typename?: 'material', name: string } }> };
+export type GetAllBillsSubscription = { __typename?: 'subscription_root', bill: Array<{ __typename?: 'bill', id: any, vehicle_number: string, charges: any, created_at: any, paid_by: Paid_By_Enum, paid?: boolean | null, box_number?: string | null, payment_initiated?: boolean | null, order_id?: string | null, second_weight: boolean, scale_weight: number, tare_weight: number, weighbridge: { __typename?: 'weighbridge', name: string, id: any }, vehicle: { __typename?: 'vehicle', name: string }, customer?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, customer_3?: { __typename?: 'customer', id: any, name: string, email: string, phone: string } | null, customer_2?: { __typename?: 'customer', id: any, email: string, phone: string, name: string } | null, material: { __typename?: 'material', name: string } }> };
 
 export type GetBillForReceptQueryVariables = Exact<{
   billByPkId: Scalars['uuid'];
 }>;
 
 
-export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, nano_id: number, second_weight: boolean, tare_weight: number, order_id?: string | null, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
+export type GetBillForReceptQuery = { __typename?: 'query_root', bill_by_pk?: { __typename?: 'bill', id: any, vehicle_number: string, created_at: any, charges: any, scale_weight: number, box_number?: string | null, nano_id: number, second_weight: boolean, tare_weight: number, order_id?: string | null, reference_bill_id?: any | null, paid_by: Paid_By_Enum, vehicle: { __typename?: 'vehicle', name: string, id: any }, customer?: { __typename?: 'customer', id: any, name: string } | null, material: { __typename?: 'material', name: string, id: any }, weighbridge: { __typename?: 'weighbridge', display_name: string, id: any, address: string, pin_code: string, phone: string, logo?: string | null } } | null };
 
 export type GetVehicleByCollectionsQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
@@ -4150,7 +4178,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, id: any, profile?: any | null, weighbridge_id?: any | null, updated_at: any, maintainee: Array<{ __typename?: 'tenents', name: string }>, weighbridge?: { __typename?: 'weighbridge', name: string, address: string } | null }> };
+export type GetUserQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', email: string, id: any, profile?: any | null, weighbridge_id?: any | null, updated_at: any, maintainee: Array<{ __typename?: 'tenents', id: any, name: string }>, weighbridge?: { __typename?: 'weighbridge', name: string, address: string } | null }> };
 
 export type GetUserDropDownQueryVariables = Exact<{
   where?: InputMaybe<User_Bool_Exp>;
@@ -4611,6 +4639,7 @@ export const AddBillDocument = gql`
     id
     vehicle_number
     created_at
+    box_number
     charges
     scale_weight
     second_weight
@@ -4873,6 +4902,7 @@ export const GetAllBillsDocument = gql`
     }
     paid_by
     paid
+    box_number
     payment_initiated
     order_id
     second_weight
@@ -4916,6 +4946,7 @@ export const GetBillForReceptDocument = gql`
     created_at
     charges
     scale_weight
+    box_number
     nano_id
     second_weight
     tare_weight
@@ -5409,6 +5440,7 @@ export const GetUserDocument = gql`
     id
     profile
     maintainee {
+      id
       name
     }
     weighbridge_id

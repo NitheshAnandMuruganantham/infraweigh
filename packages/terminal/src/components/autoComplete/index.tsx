@@ -6,7 +6,9 @@ import * as React from 'react';
 interface TextFieldProps {
   name: string;
   sx?: any;
-  queryVariables?: any;
+  queryVariables?: {
+    where: any;
+  };
   filterOptions?: (options: any[], { inputValue }: any) => any[];
   label: string;
   serverName: string;
@@ -15,8 +17,9 @@ interface TextFieldProps {
 
 const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
   const [field, _, helpers] = useField(props.name);
+  const QueryVarbales = props?.queryVariables?.where || {};
   const [loadData, { data, loading }] = props.queryHook({
-    variables: props?.queryVariables || {},
+    variables: QueryVarbales,
   });
   return (
     <Autocomplete
@@ -33,12 +36,14 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
       onOpen={() =>
         loadData({
           variables: {
+            where: QueryVarbales,
             limit: 3000,
           },
         })
       }
       onInputChange={(_: any, v: string) => {
         let where = {};
+
         if (typeof v === 'string' && v.length > 0) {
           where = {
             _and: [
@@ -50,10 +55,13 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
             ],
           };
         }
-
+        const consoled = {
+          ...where,
+          ...QueryVarbales,
+        };
         loadData({
           variables: {
-            where,
+            where: consoled,
             limit: 3000,
           },
         });
