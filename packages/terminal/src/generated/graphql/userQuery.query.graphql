@@ -4,6 +4,7 @@ query getUser($where: user_bool_exp) {
     id
     profile
     maintainee {
+      id
       name
     }
     weighbridge_id
