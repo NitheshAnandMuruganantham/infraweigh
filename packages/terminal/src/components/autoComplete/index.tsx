@@ -6,18 +6,17 @@ import * as React from 'react';
 interface TextFieldProps {
   name: string;
   sx?: any;
-  queryVariables?: {
-    where: any;
-  };
+
   filterOptions?: (options: any[], { inputValue }: any) => any[];
   label: string;
   serverName: string;
+  serverWhereFilters?: any;
   queryHook: any;
 }
 
 const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
   const [field, _, helpers] = useField(props.name);
-  const QueryVarbales = props?.queryVariables?.where || {};
+  const QueryVarbales = props.serverWhereFilters || {};
   const [loadData, { data, loading }] = props.queryHook({
     variables: QueryVarbales,
   });
@@ -36,13 +35,15 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
       onOpen={() =>
         loadData({
           variables: {
-            where: QueryVarbales,
+            where: { _and: [...QueryVarbales] },
             limit: 3000,
           },
         })
       }
       onInputChange={(_: any, v: string) => {
-        let where = {};
+        let where = {
+          _and: [...QueryVarbales],
+        };
 
         if (typeof v === 'string' && v.length > 0) {
           where = {
@@ -52,16 +53,14 @@ const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
                   _ilike: `%${v}%`,
                 },
               },
+              ...QueryVarbales,
             ],
           };
         }
-        const consoled = {
-          ...where,
-          ...QueryVarbales,
-        };
+
         loadData({
           variables: {
-            where: consoled,
+            where,
             limit: 3000,
           },
         });
