@@ -257,7 +257,9 @@ export class BillService {
         join(__dirname, './templates/bill.hbs'),
         'utf-8',
       );
-      const imgs = await this.s3.getBillImages(id);
+      const imgs = await this.s3
+        .getBillImages(id)
+        .catch(() => [null, null, null, null]);
 
       return compile(HbsFile)({
         display_name: data.weighbridge.display_name,

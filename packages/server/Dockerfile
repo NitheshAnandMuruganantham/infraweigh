@@ -1,5 +1,7 @@
 FROM node:14 AS builder
 
+ENV TZ="Asia/Kolkata"
+
 WORKDIR /app
 
 COPY package*.json ./

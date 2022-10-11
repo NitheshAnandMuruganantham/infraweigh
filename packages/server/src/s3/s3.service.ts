@@ -90,11 +90,15 @@ export class S3Service {
   }
 
   async getBillImages(id: string) {
-    return Promise.all([
-      this.getImage('0.jpg', id),
-      this.getImage('1.jpg', id),
-      this.getImage('2.jpg', id),
-      this.getImage('3.jpg', id),
-    ]);
+    try {
+      return Promise.all([
+        this.getImage('0.jpg', id),
+        this.getImage('1.jpg', id),
+        this.getImage('2.jpg', id),
+        this.getImage('3.jpg', id),
+      ]);
+    } catch {
+      return [null, null, null, null];
+    }
   }
 }
