@@ -41,7 +41,8 @@ const Columns: GridColumns = [
     field: 'created_at',
     headerName: 'created At',
     sortable: true,
-    width: 250,
+    minWidth: 300,
+    flex: 1,
     filterable: false,
     editable: false,
     valueGetter: (params: GridValueGetterParams) =>

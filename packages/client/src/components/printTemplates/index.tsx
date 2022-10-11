@@ -55,7 +55,10 @@ const Bill: React.FunctionComponent<{
         </div>
         <div className="dateTimeHeader">
           <div>
-            DATE TIME : {new Date(props.data.created_at).toLocaleString()}
+            DATE TIME :{' '}
+            {new Date(props.data.created_at).toLocaleDateString('en-GB') +
+              ' ' +
+              new Date(props.data.created_at).toLocaleTimeString()}
           </div>
           <div>BILL ID : {props?.data?.nano_id}</div>
         </div>
