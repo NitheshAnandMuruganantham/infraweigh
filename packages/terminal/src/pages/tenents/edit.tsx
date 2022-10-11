@@ -161,13 +161,13 @@ const EditClient: React.FunctionComponent<{
                         }}
                         name="maintainer"
                         label="maintainer"
-                        queryVariables={{
-                          where: {
+                        serverWhereFilters={[
+                          {
                             role: {
                               _eq: 'maintainer',
                             },
                           },
-                        }}
+                        ]}
                         serverName="user"
                         queryHook={useGetUserDropDownLazyQuery}
                       />
