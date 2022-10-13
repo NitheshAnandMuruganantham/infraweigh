@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import Fab from '@mui/material/Fab';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 import Loading from './components/loading';
 import SignInSide from './pages/auth/logIn';
 import NotRequireAuth from './pages/auth/notRequireAuth';
 import RequireAuth from './pages/auth/requireAuth';
+import FinanceDashboard from './pages/finance/dashboard';
 import NoInternet from './pages/NoInternet';
+import Support from './pages/support';
 
 const ForgetPassword = React.lazy(() => import('./pages/auth/forgetPassword'));
 const SetNewPassword = React.lazy(() => import('./pages/auth/setPassword'));
@@ -16,6 +20,7 @@ const Users = React.lazy(() => import('./pages/users'));
 const Tenants = React.lazy(() => import('./pages/tenents'));
 const Weighbridges = React.lazy(() => import('./pages/weignbirdge'));
 const Maintainers = React.lazy(() => import('./pages/maintainers'));
+const Queries = React.lazy(() => import('./pages/queries'));
 
 const LazyLoader = () => <Loading open={true} setOpen={() => null} />;
 
@@ -65,9 +70,21 @@ const LazyMaintainers = () => (
     <Maintainers />
   </React.Suspense>
 );
+const LazyFinance = () => (
+  <React.Suspense fallback={<LazyLoader />}>
+    <FinanceDashboard />
+  </React.Suspense>
+);
+
+const LazyQueries = () => (
+  <React.Suspense fallback={<LazyLoader />}>
+    <Queries />
+  </React.Suspense>
+);
 
 const App: React.FunctionComponent = () => {
   const [offline, SetOffline] = React.useState(!navigator.onLine);
+  const [openSupport, SetOpenSupport] = React.useState(false);
 
   React.useEffect(() => {
     window.addEventListener('online', () => SetOffline(false));
@@ -86,23 +103,42 @@ const App: React.FunctionComponent = () => {
     );
   } else {
     return (
-      <Routes>
-        <Route path="*" element={<NotFound />} />
-        <Route element={<RequireAuth />}>
-          <Route path="/" element={<LazyBills />} />
-          <Route path="/weighbridges" element={<LazyWeighbridges />} />
-          <Route path="/users" element={<LazyUsers />} />
-          <Route path="/weigh" element={<LazyWeigh />} />
-          <Route path="/tenants" element={<LazyTenants />} />
-          <Route path="/clients" element={<LazyClients />} />
-          <Route path="/maintainers" element={<LazyMaintainers />} />
-        </Route>
-        <Route element={<NotRequireAuth />}>
-          <Route path="/login" element={<SignInSide />} />
-          <Route path="/forgetPassword" element={<LazyForgetPassword />} />
-          <Route path="/reset-password" element={<LazySetNewPassword />} />
-        </Route>
-      </Routes>
+      <>
+        <Support open={openSupport} setOpen={SetOpenSupport} />
+        <Fab
+          onClick={() => SetOpenSupport(true)}
+          variant="extended"
+          style={{
+            zIndex: 1000,
+            position: 'fixed',
+            bottom: '30px',
+            right: '30px',
+          }}
+          color="success"
+          aria-label=""
+        >
+          <SupportAgentIcon sx={{ mr: 1 }} /> SUPPORT
+        </Fab>
+        <Routes>
+          <Route path="*" element={<NotFound />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/finance" element={<LazyFinance />} />
+            <Route path="/" element={<LazyBills />} />
+            <Route path="/weighbridges" element={<LazyWeighbridges />} />
+            <Route path="/users" element={<LazyUsers />} />
+            <Route path="/weigh" element={<LazyWeigh />} />
+            <Route path="/tenants" element={<LazyTenants />} />
+            <Route path="/clients" element={<LazyClients />} />
+            <Route path="/maintainers" element={<LazyMaintainers />} />
+            <Route path="/queries" element={<LazyQueries />} />
+          </Route>
+          <Route element={<NotRequireAuth />}>
+            <Route path="/login" element={<SignInSide />} />
+            <Route path="/forgetPassword" element={<LazyForgetPassword />} />
+            <Route path="/reset-password" element={<LazySetNewPassword />} />
+          </Route>
+        </Routes>
+      </>
     );
   }
 };

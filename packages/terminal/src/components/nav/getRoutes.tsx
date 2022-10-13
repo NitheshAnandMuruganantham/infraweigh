@@ -29,6 +29,10 @@ const locationNames = [
     name: 'Manage Weighbridges',
   },
   {
+    path: '/finance',
+    name: 'Finance dashboard',
+  },
+  {
     path: '/weigh',
     name: 'Weighment Terminal',
   },

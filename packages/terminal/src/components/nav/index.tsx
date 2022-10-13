@@ -36,6 +36,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { CSSObject, styled, Theme, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 
 import { ColorModeContext } from '../../context/colorMode';
 import useRole from '../../hooks/role';
@@ -158,7 +159,14 @@ const NavBar: FunctionComponent<{
 
   const links = [
     {
-      name: 'Home',
+      name: 'dashboard',
+      path: '/finance',
+      icon: CurrencyRupeeIcon,
+      role: ['tenantAdmin'],
+      active: useMatch('/finance'),
+    },
+    {
+      name: 'Bills',
       path: '/',
       icon: ArticleIcon,
       role: ['admin', 'terminal', 'tenantAdmin', 'customer', 'maintainer'],
