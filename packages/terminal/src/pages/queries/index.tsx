@@ -2,13 +2,14 @@ import * as React from 'react';
 
 import { LinearProgress, TextField } from '@mui/material';
 import { Box } from '@mui/system';
+import Button from '@mui/material/Button';
 
 import DataGridComponent from '../../components/dataGrid';
 import {
   useGetAllUsersCountSubscription,
-  useGetAllUsersSubscription,
   useGetIssuesSubscription,
 } from '../../generated';
+import Chip from '@mui/material/Chip';
 
 const Users = () => {
   const [sort, SetSort] = React.useState([]);
@@ -19,15 +20,24 @@ const Users = () => {
   const { data, loading } = useGetIssuesSubscription({
     variables: {
       where: {
-        _or: [
+        _and: [
           {
-            title: {
-              _ilike: `%${search}%`,
-            },
+            _or: [
+              {
+                title: {
+                  _ilike: `%${search}%`,
+                },
+              },
+              {
+                message: {
+                  _ilike: `%${search}%`,
+                },
+              },
+            ],
           },
           {
-            message: {
-              _ilike: `%${search}%`,
+            resolved: {
+              _neq: true,
             },
           },
         ],
@@ -68,6 +78,33 @@ const Users = () => {
           setSort={SetSort}
           columns={[
             {
+              field: 'created_at',
+              headerName: 'message',
+              sortable: false,
+              filterable: false,
+              minWidth: 200,
+              flex: 1,
+              valueFormatter: (e) => new Date(e.value).toLocaleString(),
+            },
+            {
+              field: 'severity',
+              headerName: 'severity',
+              sortable: false,
+              filterable: false,
+              minWidth: 200,
+              flex: 1,
+              renderCell: (props) => (
+                <Chip
+                  label={props.value}
+                  color={
+                    props.value == 'high' || props.value == 'block of service'
+                      ? 'error'
+                      : 'warning'
+                  }
+                />
+              ),
+            },
+            {
               field: 'title',
               headerName: 'title',
               sortable: false,
@@ -80,8 +117,17 @@ const Users = () => {
               headerName: 'message',
               sortable: false,
               filterable: false,
-              minWidth: 800,
+              minWidth: 600,
               flex: 1,
+            },
+            {
+              field: 'resolved',
+              headerName: '',
+              sortable: false,
+              filterable: false,
+              minWidth: 100,
+              flex: 1,
+              renderCell: () => <Button variant="text">resolve</Button>,
             },
           ]}
           rowCount={Count?.user_aggregate?.aggregate?.count || 0}

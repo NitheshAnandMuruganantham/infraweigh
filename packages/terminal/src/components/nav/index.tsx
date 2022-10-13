@@ -9,7 +9,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import EngineeringIcon from '@mui/icons-material/Engineering';
-import Home from '@mui/icons-material/Home';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
@@ -166,6 +166,13 @@ const NavBar: FunctionComponent<{
       active: useMatch('/finance'),
     },
     {
+      name: 'queries',
+      path: '/queries',
+      icon: SupportAgentIcon,
+      role: ['maintainer'],
+      active: useMatch('/queries'),
+    },
+    {
       name: 'Bills',
       path: '/',
       icon: ArticleIcon,
@@ -204,7 +211,7 @@ const NavBar: FunctionComponent<{
       name: 'users',
       path: '/users',
       role: ['admin', 'tenantAdmin', 'maintainer'],
-      icon: SupportAgentIcon,
+      icon: AdminPanelSettingsIcon,
       active: useMatch('/users'),
     },
     {
