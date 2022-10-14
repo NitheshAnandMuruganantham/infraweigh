@@ -9,7 +9,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import EngineeringIcon from '@mui/icons-material/Engineering';
-import Home from '@mui/icons-material/Home';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
@@ -36,6 +36,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { CSSObject, styled, Theme, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 
 import { ColorModeContext } from '../../context/colorMode';
 import useRole from '../../hooks/role';
@@ -158,7 +159,21 @@ const NavBar: FunctionComponent<{
 
   const links = [
     {
-      name: 'Home',
+      name: 'dashboard',
+      path: '/finance',
+      icon: CurrencyRupeeIcon,
+      role: ['tenantAdmin'],
+      active: useMatch('/finance'),
+    },
+    {
+      name: 'queries',
+      path: '/queries',
+      icon: SupportAgentIcon,
+      role: ['maintainer'],
+      active: useMatch('/queries'),
+    },
+    {
+      name: 'Bills',
       path: '/',
       icon: ArticleIcon,
       role: ['admin', 'terminal', 'tenantAdmin', 'customer', 'maintainer'],
@@ -196,7 +211,7 @@ const NavBar: FunctionComponent<{
       name: 'users',
       path: '/users',
       role: ['admin', 'tenantAdmin', 'maintainer'],
-      icon: SupportAgentIcon,
+      icon: AdminPanelSettingsIcon,
       active: useMatch('/users'),
     },
     {

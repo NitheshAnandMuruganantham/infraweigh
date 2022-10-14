@@ -1,0 +1,39 @@
+mutation addSupportTicket($objects: [issues_insert_input!]!) {
+  insert_issues(objects: $objects) {
+    affected_rows
+  }
+}
+
+query getIssuesAggregate($where: issues_bool_exp) {
+  issues_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+
+subscription getIssues(
+  $where: issues_bool_exp
+  $limit: Int
+  $order_by: [issues_order_by!]
+  $offset: Int
+) {
+  issues(where: $where, limit: $limit, order_by: $order_by, offset: $offset) {
+    created_at
+    id
+    message
+    severity
+    title
+    updated_at
+    user {
+      email
+      tenent {
+        name
+      }
+
+      weighbridge {
+        name
+      }
+    }
+  }
+}
