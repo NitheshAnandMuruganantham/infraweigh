@@ -35,19 +35,19 @@ export const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const labels = ['1', '2', '3', '4', '5', '6', '7', '8', '10', '11', '12'];
 
 export const data = {
   labels,
   datasets: [
     {
-      label: 'EBITA (REVENUE)',
+      label: 'revenue',
       data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
       borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
     {
-      label: 'moving average',
+      label: 'average',
       data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
       borderColor: 'rgb(53, 162, 235)',
       backgroundColor: 'rgba(53, 162, 235, 0.5)',

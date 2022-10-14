@@ -1,4 +1,4 @@
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import * as React from 'react';
 
 interface CounterCardProps {
@@ -31,7 +31,13 @@ const CounterCard: React.FunctionComponent<CounterCardProps> = ({
       ) : (
         <>
           <div style={{ marginBottom: '10px', fontSize: 'large' }}>
-            <b>{label}</b>
+            <Typography
+              sx={{
+                textTransform: 'capitalize',
+              }}
+            >
+              {label}
+            </Typography>
           </div>
           <div style={{ fontSize: '50px' }}>{count}</div>
         </>
