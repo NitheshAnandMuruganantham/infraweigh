@@ -18,7 +18,7 @@ const CounterCard: React.FunctionComponent<CounterCardProps> = ({
         color: 'black',
         height: '150px',
         flexDirection: 'column',
-        width: '24%',
+        width: '32%',
         alignItems: 'center',
         display: 'flex',
         justifyContent: 'center',

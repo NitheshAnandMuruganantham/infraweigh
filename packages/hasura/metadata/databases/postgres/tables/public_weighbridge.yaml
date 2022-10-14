@@ -85,6 +85,7 @@ select_permissions:
           customers:
             email:
               _eq: x-hasura-user-email
+      allow_aggregations: true
   - role: maintainer
     permission:
       columns:
@@ -159,6 +160,7 @@ select_permissions:
               _eq: X-Hasura-tenent-Id
           - id:
               _eq: X-Hasura-Weighbridge-Id
+      allow_aggregations: true
 update_permissions:
   - role: maintainer
     permission:

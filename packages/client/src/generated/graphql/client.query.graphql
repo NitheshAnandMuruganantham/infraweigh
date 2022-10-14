@@ -130,3 +130,29 @@ query BillAggregate($distinctOn: [bill_select_column!], $where: bill_bool_exp) {
     }
   }
 }
+
+query getTotalWeighbridges {
+  weighbridge_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+
+query getTotalAmount($where: bill_bool_exp) {
+  bill_aggregate(where: $where) {
+    aggregate {
+      sum {
+        charges
+      }
+    }
+  }
+}
+
+query getTotalEntries($where: bill_bool_exp) {
+  bill_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}

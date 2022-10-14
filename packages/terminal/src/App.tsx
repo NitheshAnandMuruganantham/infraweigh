@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Fab from '@mui/material/Fab';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 import Loading from './components/loading';
 import SignInSide from './pages/auth/logIn';
@@ -9,7 +7,6 @@ import NotRequireAuth from './pages/auth/notRequireAuth';
 import RequireAuth from './pages/auth/requireAuth';
 import FinanceDashboard from './pages/finance/dashboard';
 import NoInternet from './pages/NoInternet';
-import Support from './pages/support';
 
 const ForgetPassword = React.lazy(() => import('./pages/auth/forgetPassword'));
 const SetNewPassword = React.lazy(() => import('./pages/auth/setPassword'));
@@ -84,7 +81,6 @@ const LazyQueries = () => (
 
 const App: React.FunctionComponent = () => {
   const [offline, SetOffline] = React.useState(!navigator.onLine);
-  const [openSupport, SetOpenSupport] = React.useState(false);
 
   React.useEffect(() => {
     window.addEventListener('online', () => SetOffline(false));
@@ -104,21 +100,6 @@ const App: React.FunctionComponent = () => {
   } else {
     return (
       <>
-        <Support open={openSupport} setOpen={SetOpenSupport} />
-        <Fab
-          onClick={() => SetOpenSupport(true)}
-          variant="extended"
-          style={{
-            zIndex: 1000,
-            position: 'fixed',
-            bottom: '30px',
-            right: '30px',
-          }}
-          color="success"
-          aria-label=""
-        >
-          <SupportAgentIcon sx={{ mr: 1 }} /> SUPPORT
-        </Fab>
         <Routes>
           <Route path="*" element={<NotFound />} />
           <Route element={<RequireAuth />}>

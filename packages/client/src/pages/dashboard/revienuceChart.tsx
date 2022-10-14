@@ -3,18 +3,20 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend
@@ -28,7 +30,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'revenue vs credit',
+      text: 'total revenue',
     },
   },
 };
@@ -39,38 +41,40 @@ export const data = {
   labels,
   datasets: [
     {
-      label: 'revenue',
-      data: labels.map(() =>
-        faker.datatype.number({ min: 100000, max: 200000 })
-      ),
+      label: 'EBITA (REVENUE)',
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
     {
-      label: 'credit',
-      data: labels.map(() =>
-        faker.datatype.number({ min: 30000, max: 200000 })
-      ),
+      label: 'moving average',
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      borderColor: 'rgb(53, 162, 235)',
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
     },
   ],
 };
 
-function App() {
+function RevenueChart() {
   return (
     <div
       style={{
-        padding: '10px',
         marginLeft: '10px',
-        width: '600px',
-        height: 'auto',
-        aspectRatio: 'auto',
+        // width: '75%',
+        height: '300px',
         backgroundColor: 'whitesmoke',
         borderRadius: '10px',
       }}
     >
-      <Bar options={options} data={data} />
+      <Line
+        options={options}
+        style={{
+          height: '300px',
+        }}
+        data={data}
+      />
     </div>
   );
 }
 
-export default App;
+export default RevenueChart;
