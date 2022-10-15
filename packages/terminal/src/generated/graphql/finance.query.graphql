@@ -1,0 +1,41 @@
+query getTotalAmount($where: bill_bool_exp) {
+  bill_aggregate(where: $where) {
+    aggregate {
+      sum {
+        charges
+      }
+    }
+  }
+}
+
+query getTotalCustomers {
+  customer_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+
+query getTotalEmployees {
+  user_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+
+query getTotalWeighbridges {
+  weighbridge_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+
+query getTotalEntries($where: bill_bool_exp) {
+  bill_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}

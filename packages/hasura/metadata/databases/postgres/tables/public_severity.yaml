@@ -1,0 +1,11 @@
+table:
+  schema: public
+  name: severity
+array_relationships:
+  - name: issues
+    using:
+      foreign_key_constraint_on:
+        column: severity
+        table:
+          schema: public
+          name: issues

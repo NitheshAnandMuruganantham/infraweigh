@@ -5,6 +5,7 @@ import Loading from './components/loading';
 import SignInSide from './pages/auth/logIn';
 import NotRequireAuth from './pages/auth/notRequireAuth';
 import RequireAuth from './pages/auth/requireAuth';
+import FinanceDashboard from './pages/finance/dashboard';
 import NoInternet from './pages/NoInternet';
 
 const ForgetPassword = React.lazy(() => import('./pages/auth/forgetPassword'));
@@ -16,6 +17,7 @@ const Users = React.lazy(() => import('./pages/users'));
 const Tenants = React.lazy(() => import('./pages/tenents'));
 const Weighbridges = React.lazy(() => import('./pages/weignbirdge'));
 const Maintainers = React.lazy(() => import('./pages/maintainers'));
+const Queries = React.lazy(() => import('./pages/queries'));
 
 const LazyLoader = () => <Loading open={true} setOpen={() => null} />;
 
@@ -65,6 +67,17 @@ const LazyMaintainers = () => (
     <Maintainers />
   </React.Suspense>
 );
+const LazyFinance = () => (
+  <React.Suspense fallback={<LazyLoader />}>
+    <FinanceDashboard />
+  </React.Suspense>
+);
+
+const LazyQueries = () => (
+  <React.Suspense fallback={<LazyLoader />}>
+    <Queries />
+  </React.Suspense>
+);
 
 const App: React.FunctionComponent = () => {
   const [offline, SetOffline] = React.useState(!navigator.onLine);
@@ -86,23 +99,27 @@ const App: React.FunctionComponent = () => {
     );
   } else {
     return (
-      <Routes>
-        <Route path="*" element={<NotFound />} />
-        <Route element={<RequireAuth />}>
-          <Route path="/" element={<LazyBills />} />
-          <Route path="/weighbridges" element={<LazyWeighbridges />} />
-          <Route path="/users" element={<LazyUsers />} />
-          <Route path="/weigh" element={<LazyWeigh />} />
-          <Route path="/tenants" element={<LazyTenants />} />
-          <Route path="/clients" element={<LazyClients />} />
-          <Route path="/maintainers" element={<LazyMaintainers />} />
-        </Route>
-        <Route element={<NotRequireAuth />}>
-          <Route path="/login" element={<SignInSide />} />
-          <Route path="/forgetPassword" element={<LazyForgetPassword />} />
-          <Route path="/reset-password" element={<LazySetNewPassword />} />
-        </Route>
-      </Routes>
+      <>
+        <Routes>
+          <Route path="*" element={<NotFound />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/finance" element={<LazyFinance />} />
+            <Route path="/" element={<LazyBills />} />
+            <Route path="/weighbridges" element={<LazyWeighbridges />} />
+            <Route path="/users" element={<LazyUsers />} />
+            <Route path="/weigh" element={<LazyWeigh />} />
+            <Route path="/tenants" element={<LazyTenants />} />
+            <Route path="/clients" element={<LazyClients />} />
+            <Route path="/maintainers" element={<LazyMaintainers />} />
+            <Route path="/queries" element={<LazyQueries />} />
+          </Route>
+          <Route element={<NotRequireAuth />}>
+            <Route path="/login" element={<SignInSide />} />
+            <Route path="/forgetPassword" element={<LazyForgetPassword />} />
+            <Route path="/reset-password" element={<LazySetNewPassword />} />
+          </Route>
+        </Routes>
+      </>
     );
   }
 };

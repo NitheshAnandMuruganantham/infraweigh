@@ -87,6 +87,7 @@ export type Bill = {
   billsByReferenceBillId: Array<Bill>;
   /** An aggregate relationship */
   billsByReferenceBillId_aggregate: Bill_Aggregate;
+  box_number?: Maybe<Scalars['String']>;
   charges: Scalars['money'];
   created_at: Scalars['timestamptz'];
   /** An object relationship */
@@ -225,6 +226,7 @@ export type Bill_Bool_Exp = {
   _or?: InputMaybe<Array<Bill_Bool_Exp>>;
   billByReferenceBillId?: InputMaybe<Bill_Bool_Exp>;
   billsByReferenceBillId?: InputMaybe<Bill_Bool_Exp>;
+  box_number?: InputMaybe<String_Comparison_Exp>;
   charges?: InputMaybe<Money_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   customer?: InputMaybe<Customer_Bool_Exp>;
@@ -280,6 +282,7 @@ export type Bill_Inc_Input = {
 export type Bill_Insert_Input = {
   billByReferenceBillId?: InputMaybe<Bill_Obj_Rel_Insert_Input>;
   billsByReferenceBillId?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
+  box_number?: InputMaybe<Scalars['String']>;
   charges?: InputMaybe<Scalars['money']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   customer?: InputMaybe<Customer_Obj_Rel_Insert_Input>;
@@ -316,6 +319,7 @@ export type Bill_Insert_Input = {
 /** aggregate max on columns */
 export type Bill_Max_Fields = {
   __typename?: 'bill_max_fields';
+  box_number?: Maybe<Scalars['String']>;
   charges?: Maybe<Scalars['money']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   customer_2_id?: Maybe<Scalars['uuid']>;
@@ -338,6 +342,7 @@ export type Bill_Max_Fields = {
 
 /** order by max() on columns of table "bill" */
 export type Bill_Max_Order_By = {
+  box_number?: InputMaybe<Order_By>;
   charges?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   customer_2_id?: InputMaybe<Order_By>;
@@ -361,6 +366,7 @@ export type Bill_Max_Order_By = {
 /** aggregate min on columns */
 export type Bill_Min_Fields = {
   __typename?: 'bill_min_fields';
+  box_number?: Maybe<Scalars['String']>;
   charges?: Maybe<Scalars['money']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   customer_2_id?: Maybe<Scalars['uuid']>;
@@ -383,6 +389,7 @@ export type Bill_Min_Fields = {
 
 /** order by min() on columns of table "bill" */
 export type Bill_Min_Order_By = {
+  box_number?: InputMaybe<Order_By>;
   charges?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   customer_2_id?: InputMaybe<Order_By>;
@@ -430,6 +437,7 @@ export type Bill_On_Conflict = {
 export type Bill_Order_By = {
   billByReferenceBillId?: InputMaybe<Bill_Order_By>;
   billsByReferenceBillId_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
+  box_number?: InputMaybe<Order_By>;
   charges?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   customer?: InputMaybe<Customer_Order_By>;
@@ -470,6 +478,8 @@ export type Bill_Pk_Columns_Input = {
 
 /** select columns of table "bill" */
 export enum Bill_Select_Column {
+  /** column name */
+  BoxNumber = 'box_number',
   /** column name */
   Charges = 'charges',
   /** column name */
@@ -518,6 +528,7 @@ export enum Bill_Select_Column {
 
 /** input type for updating data in table "bill" */
 export type Bill_Set_Input = {
+  box_number?: InputMaybe<Scalars['String']>;
   charges?: InputMaybe<Scalars['money']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   customer_2_id?: InputMaybe<Scalars['uuid']>;
@@ -612,6 +623,8 @@ export type Bill_Sum_Order_By = {
 
 /** update columns of table "bill" */
 export enum Bill_Update_Column {
+  /** column name */
+  BoxNumber = 'box_number',
   /** column name */
   Charges = 'charges',
   /** column name */
@@ -1069,6 +1082,229 @@ export enum Customer_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+/** columns and relationships of "issues" */
+export type Issues = {
+  __typename?: 'issues';
+  created_at: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  message: Scalars['String'];
+  resolved?: Maybe<Scalars['Boolean']>;
+  severity: Scalars['String'];
+  /** An object relationship */
+  severityBySeverity: Severity;
+  title: Scalars['String'];
+  updated_at: Scalars['timestamptz'];
+  /** An object relationship */
+  user: User;
+  user_id: Scalars['uuid'];
+};
+
+/** aggregated selection of "issues" */
+export type Issues_Aggregate = {
+  __typename?: 'issues_aggregate';
+  aggregate?: Maybe<Issues_Aggregate_Fields>;
+  nodes: Array<Issues>;
+};
+
+/** aggregate fields of "issues" */
+export type Issues_Aggregate_Fields = {
+  __typename?: 'issues_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Issues_Max_Fields>;
+  min?: Maybe<Issues_Min_Fields>;
+};
+
+
+/** aggregate fields of "issues" */
+export type Issues_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Issues_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "issues" */
+export type Issues_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Issues_Max_Order_By>;
+  min?: InputMaybe<Issues_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "issues" */
+export type Issues_Arr_Rel_Insert_Input = {
+  data: Array<Issues_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Issues_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "issues". All fields are combined with a logical 'AND'. */
+export type Issues_Bool_Exp = {
+  _and?: InputMaybe<Array<Issues_Bool_Exp>>;
+  _not?: InputMaybe<Issues_Bool_Exp>;
+  _or?: InputMaybe<Array<Issues_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  message?: InputMaybe<String_Comparison_Exp>;
+  resolved?: InputMaybe<Boolean_Comparison_Exp>;
+  severity?: InputMaybe<String_Comparison_Exp>;
+  severityBySeverity?: InputMaybe<Severity_Bool_Exp>;
+  title?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user?: InputMaybe<User_Bool_Exp>;
+  user_id?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "issues" */
+export enum Issues_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  IssuesPkey = 'issues_pkey'
+}
+
+/** input type for inserting data into table "issues" */
+export type Issues_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  message?: InputMaybe<Scalars['String']>;
+  resolved?: InputMaybe<Scalars['Boolean']>;
+  severity?: InputMaybe<Scalars['String']>;
+  severityBySeverity?: InputMaybe<Severity_Obj_Rel_Insert_Input>;
+  title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  user?: InputMaybe<User_Obj_Rel_Insert_Input>;
+  user_id?: InputMaybe<Scalars['uuid']>;
+};
+
+/** aggregate max on columns */
+export type Issues_Max_Fields = {
+  __typename?: 'issues_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  message?: Maybe<Scalars['String']>;
+  severity?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** order by max() on columns of table "issues" */
+export type Issues_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  message?: InputMaybe<Order_By>;
+  severity?: InputMaybe<Order_By>;
+  title?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Issues_Min_Fields = {
+  __typename?: 'issues_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  message?: Maybe<Scalars['String']>;
+  severity?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
+};
+
+/** order by min() on columns of table "issues" */
+export type Issues_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  message?: InputMaybe<Order_By>;
+  severity?: InputMaybe<Order_By>;
+  title?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "issues" */
+export type Issues_Mutation_Response = {
+  __typename?: 'issues_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Issues>;
+};
+
+/** on_conflict condition type for table "issues" */
+export type Issues_On_Conflict = {
+  constraint: Issues_Constraint;
+  update_columns?: Array<Issues_Update_Column>;
+  where?: InputMaybe<Issues_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "issues". */
+export type Issues_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  message?: InputMaybe<Order_By>;
+  resolved?: InputMaybe<Order_By>;
+  severity?: InputMaybe<Order_By>;
+  severityBySeverity?: InputMaybe<Severity_Order_By>;
+  title?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user?: InputMaybe<User_Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: issues */
+export type Issues_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "issues" */
+export enum Issues_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Message = 'message',
+  /** column name */
+  Resolved = 'resolved',
+  /** column name */
+  Severity = 'severity',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "issues" */
+export type Issues_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  message?: InputMaybe<Scalars['String']>;
+  resolved?: InputMaybe<Scalars['Boolean']>;
+  severity?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  user_id?: InputMaybe<Scalars['uuid']>;
+};
+
+/** update columns of table "issues" */
+export enum Issues_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Message = 'message',
+  /** column name */
+  Resolved = 'resolved',
+  /** column name */
+  Severity = 'severity',
+  /** column name */
+  Title = 'title',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
 /** Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'. */
 export type Json_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['json']>;
@@ -1288,6 +1524,10 @@ export type Mutation_Root = {
   delete_customer?: Maybe<Customer_Mutation_Response>;
   /** delete single row from the table: "customer" */
   delete_customer_by_pk?: Maybe<Customer>;
+  /** delete data from the table: "issues" */
+  delete_issues?: Maybe<Issues_Mutation_Response>;
+  /** delete single row from the table: "issues" */
+  delete_issues_by_pk?: Maybe<Issues>;
   /** delete data from the table: "material" */
   delete_material?: Maybe<Material_Mutation_Response>;
   /** delete single row from the table: "material" */
@@ -1300,6 +1540,10 @@ export type Mutation_Root = {
   delete_role?: Maybe<Role_Mutation_Response>;
   /** delete single row from the table: "role" */
   delete_role_by_pk?: Maybe<Role>;
+  /** delete data from the table: "severity" */
+  delete_severity?: Maybe<Severity_Mutation_Response>;
+  /** delete single row from the table: "severity" */
+  delete_severity_by_pk?: Maybe<Severity>;
   /** delete data from the table: "tenents" */
   delete_tenents?: Maybe<Tenents_Mutation_Response>;
   /** delete single row from the table: "tenents" */
@@ -1324,6 +1568,10 @@ export type Mutation_Root = {
   insert_customer?: Maybe<Customer_Mutation_Response>;
   /** insert a single row into the table: "customer" */
   insert_customer_one?: Maybe<Customer>;
+  /** insert data into the table: "issues" */
+  insert_issues?: Maybe<Issues_Mutation_Response>;
+  /** insert a single row into the table: "issues" */
+  insert_issues_one?: Maybe<Issues>;
   /** insert data into the table: "material" */
   insert_material?: Maybe<Material_Mutation_Response>;
   /** insert a single row into the table: "material" */
@@ -1336,6 +1584,10 @@ export type Mutation_Root = {
   insert_role?: Maybe<Role_Mutation_Response>;
   /** insert a single row into the table: "role" */
   insert_role_one?: Maybe<Role>;
+  /** insert data into the table: "severity" */
+  insert_severity?: Maybe<Severity_Mutation_Response>;
+  /** insert a single row into the table: "severity" */
+  insert_severity_one?: Maybe<Severity>;
   /** insert data into the table: "tenents" */
   insert_tenents?: Maybe<Tenents_Mutation_Response>;
   /** insert a single row into the table: "tenents" */
@@ -1360,6 +1612,10 @@ export type Mutation_Root = {
   update_customer?: Maybe<Customer_Mutation_Response>;
   /** update single row of the table: "customer" */
   update_customer_by_pk?: Maybe<Customer>;
+  /** update data of the table: "issues" */
+  update_issues?: Maybe<Issues_Mutation_Response>;
+  /** update single row of the table: "issues" */
+  update_issues_by_pk?: Maybe<Issues>;
   /** update data of the table: "material" */
   update_material?: Maybe<Material_Mutation_Response>;
   /** update single row of the table: "material" */
@@ -1372,6 +1628,10 @@ export type Mutation_Root = {
   update_role?: Maybe<Role_Mutation_Response>;
   /** update single row of the table: "role" */
   update_role_by_pk?: Maybe<Role>;
+  /** update data of the table: "severity" */
+  update_severity?: Maybe<Severity_Mutation_Response>;
+  /** update single row of the table: "severity" */
+  update_severity_by_pk?: Maybe<Severity>;
   /** update data of the table: "tenents" */
   update_tenents?: Maybe<Tenents_Mutation_Response>;
   /** update single row of the table: "tenents" */
@@ -1416,6 +1676,18 @@ export type Mutation_RootDelete_Customer_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_IssuesArgs = {
+  where: Issues_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Issues_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_MaterialArgs = {
   where: Material_Bool_Exp;
 };
@@ -1448,6 +1720,18 @@ export type Mutation_RootDelete_RoleArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Role_By_PkArgs = {
   value: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_SeverityArgs = {
+  where: Severity_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Severity_By_PkArgs = {
+  name: Scalars['String'];
 };
 
 
@@ -1528,6 +1812,20 @@ export type Mutation_RootInsert_Customer_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_IssuesArgs = {
+  objects: Array<Issues_Insert_Input>;
+  on_conflict?: InputMaybe<Issues_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Issues_OneArgs = {
+  object: Issues_Insert_Input;
+  on_conflict?: InputMaybe<Issues_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_MaterialArgs = {
   objects: Array<Material_Insert_Input>;
   on_conflict?: InputMaybe<Material_On_Conflict>;
@@ -1566,6 +1864,20 @@ export type Mutation_RootInsert_RoleArgs = {
 export type Mutation_RootInsert_Role_OneArgs = {
   object: Role_Insert_Input;
   on_conflict?: InputMaybe<Role_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_SeverityArgs = {
+  objects: Array<Severity_Insert_Input>;
+  on_conflict?: InputMaybe<Severity_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Severity_OneArgs = {
+  object: Severity_Insert_Input;
+  on_conflict?: InputMaybe<Severity_On_Conflict>;
 };
 
 
@@ -1656,6 +1968,20 @@ export type Mutation_RootUpdate_Customer_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_IssuesArgs = {
+  _set?: InputMaybe<Issues_Set_Input>;
+  where: Issues_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Issues_By_PkArgs = {
+  _set?: InputMaybe<Issues_Set_Input>;
+  pk_columns: Issues_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_MaterialArgs = {
   _set?: InputMaybe<Material_Set_Input>;
   where: Material_Bool_Exp;
@@ -1694,6 +2020,20 @@ export type Mutation_RootUpdate_RoleArgs = {
 export type Mutation_RootUpdate_Role_By_PkArgs = {
   _set?: InputMaybe<Role_Set_Input>;
   pk_columns: Role_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_SeverityArgs = {
+  _set?: InputMaybe<Severity_Set_Input>;
+  where: Severity_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Severity_By_PkArgs = {
+  _set?: InputMaybe<Severity_Set_Input>;
+  pk_columns: Severity_Pk_Columns_Input;
 };
 
 
@@ -1953,6 +2293,12 @@ export type Query_Root = {
   customer_aggregate: Customer_Aggregate;
   /** fetch data from the table: "customer" using primary key columns */
   customer_by_pk?: Maybe<Customer>;
+  /** An array relationship */
+  issues: Array<Issues>;
+  /** An aggregate relationship */
+  issues_aggregate: Issues_Aggregate;
+  /** fetch data from the table: "issues" using primary key columns */
+  issues_by_pk?: Maybe<Issues>;
   /** fetch data from the table: "material" */
   material: Array<Material>;
   /** fetch aggregated fields from the table: "material" */
@@ -1971,6 +2317,12 @@ export type Query_Root = {
   role_aggregate: Role_Aggregate;
   /** fetch data from the table: "role" using primary key columns */
   role_by_pk?: Maybe<Role>;
+  /** fetch data from the table: "severity" */
+  severity: Array<Severity>;
+  /** fetch aggregated fields from the table: "severity" */
+  severity_aggregate: Severity_Aggregate;
+  /** fetch data from the table: "severity" using primary key columns */
+  severity_by_pk?: Maybe<Severity>;
   /** fetch data from the table: "tenents" */
   tenents: Array<Tenents>;
   /** fetch aggregated fields from the table: "tenents" */
@@ -2044,6 +2396,29 @@ export type Query_RootCustomer_By_PkArgs = {
 };
 
 
+export type Query_RootIssuesArgs = {
+  distinct_on?: InputMaybe<Array<Issues_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Issues_Order_By>>;
+  where?: InputMaybe<Issues_Bool_Exp>;
+};
+
+
+export type Query_RootIssues_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Issues_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Issues_Order_By>>;
+  where?: InputMaybe<Issues_Bool_Exp>;
+};
+
+
+export type Query_RootIssues_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Query_RootMaterialArgs = {
   distinct_on?: InputMaybe<Array<Material_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2110,6 +2485,29 @@ export type Query_RootRole_AggregateArgs = {
 
 export type Query_RootRole_By_PkArgs = {
   value: Scalars['String'];
+};
+
+
+export type Query_RootSeverityArgs = {
+  distinct_on?: InputMaybe<Array<Severity_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Severity_Order_By>>;
+  where?: InputMaybe<Severity_Bool_Exp>;
+};
+
+
+export type Query_RootSeverity_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Severity_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Severity_Order_By>>;
+  where?: InputMaybe<Severity_Bool_Exp>;
+};
+
+
+export type Query_RootSeverity_By_PkArgs = {
+  name: Scalars['String'];
 };
 
 
@@ -2280,6 +2678,8 @@ export enum Role_Enum {
   Customer = 'customer',
   /** maintainer */
   Maintainer = 'maintainer',
+  /** serviceEngineer */
+  ServiceEngineer = 'serviceEngineer',
   /** tenantAdmin */
   TenantAdmin = 'tenantAdmin',
   /** terminal */
@@ -2373,6 +2773,142 @@ export enum Role_Update_Column {
   Value = 'value'
 }
 
+/** columns and relationships of "severity" */
+export type Severity = {
+  __typename?: 'severity';
+  /** An array relationship */
+  issues: Array<Issues>;
+  /** An aggregate relationship */
+  issues_aggregate: Issues_Aggregate;
+  name: Scalars['String'];
+};
+
+
+/** columns and relationships of "severity" */
+export type SeverityIssuesArgs = {
+  distinct_on?: InputMaybe<Array<Issues_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Issues_Order_By>>;
+  where?: InputMaybe<Issues_Bool_Exp>;
+};
+
+
+/** columns and relationships of "severity" */
+export type SeverityIssues_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Issues_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Issues_Order_By>>;
+  where?: InputMaybe<Issues_Bool_Exp>;
+};
+
+/** aggregated selection of "severity" */
+export type Severity_Aggregate = {
+  __typename?: 'severity_aggregate';
+  aggregate?: Maybe<Severity_Aggregate_Fields>;
+  nodes: Array<Severity>;
+};
+
+/** aggregate fields of "severity" */
+export type Severity_Aggregate_Fields = {
+  __typename?: 'severity_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Severity_Max_Fields>;
+  min?: Maybe<Severity_Min_Fields>;
+};
+
+
+/** aggregate fields of "severity" */
+export type Severity_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Severity_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "severity". All fields are combined with a logical 'AND'. */
+export type Severity_Bool_Exp = {
+  _and?: InputMaybe<Array<Severity_Bool_Exp>>;
+  _not?: InputMaybe<Severity_Bool_Exp>;
+  _or?: InputMaybe<Array<Severity_Bool_Exp>>;
+  issues?: InputMaybe<Issues_Bool_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "severity" */
+export enum Severity_Constraint {
+  /** unique or primary key constraint on columns "name" */
+  SeverityPkey = 'severity_pkey'
+}
+
+/** input type for inserting data into table "severity" */
+export type Severity_Insert_Input = {
+  issues?: InputMaybe<Issues_Arr_Rel_Insert_Input>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Severity_Max_Fields = {
+  __typename?: 'severity_max_fields';
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Severity_Min_Fields = {
+  __typename?: 'severity_min_fields';
+  name?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "severity" */
+export type Severity_Mutation_Response = {
+  __typename?: 'severity_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Severity>;
+};
+
+/** input type for inserting object relation for remote table "severity" */
+export type Severity_Obj_Rel_Insert_Input = {
+  data: Severity_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Severity_On_Conflict>;
+};
+
+/** on_conflict condition type for table "severity" */
+export type Severity_On_Conflict = {
+  constraint: Severity_Constraint;
+  update_columns?: Array<Severity_Update_Column>;
+  where?: InputMaybe<Severity_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "severity". */
+export type Severity_Order_By = {
+  issues_aggregate?: InputMaybe<Issues_Aggregate_Order_By>;
+  name?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: severity */
+export type Severity_Pk_Columns_Input = {
+  name: Scalars['String'];
+};
+
+/** select columns of table "severity" */
+export enum Severity_Select_Column {
+  /** column name */
+  Name = 'name'
+}
+
+/** input type for updating data in table "severity" */
+export type Severity_Set_Input = {
+  name?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "severity" */
+export enum Severity_Update_Column {
+  /** column name */
+  Name = 'name'
+}
+
 export type Subscription_Root = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "bill" */
@@ -2387,6 +2923,12 @@ export type Subscription_Root = {
   customer_aggregate: Customer_Aggregate;
   /** fetch data from the table: "customer" using primary key columns */
   customer_by_pk?: Maybe<Customer>;
+  /** An array relationship */
+  issues: Array<Issues>;
+  /** An aggregate relationship */
+  issues_aggregate: Issues_Aggregate;
+  /** fetch data from the table: "issues" using primary key columns */
+  issues_by_pk?: Maybe<Issues>;
   /** fetch data from the table: "material" */
   material: Array<Material>;
   /** fetch aggregated fields from the table: "material" */
@@ -2405,6 +2947,12 @@ export type Subscription_Root = {
   role_aggregate: Role_Aggregate;
   /** fetch data from the table: "role" using primary key columns */
   role_by_pk?: Maybe<Role>;
+  /** fetch data from the table: "severity" */
+  severity: Array<Severity>;
+  /** fetch aggregated fields from the table: "severity" */
+  severity_aggregate: Severity_Aggregate;
+  /** fetch data from the table: "severity" using primary key columns */
+  severity_by_pk?: Maybe<Severity>;
   /** fetch data from the table: "tenents" */
   tenents: Array<Tenents>;
   /** fetch aggregated fields from the table: "tenents" */
@@ -2478,6 +3026,29 @@ export type Subscription_RootCustomer_By_PkArgs = {
 };
 
 
+export type Subscription_RootIssuesArgs = {
+  distinct_on?: InputMaybe<Array<Issues_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Issues_Order_By>>;
+  where?: InputMaybe<Issues_Bool_Exp>;
+};
+
+
+export type Subscription_RootIssues_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Issues_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Issues_Order_By>>;
+  where?: InputMaybe<Issues_Bool_Exp>;
+};
+
+
+export type Subscription_RootIssues_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Subscription_RootMaterialArgs = {
   distinct_on?: InputMaybe<Array<Material_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -2544,6 +3115,29 @@ export type Subscription_RootRole_AggregateArgs = {
 
 export type Subscription_RootRole_By_PkArgs = {
   value: Scalars['String'];
+};
+
+
+export type Subscription_RootSeverityArgs = {
+  distinct_on?: InputMaybe<Array<Severity_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Severity_Order_By>>;
+  where?: InputMaybe<Severity_Bool_Exp>;
+};
+
+
+export type Subscription_RootSeverity_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Severity_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Severity_Order_By>>;
+  where?: InputMaybe<Severity_Bool_Exp>;
+};
+
+
+export type Subscription_RootSeverity_By_PkArgs = {
+  name: Scalars['String'];
 };
 
 
@@ -3009,6 +3603,10 @@ export type User = {
   forgot_password_token_hash?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   /** An array relationship */
+  issues: Array<Issues>;
+  /** An aggregate relationship */
+  issues_aggregate: Issues_Aggregate;
+  /** An array relationship */
   maintainee: Array<Tenents>;
   /** An aggregate relationship */
   maintainee_aggregate: Tenents_Aggregate;
@@ -3026,6 +3624,26 @@ export type User = {
   /** An object relationship */
   weighbridge?: Maybe<Weighbridge>;
   weighbridge_id?: Maybe<Scalars['uuid']>;
+};
+
+
+/** columns and relationships of "user" */
+export type UserIssuesArgs = {
+  distinct_on?: InputMaybe<Array<Issues_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Issues_Order_By>>;
+  where?: InputMaybe<Issues_Bool_Exp>;
+};
+
+
+/** columns and relationships of "user" */
+export type UserIssues_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Issues_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Issues_Order_By>>;
+  where?: InputMaybe<Issues_Bool_Exp>;
 };
 
 
@@ -3107,6 +3725,7 @@ export type User_Bool_Exp = {
   email_verified?: InputMaybe<Boolean_Comparison_Exp>;
   forgot_password_token_hash?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  issues?: InputMaybe<Issues_Bool_Exp>;
   maintainee?: InputMaybe<Tenents_Bool_Exp>;
   meta_data?: InputMaybe<Json_Comparison_Exp>;
   password?: InputMaybe<String_Comparison_Exp>;
@@ -3137,6 +3756,7 @@ export type User_Insert_Input = {
   email_verified?: InputMaybe<Scalars['Boolean']>;
   forgot_password_token_hash?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  issues?: InputMaybe<Issues_Arr_Rel_Insert_Input>;
   maintainee?: InputMaybe<Tenents_Arr_Rel_Insert_Input>;
   meta_data?: InputMaybe<Scalars['json']>;
   password?: InputMaybe<Scalars['String']>;
@@ -3236,6 +3856,7 @@ export type User_Order_By = {
   email_verified?: InputMaybe<Order_By>;
   forgot_password_token_hash?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  issues_aggregate?: InputMaybe<Issues_Aggregate_Order_By>;
   maintainee_aggregate?: InputMaybe<Tenents_Aggregate_Order_By>;
   meta_data?: InputMaybe<Order_By>;
   password?: InputMaybe<Order_By>;
@@ -3538,12 +4159,17 @@ export type Weighbridge = {
   bills: Array<Bill>;
   /** An aggregate relationship */
   bills_aggregate: Bill_Aggregate;
-  config?: Maybe<Scalars['json']>;
+  camera_url_1?: Maybe<Scalars['String']>;
+  camera_url_2?: Maybe<Scalars['String']>;
+  camera_url_3?: Maybe<Scalars['String']>;
+  camera_url_4?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   display_name: Scalars['String'];
   id: Scalars['uuid'];
+  local_server_url?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   mail: Scalars['String'];
+  maintainer_id?: Maybe<Scalars['String']>;
   metadata: Scalars['json'];
   name: Scalars['String'];
   phone: Scalars['String'];
@@ -3576,12 +4202,6 @@ export type WeighbridgeBills_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Bill_Order_By>>;
   where?: InputMaybe<Bill_Bool_Exp>;
-};
-
-
-/** columns and relationships of "weighbridge" */
-export type WeighbridgeConfigArgs = {
-  path?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -3653,12 +4273,17 @@ export type Weighbridge_Bool_Exp = {
   _or?: InputMaybe<Array<Weighbridge_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
   bills?: InputMaybe<Bill_Bool_Exp>;
-  config?: InputMaybe<Json_Comparison_Exp>;
+  camera_url_1?: InputMaybe<String_Comparison_Exp>;
+  camera_url_2?: InputMaybe<String_Comparison_Exp>;
+  camera_url_3?: InputMaybe<String_Comparison_Exp>;
+  camera_url_4?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   display_name?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  local_server_url?: InputMaybe<String_Comparison_Exp>;
   logo?: InputMaybe<String_Comparison_Exp>;
   mail?: InputMaybe<String_Comparison_Exp>;
+  maintainer_id?: InputMaybe<String_Comparison_Exp>;
   metadata?: InputMaybe<Json_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   phone?: InputMaybe<String_Comparison_Exp>;
@@ -3679,12 +4304,17 @@ export enum Weighbridge_Constraint {
 export type Weighbridge_Insert_Input = {
   address?: InputMaybe<Scalars['String']>;
   bills?: InputMaybe<Bill_Arr_Rel_Insert_Input>;
-  config?: InputMaybe<Scalars['json']>;
+  camera_url_1?: InputMaybe<Scalars['String']>;
+  camera_url_2?: InputMaybe<Scalars['String']>;
+  camera_url_3?: InputMaybe<Scalars['String']>;
+  camera_url_4?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   display_name?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  local_server_url?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   mail?: InputMaybe<Scalars['String']>;
+  maintainer_id?: InputMaybe<Scalars['String']>;
   metadata?: InputMaybe<Scalars['json']>;
   name?: InputMaybe<Scalars['String']>;
   phone?: InputMaybe<Scalars['String']>;
@@ -3699,11 +4329,17 @@ export type Weighbridge_Insert_Input = {
 export type Weighbridge_Max_Fields = {
   __typename?: 'weighbridge_max_fields';
   address?: Maybe<Scalars['String']>;
+  camera_url_1?: Maybe<Scalars['String']>;
+  camera_url_2?: Maybe<Scalars['String']>;
+  camera_url_3?: Maybe<Scalars['String']>;
+  camera_url_4?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   display_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  local_server_url?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   mail?: Maybe<Scalars['String']>;
+  maintainer_id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   pin_code?: Maybe<Scalars['String']>;
@@ -3714,11 +4350,17 @@ export type Weighbridge_Max_Fields = {
 /** order by max() on columns of table "weighbridge" */
 export type Weighbridge_Max_Order_By = {
   address?: InputMaybe<Order_By>;
+  camera_url_1?: InputMaybe<Order_By>;
+  camera_url_2?: InputMaybe<Order_By>;
+  camera_url_3?: InputMaybe<Order_By>;
+  camera_url_4?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   display_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  local_server_url?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   mail?: InputMaybe<Order_By>;
+  maintainer_id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   pin_code?: InputMaybe<Order_By>;
@@ -3730,11 +4372,17 @@ export type Weighbridge_Max_Order_By = {
 export type Weighbridge_Min_Fields = {
   __typename?: 'weighbridge_min_fields';
   address?: Maybe<Scalars['String']>;
+  camera_url_1?: Maybe<Scalars['String']>;
+  camera_url_2?: Maybe<Scalars['String']>;
+  camera_url_3?: Maybe<Scalars['String']>;
+  camera_url_4?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   display_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  local_server_url?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
   mail?: Maybe<Scalars['String']>;
+  maintainer_id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   pin_code?: Maybe<Scalars['String']>;
@@ -3745,11 +4393,17 @@ export type Weighbridge_Min_Fields = {
 /** order by min() on columns of table "weighbridge" */
 export type Weighbridge_Min_Order_By = {
   address?: InputMaybe<Order_By>;
+  camera_url_1?: InputMaybe<Order_By>;
+  camera_url_2?: InputMaybe<Order_By>;
+  camera_url_3?: InputMaybe<Order_By>;
+  camera_url_4?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   display_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  local_server_url?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   mail?: InputMaybe<Order_By>;
+  maintainer_id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   pin_code?: InputMaybe<Order_By>;
@@ -3784,12 +4438,17 @@ export type Weighbridge_On_Conflict = {
 export type Weighbridge_Order_By = {
   address?: InputMaybe<Order_By>;
   bills_aggregate?: InputMaybe<Bill_Aggregate_Order_By>;
-  config?: InputMaybe<Order_By>;
+  camera_url_1?: InputMaybe<Order_By>;
+  camera_url_2?: InputMaybe<Order_By>;
+  camera_url_3?: InputMaybe<Order_By>;
+  camera_url_4?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   display_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  local_server_url?: InputMaybe<Order_By>;
   logo?: InputMaybe<Order_By>;
   mail?: InputMaybe<Order_By>;
+  maintainer_id?: InputMaybe<Order_By>;
   metadata?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
@@ -3810,7 +4469,13 @@ export enum Weighbridge_Select_Column {
   /** column name */
   Address = 'address',
   /** column name */
-  Config = 'config',
+  CameraUrl_1 = 'camera_url_1',
+  /** column name */
+  CameraUrl_2 = 'camera_url_2',
+  /** column name */
+  CameraUrl_3 = 'camera_url_3',
+  /** column name */
+  CameraUrl_4 = 'camera_url_4',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -3818,9 +4483,13 @@ export enum Weighbridge_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  LocalServerUrl = 'local_server_url',
+  /** column name */
   Logo = 'logo',
   /** column name */
   Mail = 'mail',
+  /** column name */
+  MaintainerId = 'maintainer_id',
   /** column name */
   Metadata = 'metadata',
   /** column name */
@@ -3838,12 +4507,17 @@ export enum Weighbridge_Select_Column {
 /** input type for updating data in table "weighbridge" */
 export type Weighbridge_Set_Input = {
   address?: InputMaybe<Scalars['String']>;
-  config?: InputMaybe<Scalars['json']>;
+  camera_url_1?: InputMaybe<Scalars['String']>;
+  camera_url_2?: InputMaybe<Scalars['String']>;
+  camera_url_3?: InputMaybe<Scalars['String']>;
+  camera_url_4?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   display_name?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  local_server_url?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   mail?: InputMaybe<Scalars['String']>;
+  maintainer_id?: InputMaybe<Scalars['String']>;
   metadata?: InputMaybe<Scalars['json']>;
   name?: InputMaybe<Scalars['String']>;
   phone?: InputMaybe<Scalars['String']>;
@@ -3857,7 +4531,13 @@ export enum Weighbridge_Update_Column {
   /** column name */
   Address = 'address',
   /** column name */
-  Config = 'config',
+  CameraUrl_1 = 'camera_url_1',
+  /** column name */
+  CameraUrl_2 = 'camera_url_2',
+  /** column name */
+  CameraUrl_3 = 'camera_url_3',
+  /** column name */
+  CameraUrl_4 = 'camera_url_4',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -3865,9 +4545,13 @@ export enum Weighbridge_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  LocalServerUrl = 'local_server_url',
+  /** column name */
   Logo = 'logo',
   /** column name */
   Mail = 'mail',
+  /** column name */
+  MaintainerId = 'maintainer_id',
   /** column name */
   Metadata = 'metadata',
   /** column name */
@@ -3949,6 +4633,25 @@ export type BillAggregateQueryVariables = Exact<{
 
 
 export type BillAggregateQuery = { __typename?: 'query_root', bill_aggregate: { __typename?: 'bill_aggregate', aggregate?: { __typename?: 'bill_aggregate_fields', count: number } | null } };
+
+export type GetTotalWeighbridgesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTotalWeighbridgesQuery = { __typename?: 'query_root', weighbridge_aggregate: { __typename?: 'weighbridge_aggregate', aggregate?: { __typename?: 'weighbridge_aggregate_fields', count: number } | null } };
+
+export type GetTotalAmountQueryVariables = Exact<{
+  where?: InputMaybe<Bill_Bool_Exp>;
+}>;
+
+
+export type GetTotalAmountQuery = { __typename?: 'query_root', bill_aggregate: { __typename?: 'bill_aggregate', aggregate?: { __typename?: 'bill_aggregate_fields', sum?: { __typename?: 'bill_sum_fields', charges?: any | null } | null } | null } };
+
+export type GetTotalEntriesQueryVariables = Exact<{
+  where?: InputMaybe<Bill_Bool_Exp>;
+}>;
+
+
+export type GetTotalEntriesQuery = { __typename?: 'query_root', bill_aggregate: { __typename?: 'bill_aggregate', aggregate?: { __typename?: 'bill_aggregate_fields', count: number } | null } };
 
 
 export const GetTotalBillsDocument = gql`
@@ -4302,3 +5005,115 @@ export function useBillAggregateLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type BillAggregateQueryHookResult = ReturnType<typeof useBillAggregateQuery>;
 export type BillAggregateLazyQueryHookResult = ReturnType<typeof useBillAggregateLazyQuery>;
 export type BillAggregateQueryResult = Apollo.QueryResult<BillAggregateQuery, BillAggregateQueryVariables>;
+export const GetTotalWeighbridgesDocument = gql`
+    query getTotalWeighbridges {
+  weighbridge_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTotalWeighbridgesQuery__
+ *
+ * To run a query within a React component, call `useGetTotalWeighbridgesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTotalWeighbridgesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTotalWeighbridgesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTotalWeighbridgesQuery(baseOptions?: Apollo.QueryHookOptions<GetTotalWeighbridgesQuery, GetTotalWeighbridgesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTotalWeighbridgesQuery, GetTotalWeighbridgesQueryVariables>(GetTotalWeighbridgesDocument, options);
+      }
+export function useGetTotalWeighbridgesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTotalWeighbridgesQuery, GetTotalWeighbridgesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTotalWeighbridgesQuery, GetTotalWeighbridgesQueryVariables>(GetTotalWeighbridgesDocument, options);
+        }
+export type GetTotalWeighbridgesQueryHookResult = ReturnType<typeof useGetTotalWeighbridgesQuery>;
+export type GetTotalWeighbridgesLazyQueryHookResult = ReturnType<typeof useGetTotalWeighbridgesLazyQuery>;
+export type GetTotalWeighbridgesQueryResult = Apollo.QueryResult<GetTotalWeighbridgesQuery, GetTotalWeighbridgesQueryVariables>;
+export const GetTotalAmountDocument = gql`
+    query getTotalAmount($where: bill_bool_exp) {
+  bill_aggregate(where: $where) {
+    aggregate {
+      sum {
+        charges
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTotalAmountQuery__
+ *
+ * To run a query within a React component, call `useGetTotalAmountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTotalAmountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTotalAmountQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetTotalAmountQuery(baseOptions?: Apollo.QueryHookOptions<GetTotalAmountQuery, GetTotalAmountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTotalAmountQuery, GetTotalAmountQueryVariables>(GetTotalAmountDocument, options);
+      }
+export function useGetTotalAmountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTotalAmountQuery, GetTotalAmountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTotalAmountQuery, GetTotalAmountQueryVariables>(GetTotalAmountDocument, options);
+        }
+export type GetTotalAmountQueryHookResult = ReturnType<typeof useGetTotalAmountQuery>;
+export type GetTotalAmountLazyQueryHookResult = ReturnType<typeof useGetTotalAmountLazyQuery>;
+export type GetTotalAmountQueryResult = Apollo.QueryResult<GetTotalAmountQuery, GetTotalAmountQueryVariables>;
+export const GetTotalEntriesDocument = gql`
+    query getTotalEntries($where: bill_bool_exp) {
+  bill_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTotalEntriesQuery__
+ *
+ * To run a query within a React component, call `useGetTotalEntriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTotalEntriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTotalEntriesQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetTotalEntriesQuery(baseOptions?: Apollo.QueryHookOptions<GetTotalEntriesQuery, GetTotalEntriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTotalEntriesQuery, GetTotalEntriesQueryVariables>(GetTotalEntriesDocument, options);
+      }
+export function useGetTotalEntriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTotalEntriesQuery, GetTotalEntriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTotalEntriesQuery, GetTotalEntriesQueryVariables>(GetTotalEntriesDocument, options);
+        }
+export type GetTotalEntriesQueryHookResult = ReturnType<typeof useGetTotalEntriesQuery>;
+export type GetTotalEntriesLazyQueryHookResult = ReturnType<typeof useGetTotalEntriesLazyQuery>;
+export type GetTotalEntriesQueryResult = Apollo.QueryResult<GetTotalEntriesQuery, GetTotalEntriesQueryVariables>;

@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material';
 
 import Bills from './pages/bills';
+import Dashboard from './pages/dashboard';
 import RequireAuth from './pages/requireAuth';
 import NoInternet from './pages/NoInternet';
 
@@ -39,7 +40,8 @@ const App: FunctionComponent = () => {
       <ThemeProvider theme={theme}>
         <Routes>
           <Route element={<RequireAuth />}>
-            <Route path="/" element={<Bills />} />
+            <Route path="/bills" element={<Bills />} />
+            <Route path="/" element={<Dashboard />} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>

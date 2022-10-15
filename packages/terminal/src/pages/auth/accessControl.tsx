@@ -31,6 +31,10 @@ const acc = [
     role: ['terminal', 'tenantAdmin', 'maintainer'],
   },
   {
+    path: '/finance',
+    role: ['tenantAdmin'],
+  },
+  {
     path: '/tenants',
     role: ['admin', 'maintainer'],
   },
@@ -41,6 +45,10 @@ const acc = [
   {
     path: '/maintainers',
     role: ['admin'],
+  },
+  {
+    path: '/queries',
+    role: ['maintainer'],
   },
   {
     path: '/weighbridges',

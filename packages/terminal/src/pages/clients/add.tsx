@@ -26,7 +26,9 @@ const AddNewClient: React.FunctionComponent = () => {
     setOpen(false);
   };
   const [role] = useRole();
+
   const [addNewClient, { loading }] = useCreateCustomerMutation();
+
   return (
     <div>
       <Button variant="outlined" sx={{ m: 1 }} onClick={handleClickOpen}>
@@ -54,7 +56,7 @@ const AddNewClient: React.FunctionComponent = () => {
               email: Yup.string().required('Required'),
               phone: Yup.string().required('Required'),
               tenant: Yup.lazy(() => {
-                if (role !== 'maintainer') {
+                if (role === 'terminal' || role === 'tenantAdmin') {
                   return Yup.object().notRequired();
                 } else {
                   return Yup.object()
@@ -71,7 +73,7 @@ const AddNewClient: React.FunctionComponent = () => {
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
             let additionalKeys = {};
-            if (role === 'maintainer') {
+            if (role !== 'terminal') {
               additionalKeys = {
                 tenent_id: values?.tenant?.value || '',
               };
@@ -168,17 +170,19 @@ const AddNewClient: React.FunctionComponent = () => {
                       defaultCountry={'in'}
                       onChange={(e) => setFieldValue('phone', e.toString())}
                     />
-                    {role !== 'tenantAdmin' && role !== null && (
-                      <AutoCompleteComponent
-                        sx={{
-                          width: '100%',
-                        }}
-                        name="tenant"
-                        label="tenant"
-                        serverName="tenents"
-                        queryHook={useGetAllTenentsDropDownLazyQuery}
-                      />
-                    )}
+                    {role !== 'tenantAdmin' &&
+                      role !== 'terminal' &&
+                      role !== null && (
+                        <AutoCompleteComponent
+                          sx={{
+                            width: '100%',
+                          }}
+                          name="tenant"
+                          label="tenant"
+                          serverName="tenents"
+                          queryHook={useGetAllTenentsDropDownLazyQuery}
+                        />
+                      )}
                     {(isSubmitting || loading) && <LinearProgress />}
                   </Box>
                 </Form>
