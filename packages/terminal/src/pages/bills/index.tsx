@@ -21,6 +21,7 @@ import {
   useGetAllBillsSubscription,
   useGetCustomerDropdownOptionsLazyQuery,
   useGetMaterialDropDownListLazyQuery,
+  useGetTotalAmountQuery,
   useGetTotalBillsSubscription,
   useGetVehiclesDropDownListLazyQuery,
   useGetWeighbridgesDropDownLazyQuery,
@@ -37,6 +38,22 @@ const Bills = () => {
   const [sort, setSort] = React.useState<any[]>([]);
   const [filterByDateTime, setFilterByDateTime] =
     React.useState<boolean>(false);
+  const { data: collection } = useGetTotalAmountQuery({
+    variables: {
+      where: {
+        _and:
+          filter && filter.length > 0
+            ? filter
+            : [
+                {
+                  created_at: {
+                    _gte: `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}T00:00:00:000Z`,
+                  },
+                },
+              ],
+      },
+    },
+  });
   const { data, loading } = useGetAllBillsSubscription({
     variables: {
       orderBy: [
@@ -271,6 +288,15 @@ const Bills = () => {
             </form>
           )}
         </Formik>
+        <div
+          style={{
+            margin: '10px',
+            textAlign: 'right',
+          }}
+        >
+          collection :{' '}
+          {collection?.bill_aggregate.aggregate?.sum?.charges || '$ 0'}
+        </div>
         <Grid
           data={data?.bill}
           pageSize={pageSize}

@@ -1,5 +1,15 @@
-query getTotalAmount($where: bill_bool_exp) {
-  bill_aggregate(where: $where) {
+query getTotalAmount(
+  $where: bill_bool_exp
+  $offset: Int
+  $order_by: [bill_order_by!]
+  $limit: Int
+) {
+  bill_aggregate(
+    where: $where
+    offset: $offset
+    order_by: $order_by
+    limit: $limit
+  ) {
     aggregate {
       sum {
         charges
