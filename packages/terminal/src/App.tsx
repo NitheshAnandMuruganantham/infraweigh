@@ -5,7 +5,6 @@ import Loading from './components/loading';
 import SignInSide from './pages/auth/logIn';
 import NotRequireAuth from './pages/auth/notRequireAuth';
 import RequireAuth from './pages/auth/requireAuth';
-import FinanceDashboard from './pages/finance/dashboard';
 import NoInternet from './pages/NoInternet';
 
 const ForgetPassword = React.lazy(() => import('./pages/auth/forgetPassword'));
@@ -67,11 +66,6 @@ const LazyMaintainers = () => (
     <Maintainers />
   </React.Suspense>
 );
-const LazyFinance = () => (
-  <React.Suspense fallback={<LazyLoader />}>
-    <FinanceDashboard />
-  </React.Suspense>
-);
 
 const LazyQueries = () => (
   <React.Suspense fallback={<LazyLoader />}>
@@ -103,7 +97,6 @@ const App: React.FunctionComponent = () => {
         <Routes>
           <Route path="*" element={<NotFound />} />
           <Route element={<RequireAuth />}>
-            <Route path="/finance" element={<LazyFinance />} />
             <Route path="/" element={<LazyBills />} />
             <Route path="/weighbridges" element={<LazyWeighbridges />} />
             <Route path="/users" element={<LazyUsers />} />

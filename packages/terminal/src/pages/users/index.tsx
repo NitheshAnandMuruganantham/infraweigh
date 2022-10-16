@@ -124,22 +124,7 @@ const Users = () => {
           setFilter={() => null}
           setPageSize={setPageSize}
           setSort={SetSort}
-          columns={
-            role !== 'admin'
-              ? columns
-              : [
-                  {
-                    field: 'weighbridge',
-                    headerName: 'weighbridge',
-                    sortable: false,
-                    filterable: false,
-                    width: 400,
-                    valueGetter: (params) =>
-                      params.row?.weighbridge?.name || '',
-                  },
-                  ...columns,
-                ]
-          }
+          columns={columns}
           rowCount={Count?.user_aggregate?.aggregate?.count || 0}
         />
       </Box>
