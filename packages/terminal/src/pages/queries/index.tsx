@@ -6,17 +6,20 @@ import Button from '@mui/material/Button';
 
 import DataGridComponent from '../../components/dataGrid';
 import {
+  useEditIssueMutation,
   useGetAllUsersCountSubscription,
+  useGetIssuesAggregateSubscriptionSubscription,
   useGetIssuesSubscription,
 } from '../../generated';
 import Chip from '@mui/material/Chip';
+import toast from 'react-toastify';
 
 const Users = () => {
   const [sort, SetSort] = React.useState([]);
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
-
+  const [editIssue] = useEditIssueMutation();
   const { data, loading } = useGetIssuesSubscription({
     variables: {
       where: {
@@ -47,7 +50,33 @@ const Users = () => {
     },
   });
   const { data: Count, loading: CountLoading } =
-    useGetAllUsersCountSubscription({});
+    useGetIssuesAggregateSubscriptionSubscription({
+      variables: {
+        where: {
+          _and: [
+            {
+              _or: [
+                {
+                  title: {
+                    _ilike: `%${search}%`,
+                  },
+                },
+                {
+                  message: {
+                    _ilike: `%${search}%`,
+                  },
+                },
+              ],
+            },
+            {
+              resolved: {
+                _neq: true,
+              },
+            },
+          ],
+        },
+      },
+    });
 
   return (
     <Box>
@@ -127,10 +156,30 @@ const Users = () => {
               filterable: false,
               minWidth: 100,
               flex: 1,
-              renderCell: () => <Button variant="text">resolve</Button>,
+              renderCell: (e) => (
+                <Button
+                  variant="text"
+                  onClick={() => {
+                    editIssue({
+                      variables: {
+                        where: {
+                          id: {
+                            _eq: e.row.id,
+                          },
+                        },
+                        _set: {
+                          resolved: true,
+                        },
+                      },
+                    });
+                  }}
+                >
+                  resolve
+                </Button>
+              ),
             },
           ]}
-          rowCount={Count?.user_aggregate?.aggregate?.count || 0}
+          rowCount={Count?.issues_aggregate?.aggregate?.count || 0}
         />
       </Box>
     </Box>

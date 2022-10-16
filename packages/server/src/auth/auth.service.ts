@@ -20,7 +20,7 @@ export class AuthService {
   ) {}
 
   private readonly StoredApiKey: string = this.config.get<string>('API_KEY');
-  validateApiKey(apiKey: string) {
+  validateApiKey(apiKey: string): boolean {
     return apiKey === this.StoredApiKey;
   }
 

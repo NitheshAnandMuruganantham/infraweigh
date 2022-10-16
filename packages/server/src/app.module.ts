@@ -12,6 +12,7 @@ import { RazorPayWebhookModule } from './razor-pay-webhook/razor-pay-webhook.mod
 import { TwilioModule } from 'nestjs-twilio';
 import { BillModule } from './bill/bill.module';
 import { S3Service } from './s3/s3.service';
+import { WebhookModule } from './webhook/webhook.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -81,6 +82,7 @@ import * as Joi from 'joi';
     }),
     MailerModule,
     BillModule,
+    WebhookModule,
   ],
   controllers: [AppController],
   providers: [AppService, MessengerService, S3Service],
