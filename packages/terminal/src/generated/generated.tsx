@@ -4772,6 +4772,9 @@ export type UpdateClientMutation = { __typename?: 'mutation_root', update_custom
 
 export type GetTotalAmountQueryVariables = Exact<{
   where?: InputMaybe<Bill_Bool_Exp>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Bill_Order_By> | Bill_Order_By>;
+  limit?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -6055,8 +6058,13 @@ export type UpdateClientMutationHookResult = ReturnType<typeof useUpdateClientMu
 export type UpdateClientMutationResult = Apollo.MutationResult<UpdateClientMutation>;
 export type UpdateClientMutationOptions = Apollo.BaseMutationOptions<UpdateClientMutation, UpdateClientMutationVariables>;
 export const GetTotalAmountDocument = gql`
-    query getTotalAmount($where: bill_bool_exp) {
-  bill_aggregate(where: $where) {
+    query getTotalAmount($where: bill_bool_exp, $offset: Int, $order_by: [bill_order_by!], $limit: Int) {
+  bill_aggregate(
+    where: $where
+    offset: $offset
+    order_by: $order_by
+    limit: $limit
+  ) {
     aggregate {
       sum {
         charges
@@ -6079,6 +6087,9 @@ export const GetTotalAmountDocument = gql`
  * const { data, loading, error } = useGetTotalAmountQuery({
  *   variables: {
  *      where: // value for 'where'
+ *      offset: // value for 'offset'
+ *      order_by: // value for 'order_by'
+ *      limit: // value for 'limit'
  *   },
  * });
  */
