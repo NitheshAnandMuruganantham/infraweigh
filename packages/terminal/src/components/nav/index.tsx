@@ -159,13 +159,6 @@ const NavBar: FunctionComponent<{
 
   const links = [
     {
-      name: 'dashboard',
-      path: '/finance',
-      icon: CurrencyRupeeIcon,
-      role: ['tenantAdmin'],
-      active: useMatch('/finance'),
-    },
-    {
       name: 'queries',
       path: '/queries',
       icon: SupportAgentIcon,
