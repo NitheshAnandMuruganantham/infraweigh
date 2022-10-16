@@ -12,6 +12,22 @@ query getIssuesAggregate($where: issues_bool_exp) {
   }
 }
 
+subscription getIssuesAggregateSubscription($where: issues_bool_exp) {
+  issues_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+
+mutation editIssue($where: issues_bool_exp!, $_set: issues_set_input) {
+  update_issues(where: $where, _set: $_set) {
+    returning {
+      id
+    }
+  }
+}
+
 subscription getIssues(
   $where: issues_bool_exp
   $limit: Int

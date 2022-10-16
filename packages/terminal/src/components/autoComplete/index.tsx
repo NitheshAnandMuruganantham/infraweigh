@@ -16,7 +16,7 @@ interface TextFieldProps {
 
 const AutoComTextField: React.FunctionComponent<TextFieldProps> = (props) => {
   const [field, _, helpers] = useField(props.name);
-  const QueryVarbales = props.serverWhereFilters || {};
+  const QueryVarbales = props.serverWhereFilters || [];
   const [loadData, { data, loading }] = props.queryHook({
     variables: QueryVarbales,
   });
