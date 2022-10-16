@@ -73,7 +73,7 @@ const AddNewClient: React.FunctionComponent = () => {
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
             let additionalKeys = {};
-            if (role !== 'terminal') {
+            if (role !== 'terminal' && role !== 'tenantAdmin') {
               additionalKeys = {
                 tenent_id: values?.tenant?.value || '',
               };
@@ -87,7 +87,6 @@ const AddNewClient: React.FunctionComponent = () => {
                   ...additionalKeys,
                   gst_in: values.gst_in,
                   blocked: false,
-
                   company_name: values.company_name,
                   company_address: values.address,
                 },

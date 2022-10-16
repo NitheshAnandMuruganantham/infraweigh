@@ -4825,6 +4825,21 @@ export type GetIssuesAggregateQueryVariables = Exact<{
 
 export type GetIssuesAggregateQuery = { __typename?: 'query_root', issues_aggregate: { __typename?: 'issues_aggregate', aggregate?: { __typename?: 'issues_aggregate_fields', count: number } | null } };
 
+export type GetIssuesAggregateSubscriptionSubscriptionVariables = Exact<{
+  where?: InputMaybe<Issues_Bool_Exp>;
+}>;
+
+
+export type GetIssuesAggregateSubscriptionSubscription = { __typename?: 'subscription_root', issues_aggregate: { __typename?: 'issues_aggregate', aggregate?: { __typename?: 'issues_aggregate_fields', count: number } | null } };
+
+export type EditIssueMutationVariables = Exact<{
+  where: Issues_Bool_Exp;
+  _set?: InputMaybe<Issues_Set_Input>;
+}>;
+
+
+export type EditIssueMutation = { __typename?: 'mutation_root', update_issues?: { __typename?: 'issues_mutation_response', returning: Array<{ __typename?: 'issues', id: any }> } | null };
+
 export type GetIssuesSubscriptionVariables = Exact<{
   where?: InputMaybe<Issues_Bool_Exp>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6357,6 +6372,74 @@ export function useGetIssuesAggregateLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetIssuesAggregateQueryHookResult = ReturnType<typeof useGetIssuesAggregateQuery>;
 export type GetIssuesAggregateLazyQueryHookResult = ReturnType<typeof useGetIssuesAggregateLazyQuery>;
 export type GetIssuesAggregateQueryResult = Apollo.QueryResult<GetIssuesAggregateQuery, GetIssuesAggregateQueryVariables>;
+export const GetIssuesAggregateSubscriptionDocument = gql`
+    subscription getIssuesAggregateSubscription($where: issues_bool_exp) {
+  issues_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetIssuesAggregateSubscriptionSubscription__
+ *
+ * To run a query within a React component, call `useGetIssuesAggregateSubscriptionSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetIssuesAggregateSubscriptionSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIssuesAggregateSubscriptionSubscription({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetIssuesAggregateSubscriptionSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetIssuesAggregateSubscriptionSubscription, GetIssuesAggregateSubscriptionSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetIssuesAggregateSubscriptionSubscription, GetIssuesAggregateSubscriptionSubscriptionVariables>(GetIssuesAggregateSubscriptionDocument, options);
+      }
+export type GetIssuesAggregateSubscriptionSubscriptionHookResult = ReturnType<typeof useGetIssuesAggregateSubscriptionSubscription>;
+export type GetIssuesAggregateSubscriptionSubscriptionResult = Apollo.SubscriptionResult<GetIssuesAggregateSubscriptionSubscription>;
+export const EditIssueDocument = gql`
+    mutation editIssue($where: issues_bool_exp!, $_set: issues_set_input) {
+  update_issues(where: $where, _set: $_set) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export type EditIssueMutationFn = Apollo.MutationFunction<EditIssueMutation, EditIssueMutationVariables>;
+
+/**
+ * __useEditIssueMutation__
+ *
+ * To run a mutation, you first call `useEditIssueMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditIssueMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editIssueMutation, { data, loading, error }] = useEditIssueMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *      _set: // value for '_set'
+ *   },
+ * });
+ */
+export function useEditIssueMutation(baseOptions?: Apollo.MutationHookOptions<EditIssueMutation, EditIssueMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditIssueMutation, EditIssueMutationVariables>(EditIssueDocument, options);
+      }
+export type EditIssueMutationHookResult = ReturnType<typeof useEditIssueMutation>;
+export type EditIssueMutationResult = Apollo.MutationResult<EditIssueMutation>;
+export type EditIssueMutationOptions = Apollo.BaseMutationOptions<EditIssueMutation, EditIssueMutationVariables>;
 export const GetIssuesDocument = gql`
     subscription getIssues($where: issues_bool_exp, $limit: Int, $order_by: [issues_order_by!], $offset: Int) {
   issues(where: $where, limit: $limit, order_by: $order_by, offset: $offset) {
