@@ -1,15 +1,8 @@
 import decode from 'jwt-decode';
-import './nav.styles.scss';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { useMatch, useNavigate } from 'react-router-dom';
-import AddTaskIcon from '@mui/icons-material/AddTask';
-import ArticleIcon from '@mui/icons-material/Article';
+import { useNavigate } from 'react-router-dom';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import MenuIcon from '@mui/icons-material/Menu';
-import HomeIcon from '@mui/icons-material/Home';
 
 import { auth } from '../../utils/firebase';
 
