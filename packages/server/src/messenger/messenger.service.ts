@@ -35,4 +35,17 @@ export class MessengerService {
       return e;
     }
   }
+  async sendRawSMS(phone: string, dt: any) {
+    try {
+      const data = await this.client.messages.create({
+        body: dt,
+        to: phone,
+        from: this.config.get('TWILIO_PHONE'),
+      });
+      return data;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  }
 }

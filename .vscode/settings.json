@@ -1,4 +1,10 @@
 {
-  "cSpell.words": ["EBITA", "headerapikey", "infratrack", "Razorpay"],
+  "cSpell.words": [
+    "EBITA",
+    "headerapikey",
+    "infratrack",
+    "Razorpay",
+    "tenents"
+  ],
   "githubPullRequests.ignoredPullRequestBranches": ["master"]
 }

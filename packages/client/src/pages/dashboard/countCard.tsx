@@ -16,7 +16,9 @@ const CounterCard: React.FunctionComponent<CounterCardProps> = ({
     <div
       style={{
         color: 'black',
-        height: '150px',
+        height: '60%',
+        paddingTop: '20px',
+        paddingBottom: '20px',
         flexDirection: 'column',
         width: '32%',
         alignItems: 'center',
@@ -34,12 +36,13 @@ const CounterCard: React.FunctionComponent<CounterCardProps> = ({
             <Typography
               sx={{
                 textTransform: 'capitalize',
+                textAlign: 'center',
               }}
             >
               {label}
             </Typography>
           </div>
-          <div style={{ fontSize: '50px' }}>{count}</div>
+          <div style={{ fontSize: 'xx-large' }}>{count}</div>
         </>
       )}
     </div>

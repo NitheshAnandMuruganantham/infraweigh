@@ -85,3 +85,66 @@ update_permissions:
           tenent:
             maintainer_id:
               _eq: X-Hasura-User-Id
+event_triggers:
+  - name: issue_notification
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: SERVER_URL
+    headers:
+      - name: api-key
+        value_from_env: API_KEY
+    request_transform:
+      body:
+        action: transform
+        template: |-
+          {
+            "id":{{$body.id}},
+            "created_at":{{$body.created_at}},
+            "title":{{$body.event.data.new.title}},
+            "message":{{$body.event.data.new.message}},
+            "user_id":{{$body.event.data.new.user_id}},
+            "resolved":{{$body.event.data.new.resolved}},
+            "severity":{{$body.event.data.new.severity}}
+            }
+      url: '{{$base_url}}/webhook/issues/create'
+      method: POST
+      version: 2
+      query_params: {}
+      template_engine: Kriti
+  - name: update_issue
+    definition:
+      enable_manual: false
+      update:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook_from_env: SERVER_URL
+    headers:
+      - name: api-key
+        value_from_env: API_KEY
+    request_transform:
+      body:
+        action: transform
+        template: |-
+          {
+            "id":{{$body.id}},
+            "created_at":{{$body.created_at}},
+            "title":{{$body.event.data.new.title}},
+            "message":{{$body.event.data.new.message}},
+            "user_id":{{$body.event.data.new.user_id}},
+            "resolved":{{$body.event.data.new.resolved}},
+            "severity":{{$body.event.data.new.severity}}
+            }
+      url: '{{$base_url}}/webhook/issues/update'
+      method: POST
+      version: 2
+      query_params: {}
+      template_engine: Kriti
