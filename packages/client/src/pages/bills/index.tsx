@@ -30,6 +30,7 @@ import {
 } from '../../generated';
 import { displayRazorpay } from '../../utils/razorPay';
 import Columns from './columns';
+import Dashboard from '../dashboard';
 
 const Bills = () => {
   const [pageSize, setPageSize] = React.useState(10);
@@ -79,7 +80,7 @@ const Bills = () => {
   const [colapse, setColapse] = React.useState(true);
   const mobileMedia = useMediaQuery((theme: any) => theme.breakpoints.up('sm'));
   return (
-    <Box>
+    <>
       <Box height={600} width={'100%'} textAlign="center">
         {!mobileMedia && (
           <IconButton onClick={() => setColapse((state) => !state)}>
@@ -294,8 +295,36 @@ const Bills = () => {
           loading={totalRowsLoading || loading}
           columns={[...Columns, ...GetCols()]}
         />
+        <div
+          style={{
+            marginTop: '20px',
+            height: 'auto',
+            paddingTop: '20px',
+            paddingBottom: '20px',
+            marginBottom: '50px',
+            scale: '0.9',
+            marginLeft: 'auto',
+            display: 'flex',
+            backgroundColor: 'whitesmoke',
+            borderRadius: '10px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}
+        >
+          <img
+            src="./infratrack.png"
+            style={{
+              height: '100px',
+              borderRadius: '10px',
+            }}
+          />
+          <div style={{ fontSize: '30px', margin: '10px' }}>infratrack</div>
+          <div>track your shipments directly from your dashboard</div>
+          <div>launching soon............</div>
+        </div>
       </Box>
-    </Box>
+    </>
   );
 };
 

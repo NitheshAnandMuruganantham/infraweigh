@@ -1,7 +1,7 @@
 import decode from 'jwt-decode';
+import './nav.styles.scss';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
-import GetHeaderNames from './getRoutes';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import ArticleIcon from '@mui/icons-material/Article';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
@@ -152,20 +152,6 @@ const NavBar: FunctionComponent<{
     setOpen(false);
   };
 
-  const links = [
-    {
-      name: 'Home',
-      path: '/',
-      icon: HomeIcon,
-      active: useMatch('/'),
-    },
-    {
-      name: 'Bills',
-      path: '/bills',
-      icon: ArticleIcon,
-      active: useMatch('/bills'),
-    },
-  ];
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
 
@@ -175,19 +161,8 @@ const NavBar: FunctionComponent<{
         <CssBaseline />
         <AppBar position="fixed" open={open}>
           <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{
-                marginRight: 5,
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
             <img
+              className="navHeaderImage"
               style={{
                 height: '40px',
                 backgroundColor: 'white',
@@ -199,10 +174,6 @@ const NavBar: FunctionComponent<{
               }}
               src="/logo.png"
             />
-            <Typography variant="h6" sx={{ mx: '10px' }} component="div">
-              |
-            </Typography>
-            {<GetHeaderNames />}
             <Box
               sx={{
                 marginLeft: 'auto',
@@ -259,55 +230,7 @@ const NavBar: FunctionComponent<{
             </Box>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'rtl' ? (
-                <ChevronRightIcon />
-              ) : (
-                <ChevronLeftIcon />
-              )}
-            </IconButton>
-          </DrawerHeader>
-          <Divider />
-          <List>
-            {links.map((data, index) => (
-              <ListItemButton
-                key={index}
-                onClick={() => navigate(data.path)}
-                sx={{
-                  ':hover': {
-                    backgroundColor: data.active ? 'slategray' : 'whitesmoke',
-                  },
-                  backgroundColor: data.active ? 'gray' : 'inherit',
-                  backgroundOpacity: 50,
-                  margin: 1,
-                  borderRadius: '5px',
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <data.icon htmlColor={data.active ? 'white' : 'gray'} />
-                </ListItemIcon>
-                <ListItemText
-                  primary={data.name}
-                  sx={{
-                    color: data.active ? 'white' : 'inherit',
-                    opacity: open ? 1 : 0,
-                  }}
-                />
-              </ListItemButton>
-            ))}
-          </List>
-        </Drawer>
+
         <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 7 }}>
           {children}
         </Box>
