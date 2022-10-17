@@ -40,7 +40,6 @@ const App: FunctionComponent = () => {
       <ThemeProvider theme={theme}>
         <Routes>
           <Route element={<RequireAuth />}>
-            <Route path="/bills" element={<Bills />} />
             <Route path="/" element={<Dashboard />} />
           </Route>
           <Route path="/login" element={<Login />} />

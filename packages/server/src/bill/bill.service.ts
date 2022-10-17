@@ -15,7 +15,6 @@ import { MessengerService } from 'src/messenger/messenger.service';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { compile } from 'handlebars';
-import fetch from 'cross-fetch';
 
 @Injectable()
 export class BillService {

@@ -74,7 +74,7 @@ const SectionOne: React.FunctionComponent<SectionOneProps> = () => {
   return (
     <div
       style={{
-        height: '300px',
+        height: 'auto',
         width: '98.5%',
         marginBottom: '10px',
         display: 'flex',
@@ -91,12 +91,12 @@ const SectionOne: React.FunctionComponent<SectionOneProps> = () => {
         loading={l1}
       />
       <CounterCard
-        label="total unpaid entries"
+        label="unpaid entries"
         count={d6?.bill_aggregate.aggregate?.count}
         loading={l6}
       />
       <CounterCard
-        label="serviced weighbridges"
+        label="weighbridges"
         count={d2?.weighbridge_aggregate.aggregate?.count}
         loading={l2}
       />
@@ -106,12 +106,12 @@ const SectionOne: React.FunctionComponent<SectionOneProps> = () => {
         loading={l3}
       />
       <CounterCard
-        label="today's collection"
+        label="day charges"
         count={d4?.bill_aggregate.aggregate?.sum?.charges || 0}
         loading={l4}
       />
       <CounterCard
-        label="today's total entires"
+        label="today entries"
         count={d5?.bill_aggregate.aggregate?.count || 0}
         loading={l5}
       />

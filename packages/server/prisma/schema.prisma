@@ -106,6 +106,7 @@ model user {
   role_roleTouser                     role?        @relation(fields: [role], references: [value], onDelete: Restrict, onUpdate: Restrict)
   tenents                             tenents?     @relation(fields: [tenent_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
   weighbridge                         weighbridge? @relation(fields: [weighbridge_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_weighbridge_id_fkey2")
+  issues                              issues[]
   tenents_tenents_maintainer_idTouser tenents[]    @relation("tenents_maintainer_idTouser")
 }
 
@@ -131,6 +132,7 @@ model weighbridge {
   mail             String
   phone            String
   tenent_id        String   @db.Uuid
+  maintainer_id    String?
   camera_url_1     String?
   camera_url_2     String?
   camera_url_3     String?
@@ -151,4 +153,22 @@ model paid_by {
   value   String @id
   comment String
   bill    bill[]
+}
+
+model issues {
+  id                        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                DateTime @default(now()) @db.Timestamptz(6)
+  updated_at                DateTime @default(now()) @db.Timestamptz(6)
+  severity                  String
+  title                     String
+  message                   String
+  user_id                   String   @db.Uuid
+  resolved                  Boolean? @default(false)
+  severity_issuesToseverity severity @relation(fields: [severity], references: [name], onUpdate: Restrict)
+  user                      user     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model severity {
+  name   String   @id
+  issues issues[]
 }
