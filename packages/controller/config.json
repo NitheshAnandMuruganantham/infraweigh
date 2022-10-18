@@ -3,5 +3,8 @@
     "port": "COM3",
     "baudrate": 2400,
     "timeout": 0.1
+  },
+  "encryption": {
+    "public": "UK5rmTTC675H5bkSJlMnH4xnHvMEXriM"
   }
 }
