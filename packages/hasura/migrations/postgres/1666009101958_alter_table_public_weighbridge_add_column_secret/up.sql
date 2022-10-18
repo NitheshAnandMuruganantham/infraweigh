@@ -1,2 +1,2 @@
-alter table "public"."weighbridge" add column "secret" text
- null;
+alter table "public"."weighbridge" alter column "secret" set default gen_random_uuid();
+
