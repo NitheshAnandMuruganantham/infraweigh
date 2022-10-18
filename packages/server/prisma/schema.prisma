@@ -138,6 +138,7 @@ model weighbridge {
   camera_url_3     String?
   camera_url_4     String?
   local_server_url String?
+  secret           String?
   tenents          tenents  @relation(fields: [tenent_id], references: [id], onUpdate: Restrict)
   bill             bill[]
   user             user[]
