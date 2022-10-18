@@ -5,7 +5,7 @@ const config = require("./config.json");
 const cors = require("cors");
 const ffmpeg = require("fluent-ffmpeg");
 const ffmpegPath = require("ffmpeg-static");
-
+const jwt = require("jsonwebtoken");
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 const app = express();
@@ -20,35 +20,36 @@ app.use(express.json());
 
 var x = 0;
 
-const port = new SerialPort({
-  baudRate: config.transducer.baudrate,
-  path: config.transducer.port,
-  dataBits: 8,
-  autoOpen: true,
-  lock: true,
-});
+// const port = new SerialPort({
+//   baudRate: config.transducer.baudrate,
+//   path: config.transducer.port,
+//   dataBits: 8,
+//   autoOpen: true,
+//   lock: true,
+// });
 
-port.on("error", () => {
-  process.exit(1);
-});
+// port.on("error", () => {
+//   process.exit(1);
+// });
 
-port.on("close", () => {
-  process.exit(1);
-});
+// port.on("close", () => {
+//   process.exit(1);
+// });
 
-const parser = port.pipe(new ReadlineParser({ delimiter: "\n" }));
+// const parser = port.pipe(new ReadlineParser({ delimiter: "\n" }));
 
-parser.on("data", (data) => {
-  setTimeout(() => {
-    const StringData = String(data || "0");
-    const parsedData = StringData.replace(/[^0-9.]/g, "");
-    if (/-/g.test(StringData)) {
-      x = parseInt(`-${parsedData}`);
-    } else {
-      x = parseInt(`${parsedData}`);
-    }
-  }, 1000);
-});
+// parser.on("data", (data) => {
+//   setTimeout(() => {
+//     const StringData = String(data || "0");
+//     const parsedData = StringData.replace(/[^0-9.]/g, "");
+//     if (/-/g.test(StringData)) {
+//       x = parseInt(`-${parsedData}`);
+//     } else {
+//       x = parseInt(`${parsedData}`);
+//     }
+//   }, 1000);
+// });
+
 
 app.get("/", (req, res) => {
   try {
@@ -65,19 +66,23 @@ app.get("/", (req, res) => {
 });
 
 app.get("/weight", (req, res) => {
-  if (port.closed) {
-    res.status(500).json({
-      error: "serial device error",
-    });
-  } else {
-    res.send({
-      weight: x,
-    });
-  }
+  // if (port.closed) {
+  //   res.status(500).json({
+  //     error: "serial device error",
+  //   });
+  // } else {
+  token = jwt.sign({ weight: x },
+    config.encryption.public)
+
+  res.send({
+    weight: token
+  });
+  // }
 });
 
-port.on("open", () => {
-  app.listen(9999, () => {
-    console.log("server started and loaded serial port");
-  });
+app.listen(9999, () => {
+  console.log("server started and loaded serial port");
 });
+
+// port.on("open", () => {
+// });

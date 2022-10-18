@@ -37,6 +37,7 @@ insert_permissions:
         - local_server_url
         - logo
         - mail
+        - maintainer_id
         - metadata
         - name
         - phone
@@ -165,23 +166,24 @@ update_permissions:
   - role: maintainer
     permission:
       columns:
-        - name
         - address
-        - pin_code
-        - logo
-        - display_name
-        - id
-        - created_at
-        - updated_at
-        - metadata
-        - mail
-        - phone
-        - tenent_id
         - camera_url_1
         - camera_url_2
         - camera_url_3
         - camera_url_4
+        - created_at
+        - display_name
+        - id
         - local_server_url
+        - logo
+        - mail
+        - metadata
+        - name
+        - phone
+        - pin_code
+        - secret
+        - tenent_id
+        - updated_at
       filter:
         tenent:
           maintainer_id:
